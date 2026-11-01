@@ -51,6 +51,12 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.2 - 2026-11-01: Festlegung: Engine-Version und Zielplattformen**
+
+- Engine bleibt bewusst bei Godot 4.8-dev6 (kein Wechsel auf Beta oder
+  Stable ohne Absprache).
+- Zielplattformen: Browser (Web-Export auf itch.io) und Windows-PC.
+
 **v0.1 - 2026-11-01: Projektstart (Vorbereitung)**
 
 - Oeffentliches Repo eingerichtet, Teilnahme an der Game Off 2026 erfolgt;

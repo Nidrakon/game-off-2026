@@ -69,9 +69,9 @@ Offene Punkte:
 
 | Bereich | Festlegung |
 | --- | --- |
-| Engine | Godot 4.8 (festgelegt am 01.11.2026). Exakte Version noch offen: 4.8 stable ist noch nicht erschienen; installiert ist 4.8-dev6, neueste Vorabversion ist 4.8-beta2 |
+| Engine | Godot **4.8-dev6** (bewusst diese Entwicklungsversion, festgelegt am 01.11.2026; kein Wechsel ohne Absprache). Export-Templates dafuer sind installiert |
 | Programmiersprache | GDScript |
-| Zielplattformen | [offen; Vorschlag: Browser (Web-Export) als Hauptplattform, weil im Browser spielbare Jam-Beitraege mehr Bewertungen bekommen; Windows-Download optional] |
+| Zielplattformen | Browser (Web-Export, auf itch.io direkt spielbar) und Windows-PC (Download), festgelegt am 01.11.2026 |
 | Veroeffentlichung | itch.io, als Beitrag zur Game Off 2026 (siehe 1.11) |
 | Eingabegeraete | [Tastatur, Maus, Controller, Touch: was wird unterstuetzt?] |
 | Sprachen im Spiel | [z. B. Deutsch und Englisch; Standardsprache] |
@@ -367,7 +367,7 @@ Repo, siehe 1.12).
 
 | Programm | Version | Pfad | Wie die KI es nutzt |
 | --- | --- | --- | --- |
-| Godot | 4.8 (Vorabversion, siehe 1.3), mit Konsolenfassung | siehe `CLAUDE.local.md` | Headless-Testlaeufe, Editor oeffnen, Export |
+| Godot | 4.8-dev6, mit Konsolenfassung | siehe `CLAUDE.local.md` | Headless-Testlaeufe, Editor oeffnen, Export |
 | Git | 2.54 | Standardinstallation | Versionsverwaltung |
 | GitHub CLI (`gh`) | 2.103 | Standardinstallation | Pull Requests, Repo-Abfragen; angemeldet als Nidrakon |
 | [Grafikprogramm] | [Version] | [Pfad] | [z. B. per Skript ohne Fenster] |
@@ -758,8 +758,7 @@ Bewusst spaeter:
 - **Spielbar:** noch nichts.
 - **Noch zu testen (vom Nutzer):** nichts.
 - **Bekannte Probleme:** keine.
-- **Groesste offene Punkte:** Thema und Spielidee; exakte Godot-Version (1.3);
-  Zielplattformen (1.3).
+- **Groesste offene Punkte:** Thema und Spielidee.
 
 ### 5.2 Versionsprotokoll
 

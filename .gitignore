@@ -1,0 +1,25 @@
+# Godot 4
+.godot/
+/android/
+*.translation
+
+# Builds / exports
+build/
+export/
+*.pck
+*.zip
+
+# Godot-generated files that should not be versioned
+export_credentials.cfg
+*.tmp
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Claude Code local settings
+.claude/settings.local.json

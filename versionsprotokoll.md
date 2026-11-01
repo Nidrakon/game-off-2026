@@ -51,6 +51,13 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.3 - 2026-11-01: Ordnerstruktur angelegt**
+
+- Ordner aus 1.5 angelegt (Szenen, Skripte, Grafik, Audio, Schriften, Daten,
+  Texte, Ablage `_inbox/`, Hilfsskripte `tools/`); noch kein Godot-Projekt.
+- Blender 5.1 und Aseprite 1.3.18 als Werkzeuge eingetragen; ob sie genutzt
+  werden, entscheidet sich mit dem Thema.
+
 **v0.2 - 2026-11-01: Festlegung: Engine-Version und Zielplattformen**
 
 - Engine bleibt bewusst bei Godot 4.8-dev6 (kein Wechsel auf Beta oder

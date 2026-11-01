@@ -213,6 +213,13 @@ res://
   tools/         # Hilfsskripte ausserhalb des Spiels, von der Engine ignoriert
 ```
 
+Angelegt am 01.11.2026. Git speichert keine leeren Ordner; deshalb liegt in
+noch leeren Ordnern eine leere Datei `.gitkeep`, die entfernt werden kann,
+sobald echte Dateien darin liegen. `_inbox/` und `tools/` enthalten eine
+`.gdignore`, damit die Engine sie ignoriert. Unterordner fuer 3D-Modelle
+und Sprachen (`dialogues/<sprache>/`) kommen dazu, wenn Stil und Sprachen
+feststehen.
+
 **Globale Systeme (Autoloads):**
 
 | Name | Datei | Aufgabe |
@@ -370,7 +377,8 @@ Repo, siehe 1.12).
 | Godot | 4.8-dev6, mit Konsolenfassung | siehe `CLAUDE.local.md` | Headless-Testlaeufe, Editor oeffnen, Export |
 | Git | 2.54 | Standardinstallation | Versionsverwaltung |
 | GitHub CLI (`gh`) | 2.103 | Standardinstallation | Pull Requests, Repo-Abfragen; angemeldet als Nidrakon |
-| [Grafikprogramm] | [Version] | [Pfad] | [z. B. per Skript ohne Fenster] |
+| Blender | 5.1 | siehe `CLAUDE.local.md` | 3D-Modelle per Python-Skript ohne Fenster erzeugen, Vorschau rendern, als `.glb` exportieren (falls 3D) |
+| Aseprite | 1.3.18 | siehe `CLAUDE.local.md` | Pixelart per Skript bzw. Kommandozeile, Export der Quellen nach PNG (falls Pixelart) |
 | [Musikprogramm] | [Version] | [Pfad] | [z. B. Projekt rendern] |
 
 **Hilfsskripte im Projekt (`tools/`)**
@@ -721,7 +729,7 @@ Bewusst spaeter:
 ### 4.4 Die Liste
 
 - [ ] 1. Projekt anlegen, Projekteinstellungen setzen und die Ordnerstruktur
-  aus 1.5 erstellen.
+  aus 1.5 erstellen. (Ordnerstruktur bereits am 01.11.2026 angelegt.)
 - [ ] 2. [...]
 
 > **Ausfuellhinweis:** Jeder Eintrag ist ein kleiner, in sich testbarer
@@ -748,11 +756,11 @@ Bewusst spaeter:
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 01.11.2026, Version v0.1**
+**Stand vom 01.11.2026, Version v0.3**
 
 - **Phase:** Vorbereitung (Jam startet am 01.11.2026 um 22:37).
 - **Zuletzt erledigt:** Repo, Git, GitHub CLI und Jam-Teilnahme eingerichtet;
-  bekannte Grundlagen in die Doku eingetragen.
+  Grundlagen in die Doku eingetragen; Ordnerstruktur angelegt.
 - **Naechster Schritt:** Thema abwarten, dann Doku gemeinsam ausfuellen
   (Leitvision, Mechaniken, Aufgabenliste); danach Schritt 1.
 - **Spielbar:** noch nichts.

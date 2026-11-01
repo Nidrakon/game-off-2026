@@ -23,3 +23,8 @@ desktop.ini
 
 # Claude Code local settings
 .claude/settings.local.json
+CLAUDE.local.md
+
+# Asset inbox: content is not versioned, only the marker file
+/_inbox/*
+!/_inbox/.gdignore

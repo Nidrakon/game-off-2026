@@ -51,6 +51,18 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.4 - 2026-11-04: Festlegung: Spielkonzept aus dem Brainstorming**
+
+- Thema der Jam: SHIFT; Umsetzung als "Time Shifter" mit Shift-Taste als
+  "Kupplung".
+- Spielkonzept: humorvoller 2D-Puzzle-Plattformer in Pixel Art; ein
+  Professor steuert eine formbare Zeitblase, um aus seinem Labor nach oben
+  zur Pizza zu kommen.
+- Mechaniken, Spielobjekte, Steuerung (vorlaeufig), Klonstation als
+  Checkpoint, Speichern und Titelbildschirm festgehalten.
+- Story mit Intro, Bereichen (Werkstatt, Selbstschussanlage, Teslakammer)
+  und Fahrstuhl-Abspann eingetragen; Glossar angelegt.
+
 **v0.3 - 2026-11-01: Ordnerstruktur angelegt**
 
 - Ordner aus 1.5 angelegt (Szenen, Skripte, Grafik, Audio, Schriften, Daten,

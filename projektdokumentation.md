@@ -46,24 +46,33 @@
 
 ### 1.1 Arbeitstitel
 
-**[ARBEITSTITEL]**
+**[ARBEITSTITEL]** (noch offen; bisherige Beschreibung: "Zeitblasen-Plattformer")
 
 Der Titel ist ausdruecklich als Arbeitstitel zu verstehen und kann sich im
 Lauf der Entwicklung noch aendern.
 
 ### 1.2 Leitvision
 
-[Ein Satz: Was fuer ein Spiel ist das?]
+Ein humorvoller 2D-Puzzle-Plattformer in Pixel Art: Ein verpeilter
+Professor muss mit seiner Zeitmaschine, dem **Time Shifter**, aus seinem
+eigenen, mit Fallen vollgestopften unterirdischen Labor nach oben
+entkommen, weil dort seine Pizza geliefert wird.
 
 Kern der Idee:
 
-- [Was macht das Spiel besonders?]
-- [Grundton, z. B. humorvoll, duester, entspannt]
-- [Wichtigstes Spielelement]
+- **Lokale, formbare Zeitblase:** Der Time Shifter verlangsamt oder
+  beschleunigt die Zeit in einer Blase um den Professor. Nur die Umgebung
+  wird beeinflusst, nicht er selbst. Form und Lage der Blase lassen sich
+  einstellen.
+- **Grundton durchgehend humorvoll:** Der Professor wird Opfer seiner eigenen
+  Sicherheitsvorkehrungen und kommentiert das mit trockenen Spruechen.
+- **Wichtigstes Spielelement:** Raetsel und Geschicklichkeit mit Objekten,
+  deren Tempo man veraendert (Projektile, Pendel, Plattformen, Timer).
 
 Offene Punkte:
 
-- [...]
+- Arbeitstitel.
+- Look, Sound und Musik.
 
 ### 1.3 Technische Basis
 
@@ -73,10 +82,10 @@ Offene Punkte:
 | Programmiersprache | GDScript |
 | Zielplattformen | Browser (Web-Export, auf itch.io direkt spielbar) und Windows-PC (Download), festgelegt am 01.11.2026 |
 | Veroeffentlichung | itch.io, als Beitrag zur Game Off 2026 (siehe 1.11) |
-| Eingabegeraete | [Tastatur, Maus, Controller, Touch: was wird unterstuetzt?] |
-| Sprachen im Spiel | [z. B. Deutsch und Englisch; Standardsprache] |
-| Grafikstil | [z. B. Pixel Art] |
-| Perspektive | [z. B. 2D seitlich, Top-Down, 3D] |
+| Eingabegeraete | Tastatur und Maus (siehe 2.2). Controller und Touch: [offen] |
+| Sprachen im Spiel | [offen] |
+| Grafikstil | Pixel Art |
+| Perspektive | 2D seitlich (Side-Scroller) |
 | Tile-Groesse | [z. B. 16 x 16 px] |
 | Basisaufloesung | [z. B. 480 x 270 px] |
 | Skalierung | [Stretch-Modus, ganzzahlig ja/nein] |
@@ -396,7 +405,10 @@ Repo, siehe 1.12).
 Nur beim Start aus dem Editor (Debug-Build) aktiv, im exportierten Spiel
 nicht vorhanden.
 
-- **[Taste, z. B. F1]** oeffnet das Entwickler-Menue (Spiel pausiert).
+- **F1** oeffnet das Entwickler-Menue (Spiel pausiert). Im fertigen
+  Release-Build fuer den Jam ist es deaktiviert.
+- **Direkter Einstieg in ein beliebiges Level.**
+- **Alle Time-Shifter-Upgrades freischalten** (siehe 2.3).
 - **Test-Szenarien:** gespeicherte Spielzustaende, die per Klick geladen
   werden, so als haette man bis dahin selbst gespielt (alle Marken,
   Levelzustaende, Figuren, Inventar), mit Startpunkt im Level. Die Liste
@@ -440,9 +452,17 @@ umbenannt oder umnummeriert, steht der alte Name hier mit dabei.
 
 | Begriff im Gespraech | Bedeutung / Name im Code |
 | --- | --- |
-| [z. B. "Song 1"] | [Name, Datei] |
-| [z. B. Figur "Held"] | [`hero`] |
-| [z. B. "Level 3"] | [`level_03`, frueher "Level 4"] |
+| Professor | Die Spielfigur, verrueckter Erfinder (`professor`) |
+| Time Shifter | Die Zeitmaschine, die der Professor traegt, mit Bedienfeld (`time_shifter`) |
+| Zeitblase, Blase, Sphaere | Der Bereich um den Professor, in dem die Zeit veraendert ist (`time_bubble`) |
+| Zeitstufe | Langsam, normal oder schnell (siehe 2.3) |
+| Bedienfeld | Das grosse Reglerfeld des Time Shifters, erscheint bei gehaltener Shift-Taste |
+| "Kupplung" | Shift-Taste halten: Bedienfeld einblenden, Spiel pausiert |
+| Schrotthaufen | Fundstelle, mit der der Professor den Time Shifter um eine Funktion erweitert (Upgrade) |
+| Klonstation | Checkpoint am Anfang jedes Levels (siehe 2.6) |
+| Werkstatt | Startbereich ganz unten, zaehlt nicht als eigentlicher Bereich |
+| Bereich | Grosser Teil des Labors (z. B. Teslakammer), besteht aus mehreren Leveln |
+| Level | Einzelner, abgeschlossener Abschnitt innerhalb eines Bereichs |
 
 ### 1.11 Game Jam: Game Off 2026
 
@@ -458,7 +478,16 @@ erfolgt (Konto "nidrakon").
 | **Abgabeschluss** (Repo gepusht und Spiel auf itch.io eingereicht) | **01.12.2026, 22:37** (= 13:37 PST) |
 | Ende der Abstimmung | 01.01.2027, 22:37 |
 
-**Thema:** [wird am 01.11.2026 bekanntgegeben]
+**Thema:** **SHIFT**
+
+Bezug zum Thema: ueber "Time Shift". Der Bezug ist eher indirekt, und
+Zeitmanipulation ist in Jams verbreitet; die lokale, formbare Blase macht den
+Ansatz eigenstaendiger. Damit der Bezug eindeutig wird:
+
+- Das Geraet heisst **Time Shifter**.
+- Bedienung ueber die **Shift-Taste** als "Kupplung" wie beim Gangschalten
+  (siehe 2.2).
+- Option: sichtbare Farb- bzw. Pixelverschiebung innerhalb der Blase.
 
 **Regeln:**
 
@@ -522,24 +551,43 @@ Requests, Issues und die itch.io-Seite.
 
 ### 2.1 Gameplay Loop
 
-[Kernschleife in wenigen Schritten, z. B.:]
-
-1. [...]
-2. [...]
-3. [...]
+1. Level beginnt an der Klonstation (Checkpoint, Spielstand wird
+   gespeichert).
+2. Der Spieler erkennt Hindernisse und Raetsel (Projektile, Pendel,
+   Plattformen, Timer ...).
+3. Mit gehaltener Shift-Taste oeffnet er das Bedienfeld (Spiel pausiert)
+   und stellt Zeitstufe und Form der Blase ein.
+4. Er nutzt die Blase beim Laufen und Springen, um Objekte zu bremsen, zu
+   beschleunigen oder zu synchronisieren.
+5. Er erreicht den Ausgang, das naechste Level liegt weiter oben. Unterwegs
+   erweitern Schrotthaufen den Time Shifter um neue Funktionen.
 
 Wichtige Eigenschaften des Loops:
 
-- [z. B. linear / nicht-linear, Rueckkehr in fruehere Bereiche]
+- Linear, von ganz unten im Labor Etage fuer Etage nach oben.
+- Tod fuehrt zurueck an den Anfang des aktuellen Levels (siehe 2.6).
+- Keine Begrenzung der Blase durch Energie oder Abklingzeit; die
+  Herausforderung kommt allein aus dem Leveldesign.
 
 ### 2.2 Steuerung
 
-| Aktion | Eingabe-Aktion im Projekt | Tastatur | [Controller] | [Touch] |
+Status: vorlaeufig festgehalten, kann sich noch aendern.
+
+| Aktion | Eingabe-Aktion im Projekt | Tastatur / Maus | [Controller] | [Touch] |
 | --- | --- | --- | --- | --- |
-| [Nach links laufen] | `move_left` | [A, Pfeil links] | [ ] | [ ] |
-| [Springen] | `jump` | [Leertaste] | [ ] | [ ] |
-| [Benutzen] | `interact` | [E] | [ ] | [ ] |
-| [Pause] | `pause` | [Esc] | [ ] | [ ] |
+| Nach links laufen | `move_left` | A | [ ] | [ ] |
+| Nach rechts laufen | `move_right` | D | [ ] | [ ] |
+| Springen | `jump` | Leertaste | [ ] | [ ] |
+| Bedienfeld des Time Shifters ("Kupplung") | `time_shifter_panel` | Shift gedrueckt halten | [ ] | [ ] |
+| Regler im Bedienfeld bedienen | (Maus-Eingabe auf die Regler) | Maus | [ ] | [ ] |
+| [Pause] | `pause` | [offen, z. B. Esc] | [ ] | [ ] |
+
+- **Shift als "Kupplung":** Solange Shift gehalten wird, erscheint das
+  Bedienfeld gross in der Bildschirmmitte, und das Spiel im Hintergrund ist
+  pausiert. Ohne Shift ist das Bedienfeld ausgeblendet.
+- Empfehlung: Im normalen Spiel zeigt ein kleines Symbol die aktuelle
+  Zeitstufe. Die Blase selbst ist in der Spielwelt immer sichtbar.
+- Offen: Belegung von W und S (bisher nur "WASD" genannt).
 
 Werte der Bewegung (Datendatei `[data/...]`):
 
@@ -554,78 +602,235 @@ Werte der Bewegung (Datendatei `[data/...]`):
 > halten = hoher Sprung; Coyote Time und Sprungpuffer. Laufanimation und
 > Geschwindigkeit so abstimmen, dass der aufgesetzte Fuss nicht rutscht.
 
-### 2.3 [Kernmechanik]
+### 2.3 Kernmechanik: Time Shifter und Zeitblase
 
-> **Ausfuellhinweis:** Fuer jede Kernmechanik ein eigenes Unterkapitel mit
-> diesem Aufbau. Die folgenden Unterkapitel 2.4 bis 2.8 braucht fast jedes
-> Spiel; nicht benoetigte streichen.
+Der Professor traegt den Time Shifter bei sich. Er erzeugt eine Blase
+(Sphaere) um den Professor, in der die Zeit fuer die Umgebung langsamer
+oder schneller laeuft. Der Professor selbst wird **nicht** beeinflusst.
 
-[Kurzbeschreibung: Was tut der Spieler, was passiert?]
+**Bedienfeld (Regler):**
 
-**Regeln:**
+- **Zeitregler mit Anzeige** (Optik aehnlich einer Tankanzeige): drei feste
+  Stufen: langsam (links), normal (Mitte), schnell (rechts). Nicht
+  stufenlos.
+- **Vertikaler Schieberegler:** verformt die Sphaere in Y-Richtung
+  (elliptisch) bzw. verschiebt sie exzentrisch nach oben oder unten.
+- **Horizontaler Schieberegler:** verformt die Sphaere in X-Richtung bzw.
+  verschiebt sie exzentrisch nach links oder rechts. So kann die Blase vom
+  Professor weg in eine Richtung zeigen.
+- **Drehregler:** Radius der Sphaere.
+- **Oszilloskop-Anzeige:** zeigt im XY-Modus als Lissajous-Figur die
+  aktuelle Form der Sphaere (Kreis bzw. Ellipse). Die Figur pulsiert oder
+  rotiert je nach Zeitstufe langsamer oder schneller.
 
-- [...]
+**Freischalten (festgelegt):** Vier Stellgroessen koennen fummelig werden,
+deshalb werden die Regler schrittweise freigeschaltet. Der Professor findet
+Schrotthaufen, mit denen er den Time Shifter verbessert und eine neue
+Funktion erhaelt. Sie liegen frei platziert, jeweils kurz bevor ein Level die
+neue Funktion braucht (nicht an Bereichsgrenzen gebunden). Zu Beginn fehlen
+die Schieberegler zur Formung der Sphaere noch.
 
-**Werte:** [Datendatei bzw. einstellbare Werte]
+**Regeln der Zeitblase:**
 
-**Zusammenspiel:** [mit welchen anderen Mechaniken, wie zahlt es in den
-Loop ein?]
+- Die Blase ist dauerhaft aktiv; auf Stufe "normal" ist sie faktisch aus.
+- Keine Begrenzung durch Energie, Abklingzeit o. Ae. Die Level werden so
+  gestaltet, dass sie trotzdem anspruchsvoll sind.
+- Ein Objekt wird beeinflusst, sobald es die Blase beruehrt (es muss nicht
+  vollstaendig drin sein).
+- Zusammenhaengende Objekte (z. B. ein Pendel) werden als Ganzes
+  beeinflusst.
+- Empfehlung: beeinflusste Objekte sichtbar markieren (z. B. farbiger
+  Schimmer).
 
-**Umsetzung:** [Szenen, Skripte, Klassen; wird beim Bauen ergaenzt]
+**Werte:** [Datendatei; Tempo-Faktoren der Stufen, Radius-Grenzen,
+Verformungs-Grenzen]
+
+**Zusammenspiel:** Jedes Objekt aus 2.4 reagiert auf die Blase; die
+Formregler erlauben, gezielt nur einzelne Objekte zu erfassen.
+
+**Umsetzung:** [wird beim Bauen ergaenzt]
 
 Offene Punkte:
 
-- [...]
+- Genaue Reihenfolge der Upgrades.
+- Risiken der Regel "Beruehrung genuegt": Die Blase wirkt effektiv groesser
+  (relevant bei grossen Projektilen dicht beieinander), moegliches Flackern
+  an der Grenze. Alternative: nur den Mittelpunkt pruefen.
+- Feinschliff von Steuerung und Bedienfeld.
 
-### 2.4 Menues und Einstieg ins Spiel
+### 2.4 Spielobjekte, die auf die Zeitblase reagieren
 
-- **Titelbildschirm:** [Knoepfe, z. B. Fortfahren, Neuer Spielstand (mit
-  Sicherheitsabfrage), Einstellungen, Beenden].
-- **Hauptmenue / Levelauswahl:** [...]
-- **Pause:** [Taste, was passiert, Fortsetzen ohne Neuladen].
-- **Einstellungen:** [Lautstaerke, Vollbild, Sprache, ...].
-- **Credits / Abspann:** [...]
+**Projektil**
 
-### 2.5 Scheitern und Wiederaufnahme
+- Gross, etwa so gross wie der Professor; toedlich bei seitlicher
+  Beruehrung.
+- Der Professor kann daraufspringen und mitfliegen (Transportplattform).
+- Kann Schalter bzw. Oberflaechen treffen und einen elektrischen Impuls
+  ausloesen.
+- Mitfliegen und Beschleunigen: Man fliegt schneller, reagiert selbst aber
+  normal schnell; Chance und Gefahr zugleich.
+- Raetselidee Synchronisation: Zwei Projektile muessen gleichzeitig zwei
+  Schalter treffen (z. B. fuer eine Tuer). Eines startet frueher oder ist
+  schneller und muss verlangsamt werden. Die Formregler helfen, nur ein
+  Projektil in die Blase zu nehmen. Empfehlung: kleines Toleranzfenster
+  (ca. 0,5 s).
+- Levelidee Projektilwand: Projektile fliegen horizontal auf allen Hoehen.
+  In der Blase werden sie langsamer, die anderen fliegen weiter, so entsteht
+  eine Luecke. Die verlangsamten Projektile bleiben toedlich, koennen aber
+  als Trittsteine dienen. Eine exzentrische Blase kann Richtung Wand
+  geschoben werden.
 
-[Tod, Schaden oder Fehlschlag: was loest es aus, was passiert danach
-(Game-Over-Bildschirm, Neustart wo), was bleibt erhalten (geloeste Raetsel,
-Fortschritt), Kontrollpunkte ja/nein.]
+**Pendel / rotierende Gefahr**
 
-### 2.6 Spielstand und Fortschritt
+- Toedliches Objekt an einem Seil, pendelt oder rotiert zu schnell zum
+  Passieren; durch Verlangsamen ueberwindbar.
+- Ideen fuer Beschleunigung: Ein schneller schwingendes Pendel trifft einen
+  Schalter oder zerschlaegt eine Wand; zwei gegenlaeufige Pendel
+  synchronisieren, um eine Luecke zu erzeugen.
 
-- **Was wird gespeichert:** [z. B. nur erreichte Zustaende (Marken,
-  Levelzustaende, Figuren, Inventar), keine Position].
-- **Wo der Spieler nach dem Laden startet:** [...]
-- **Anzahl Spielstaende:** [z. B. genau einer].
-- **Wann gespeichert wird:** [z. B. Levelende, Rueckkehr ins Menue,
-  Beenden, im Browser beim Verlassen des Tabs].
+**Fliegende Plattform**
+
+- Bewegt sich horizontal oder auf beliebiger Bahn; in der Blase schneller
+  oder langsamer.
+- Sicher und berechenbar, gut fuer Einsteiger-Level.
+- Idee: aus der Ferne mit gestreckter Blase abbremsen, um sie zu erreichen,
+  dann beschleunigen (z. B. um vor einer sich schliessenden Tuer anzukommen).
+
+**Timer / Zeitschaltuhr / Zeitbombe**
+
+- Laeuft in der Blase langsamer oder schneller; zwei asynchrone Timer
+  lassen sich synchronisieren.
+- Gut zum Erlernen der Mechanik ohne Gefahr.
+- Ideen: Tuer mit Zeitschaltuhr laenger offen halten; Bombe bremsen, um zu
+  entkommen, oder beschleunigen, um eine Wand zu sprengen.
+
+**Schalter / Trefferflaechen**
+
+- Werden von Projektilen ausgeloest (elektrischer Impuls) und oeffnen z. B.
+  Tueren.
+
+**Magnet (Idee fuer die Teslakammer)**
+
+- Elektromagnet, der rhythmisch an- und ausgeht und per Zeitblase gesteuert
+  wird.
+
+**Umfang:** Die Elemente reichen fuer einen Jam. Lieber kombinieren als
+neue erfinden.
+
+**Ideenpool Beschleunigung (nur Inspiration, nicht festgelegt):**
+
+- Ranke, die beschleunigt zur Kletterhilfe oder Bruecke waechst.
+- Wasserhahn bzw. Tropfstein fuellt ein Becken, schwimmende Plattform steigt.
+- Rostige Gitter bzw. Holzbarrieren altern im Zeitraffer und zerfallen.
+- Kerze bzw. Zuendschnur brennt schneller ab und loest etwas aus.
+- Eisblock schmilzt beschleunigt; Wasser gefriert bei Verlangsamung (nutzt
+  beide Richtungen).
+
+Offene Punkte:
+
+- Bisher dominiert das Verlangsamen. Es fehlen Elemente, bei denen
+  Beschleunigen der Hauptzweck ist; ob und welche aus dem Ideenpool
+  aufgenommen werden.
+
+### 2.5 Menues und Einstieg ins Spiel
+
+- **Titelbildschirm:** drei Knoepfe: New Game, Continue und Beenden.
+  - Continue ist nur aktiv, wenn ein Spielstand existiert, sonst
+    ausgegraut.
+  - New Game ueberschreibt einen vorhandenen Spielstand; vorher erscheint
+    eine Sicherheitsabfrage.
+  - Hinweis: Im Browser kann sich ein Spiel nicht selbst beenden (siehe
+    6.2); dort wird Beenden voraussichtlich ausgeblendet.
+- **Intro-Sequenz** nach New Game (siehe 3.5).
+- **Hauptmenue / Levelauswahl:** [offen]
+- **Pause:** [offen]
+- **Einstellungen:** [offen]
+- **Credits / Abspann:** waehrend der Fahrstuhlfahrt nach dem letzten Level
+  (siehe 3.5).
+
+### 2.6 Scheitern und Wiederaufnahme
+
+Festgelegt: Am Anfang jedes Levels steht ein Checkpoint. Stirbt der
+Professor, startet er wieder am Anfang des aktuellen Levels; der
+Fortschritt bleibt erhalten.
+
+- Story-Begruendung: Der Checkpoint ist eine **Klonstation**. Der Professor
+  hat seine DNA entschluesselt und kann sich selbst aus Materie nachbilden,
+  inklusive Gehirn und Gedanken. Bei jedem Tod stirbt er tatsaechlich, wird
+  aber neu gebaut und macht weiter.
+- Humor-Idee: beim Respawn ein trockener Kommentar wie "Nummer 47, auf ein
+  Neues."
+- Verworfen: Zeitanker-Station als Alternative.
+
+### 2.7 Spielstand und Fortschritt
+
+- **Was wird gespeichert:** der Spielfortschritt (erreichtes Level,
+  freigeschaltete Upgrades); Details [offen].
+- **Wo der Spieler nach dem Laden startet:** am Anfang des zuletzt
+  erreichten Levels (Klonstation).
+- **Anzahl Spielstaende:** einer (New Game ueberschreibt ihn).
+- **Wann gespeichert wird:** automatisch zu Beginn jedes Levels, passend zum
+  Checkpoint; im Browser [offen].
 - **Technik:** [z. B. JSON-Datei in `user://`, genau eine Stelle im Code
   speichert und laedt, Versionsnummer im Spielstand, sauberer Rueckfall bei
   fehlender oder beschaedigter Datei].
 - **Fortschrittsmarken (Story Flags):** benannte Ja-Nein-Marken fuer jede
   Teilhandlung; Benennung siehe 1.6.
 
-### 2.7 Texte und Dialoge
+### 2.8 Texte und Dialoge
 
-[Wie Figuren sprechen (Sprechblasen, Dialogfenster, Antwortauswahl ja/nein),
-welche Arten es gibt (wichtig / beilaeufig), wie man weiterklickt, ob das
-Spiel dabei pausiert, Datenformat der Textdateien (ID -> Text, Varianten,
-"nur einmal").]
+- Festgelegt: Der Professor droppt immer wieder zufaellige lustige Sprueche,
+  dargestellt als **Sprechblase ueber dem Professor**. Inhalt und Beispiele
+  siehe 3.6.
+- Respawn-Kommentar an der Klonstation (siehe 2.6).
+- Intro und Abspann siehe 3.5.
+- [Offen: Ausloeser der Sprueche (zufaellig, an bestimmten Stellen), ob das
+  Spiel dabei weiterlaeuft, Datenformat der Textdateien.]
 
-### 2.8 Leveldesign
+### 2.9 Leveldesign
 
-[Aufbau und Reihenfolge der Level, Schwierigkeitskurve, wer baut die Level
-(KI, Nutzer im Editor mit fertigen Bausteinen), Werkzeuge dafuer.]
+- **Struktur:** Ein Bereich ist ein grosser Teil des Labors (z. B. die
+  Teslakammer) und besteht aus mehreren separaten Leveln. Es geht Etage fuer
+  Etage nach oben.
+- **Startbereich:** die Werkstatt des Professors ganz unten im Labor, in der
+  er den Time Shifter baut. Dort beginnt das Spiel; sie zaehlt nicht als
+  eigentlicher Bereich.
+- **Reihenfolge (festgelegt):** Werkstatt -> Selbstschussanlage ->
+  Teslakammer.
+  1. **Selbstschussanlage:** Einstiegsbereich mit Schwerpunkt Projektile,
+     weil die Mechanik dort am klarsten ist. Sanft beginnen mit einzelnen,
+     langsamen Projektilen; die Projektilwand eher spaeter.
+  2. **Teslakammer:** Schwerpunkt Elektrizitaet und eventuell Magnetismus,
+     z. B. Zeitschaltuhren; moegliches neues Objekt: Magnete (siehe 2.4).
+- Jeder Bereich hat einen eigenen Look und eigene Mechaniken.
+- Chemielabor vorerst gestrichen (keine ueberzeugende Idee). Weitere
+  Bereichs-Ideen (nicht festgelegt): Uhrmacher-Raum (Zahnraeder, Timer),
+  Botaniklabor (Ranken).
+- **Umfang:** ca. 8 bis 12 Level realistisch; Empfehlung 3 bis 4
+  Themenbereiche.
+- **Wer baut die Level:** Level-Builder in Godot: Alle Spielelemente
+  (Plattformen, Projektile, Pendel, Timer, Schalter usw.) sind fertige
+  Bausteine, die sich per Drag-and-drop ins Level ziehen lassen.
 
 | Level | Thema / Hintergrund | Song | Neue Elemente | Besonderheit |
 | --- | --- | --- | --- | --- |
 | [1] | [ ] | [ID] | [ ] | [ ] |
 
-### 2.9 Zusammenspiel der Mechaniken
+Offene Punkte:
 
-[Wie die Mechaniken gemeinsam den Gameplay Loop tragen; Luecken und
-Ueberschneidungen.]
+- Konkrete Levelstruktur und Anzahl der Level.
+- Auswahl weiterer Themenbereiche (bisher zwei plus Werkstatt).
+- Fruehere Strukturidee "unten Grundlagen (Timer, Plattform, Pendel), Mitte
+  Projektile und Formregler, oben Kombinationen mit Synchron-Raetsel und
+  Projektilwand als Finale" passt nicht zur festgelegten Reihenfolge
+  (Projektile zuerst) und muss angeglichen werden.
+
+### 2.10 Zusammenspiel der Mechaniken
+
+Die Zeitblase ist das einzige Werkzeug des Spielers; alle Objekte aus 2.4
+reagieren darauf. Die Formregler (per Upgrade) erlauben, gezielt einzelne
+Objekte zu erfassen, was Synchron-Raetsel und Projektilwand erst moeglich
+macht. Luecke: Beschleunigen ist bisher selten der Hauptzweck (siehe 2.4).
 
 ---
 
@@ -637,36 +842,78 @@ Ueberschneidungen.]
 
 ### 3.1 Setting
 
-[Welt, Zeit, Grundstimmung, Rahmenbedingungen.]
+Das unterirdische Labor eines verrueckten Erfinders, aufgeteilt in
+Forschungsbereiche auf mehreren Etagen. Der Professor hat zu viele
+Sicherheitsvorkehrungen und Fallen eingebaut; normalerweise schaltet er sie
+mit seiner Keycard unscharf. Grundstimmung: durchgehend humorvoll.
 
 ### 3.2 Spielfigur(en)
 
 | Figur | Name im Code | Rolle | Charakter / Ziel | Faehigkeit |
 | --- | --- | --- | --- | --- |
-| [ ] | [ ] | [ ] | [ ] | [ ] |
+| Der Professor (Erfinder) | `professor` | Spielfigur | Verpeilt und verballert; will nach oben zu seiner Pizzalieferung | Time Shifter (Zeitblase) |
+
+Aussehen: bewusst verpeilt und verballert gestaltet; der Humor soll schon im
+Sprite stecken.
 
 ### 3.3 Antagonist
 
-[Wer oder was, Motiv, wie er sich zeigt.]
+Kein klassischer Gegenspieler: Der Professor ist Opfer seines eigenen
+Labors und seiner eigenen Fallen. Ausloeser: Beim ersten Test des Time
+Shifters zerstoert ein elektromagnetischer Impuls (EMP) den Chip seiner
+Keycard, sodass er die Fallen nicht mehr abschalten kann.
 
 ### 3.4 Weitere Figuren und NPCs
 
-[Rolle, Charakter, Bedeutung fuer die Story.]
+[keine festgelegt]
 
 ### 3.5 Story-Bogen
 
-[Grober Verlauf, in Abschnitte gegliedert; je Abschnitt: was passiert, wo
-(Level), welche Fortschrittsmarke.]
+Ziel und Motivation (festgelegt): Der Professor hat Pizza bestellt und muss
+von ganz unten im Labor nach oben, um die Lieferung entgegenzunehmen. Die
+zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
 
-1. [...]
+1. **Intro-Sequenz** (so knapp wie moeglich, damit der Spieler sofort weiss,
+   worum es geht): Der Professor arbeitet am Time Shifter, z. B. mit einem
+   Schweissgeraet. Er ist Professor, hat den Time Shifter entwickelt und
+   Pizza bestellt. Beim ersten Test zerstoert er aus Versehen per EMP die
+   Keycard. Mission: von ganz unten nach oben zur Pizzalieferung.
+2. **Werkstatt** (Start), dann **Selbstschussanlage**, dann
+   **Teslakammer** (siehe 2.9).
+3. **Ende und Abspann:** Nach dem letzten Level nimmt der Professor oben die
+   Pizza entgegen und faehrt mit dem Fahrstuhl zurueck ins Labor. Die
+   Fahrstuhlfahrt nach unten ist der Abspann (Credits laufen waehrend der
+   Fahrt); dabei isst er genuesslich seine Pizza. Pointe: Eigentlich haette
+   er die ganze Zeit den Fahrstuhl nehmen koennen, aber das waere nur halb
+   so viel Spass gewesen.
+
+Verworfene Alternativen: nur Keycard ohne Pizza-Motivation; Tier als
+Spielfigur (Schildkroete, Hase, Faultier, Laborratte); Keycard zerfaellt
+durch Alterung (unrealistisch bei Plastik).
 
 ### 3.6 Ton und Schreibstil
 
-- Grundton der Texte: [z. B. humorvoll, Wortwitz erlaubt].
-- Stimme je Figur: [z. B. Figur A muerrisch und knapp, Figur B
-  altertuemlich].
-- Spoiler: [Was darf in Texten, Store-Seite usw. nicht verraten werden?]
-- Uebersetzung: [z. B. frei statt woertlich, Wortwitz und Ton erhalten].
+- Grundton der Texte: durchgehend humorvoll, selbstironisch.
+- Stimme des Professors: droppt zufaellige lustige Sprueche, gern mit
+  Verweis auf seine krassen Erfindungen (z. B. das Exoskelett), was
+  nebenbei die Welt ausbaut; dazu selbstironische Kommentare zu den
+  eigenen Fallen.
+- Beispielsprueche (Entwuerfe):
+  - "Ohne Exoskelett haette ich den Sprung aber nicht ueberlebt."
+  - "Gut, dass ich meine Knochen mit Titan verstaerkt habe."
+  - "Die Klonstation war meine beste Idee. Na gut, die zweitbeste nach dem
+    Pizza-Teleporter, der leider nie funktioniert hat."
+  - "Notiz an mich: Selbstschussanlagen erkennen keine Gesichter. Nur
+    Keycards."
+  - "Meine Antigravitationsschuhe waeren jetzt praktisch. Liegen leider oben
+    neben der Haustuer."
+  - "Diese Brille mit Roentgenblick haette mir hier echt geholfen. Wo hab
+    ich die nur hingelegt?"
+  - "Mein Kaffee-Beschleuniger hat uebrigens auch mal so angefangen."
+  - "Nummer 47, auf ein Neues." (Respawn)
+- Spoiler: [offen; Vorschlag: die Fahrstuhl-Pointe nicht auf der
+  Store-Seite verraten].
+- Uebersetzung: [offen, haengt an den Sprachen in 1.3].
 
 ---
 
@@ -674,9 +921,13 @@ Ueberschneidungen.]
 
 ### 4.1 Umfang der ersten spielbaren Version (Vertical Slice)
 
-Enthalten:
+Fest eingeplant (Reihenfolge und Schritte folgen in 4.4):
 
-- [...]
+- Titelbildschirm mit New Game, Continue und Beenden (siehe 2.5).
+- Speichern: automatisch zu Beginn jedes Levels (siehe 2.7).
+- Level-Builder: alle Spielelemente als Drag-and-drop-Bausteine (siehe 2.9).
+- F1-Entwicklermenue mit Teleport, Unsterblichkeit, Level-Direkteinstieg und
+  allen Upgrades; im Release-Build deaktiviert (siehe 1.9).
 
 Bewusst spaeter:
 
@@ -684,11 +935,10 @@ Bewusst spaeter:
 
 ### 4.2 Festlegungen vor der Umsetzung
 
-> **Ausfuellhinweis:** Grundsatzentscheidungen, die mehrere Schritte
-> betreffen (z. B. Dialogsystem, Tod, Speichern), hier kurz festhalten oder
-> auf das Kapitel verweisen, in dem sie stehen.
-
-- [...]
+- Tod und Checkpoint: Klonstation am Levelanfang (2.6).
+- Speichern: ein Spielstand, automatisch am Levelanfang (2.7).
+- Freischalten der Regler ueber Schrotthaufen (2.3).
+- Sprueche als Sprechblase ueber dem Professor (2.8).
 
 ### 4.3 Verbindliche Arbeitsweise beim Abarbeiten der Liste
 
@@ -756,17 +1006,19 @@ Bewusst spaeter:
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 01.11.2026, Version v0.3**
+**Stand vom 04.11.2026, Version v0.4**
 
-- **Phase:** Vorbereitung (Jam startet am 01.11.2026 um 22:37).
-- **Zuletzt erledigt:** Repo, Git, GitHub CLI und Jam-Teilnahme eingerichtet;
-  Grundlagen in die Doku eingetragen; Ordnerstruktur angelegt.
-- **Naechster Schritt:** Thema abwarten, dann Doku gemeinsam ausfuellen
-  (Leitvision, Mechaniken, Aufgabenliste); danach Schritt 1.
+- **Phase:** Konzept (Thema: SHIFT).
+- **Zuletzt erledigt:** Brainstorming zum Spiel in die Doku eingepflegt
+  (Leitvision, Mechaniken, Story).
+- **Naechster Schritt:** offene Grundlagen klaeren (Arbeitstitel, Sprachen,
+  Aufloesung und Tile-Groesse, Kenntnisstand, Commit-Ablauf), dann die
+  Aufgabenliste 4.4 erstellen; danach Schritt 1.
 - **Spielbar:** noch nichts.
 - **Noch zu testen (vom Nutzer):** nichts.
 - **Bekannte Probleme:** keine.
-- **Groesste offene Punkte:** Thema und Spielidee.
+- **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente
+  (2.4), Reihenfolge der Upgrades (2.3), Look, Sound und Musik (1.2).
 
 ### 5.2 Versionsprotokoll
 

@@ -1,4 +1,4 @@
-# Projektdokumentation: [ARBEITSTITEL]
+# Projektdokumentation: Time Shifter
 
 > **STRIKTE VORGABE: Das Repository ist oeffentlich. Keine persoenlichen
 > oder privaten Informationen.** Kein echter Name, keine E-Mail-Adresse,
@@ -46,7 +46,7 @@
 
 ### 1.1 Arbeitstitel
 
-**[ARBEITSTITEL]** (noch offen; bisherige Beschreibung: "Zeitblasen-Plattformer")
+**Time Shifter** (festgelegt am 04.11.2026)
 
 Der Titel ist ausdruecklich als Arbeitstitel zu verstehen und kann sich im
 Lauf der Entwicklung noch aendern.
@@ -71,7 +71,6 @@ Kern der Idee:
 
 Offene Punkte:
 
-- Arbeitstitel.
 - Look, Sound und Musik.
 
 ### 1.3 Technische Basis
@@ -83,15 +82,15 @@ Offene Punkte:
 | Zielplattformen | Browser (Web-Export, auf itch.io direkt spielbar) und Windows-PC (Download), festgelegt am 01.11.2026 |
 | Veroeffentlichung | itch.io, als Beitrag zur Game Off 2026 (siehe 1.11) |
 | Eingabegeraete | Tastatur und Maus (siehe 2.2). Controller und Touch: [offen] |
-| Sprachen im Spiel | [offen] |
+| Sprachen im Spiel | Nur Englisch (festgelegt am 04.11.2026) |
 | Grafikstil | Pixel Art |
 | Perspektive | 2D seitlich (Side-Scroller) |
-| Tile-Groesse | [z. B. 16 x 16 px] |
-| Basisaufloesung | [z. B. 480 x 270 px] |
-| Skalierung | [Stretch-Modus, ganzzahlig ja/nein] |
-| Texturfilter | [z. B. Nearest fuer scharfe Pixel] |
-| Renderer | [z. B. Compatibility] |
-| Fenstermodus | Entwicklung: [z. B. Fenster 3x]. Fertiges Spiel: [z. B. randloses Vollbild] |
+| Tile-Groesse | 16 x 16 px; Professor ca. 16 x 32 px (zwei Tiles hoch) |
+| Basisaufloesung | 480 x 270 px (16:9; ganzzahlig skalierbar: x2 = 960 x 540, x4 = 1920 x 1080) |
+| Skalierung | Stretch-Modus `canvas_items`, Seitenverhaeltnis `keep` (schwarze Raender statt Verzerrung) |
+| Texturfilter | Nearest (scharfe Pixel) |
+| Renderer | Compatibility (laeuft am zuverlaessigsten im Browser) |
+| Fenstermodus | Entwicklung: Fenster 960 x 540 (x2). Fertiges Spiel: Windows Vollbild; Browser eingebettet in 960 x 540 mit Vollbild-Knopf |
 | Standardschrift | [Datei, Groesse, Lizenz] |
 | Versionsverwaltung | Git, oeffentliches Repo auf GitHub (`Nidrakon/game-off-2026`), Branch `main`, Autor "Nidrakon" mit GitHub-noreply-Adresse (nie eine private E-Mail, siehe 1.12). Die KI fuehrt Pull, Commit, Push, Merge und Pull Requests aus |
 | Export | [Voreinstellungen und Zielordner, siehe Kapitel 6] |
@@ -107,6 +106,12 @@ Offene Punkte:
 > vermeidet man mit Stretch-Modus `canvas_items` (gezeichnet wird in
 > Bildschirmaufloesung), Physik-Interpolation an und einer Kamera, die im
 > Physik-Takt nach der Figur nachzieht.
+
+Begruendung Aufloesung und Tiles (Empfehlung der KI, uebernommen am
+04.11.2026): 480 x 270 mit 16er-Tiles zeigt ca. 30 x 17 Tiles. Das ist genug
+Ueberblick fuer Raetsel, bei denen man Blase, Projektile und Schalter
+gleichzeitig sehen muss, und die Pixel bleiben gut erkennbar. 960 x 540 ist
+eine uebliche Einbettungsgroesse auf itch.io und genau Faktor 2.
 
 **Abweichungen je Plattform:** [z. B. was im Browser anders ist als unter
 Windows; siehe Kapitel 6.]
@@ -171,14 +176,16 @@ Windows; siehe Kapitel 6.]
     gefaehrden koennte (Deadline, oeffentliches Repo, Lizenzen), hat Vorrang.
     Die KI weist rechtzeitig auf die Deadline hin (siehe 1.11).
 
-**Kenntnisstand des Nutzers:** [z. B. Anfaenger: erste Erfahrungen mit Vibe
-Coding, der Sprache und dem Editor]. Daraus folgt:
+**Kenntnisstand des Nutzers:** Erste kleine Spiele mit Godot entwickelt,
+Basiskenntnisse in GDScript. Daraus folgt:
 
-- [z. B. Erklaerungen in einfacher Sprache, Fachbegriffe beim ersten
-  Auftreten kurz erklaeren.]
-- [z. B. Code-Kommentare erklaeren, *was* ein Abschnitt tut und *warum*.]
-- [z. B. Schritte im Editor (wo klicken, welche Einstellung) konkret
-  beschreiben.]
+- Erklaerungen in einfacher Sprache; Godot-Grundbegriffe (Node, Szene,
+  Signal) werden vorausgesetzt, fortgeschrittene Begriffe (z. B. Shader,
+  Resource, Autoload, Physik-Ebenen) beim ersten Auftreten kurz erklaert.
+- Code-Kommentare (auf Deutsch) erklaeren, *was* ein Abschnitt tut und
+  *warum*, besonders bei nicht offensichtlicher Logik.
+- Schritte im Editor (wo klicken, welche Einstellung) konkret beschreiben,
+  wenn der Nutzer selbst etwas im Editor tun soll.
 
 **Antwortform nach einem Schritt:**
 
@@ -191,14 +198,16 @@ Coding, der Sprache und dem Editor]. Daraus folgt:
 
 **Ablaeufe rund um jeden Schritt:**
 
-- **Commit:** [z. B. erst, wenn der Nutzer zufrieden ist / automatisch nach
-  jedem Schritt]. Commit-Nachricht: [Sprache, Muster, z. B. "Schritt 12:
-  Titel"].
+- **Commit:** erst, wenn der Nutzer mit einem Schritt zufrieden ist
+  (festgelegt am 04.11.2026). Nicht jeder kleine Teilschritt wird committet;
+  Nachbesserungen am selben Schritt kommen in denselben Commit. Nach dem
+  Commit wird gepusht. Commit-Nachricht auf Englisch (oeffentliches Repo),
+  Muster "Step 12: Title (v0.x)".
 - **Editor:** [z. B. Nach jedem Schritt oeffnet die KI den Editor mit dem
   Projekt, falls er nicht laeuft.]
-- **Projektdatei:** [z. B. Bevor die KI die Projekteinstellungen
-  (`project.godot`) aendert, bittet sie, den Editor zu schliessen, weil der
-  Editor die Datei sonst beim Speichern ueberschreibt.]
+- **Projektdatei:** Bevor die KI die Projekteinstellungen (`project.godot`)
+  direkt aendert, bittet sie, den Editor zu schliessen, weil der Editor die
+  Datei sonst beim Speichern ueberschreibt.
 - **Spielstand bei Tests:** [z. B. Der Spielstand des Nutzers darf bei
   Testlaeufen geloescht werden / muss gesichert werden. Einstellungen wie
   die Lautstaerke bleiben erhalten.]
@@ -225,9 +234,9 @@ res://
 Angelegt am 01.11.2026. Git speichert keine leeren Ordner; deshalb liegt in
 noch leeren Ordnern eine leere Datei `.gitkeep`, die entfernt werden kann,
 sobald echte Dateien darin liegen. `_inbox/` und `tools/` enthalten eine
-`.gdignore`, damit die Engine sie ignoriert. Unterordner fuer 3D-Modelle
-und Sprachen (`dialogues/<sprache>/`) kommen dazu, wenn Stil und Sprachen
-feststehen.
+`.gdignore`, damit die Engine sie ignoriert. Da es nur eine Sprache
+(Englisch) gibt, liegen die Spieltexte direkt in `dialogues/` ohne
+Sprach-Unterordner.
 
 **Globale Systeme (Autoloads):**
 
@@ -253,12 +262,14 @@ Bauprinzip:
 
 **Sprache:**
 
-- **[Englisch]** ist alles, was im Projekt einen Namen bekommt: Ordner,
+- **Englisch** ist alles, was im Projekt einen Namen bekommt: Ordner,
   Dateien, Szenen, Nodes, Skripte, Klassen, Variablen, Funktionen,
-  Konstanten, Signale und Daten-Schluessel (IDs).
-- **[Deutsch]** bleiben die Projektdokumentation, Code-Kommentare und
-  [die Texte im Spiel in der Ausgangssprache].
-- Namen der Figuren im Code: [deutscher Name = `code_name`].
+  Konstanten, Signale und Daten-Schluessel (IDs). Ebenso alle Texte im
+  Spiel und die Commit-Nachrichten.
+- **Deutsch** bleiben die Projektdokumentation und Code-Kommentare.
+  Entwuerfe fuer Spieltexte duerfen auf Deutsch entstehen; im Spiel stehen
+  sie frei uebersetzt auf Englisch (Wortwitz und Ton erhalten).
+- Namen der Figuren im Code: Professor = `professor`.
 
 **Code (Engine-Konventionen):**
 
@@ -898,7 +909,8 @@ durch Alterung (unrealistisch bei Plastik).
   Verweis auf seine krassen Erfindungen (z. B. das Exoskelett), was
   nebenbei die Welt ausbaut; dazu selbstironische Kommentare zu den
   eigenen Fallen.
-- Beispielsprueche (Entwuerfe):
+- Beispielsprueche (deutsche Entwuerfe; im Spiel frei auf Englisch, siehe
+  1.6):
   - "Ohne Exoskelett haette ich den Sprung aber nicht ueberlebt."
   - "Gut, dass ich meine Knochen mit Titan verstaerkt habe."
   - "Die Klonstation war meine beste Idee. Na gut, die zweitbeste nach dem
@@ -913,7 +925,8 @@ durch Alterung (unrealistisch bei Plastik).
   - "Nummer 47, auf ein Neues." (Respawn)
 - Spoiler: [offen; Vorschlag: die Fahrstuhl-Pointe nicht auf der
   Store-Seite verraten].
-- Uebersetzung: [offen, haengt an den Sprachen in 1.3].
+- Uebersetzung: Spieltexte nur auf Englisch; deutsche Entwuerfe frei statt
+  woertlich uebertragen, Wortwitz und Ton erhalten.
 
 ---
 
@@ -1006,14 +1019,12 @@ Bewusst spaeter:
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 04.11.2026, Version v0.4**
+**Stand vom 04.11.2026, Version v0.5**
 
 - **Phase:** Konzept (Thema: SHIFT).
-- **Zuletzt erledigt:** Brainstorming zum Spiel in die Doku eingepflegt
-  (Leitvision, Mechaniken, Story).
-- **Naechster Schritt:** offene Grundlagen klaeren (Arbeitstitel, Sprachen,
-  Aufloesung und Tile-Groesse, Kenntnisstand, Commit-Ablauf), dann die
-  Aufgabenliste 4.4 erstellen; danach Schritt 1.
+- **Zuletzt erledigt:** Brainstorming eingepflegt; Arbeitstitel, Sprache,
+  Aufloesung, Kenntnisstand und Commit-Ablauf festgelegt.
+- **Naechster Schritt:** Aufgabenliste 4.4 erstellen; danach Schritt 1.
 - **Spielbar:** noch nichts.
 - **Noch zu testen (vom Nutzer):** nichts.
 - **Bekannte Probleme:** keine.

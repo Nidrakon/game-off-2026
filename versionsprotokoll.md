@@ -1,4 +1,4 @@
-# Versionsprotokoll: [ARBEITSTITEL]
+# Versionsprotokoll: Time Shifter
 
 Gehoert zur Projektdokumentation (`projektdokumentation.md`, Kapitel 5).
 Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
@@ -50,6 +50,16 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Optional am Ende: "Geprueft: ..." (was die KI selbst getestet hat).
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
+
+**v0.5 - 2026-11-04: Festlegung: Titel, Sprache, Aufloesung, Arbeitsweise**
+
+- Arbeitstitel "Time Shifter".
+- Spiel nur auf Englisch; Doku und Code-Kommentare bleiben Deutsch.
+- Pixel Art in 480 x 270 mit 16er-Tiles, Renderer Compatibility.
+- Kenntnisstand des Nutzers eingetragen (erste kleine Godot-Spiele,
+  Basiskenntnisse GDScript).
+- Commit erst, wenn der Nutzer mit einem Schritt zufrieden ist; nicht jeder
+  Teilschritt einzeln.
 
 **v0.4 - 2026-11-04: Festlegung: Spielkonzept aus dem Brainstorming**
 

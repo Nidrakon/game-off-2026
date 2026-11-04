@@ -51,6 +51,15 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.7 - 2026-11-04: Schritt 1 - Projekt anlegen**
+
+- Godot-Projekt "Time Shifter" angelegt (Godot 4.8-dev6).
+- Einstellungen: 480 x 270, Fenster 960 x 540, Skalierung `canvas_items`
+  mit festem Seitenverhaeltnis, scharfe Pixel, Renderer Compatibility,
+  Physik-Interpolation an.
+- Geprueft: Projekt laedt ohne Fehler; alle Einstellungen per Skript
+  ausgelesen und bestaetigt.
+
 **v0.6 - 2026-11-04: Aufgabenliste erstellt**
 
 - Aufgabenliste mit 26 Schritten in vier Meilensteinen bis zur Abgabe

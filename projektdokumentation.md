@@ -1004,7 +1004,7 @@ gekuerzt, nicht der Puffer.
 
 **Meilenstein 1: Fundament (Ziel 10.11.)**
 
-- [ ] 1. Projekt anlegen, Projekteinstellungen setzen (1.3: Aufloesung,
+- [x] 1. Projekt anlegen, Projekteinstellungen setzen (1.3: Aufloesung,
   Skalierung, Texturfilter, Renderer, Physik-Interpolation) und die
   Ordnerstruktur aus 1.5 erstellen. (Ordnerstruktur bereits am 01.11.2026
   angelegt.)
@@ -1078,14 +1078,13 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 04.11.2026, Version v0.5**
+**Stand vom 04.11.2026, Version v0.7**
 
-- **Phase:** Konzept (Thema: SHIFT).
-- **Zuletzt erledigt:** Brainstorming eingepflegt; Arbeitstitel, Sprache,
-  Aufloesung, Kenntnisstand und Commit-Ablauf festgelegt.
-- **Naechster Schritt:** Entwurf der Aufgabenliste 4.4 freigeben; danach
-  Schritt 1 (Projekt anlegen).
-- **Spielbar:** noch nichts.
+- **Phase:** Meilenstein 1, Fundament (Ziel 10.11.).
+- **Zuletzt erledigt:** Schritt 1 (Projekt anlegen).
+- **Naechster Schritt:** 2 (Export-Voreinstellungen und erster
+  Browser-Test).
+- **Spielbar:** noch nichts (es gibt noch keine Hauptszene).
 - **Noch zu testen (vom Nutzer):** nichts.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente

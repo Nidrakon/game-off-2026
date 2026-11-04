@@ -8,6 +8,8 @@
   lokale Pfade usw.) in Dateien, Commits, Branches, PRs oder Store-Texten.
   Einzige erlaubte Kennung: das Pseudonym "Nidrakon". Details in 1.12.
   Vor jedem Commit die Aenderungen darauf pruefen.
+- **STRIKT: Nur Farben der Palette Resurrect 64** (`graphics/palettes/`),
+  in Grafiken wie im Code. Details in 1.7.
 - Rechnerspezifisches (Programmpfade) steht in `CLAUDE.local.md` (nicht im Repo).
 - Kommunikation mit dem Nutzer auf Deutsch.
 - Game Off 2026: Abgabeschluss 01.12.2026, 22:37 deutscher Zeit (siehe 1.11).

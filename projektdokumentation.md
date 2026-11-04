@@ -93,7 +93,7 @@ Offene Punkte:
 | Fenstermodus | Entwicklung: Fenster 960 x 540 (x2). Fertiges Spiel: Windows Vollbild; Browser eingebettet in 960 x 540 mit Vollbild-Knopf |
 | Standardschrift | [Datei, Groesse, Lizenz] |
 | Versionsverwaltung | Git, oeffentliches Repo auf GitHub (`Nidrakon/game-off-2026`), Branch `main`, Autor "Nidrakon" mit GitHub-noreply-Adresse (nie eine private E-Mail, siehe 1.12). Die KI fuehrt Pull, Commit, Push, Merge und Pull Requests aus |
-| Export | [Voreinstellungen und Zielordner, siehe Kapitel 6] |
+| Export | Voreinstellungen "Web" und "Windows" nach `build/` (siehe 6.1) |
 
 > **Ausfuellhinweis:** Zielplattformen, Eingabegeraete und Sprachen frueh
 > festlegen, auch wenn sie erst spaeter kommen. Wer von Anfang an weiss,
@@ -352,9 +352,17 @@ mit allen Verweisen.
 
 **Grafikstil (verbindlich)**
 
-- Farbpalette: [Name und Quelle, z. B. eine Lospec-Palette; Dateien in
-  `graphics/palettes/`]. Gilt fuer alle Grafiken und fuer Farben, die im
-  Code gesetzt werden. Pruefung: [Werkzeug/Befehl].
+- **Farbpalette (strikt, festgelegt am 04.11.2026): Resurrect 64**
+  (https://lospec.com/palette-list/resurrect-64), 64 Farben. Dateien:
+  `graphics/palettes/resurrect_64.hex` (Liste) und `resurrect_64.gpl`
+  (zum Laden in Aseprite). **Im Spiel gibt es keine anderen Farben.** Das
+  gilt fuer alle Sprites und Grafiken, die die KI erstellt, und fuer jede
+  Farbe, die im Code oder in Szenen gesetzt wird (Hintergrund, UI, Schrift,
+  Effekte, Zeitblase). Pruefung: [Werkzeug folgt mit den ersten Grafiken].
+- Ausnahme (festgelegt am 04.11.2026): Die **Zeitblase** darf
+  halbtransparent sein; die dabei auf dem Bildschirm entstehenden
+  Mischfarben sind erlaubt. Die Ausgangsfarben kommen trotzdem aus der
+  Palette. Umsetzung voraussichtlich als Shader.
 - Feste Grundfarben: [Hintergrund, Schrift, Umriss, Hervorhebung].
 - Stilregeln: [Lichtrichtung, Umrissfarbe, Abstufungen je Material,
   Verlaeufe ja/nein].
@@ -1008,7 +1016,7 @@ gekuerzt, nicht der Puffer.
   Skalierung, Texturfilter, Renderer, Physik-Interpolation) und die
   Ordnerstruktur aus 1.5 erstellen. (Ordnerstruktur bereits am 01.11.2026
   angelegt.)
-- [ ] 2. Export-Voreinstellungen fuer Browser und Windows anlegen und einen
+- [x] 2. Export-Voreinstellungen fuer Browser und Windows anlegen und einen
   ersten Test-Export im Browser pruefen (frueh, damit Probleme mit
   4.8-dev6 im Web sofort auffallen).
 - [ ] 3. Testszene mit Boden (Platzhalter-Tiles) und Kamera.
@@ -1078,13 +1086,13 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 04.11.2026, Version v0.7**
+**Stand vom 04.11.2026, Version v0.8**
 
 - **Phase:** Meilenstein 1, Fundament (Ziel 10.11.).
-- **Zuletzt erledigt:** Schritt 1 (Projekt anlegen).
-- **Naechster Schritt:** 2 (Export-Voreinstellungen und erster
-  Browser-Test).
-- **Spielbar:** noch nichts (es gibt noch keine Hauptszene).
+- **Zuletzt erledigt:** Schritt 2 (Export und erster Browser-Test).
+- **Naechster Schritt:** 3 (Testszene mit Boden und Kamera).
+- **Spielbar:** nur eine vorlaeufige Export-Testszene
+  (`scenes/export_test.tscn`, wird in Schritt 3 ersetzt und geloescht).
 - **Noch zu testen (vom Nutzer):** nichts.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente
@@ -1107,15 +1115,24 @@ ein neuer Eintrag oben dazu; bestehende Eintraege werden nie ueberschrieben.
 
 | Voreinstellung | Ziel | Besonderheiten |
 | --- | --- | --- |
-| [Windows] | [`build/windows/[name].exe`] | [z. B. PCK eingebettet, Icon] |
-| [Web] | [`build/web/index.html`] | [z. B. ohne Thread-Support fuer itch.io] |
+| Windows | `build/windows/time_shifter.exe` | 64 Bit, Spieldaten (PCK) in die Exe eingebettet; Icon [offen] |
+| Web | `build/web/index.html` | ohne Thread-Support (laeuft auf itch.io ohne Sonderkonfiguration), Canvas passt sich dem Fenster an |
 
-- [ ] Export-Vorlagen genau zur Editor-Version installiert.
+Export per Kommandozeile (die KI nutzt die Konsolenfassung von Godot):
+`--headless --path . --export-release "Web" build/web/index.html` bzw.
+`"Windows" build/windows/time_shifter.exe`. Lokaler Browser-Test:
+`python -m http.server 8060 --bind 127.0.0.1 --directory build/web`, dann
+http://localhost:8060 oeffnen.
+
+Startbildschirm (Boot Splash): ohne Godot-Logo, Hintergrund `#2e222f` aus
+der Palette.
+
+- [x] Export-Vorlagen genau zur Editor-Version installiert (4.8-dev6).
 - [ ] "Mit Debug exportieren" aus (sonst sind die Entwickler-Werkzeuge
-  aktiv).
+  aktiv). Hinweis: Die KI exportiert mit `--export-release`.
 - [ ] Spielsymbol (Icon) fuer Fenster, Exe und Browser-Tab.
-- [ ] Ordner `build/` von Engine und Git ausgenommen (Git: erledigt per
-  `.gitignore`; Engine: `.gdignore` beim Anlegen des Ordners).
+- [x] Ordner `build/` von Engine und Git ausgenommen (`build/.gdignore`,
+  `.gitignore`).
 
 ### 6.2 Plattform-Abweichungen
 

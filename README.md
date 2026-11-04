@@ -11,7 +11,9 @@ A humorous 2D puzzle platformer: a scatterbrained professor uses his Time Shifte
 
 ## Credits
 
-_Third-party assets (fonts, sounds, music, graphics) and their licenses are listed here._
+- Color palette: [Resurrect 64](https://lospec.com/palette-list/resurrect-64) by Kerrie Lake
+
+_Further third-party assets (fonts, sounds, music, graphics) and their licenses are listed here._
 
 ## AI usage
 

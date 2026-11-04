@@ -4,7 +4,8 @@
 *.translation
 
 # Builds / exports
-build/
+build/*
+!build/.gdignore
 export/
 *.pck
 *.zip

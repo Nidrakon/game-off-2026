@@ -51,6 +51,19 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.8 - 2026-11-04: Schritt 2 - Export fuer Browser und Windows**
+
+- Export-Voreinstellungen "Web" (ohne Threads, fuer itch.io) und "Windows"
+  (eine Exe) angelegt; Ausgabe nach `build/`.
+- Vorlaeufige Testszene zeigt Plattform und Aufloesung an.
+- Neue strikte Regel: nur Farben der Palette Resurrect 64
+  (`graphics/palettes/`); Startbildschirm deshalb ohne Godot-Logo in
+  Palettenfarbe. Ausnahme: Die Zeitblase darf halbtransparent sein
+  (Mischfarben erlaubt, voraussichtlich als Shader).
+- Geprueft: beide Exporte ohne Fehler; Windows-Build startet; Web-Export
+  wird lokal ausgeliefert. Nutzer hat Browser und Windows erfolgreich
+  getestet.
+
 **v0.7 - 2026-11-04: Schritt 1 - Projekt anlegen**
 
 - Godot-Projekt "Time Shifter" angelegt (Godot 4.8-dev6).

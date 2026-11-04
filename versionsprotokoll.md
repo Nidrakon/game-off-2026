@@ -51,6 +51,14 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.6 - 2026-11-04: Aufgabenliste erstellt**
+
+- Aufgabenliste mit 26 Schritten in vier Meilensteinen bis zur Abgabe
+  (Fundament 10.11., Vertical Slice 17.11., Inhalt und Grafik 24.11., Ton und
+  Abgabe 28.11., Puffer bis 01.12.).
+- Regel: Haengt ein Meilenstein deutlich zurueck, wird der Umfang gekuerzt,
+  nicht der Puffer.
+
 **v0.5 - 2026-11-04: Festlegung: Titel, Sprache, Aufloesung, Arbeitsweise**
 
 - Arbeitstitel "Time Shifter".

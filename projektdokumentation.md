@@ -942,9 +942,16 @@ Fest eingeplant (Reihenfolge und Schritte folgen in 4.4):
 - F1-Entwicklermenue mit Teleport, Unsterblichkeit, Level-Direkteinstieg und
   allen Upgrades; im Release-Build deaktiviert (siehe 1.9).
 
+Vertical Slice (Ziel: 17.11.2026): Titelbildschirm, Speichern, Werkstatt
+und die ersten Level der Selbstschussanlage durchspielbar, mit allen
+Grundsystemen (Bewegung, Zeitblase, Bedienfeld, Tod/Klonstation,
+Projektile, Schalter, Upgrades). Grafik darf noch Platzhalter sein.
+
 Bewusst spaeter:
 
-- [...]
+- Endgueltige Grafik, Intro, Abspann, Ton und Musik (ab Meilenstein 3).
+- Elemente aus dem Ideenpool Beschleunigung (2.4), nur wenn Zeit bleibt.
+- Controller- und Touch-Steuerung (nicht geplant).
 
 ### 4.2 Festlegungen vor der Umsetzung
 
@@ -991,18 +998,70 @@ Bewusst spaeter:
 
 ### 4.4 Die Liste
 
-- [ ] 1. Projekt anlegen, Projekteinstellungen setzen und die Ordnerstruktur
-  aus 1.5 erstellen. (Ordnerstruktur bereits am 01.11.2026 angelegt.)
-- [ ] 2. [...]
+Zeitplan mit Meilensteinen (Abgabeschluss 01.12.2026, 22:37). Die Daten
+sind Zielmarken; liegt ein Meilenstein deutlich zurueck, wird der Umfang
+gekuerzt, nicht der Puffer.
 
-> **Ausfuellhinweis:** Jeder Eintrag ist ein kleiner, in sich testbarer
-> Schritt in sinnvoller Reihenfolge (Grundsysteme vor darauf aufbauenden
-> Systemen). Bewaehrte Reihenfolge fuer ein 2D-Spiel: Projekt und Ordner ->
-> Testszene mit Boden und Kamera -> Spielfigur -> Bewegung -> Springen ->
-> Feinschliff Bewegung (Datendatei) -> Tileset und Testparcours -> Kamera ->
-> Texte/Dialoge -> Interaktion -> Inventar -> Szenenwechsel -> Titel und
-> Menues -> Fortschrittsmarken -> Speichern und Laden -> Gegner -> Tod ->
-> Durchlauf testen. Entwickler-Werkzeuge (1.9) frueh einschieben.
+**Meilenstein 1: Fundament (Ziel 10.11.)**
+
+- [ ] 1. Projekt anlegen, Projekteinstellungen setzen (1.3: Aufloesung,
+  Skalierung, Texturfilter, Renderer, Physik-Interpolation) und die
+  Ordnerstruktur aus 1.5 erstellen. (Ordnerstruktur bereits am 01.11.2026
+  angelegt.)
+- [ ] 2. Export-Voreinstellungen fuer Browser und Windows anlegen und einen
+  ersten Test-Export im Browser pruefen (frueh, damit Probleme mit
+  4.8-dev6 im Web sofort auffallen).
+- [ ] 3. Testszene mit Boden (Platzhalter-Tiles) und Kamera.
+- [ ] 4. Professor als Platzhalter: Laufen und Springen (variable
+  Sprunghoehe, Coyote Time, Sprungpuffer; Werte in einer Datendatei).
+- [ ] 5. Zeitblase, Grundsystem: sichtbare Blase um den Professor, drei
+  Zeitstufen, Objekte in der Blase laufen langsamer oder schneller und
+  werden markiert. Testobjekt: fliegende Plattform.
+- [ ] 6. Bedienfeld des Time Shifters: Shift halten = Bedienfeld gross in
+  der Mitte, Spiel pausiert; Zeitregler per Maus; kleines Symbol fuer die
+  Zeitstufe im Spiel.
+- [ ] 7. Tod und Klonstation: toedliche Objekte, Neustart am Levelanfang.
+- [ ] 8. F1-Entwicklermenue (1.9): Unverwundbar, Teleport, Level-Auswahl,
+  alle Upgrades.
+
+**Meilenstein 2: Spielelemente und Vertical Slice (Ziel 17.11.)**
+
+- [ ] 9. Projektil und Projektil-Werfer: toedlich bei seitlicher
+  Beruehrung, man kann daraufstehen und mitfliegen.
+- [ ] 10. Schalter bzw. Trefferflaeche und Tuer (Projektil loest Impuls
+  aus).
+- [ ] 11. Pendel bzw. rotierende Gefahr.
+- [ ] 12. Timer bzw. Zeitschaltuhr (z. B. Tuer bleibt laenger offen).
+- [ ] 13. Formregler: vertikal, horizontal, Radius, dazu die
+  Oszilloskop-Anzeige.
+- [ ] 14. Schrotthaufen und Upgrades: Regler werden schrittweise
+  freigeschaltet.
+- [ ] 15. Level-Builder und Levelfolge: Level-Vorlage (Klonstation,
+  Ausgang), alle Elemente als Drag-and-drop-Bausteine, Levelreihenfolge in
+  einer Datendatei, Wechsel zum naechsten Level.
+- [ ] 16. Titelbildschirm (New Game, Continue, Beenden) und Speichern bzw.
+  Laden (2.5, 2.7).
+- [ ] 17. Werkstatt und erste Level der Selbstschussanlage bauen
+  (Platzhalter-Grafik). Danach: kompletter Testdurchlauf = Vertical Slice.
+
+**Meilenstein 3: Inhalt und Grafik (Ziel 24.11.)**
+
+- [ ] 18. Sprechblasen-System fuer die Sprueche des Professors (Texte
+  englisch in Datendatei) inkl. Respawn-Kommentar.
+- [ ] 19. Grafik: Farbpalette festlegen, Professor-Sprite mit Animationen,
+  Tileset und Objekte der Selbstschussanlage.
+- [ ] 20. Restliche Level der Selbstschussanlage.
+- [ ] 21. Teslakammer: Grafik, ggf. Magnet, Level.
+- [ ] 22. Intro-Sequenz (3.5).
+- [ ] 23. Ende und Abspann mit Fahrstuhlfahrt (3.5).
+
+**Meilenstein 4: Ton, Feinschliff, Abgabe (Ziel 28.11., Puffer bis 01.12.)**
+
+- [ ] 24. Soundeffekte und Musik (Werkzeuge noch offen, siehe 1.7).
+- [ ] 25. Feinschliff: Spielgefuehl, Effekte, Schwierigkeitskurve, Lektorat
+  der Texte.
+- [ ] 26. Release: Exporte fuer Browser und Windows, Checklisten 6.1 bis 6.4,
+  itch.io-Seite, Abgabe auf der Jam-Seite.
 
 ### 4.5 Ausbaustufe: [Name]
 
@@ -1024,7 +1083,8 @@ Bewusst spaeter:
 - **Phase:** Konzept (Thema: SHIFT).
 - **Zuletzt erledigt:** Brainstorming eingepflegt; Arbeitstitel, Sprache,
   Aufloesung, Kenntnisstand und Commit-Ablauf festgelegt.
-- **Naechster Schritt:** Aufgabenliste 4.4 erstellen; danach Schritt 1.
+- **Naechster Schritt:** Entwurf der Aufgabenliste 4.4 freigeben; danach
+  Schritt 1 (Projekt anlegen).
 - **Spielbar:** noch nichts.
 - **Noch zu testen (vom Nutzer):** nichts.
 - **Bekannte Probleme:** keine.

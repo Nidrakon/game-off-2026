@@ -51,6 +51,19 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.10 - 2026-11-05: Schritt 4 - Professor laeuft und springt**
+
+- Platzhalter-Professor (16 x 32, Aseprite) mit Laufen (A/D) und Springen
+  (Leertaste): kurz tippen = kleiner Sprung, Coyote Time, Sprungpuffer.
+- Alle Bewegungswerte in der Datendatei `data/professor_movement.tres`.
+- Kamera folgt dem Professor weich und bleibt in den Levelgrenzen; im
+  Testlevel steht sie senkrecht fest (vorher 1-2 px Versatz beim Springen).
+- Schwebende Bloecke im Testlevel tiefer bzw. naeher gesetzt, damit sie
+  erreichbar sind.
+- Geprueft: automatischer Test mit simulierten Tasten (11 Pruefungen, u. a.
+  Sprunghoehe, kleiner Sprung, Coyote Time, Sprungpuffer, Kamera) und
+  Erreichbarkeit der Bloecke; Palette; Exporte.
+
 **v0.9 - 2026-11-05: Schritt 3 - Testlevel mit Boden und Kamera**
 
 - Neues Testlevel (`scenes/test/test_level.tscn`, zwei Bildschirme breit)

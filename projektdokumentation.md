@@ -249,7 +249,7 @@ Sprach-Unterordner.
 | Ebene | Name | Wer liegt darauf |
 | --- | --- | --- |
 | 1 | `world` | Terrain (Tiles), feste Hindernisse |
-| [2] | [`player`] | [Spielfigur, ab Schritt 4] |
+| 2 | `player` | Professor (prueft Kollision mit Ebene 1) |
 
 Bauprinzip:
 
@@ -378,9 +378,10 @@ Ablauf fuer den Nutzer: Quelle oeffnen, aendern, speichern, der KI Bescheid
 geben. Neue `.aseprite`-Dateien der KI enthalten die Palette Resurrect 64
 bereits als Sprite-Palette.
 
-Platzhalter-Grafik: `tileset_placeholder` (drei Tiles: Boden-Oberseite,
-Boden-Fuellung, Block) dient nur zum Testen und wird mit der echten Grafik
-(Schritt 19) ersetzt.
+Platzhalter-Grafiken: `tileset_placeholder` (drei Tiles: Boden-Oberseite,
+Boden-Fuellung, Block) und `professor_placeholder` (16 x 32, ein Bild ohne
+Animation, schaut nach rechts) dienen nur zum Testen und werden mit der
+echten Grafik (Schritt 19) ersetzt.
 
 **Audio (verbindlich)**
 
@@ -618,18 +619,27 @@ Status: vorlaeufig festgehalten, kann sich noch aendern.
   Zeitstufe. Die Blase selbst ist in der Spielwelt immer sichtbar.
 - Offen: Belegung von W und S (bisher nur "WASD" genannt).
 
-Werte der Bewegung (Datendatei `[data/...]`):
+Tasten werden als physische Tasten belegt (gleiche Position auf deutscher
+und englischer Tastatur).
+
+Werte der Bewegung (Datendatei `data/professor_movement.tres`, im Inspector
+aenderbar; Skript `scripts/player/movement_settings.gd`):
 
 | Gruppe | Wert | Standard |
 | --- | --- | --- |
-| [Laufen] | [Hoechstgeschwindigkeit] | [ ] |
-| [Springen] | [Sprunghoehe, Zeit bis zum hoechsten Punkt] | [ ] |
-| [Sprunghilfen] | [Coyote Time, Sprungpuffer] | [ ] |
+| Laufen | Hoechstgeschwindigkeit | 100 px/s (ca. 6 Tiles/s) |
+| Laufen | Beschleunigung am Boden / Abbremsen / in der Luft | 900 / 1200 / 700 px/s² |
+| Springen | Sprunghoehe (gehalten) | 56 px (3,5 Tiles); tatsaechlich ca. 58 px durch die Berechnung in Physik-Schritten |
+| Springen | Zeit bis zum hoechsten Punkt | 0,38 s |
+| Springen | Fallen schneller als Steigen | Faktor 1,6; hoechste Fallgeschwindigkeit 320 px/s |
+| Springen | Kleiner Sprung (Taste beim Steigen losgelassen) | Steiggeschwindigkeit x 0,45 (ca. 27 px hoch) |
+| Sprunghilfen | Coyote Time / Sprungpuffer | 0,10 s / 0,12 s |
 
-> **Ausfuellhinweis:** Bei Jump'n'Runs bewaehrt: Sprunghoehe und Steigzeit
-> festlegen und Schwerkraft daraus berechnen; kurz tippen = kleiner Sprung,
-> halten = hoher Sprung; Coyote Time und Sprungpuffer. Laufanimation und
-> Geschwindigkeit so abstimmen, dass der aufgesetzte Fuss nicht rutscht.
+Die Schwerkraft wird aus Sprunghoehe und Steigzeit berechnet. Fuer das
+Leveldesign: Vom Boden erreichbar sind Kanten bis 3 Tiles (48 px) Hoehe;
+bei 3 Tiles Hoehenunterschied ca. 3 Tiles waagrechter Abstand.
+Offen: Laufanimation so abstimmen, dass der aufgesetzte Fuss nicht rutscht
+(mit dem echten Sprite, Schritt 19).
 
 ### 2.3 Kernmechanik: Time Shifter und Zeitblase
 
@@ -1030,7 +1040,7 @@ gekuerzt, nicht der Puffer.
   ersten Test-Export im Browser pruefen (frueh, damit Probleme mit
   4.8-dev6 im Web sofort auffallen).
 - [x] 3. Testszene mit Boden (Platzhalter-Tiles) und Kamera.
-- [ ] 4. Professor als Platzhalter: Laufen und Springen (variable
+- [x] 4. Professor als Platzhalter: Laufen und Springen (variable
   Sprunghoehe, Coyote Time, Sprungpuffer; Werte in einer Datendatei).
 - [ ] 5. Zeitblase, Grundsystem: sichtbare Blase um den Professor, drei
   Zeitstufen, Objekte in der Blase laufen langsamer oder schneller und
@@ -1096,13 +1106,13 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 05.11.2026, Version v0.9**
+**Stand vom 05.11.2026, Version v0.10**
 
 - **Phase:** Meilenstein 1, Fundament (Ziel 10.11.).
-- **Zuletzt erledigt:** Schritt 3 (Testszene mit Boden und Kamera).
-- **Naechster Schritt:** 4 (Professor als Platzhalter: Laufen und
-  Springen).
-- **Spielbar:** nur das Testlevel ohne Figur (Kamera steht still).
+- **Zuletzt erledigt:** Schritt 4 (Professor: Laufen und Springen).
+- **Naechster Schritt:** 5 (Zeitblase, Grundsystem).
+- **Spielbar:** Testlevel mit Platzhalter-Professor: laufen, springen,
+  Kamera folgt.
 - **Noch zu testen (vom Nutzer):** nichts.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente

@@ -248,8 +248,8 @@ Sprach-Unterordner.
 
 | Ebene | Name | Wer liegt darauf |
 | --- | --- | --- |
-| 1 | `world` | [Terrain, feste Hindernisse] |
-| [2] | [`player`] | [Spielfigur] |
+| 1 | `world` | Terrain (Tiles), feste Hindernisse |
+| [2] | [`player`] | [Spielfigur, ab Schritt 4] |
 
 Bauprinzip:
 
@@ -358,7 +358,9 @@ mit allen Verweisen.
   (zum Laden in Aseprite). **Im Spiel gibt es keine anderen Farben.** Das
   gilt fuer alle Sprites und Grafiken, die die KI erstellt, und fuer jede
   Farbe, die im Code oder in Szenen gesetzt wird (Hintergrund, UI, Schrift,
-  Effekte, Zeitblase). Pruefung: [Werkzeug folgt mit den ersten Grafiken].
+  Effekte, Zeitblase). Pruefung: `tools/check_palette.gd` (siehe 1.8)
+  meldet jedes Pixel in `graphics/` ausserhalb der Palette; die KI fuehrt es
+  nach jeder neuen oder geaenderten Grafik aus.
 - Ausnahme (festgelegt am 04.11.2026): Die **Zeitblase** darf
   halbtransparent sein; die dabei auf dem Bildschirm entstehenden
   Mischfarben sind erlaubt. Die Ausgangsfarben kommen trotzdem aus der
@@ -370,8 +372,15 @@ mit allen Verweisen.
 
 **Quelldateien (verbindlich):** Die Quelle ist die Datei des
 Grafikprogramms (z. B. `.aseprite` in `graphics/source/`), das PNG wird
-daraus erzeugt und nie direkt bearbeitet. Export mit [Befehl]. Ablauf fuer
-den Nutzer: Quelle oeffnen, aendern, speichern, der KI Bescheid geben.
+daraus erzeugt und nie direkt bearbeitet. Export mit Aseprite ohne Fenster:
+`Aseprite -b graphics/source/<name>.aseprite --save-as <zielordner>/<name>.png`.
+Ablauf fuer den Nutzer: Quelle oeffnen, aendern, speichern, der KI Bescheid
+geben. Neue `.aseprite`-Dateien der KI enthalten die Palette Resurrect 64
+bereits als Sprite-Palette.
+
+Platzhalter-Grafik: `tileset_placeholder` (drei Tiles: Boden-Oberseite,
+Boden-Fuellung, Block) dient nur zum Testen und wird mit der echten Grafik
+(Schritt 19) ersetzt.
 
 **Audio (verbindlich)**
 
@@ -413,7 +422,7 @@ Repo, siehe 1.12).
 
 | Skript | Aufgabe | Aufruf |
 | --- | --- | --- |
-| [z. B. `export_graphics.py`] | [Quellen exportieren und Palette pruefen] | [`python tools/export_graphics.py [datei]`] |
+| `check_palette.gd` | Prueft alle PNGs in `graphics/` auf Farben ausserhalb von Resurrect 64 (Rueckgabe 0 = OK) | `godot --headless --path . --script tools/check_palette.gd` (Konsolenfassung von Godot) |
 
 ### 1.9 Entwickler-Werkzeuge (Testen ohne Durchspielen)
 
@@ -482,6 +491,7 @@ umbenannt oder umnummeriert, steht der alte Name hier mit dabei.
 | Werkstatt | Startbereich ganz unten, zaehlt nicht als eigentlicher Bereich |
 | Bereich | Grosser Teil des Labors (z. B. Teslakammer), besteht aus mehreren Leveln |
 | Level | Einzelner, abgeschlossener Abschnitt innerhalb eines Bereichs |
+| Testlevel | Testszene zum Ausprobieren der Grundsysteme (`scenes/test/test_level.tscn`), derzeit Startszene des Projekts |
 
 ### 1.11 Game Jam: Game Off 2026
 
@@ -1019,7 +1029,7 @@ gekuerzt, nicht der Puffer.
 - [x] 2. Export-Voreinstellungen fuer Browser und Windows anlegen und einen
   ersten Test-Export im Browser pruefen (frueh, damit Probleme mit
   4.8-dev6 im Web sofort auffallen).
-- [ ] 3. Testszene mit Boden (Platzhalter-Tiles) und Kamera.
+- [x] 3. Testszene mit Boden (Platzhalter-Tiles) und Kamera.
 - [ ] 4. Professor als Platzhalter: Laufen und Springen (variable
   Sprunghoehe, Coyote Time, Sprungpuffer; Werte in einer Datendatei).
 - [ ] 5. Zeitblase, Grundsystem: sichtbare Blase um den Professor, drei
@@ -1086,13 +1096,13 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 04.11.2026, Version v0.8**
+**Stand vom 05.11.2026, Version v0.9**
 
 - **Phase:** Meilenstein 1, Fundament (Ziel 10.11.).
-- **Zuletzt erledigt:** Schritt 2 (Export und erster Browser-Test).
-- **Naechster Schritt:** 3 (Testszene mit Boden und Kamera).
-- **Spielbar:** nur eine vorlaeufige Export-Testszene
-  (`scenes/export_test.tscn`, wird in Schritt 3 ersetzt und geloescht).
+- **Zuletzt erledigt:** Schritt 3 (Testszene mit Boden und Kamera).
+- **Naechster Schritt:** 4 (Professor als Platzhalter: Laufen und
+  Springen).
+- **Spielbar:** nur das Testlevel ohne Figur (Kamera steht still).
 - **Noch zu testen (vom Nutzer):** nichts.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente

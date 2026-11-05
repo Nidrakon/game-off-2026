@@ -51,6 +51,19 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.9 - 2026-11-05: Schritt 3 - Testlevel mit Boden und Kamera**
+
+- Neues Testlevel (`scenes/test/test_level.tscn`, zwei Bildschirme breit)
+  mit Boden, Waenden, Stufe und schwebenden Bloecken ist jetzt die
+  Startszene; die Export-Testszene ist entfernt.
+- Platzhalter-Tileset mit drei Tiles, erstellt in Aseprite aus der
+  Palette; Tiles haben Kollision auf Ebene 1 "world".
+- Kamera mit Grenzen am Levelrand, laeuft im Physik-Takt.
+- Neues Werkzeug `tools/check_palette.gd` prueft alle Grafiken auf die
+  Palette.
+- Geprueft: Bildaufnahme des Levels, Palettenpruefung (auch Gegenprobe mit
+  falscher Farbe), Exporte fuer Browser und Windows ohne Fehler.
+
 **v0.8 - 2026-11-04: Schritt 2 - Export fuer Browser und Windows**
 
 - Export-Voreinstellungen "Web" (ohne Threads, fuer itch.io) und "Windows"

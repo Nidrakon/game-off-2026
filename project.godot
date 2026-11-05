@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Time Shifter"
-run/main_scene="res://scenes/export_test.tscn"
+run/main_scene="res://scenes/test/test_level.tscn"
 boot_splash/bg_color=Color(0.18039216, 0.13333334, 0.18431373, 1)
 boot_splash/show_image=false
 config/features=PackedStringArray("4.8", "GL Compatibility")
@@ -23,6 +23,10 @@ window/size/viewport_height=270
 window/size/window_width_override=960
 window/size/window_height_override=540
 window/stretch/mode="canvas_items"
+
+[layer_names]
+
+2d_physics/layer_1="world"
 
 [physics]
 

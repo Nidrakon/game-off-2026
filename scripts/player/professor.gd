@@ -11,7 +11,7 @@ var _coyote_timer := 0.0
 # Restzeit, in der ein zu frueh gedrueckter Sprung noch ausgefuehrt wird.
 var _jump_buffer_timer := 0.0
 
-@onready var _sprite: Sprite2D = $Sprite
+@onready var _sprite: AnimatedSprite2D = $Sprite
 
 
 func _physics_process(delta: float) -> void:

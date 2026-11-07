@@ -7,23 +7,23 @@ extends Resource
 
 @export_group("Laufen")
 ## Hoechstgeschwindigkeit beim Laufen (Pixel pro Sekunde).
-@export var run_speed: float = 100.0
+@export var run_speed: float = 160.0
 ## Wie schnell die Hoechstgeschwindigkeit am Boden erreicht wird.
-@export var ground_acceleration: float = 900.0
+@export var ground_acceleration: float = 1500.0
 ## Wie schnell der Professor am Boden abbremst, wenn keine Taste gedrueckt ist.
-@export var ground_deceleration: float = 1200.0
+@export var ground_deceleration: float = 2000.0
 ## Beschleunigung in der Luft (kleiner = traegere Luftsteuerung).
-@export var air_acceleration: float = 700.0
+@export var air_acceleration: float = 1100.0
 
 @export_group("Springen")
 ## Sprunghoehe bei gehaltener Sprungtaste (Pixel).
-@export var jump_height: float = 56.0
+@export var jump_height: float = 96.0
 ## Zeit vom Absprung bis zum hoechsten Punkt (Sekunden).
-@export var time_to_apex: float = 0.38
+@export var time_to_apex: float = 0.44
 ## Schwerkraft beim Fallen im Verhaeltnis zum Steigen (> 1 = schnelleres Fallen).
 @export var fall_gravity_multiplier: float = 1.6
 ## Hoechste Fallgeschwindigkeit (Pixel pro Sekunde).
-@export var max_fall_speed: float = 320.0
+@export var max_fall_speed: float = 520.0
 ## Laesst man die Sprungtaste beim Steigen los, wird die Steiggeschwindigkeit
 ## mit diesem Faktor multipliziert (kurz tippen = kleiner Sprung).
 @export_range(0.0, 1.0) var jump_release_multiplier: float = 0.45

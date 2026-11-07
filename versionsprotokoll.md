@@ -51,6 +51,33 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.11 - 2026-11-07: Schritte 5 und 5a - Zeitblase und Lichtschranke**
+
+- Zeitblase um den Professor mit drei Stufen (langsam, normal, schnell);
+  Werte in `data/time_bubble_settings.tres`.
+- Objekte, die die Blase beruehren, laufen langsamer (x 0,3) oder schneller
+  (x 2) und bekommen einen Rahmen in der Farbe der Stufe.
+- Erstes Spielobjekt: fliegende Plattform (`scenes/objects/`), man kann
+  darauf mitfahren; zwei Stueck im Testlevel.
+- Im Testlevel vorlaeufig Tasten 1/2/3 zum Umschalten der Stufe.
+- Erstes echtes Professor-Sprite (vom Nutzer) mit Idle-Animation ersetzt
+  den Platzhalter. Festlegung: Die Figur bleibt gross (ca. 30 x 57 px).
+- Alles an die neue Groesse angepasst: Kollision 18 x 50, Laufen 160 px/s,
+  Sprung ca. 100 px, Zeitblase Radius 80, Plattformen 64 px breit;
+  Testlevel neu aufgeteilt (Stufe 3 Tiles, Bloecke mit 4 Tiles Platz
+  darunter). Bisherige Werte (Schritt 4) dadurch ersetzt.
+- Aufloesung auf 960 x 540 erhoeht (Fenster 1440 x 810, vorher 480 x 270;
+  640 x 360 war ein Zwischenschritt), damit trotz grosser Figur viel Platz
+  fuer Raetsel bleibt; Testlevel jetzt 80 x 34 Tiles.
+- Neues Objekt Lichtschranke (Schritt 5a): Durchlaufen schaltet Ziele um,
+  ein oder aus, auch als Einmal-Ausloeser. Fliegende Plattform kann jetzt
+  warten (`active`) und an den Enden pausieren (`wait_time`).
+- Geprueft: automatischer Test (12 Pruefungen, u. a. Tempo je Stufe, nur
+  beruehrte Plattform betroffen, Beruehrung am Rand, Mitfahren),
+  Bewegungstest und Erreichbarkeit im neuen Testlevel (inkl. Durchlaufen
+  unter Bloecken), Lichtschranke (9 Pruefungen, Kante nur mit Plattform
+  erreichbar), Bildaufnahmen, Palette, Exporte.
+
 **v0.10 - 2026-11-05: Schritt 4 - Professor laeuft und springt**
 
 - Platzhalter-Professor (16 x 32, Aseprite) mit Laufen (A/D) und Springen

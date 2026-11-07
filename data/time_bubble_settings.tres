@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TimeBubbleSettings" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/time_bubble/time_bubble_settings.gd" id="1_settings"]
+
+[resource]
+script = ExtResource("1_settings")
+slow_factor = 0.3
+fast_factor = 2.0
+radius = 80.0
+color_slow = Color(0.3019608, 0.60784316, 0.9019608, 1)
+color_normal = Color(0.78039217, 0.8627451, 0.8156863, 1)
+color_fast = Color(0.9843137, 0.41960785, 0.11372549, 1)
+fill_alpha = 0.12
+outline_alpha = 0.7
+outline_alpha_normal = 0.25

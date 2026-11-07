@@ -5,7 +5,7 @@ extends Camera2D
 ## Node, dem die Kamera folgt.
 @export var target: Node2D
 ## Versatz zum Ziel; negativ = Kamera etwas hoeher als die Fuesse der Figur.
-@export var offset_to_target := Vector2(0, -24)
+@export var offset_to_target := Vector2(0, -32)
 
 
 func _physics_process(_delta: float) -> void:

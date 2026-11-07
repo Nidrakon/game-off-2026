@@ -85,12 +85,12 @@ Offene Punkte:
 | Sprachen im Spiel | Nur Englisch (festgelegt am 04.11.2026) |
 | Grafikstil | Pixel Art |
 | Perspektive | 2D seitlich (Side-Scroller) |
-| Tile-Groesse | 16 x 16 px; Professor ca. 16 x 32 px (zwei Tiles hoch) |
-| Basisaufloesung | 480 x 270 px (16:9; ganzzahlig skalierbar: x2 = 960 x 540, x4 = 1920 x 1080) |
+| Tile-Groesse | 16 x 16 px; Professor ca. 30 x 57 px (gut 3,5 Tiles hoch, siehe 1.7) |
+| Basisaufloesung | 960 x 540 px (16:9; ganzzahlig skalierbar: x2 = 1920 x 1080, x4 = 3840 x 2160) |
 | Skalierung | Stretch-Modus `canvas_items`, Seitenverhaeltnis `keep` (schwarze Raender statt Verzerrung) |
 | Texturfilter | Nearest (scharfe Pixel) |
 | Renderer | Compatibility (laeuft am zuverlaessigsten im Browser) |
-| Fenstermodus | Entwicklung: Fenster 960 x 540 (x2). Fertiges Spiel: Windows Vollbild; Browser eingebettet in 960 x 540 mit Vollbild-Knopf |
+| Fenstermodus | Entwicklung: Fenster 1440 x 810 (x1,5). Fertiges Spiel: Windows Vollbild (auf Full HD genau x2); Browser eingebettet in 960 x 540 (x1) mit Vollbild-Knopf |
 | Standardschrift | [Datei, Groesse, Lizenz] |
 | Versionsverwaltung | Git, oeffentliches Repo auf GitHub (`Nidrakon/game-off-2026`), Branch `main`, Autor "Nidrakon" mit GitHub-noreply-Adresse (nie eine private E-Mail, siehe 1.12). Die KI fuehrt Pull, Commit, Push, Merge und Pull Requests aus |
 | Export | Voreinstellungen "Web" und "Windows" nach `build/` (siehe 6.1) |
@@ -107,11 +107,16 @@ Offene Punkte:
 > Bildschirmaufloesung), Physik-Interpolation an und einer Kamera, die im
 > Physik-Takt nach der Figur nachzieht.
 
-Begruendung Aufloesung und Tiles (Empfehlung der KI, uebernommen am
-04.11.2026): 480 x 270 mit 16er-Tiles zeigt ca. 30 x 17 Tiles. Das ist genug
-Ueberblick fuer Raetsel, bei denen man Blase, Projektile und Schalter
-gleichzeitig sehen muss, und die Pixel bleiben gut erkennbar. 960 x 540 ist
-eine uebliche Einbettungsgroesse auf itch.io und genau Faktor 2.
+Begruendung Aufloesung und Tiles: Urspruenglich 480 x 270 (04.11.2026).
+Am 07.11.2026 erst auf 640 x 360, dann auf Wunsch des Nutzers auf
+**960 x 540** erhoeht (festgelegt am 07.11.2026), weil das echte
+Professor-Sprite gut 3,5 Tiles hoch ist und bei 480 x 270 ein Fuenftel der
+Bildhoehe einnahm. 960 x 540 mit 16er-Tiles zeigt 60 x 33,75 Tiles; die
+Figur ist etwa ein Zehntel der Bildhoehe, und Raetsel mit Blase,
+Projektilen und Schaltern haben viel Platz. 960 x 540 ist genau halbes Full
+HD (Vollbild x2, scharf) und eine uebliche Einbettungsgroesse auf itch.io
+(x1). Das Entwicklungsfenster 1440 x 810 ist x1,5; dort koennen einzelne
+Pixelreihen ungleich breit wirken, im Vollbild nicht.
 
 **Abweichungen je Plattform:** [z. B. was im Browser anders ist als unter
 Windows; siehe Kapitel 6.]
@@ -248,8 +253,8 @@ Sprach-Unterordner.
 
 | Ebene | Name | Wer liegt darauf |
 | --- | --- | --- |
-| 1 | `world` | Terrain (Tiles), feste Hindernisse |
-| 2 | `player` | Professor (prueft Kollision mit Ebene 1) |
+| 1 | `world` | Terrain (Tiles), feste Hindernisse, fliegende Plattformen |
+| 2 | `player` | Professor (prueft Kollision mit Ebene 1); Lichtschranken erkennen diese Ebene |
 
 Bauprinzip:
 
@@ -379,9 +384,23 @@ geben. Neue `.aseprite`-Dateien der KI enthalten die Palette Resurrect 64
 bereits als Sprite-Palette.
 
 Platzhalter-Grafiken: `tileset_placeholder` (drei Tiles: Boden-Oberseite,
-Boden-Fuellung, Block) und `professor_placeholder` (16 x 32, ein Bild ohne
-Animation, schaut nach rechts) dienen nur zum Testen und werden mit der
-echten Grafik (Schritt 19) ersetzt.
+Boden-Fuellung, Block), `professor_placeholder` (16 x 32, ein Bild ohne
+Animation, schaut nach rechts, nicht mehr verwendet) und
+`object_flying_platform_placeholder` (64 x 16) und
+`object_light_barrier_emitter_placeholder` (16 x 16, Linse zeigt nach rechts)
+dienen nur zum Testen und
+werden mit der echten Grafik (Schritt 19) ersetzt.
+
+**Professor-Sprite (vom Nutzer, 05.11.2026):** `professor_idle.aseprite`
+(Rahmen 64 x 64, Figur ca. 30 x 57 px, also gut 3,5 Tiles hoch; 4 Frames
+Idle), exportiert als Streifen `professor_idle_sheet.png`
+(`Aseprite -b graphics/source/professor_idle.aseprite --sheet
+graphics/sprites/professor/professor_idle_sheet.png --sheet-type horizontal`),
+eingebunden ueber `professor_sprite_frames.tres` (Animation `idle`). Die
+Fuesse stehen in Zeile 62 des Rahmens. **Festgelegt am 07.11.2026:** Die
+Figur bleibt in dieser Groesse; Kollision, Bewegung, Zeitblase und Level
+sind darauf abgestimmt (siehe 2.2, 2.9). Neue Figuren-Sprites sollten im
+selben Massstab entstehen.
 
 **Audio (verbindlich)**
 
@@ -618,6 +637,9 @@ Status: vorlaeufig festgehalten, kann sich noch aendern.
 - Empfehlung: Im normalen Spiel zeigt ein kleines Symbol die aktuelle
   Zeitstufe. Die Blase selbst ist in der Spielwelt immer sichtbar.
 - Offen: Belegung von W und S (bisher nur "WASD" genannt).
+- Vorlaeufig, nur im Testlevel (Schritt 5): Tasten 1 / 2 / 3 schalten die
+  Zeitstufe auf langsam / normal / schnell (Node `TimeStageTestKeys`). Wird
+  durch das Bedienfeld (Schritt 6) ersetzt.
 
 Tasten werden als physische Tasten belegt (gleiche Position auf deutscher
 und englischer Tastatur).
@@ -627,17 +649,23 @@ aenderbar; Skript `scripts/player/movement_settings.gd`):
 
 | Gruppe | Wert | Standard |
 | --- | --- | --- |
-| Laufen | Hoechstgeschwindigkeit | 100 px/s (ca. 6 Tiles/s) |
-| Laufen | Beschleunigung am Boden / Abbremsen / in der Luft | 900 / 1200 / 700 px/s² |
-| Springen | Sprunghoehe (gehalten) | 56 px (3,5 Tiles); tatsaechlich ca. 58 px durch die Berechnung in Physik-Schritten |
-| Springen | Zeit bis zum hoechsten Punkt | 0,38 s |
-| Springen | Fallen schneller als Steigen | Faktor 1,6; hoechste Fallgeschwindigkeit 320 px/s |
-| Springen | Kleiner Sprung (Taste beim Steigen losgelassen) | Steiggeschwindigkeit x 0,45 (ca. 27 px hoch) |
+| Laufen | Hoechstgeschwindigkeit | 160 px/s (10 Tiles/s) |
+| Laufen | Beschleunigung am Boden / Abbremsen / in der Luft | 1500 / 2000 / 1100 px/s² |
+| Springen | Sprunghoehe (gehalten) | 96 px (6 Tiles); tatsaechlich ca. 100 px durch die Berechnung in Physik-Schritten |
+| Springen | Zeit bis zum hoechsten Punkt | 0,44 s |
+| Springen | Fallen schneller als Steigen | Faktor 1,6; hoechste Fallgeschwindigkeit 520 px/s |
+| Springen | Kleiner Sprung (Taste beim Steigen losgelassen) | Steiggeschwindigkeit x 0,45 (ca. 43 px hoch) |
 | Sprunghilfen | Coyote Time / Sprungpuffer | 0,10 s / 0,12 s |
 
 Die Schwerkraft wird aus Sprunghoehe und Steigzeit berechnet. Fuer das
-Leveldesign: Vom Boden erreichbar sind Kanten bis 3 Tiles (48 px) Hoehe;
-bei 3 Tiles Hoehenunterschied ca. 3 Tiles waagrechter Abstand.
+Leveldesign: Vom Boden erreichbar sind Kanten bis 5 Tiles (80 px) Hoehe;
+4 Tiles Hoehenunterschied werden im Test sicher geschafft.
+
+Koerper (Kollision) des Professors: 18 x 50 px, Unterkante an den Fuessen
+(Figur 30 x 57; Haare und Arme ragen etwas ueber die Kollision hinaus, das
+ist gewollt nachsichtig). Die Werte wurden am 07.11.2026 an die Groesse des
+echten Sprites angepasst (vorher Platzhalter 16 x 32 mit 56 px Sprung und
+100 px/s).
 Offen: Laufanimation so abstimmen, dass der aufgesetzte Fuss nicht rutscht
 (mit dem echten Sprite, Schritt 19).
 
@@ -681,13 +709,38 @@ die Schieberegler zur Formung der Sphaere noch.
 - Empfehlung: beeinflusste Objekte sichtbar markieren (z. B. farbiger
   Schimmer).
 
-**Werte:** [Datendatei; Tempo-Faktoren der Stufen, Radius-Grenzen,
-Verformungs-Grenzen]
+**Werte** (Datendatei `data/time_bubble_settings.tres`, im Inspector
+aenderbar; Skript `scripts/time_bubble/time_bubble_settings.gd`):
+
+| Wert | Standard |
+| --- | --- |
+| Tempo auf Stufe langsam / schnell | x 0,3 / x 2,0 |
+| Radius | 80 px (5 Tiles) |
+| Farbe langsam / normal / schnell | `4d9be6` (Blau) / `c7dcd0` (Hellgrau) / `fb6b1d` (Orange) |
+| Deckkraft Flaeche / Rand / Rand auf "normal" | 0,12 / 0,7 / 0,25 |
+
+Radius-Grenzen und Verformungs-Grenzen folgen mit den Formreglern
+(Schritt 13).
 
 **Zusammenspiel:** Jedes Objekt aus 2.4 reagiert auf die Blase; die
 Formregler erlauben, gezielt nur einzelne Objekte zu erfassen.
 
-**Umsetzung:** [wird beim Bauen ergaenzt]
+**Umsetzung (Schritt 5, 05.11.2026):**
+
+- Die Blase ist ein Node `TimeBubble` im Professor (Mitte des Professors).
+  Sie zeichnet sich selbst: auf "normal" nur ein schwacher Rand, sonst
+  halbtransparente Flaeche und Rand in der Farbe der Stufe. Sie liegt vor
+  den Levelobjekten, aber hinter dem Professor.
+- Alles, was auf die Blase reagiert, bekommt den Baustein `TimeAffected`
+  (Kind-Node, `scripts/time_bubble/time_affected.gd`) mit der Flaeche des
+  Objekts (`bounds`). Er prueft jeden Physik-Schritt, ob diese Flaeche die
+  Blase beruehrt (Rechteck gegen Kreis bzw. spaeter Ellipse, rein
+  rechnerisch, ohne Physik-Ebene), und stellt `time_scale` bereit. Das
+  Objekt rechnet mit `delta * time_scale`.
+- Markierung: Beeinflusste Objekte bekommen einen 1-px-Rahmen in der Farbe
+  der Stufe (Palettenfarbe, nicht halbtransparent).
+- Zeitstufe umschalten vorlaeufig nur im Testlevel mit den Tasten 1, 2, 3
+  (siehe 2.2); das Bedienfeld folgt in Schritt 6.
 
 Offene Punkte:
 
@@ -732,6 +785,40 @@ Offene Punkte:
 - Bewegt sich horizontal oder auf beliebiger Bahn; in der Blase schneller
   oder langsamer.
 - Sicher und berechenbar, gut fuer Einsteiger-Level.
+- Umgesetzt (Schritt 5): Szene `scenes/objects/flying_platform.tscn`
+  (64 x 16, begehbare Oberseite 10 px hoch, Kollisionsebene 1). Je Plattform
+  im Inspector: Strecke `travel` (vom Startpunkt zum Wendepunkt), Fahrzeit
+  `travel_time` fuer eine Richtung (Standard 1,5 s) und Startposition auf der
+  Strecke. Faehrt hin und her, an den Enden weich abgebremst. Der Professor
+  faehrt darauf mit.
+- Weitere Einstellungen (07.11.2026): `active` (faehrt beim Start; aus = sie
+  wartet auf ein Signal) und `wait_time` (Pause an jedem Ende in Sekunden,
+  laeuft in der Zeitblase mit; Standard 0). Die Plattform ist
+  Signal-Empfaenger (siehe unten).
+
+**Lichtschranke (neu, 07.11.2026, Wunsch des Nutzers)**
+
+- Laserstrahl zwischen zwei Sendern. Laeuft der Professor hindurch, sendet
+  sie ein Signal an ihre Ziele, z. B. faehrt eine Plattform los oder bleibt
+  stehen. Darueberspringen geht nur, wenn der Strahl niedrig genug ist.
+- Szene `scenes/objects/light_barrier.tscn`. Der Node ist Sender A, Sender B
+  liegt bei `beam_end` (relativ, Standard 9 Tiles nach oben). Im Inspector:
+  `targets` (Liste der Ziele), `action` (umschalten / einschalten /
+  ausschalten), `one_shot` (nur einmal, danach erlischt der Strahl). Strahl
+  und Sender sind schon im Editor sichtbar.
+- Loest einmal pro Durchqueren aus; wer im Strahl stehen bleibt, loest nicht
+  erneut aus. Beim Ausloesen blitzt der Strahl kurz weiss.
+- Aussehen: Strahl 3 px (`e83b3b`, Kern `f68181`), verbraucht `6e2727`.
+- Offen: Ob die Zeitblase auf die Lichtschranke wirkt (bisher nicht) und ob
+  auch Projektile sie ausloesen (dann deren Ebene in die Maske aufnehmen).
+
+**Signal-Empfaenger (Schnittstelle, 07.11.2026)**
+
+- Alles, was von Ausloesern (Lichtschranke, spaeter Schalter) gesteuert
+  wird, hat die Funktionen `activate()`, `deactivate()` und `toggle()`.
+  Bisher: fliegende Plattform. Spaetere Empfaenger (z. B. Tuer) bauen
+  dieselben drei Funktionen ein; der Ausloeser muss dafuer nicht geaendert
+  werden.
 - Idee: aus der Ferne mit gestreckter Blase abbremsen, um sie zu erreichen,
   dann beschleunigen (z. B. um vor einer sich schliessenden Tuer anzukommen).
 
@@ -847,6 +934,13 @@ Fortschritt bleibt erhalten.
   Botaniklabor (Ranken).
 - **Umfang:** ca. 8 bis 12 Level realistisch; Empfehlung 3 bis 4
   Themenbereiche.
+- **Masse (festgelegt am 07.11.2026, passend zur Figur):** Durchgaenge
+  mindestens 4 Tiles (64 px) hoch, damit der Professor (50 px) durchpasst;
+  ein 3 Tiles hohes Hindernis ist nur per Sprung zu ueberwinden; Kanten bis
+  5 Tiles Hoehe sind erreichbar (2.2). Der Bildschirm zeigt 60 x 33,75 Tiles
+  (960 x 540), die Figur ist davon gut 3,5 Tiles hoch. Level sind
+  mindestens 34 Tiles (544 px) hoch, damit die Kamera nicht ueber den Rand
+  schaut.
 - **Wer baut die Level:** Level-Builder in Godot: Alle Spielelemente
   (Plattformen, Projektile, Pendel, Timer, Schalter usw.) sind fertige
   Bausteine, die sich per Drag-and-drop ins Level ziehen lassen.
@@ -1042,9 +1136,13 @@ gekuerzt, nicht der Puffer.
 - [x] 3. Testszene mit Boden (Platzhalter-Tiles) und Kamera.
 - [x] 4. Professor als Platzhalter: Laufen und Springen (variable
   Sprunghoehe, Coyote Time, Sprungpuffer; Werte in einer Datendatei).
-- [ ] 5. Zeitblase, Grundsystem: sichtbare Blase um den Professor, drei
+- [x] 5. Zeitblase, Grundsystem: sichtbare Blase um den Professor, drei
   Zeitstufen, Objekte in der Blase laufen langsamer oder schneller und
   werden markiert. Testobjekt: fliegende Plattform.
+- [x] 5a. Lichtschranke (eingeschoben am 07.11.2026): Strahl zwischen zwei
+  Sendern, Durchlaufen sendet ein Signal an Ziele (Plattform an/aus);
+  Schnittstelle Signal-Empfaenger. Dabei: Aufloesung 960 x 540, Plattform
+  mit Wartezeit an den Enden.
 - [ ] 6. Bedienfeld des Time Shifters: Shift halten = Bedienfeld gross in
   der Mitte, Spiel pausiert; Zeitregler per Maus; kleines Symbol fuer die
   Zeitstufe im Spiel.
@@ -1106,13 +1204,14 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 05.11.2026, Version v0.10**
+**Stand vom 07.11.2026, Version v0.11**
 
 - **Phase:** Meilenstein 1, Fundament (Ziel 10.11.).
-- **Zuletzt erledigt:** Schritt 4 (Professor: Laufen und Springen).
-- **Naechster Schritt:** 5 (Zeitblase, Grundsystem).
+- **Zuletzt erledigt:** Schritte 5 und 5a (Zeitblase, Lichtschranke).
+- **Naechster Schritt:** 6 (Bedienfeld des Time Shifters).
 - **Spielbar:** Testlevel mit Platzhalter-Professor: laufen, springen,
-  Kamera folgt.
+  Kamera folgt; Zeitblase mit Tasten 1/2/3, fliegende Plattformen
+  reagieren darauf; Lichtschranke schaltet eine Plattform an und aus.
 - **Noch zu testen (vom Nutzer):** nichts.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente

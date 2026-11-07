@@ -11,3 +11,11 @@ extends Camera2D
 func _physics_process(_delta: float) -> void:
 	if target:
 		global_position = target.global_position + offset_to_target
+
+
+## Kamera sofort aufs Ziel setzen, ohne weich hinzugleiten (z. B. beim
+## Levelstart an der Klonstation).
+func snap_to_target() -> void:
+	if target:
+		global_position = target.global_position + offset_to_target
+		reset_smoothing()

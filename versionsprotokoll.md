@@ -51,6 +51,20 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.13 - 2026-11-07: Schritt 7 - Tod und Klonstation**
+
+- Das Level beginnt in der Klonstation: Der Professor erscheint mit
+  Klon-Strahl, kurz ohne Steuerung.
+- Neue Gefahr Starkstrom-Bodenplatte (Luecke im Boden); Beruehrung ist
+  toedlich.
+- Tod: Professor flackert und verschwindet, nach kurzer Pause startet das
+  Level neu an der Klonstation.
+- Baustein `Hazard` fuer alle kuenftigen toedlichen Objekte.
+- Festlegung: Nach dem Tod startet die Zeitstufe wieder auf normal.
+- Geprueft: automatischer Test (10 Pruefungen: Erscheinen, Sperre, Tod,
+  Neustart, Sprung ueber die Luecke), bisherige Tests, Bildaufnahmen,
+  Palette, Exporte.
+
 **v0.12 - 2026-11-07: Schritt 6 - Bedienfeld des Time Shifters**
 
 - Shift halten oeffnet das Bedienfeld gross in der Mitte, das Spiel

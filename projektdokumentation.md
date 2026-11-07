@@ -387,8 +387,10 @@ Platzhalter-Grafiken: `tileset_placeholder` (drei Tiles: Boden-Oberseite,
 Boden-Fuellung, Block), `professor_placeholder` (16 x 32, ein Bild ohne
 Animation, schaut nach rechts, nicht mehr verwendet) und
 `object_flying_platform_placeholder` (64 x 16) und
-`object_light_barrier_emitter_placeholder` (16 x 16, Linse zeigt nach rechts)
-dienen nur zum Testen und
+`object_light_barrier_emitter_placeholder` (16 x 16, Linse zeigt nach rechts),
+`object_electric_floor_placeholder` (16 x 32, zwei Bilder uebereinander),
+`object_clone_station_placeholder` (48 x 80), `ui_time_stage_icons` und
+`ui_dither_dark` dienen nur zum Testen und
 werden mit der echten Grafik (Schritt 19) ersetzt.
 
 **Professor-Sprite (vom Nutzer, 05.11.2026):** `professor_idle.aseprite`
@@ -849,6 +851,22 @@ Offene Punkte:
 - Ideen: Tuer mit Zeitschaltuhr laenger offen halten; Bombe bremsen, um zu
   entkommen, oder beschleunigen, um eine Wand zu sprengen.
 
+**Toedliche Objekte: Baustein Hazard (07.11.2026)**
+
+- Alles Toedliche nutzt den Baustein `Hazard` (Area2D, erkennt Ebene 2
+  "player"): Beruehrt der Professor die Flaeche, ruft er dessen `die()` auf.
+  Spaetere Gefahren (Projektil, Pendel) bauen darauf auf. Fuer eine
+  unsichtbare Todeszone (z. B. Abgrund) genuegt eine Area2D mit
+  `hazard.gd` und einer Form.
+
+**Starkstrom-Bodenplatte (07.11.2026, Testobjekt fuer Schritt 7)**
+
+- Reihe knisternder Platten mit Warnstreifen; toedlich bei Beruehrung.
+  Wird anstelle von Boden-Tiles in eine Luecke gesetzt (Node an der linken
+  oberen Ecke der ersten Platte, Breite `width_tiles`, im Editor sichtbar).
+- Szene `scenes/objects/electric_floor.tscn`. Passt zur Teslakammer.
+- Offen: ob die Zeitblase auf sie wirkt (z. B. Funken verlangsamen).
+
 **Schalter / Trefferflaechen**
 
 - Werden von Projektilen ausgeloest (elektrischer Impuls) und oeffnen z. B.
@@ -906,6 +924,23 @@ Fortschritt bleibt erhalten.
 - Humor-Idee: beim Respawn ein trockener Kommentar wie "Nummer 47, auf ein
   Neues."
 - Verworfen: Zeitanker-Station als Alternative.
+
+**Umsetzung (Schritt 7, 07.11.2026):**
+
+- Klonstation: `scenes/objects/clone_station.tscn` (Kapsel 48 x 80, der
+  Node liegt am Boden in der Mitte; dort erscheint der Professor). Sie
+  ersetzt den bisherigen Startpunkt; jedes Level braucht genau eine.
+- Erscheinen: flackernder Klon-Strahl in der Kapsel, der Professor flackert
+  auf; 0,5 s lang ist die Steuerung gesperrt (`spawn_time`). Die Kamera
+  springt sofort auf ihn.
+- Tod: Der Professor bleibt stehen, flackert 0,5 s und verschwindet. Nach
+  0,7 s (`restart_delay`) wird das Level neu geladen. Dabei wird alles im
+  Level zurueckgesetzt (Plattformen, Lichtschranken, Zeitstufe = normal;
+  festgelegt am 07.11.2026: Zeitstufe startet nach dem Tod wieder auf
+  normal).
+- Wer toedlich ist, entscheidet der Baustein `Hazard`
+  (`scripts/objects/hazard.gd`, siehe 2.4).
+- Spaeter: Klon-Nummer und Respawn-Spruch (Schritt 18).
 
 ### 2.7 Spielstand und Fortschritt
 
@@ -1165,7 +1200,7 @@ gekuerzt, nicht der Puffer.
 - [x] 6. Bedienfeld des Time Shifters: Shift halten = Bedienfeld gross in
   der Mitte, Spiel pausiert; Zeitregler per Maus; kleines Symbol fuer die
   Zeitstufe im Spiel.
-- [ ] 7. Tod und Klonstation: toedliche Objekte, Neustart am Levelanfang.
+- [x] 7. Tod und Klonstation: toedliche Objekte, Neustart am Levelanfang.
 - [ ] 8. F1-Entwicklermenue (1.9): Unverwundbar, Teleport, Level-Auswahl,
   alle Upgrades.
 
@@ -1223,15 +1258,16 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 07.11.2026, Version v0.12**
+**Stand vom 07.11.2026, Version v0.13**
 
 - **Phase:** Meilenstein 1, Fundament (Ziel 10.11.).
-- **Zuletzt erledigt:** Schritt 6 (Bedienfeld des Time Shifters).
-- **Naechster Schritt:** 7 (Tod und Klonstation).
+- **Zuletzt erledigt:** Schritt 7 (Tod und Klonstation).
+- **Naechster Schritt:** 8 (F1-Entwicklermenue).
 - **Spielbar:** Testlevel mit dem Professor (Idle-Sprite): laufen,
   springen, Kamera folgt; Shift + Maus stellt die Zeitstufe ein, fliegende
   Plattformen reagieren auf die Blase; Lichtschranke schaltet eine
-  Plattform an und aus.
+  Plattform an und aus; Start in der Klonstation, Starkstrom-Luecke ist
+  toedlich, danach Neustart.
 - **Noch zu testen (vom Nutzer):** nichts.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente

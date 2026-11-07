@@ -5,7 +5,8 @@
 [ext_resource type="Script" path="res://scripts/camera/level_camera.gd" id="3_ipv86"]
 [ext_resource type="PackedScene" path="res://scenes/objects/light_barrier.tscn" id="3_mr7is"]
 [ext_resource type="PackedScene" path="res://scenes/objects/flying_platform.tscn" id="4_rk3gu"]
-[ext_resource type="Script" path="res://scripts/test/time_stage_test_keys.gd" id="8_hsfnj"]
+[ext_resource type="PackedScene" path="res://scenes/ui/time_stage_indicator.tscn" id="8_indic"]
+[ext_resource type="PackedScene" path="res://scenes/ui/time_shifter_panel.tscn" id="9_panel"]
 
 [node name="TestLevel" type="Node2D" unique_id=442466204]
 
@@ -50,6 +51,6 @@ position_smoothing_speed = 8.0
 script = ExtResource("3_ipv86")
 target = NodePath("../Professor")
 
-[node name="TimeStageTestKeys" type="Node" parent="." unique_id=845247431 node_paths=PackedStringArray("bubble")]
-script = ExtResource("8_hsfnj")
-bubble = NodePath("../Professor/TimeBubble")
+[node name="TimeStageIndicator" parent="." instance=ExtResource("8_indic")]
+
+[node name="TimeShifterPanel" parent="." instance=ExtResource("9_panel")]

@@ -51,6 +51,19 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.12 - 2026-11-07: Schritt 6 - Bedienfeld des Time Shifters**
+
+- Shift halten oeffnet das Bedienfeld gross in der Mitte, das Spiel
+  pausiert; loslassen schliesst es.
+- Zeitregler wie eine Tankanzeige: per Mausklick oder Ziehen der Nadel
+  langsam, normal oder schnell waehlen.
+- Kleines Symbol oben links zeigt die aktuelle Stufe (1, 2, 3 Pfeile in der
+  Farbe der Stufe).
+- Die vorlaeufigen Tasten 1/2/3 sind entfallen.
+- Geprueft: automatischer Test (12 Pruefungen: Pause, Klicks, Ziehen,
+  Nadel, Symbol, Weiterlaufen), Bildaufnahmen, bisherige Tests, Palette,
+  Exporte.
+
 **v0.11 - 2026-11-07: Schritte 5 und 5a - Zeitblase und Lichtschranke**
 
 - Zeitblase um den Professor mit drei Stufen (langsam, normal, schnell);

@@ -634,12 +634,12 @@ Status: vorlaeufig festgehalten, kann sich noch aendern.
 - **Shift als "Kupplung":** Solange Shift gehalten wird, erscheint das
   Bedienfeld gross in der Bildschirmmitte, und das Spiel im Hintergrund ist
   pausiert. Ohne Shift ist das Bedienfeld ausgeblendet.
-- Empfehlung: Im normalen Spiel zeigt ein kleines Symbol die aktuelle
-  Zeitstufe. Die Blase selbst ist in der Spielwelt immer sichtbar.
+- Im normalen Spiel zeigt ein kleines Symbol oben links die aktuelle
+  Zeitstufe (umgesetzt in Schritt 6). Die Blase selbst ist in der Spielwelt
+  immer sichtbar.
 - Offen: Belegung von W und S (bisher nur "WASD" genannt).
-- Vorlaeufig, nur im Testlevel (Schritt 5): Tasten 1 / 2 / 3 schalten die
-  Zeitstufe auf langsam / normal / schnell (Node `TimeStageTestKeys`). Wird
-  durch das Bedienfeld (Schritt 6) ersetzt.
+- Die vorlaeufigen Tasten 1 / 2 / 3 aus Schritt 5 sind mit Schritt 6
+  entfallen.
 
 Tasten werden als physische Tasten belegt (gleiche Position auf deutscher
 und englischer Tastatur).
@@ -739,8 +739,27 @@ Formregler erlauben, gezielt nur einzelne Objekte zu erfassen.
   Objekt rechnet mit `delta * time_scale`.
 - Markierung: Beeinflusste Objekte bekommen einen 1-px-Rahmen in der Farbe
   der Stufe (Palettenfarbe, nicht halbtransparent).
-- Zeitstufe umschalten vorlaeufig nur im Testlevel mit den Tasten 1, 2, 3
-  (siehe 2.2); das Bedienfeld folgt in Schritt 6.
+- Zeitstufe umschalten (Schritt 6): Shift halten oeffnet das Bedienfeld
+  (`scenes/ui/time_shifter_panel.tscn`), das Spiel pausiert. Der
+  **Zeitregler** sieht aus wie eine Tankanzeige: Bogen aus drei Stuecken
+  (links blau = langsam, oben grau = normal, rechts orange = schnell), aussen
+  je ein Symbol (1, 2, 3 Pfeile), rote Nadel. Mit der Maus auf einen Bereich
+  klicken oder die Nadel ziehen; die gewaehlte Stufe leuchtet, die anderen
+  sind abgedunkelt, die Nadel schwenkt hin. Shift loslassen: Bedienfeld
+  weg, Spiel laeuft mit der neuen Stufe weiter.
+- Das Bedienfeld wird 2-fach gezeichnet (448 x 288 px) und im Code mit
+  Palettenfarben gemalt (`scripts/ui/time_gauge.gd`). Der Hintergrund wird
+  mit einem Rastermuster (`ui_dither_dark.png`, jedes zweite Pixel dunkel)
+  abgedunkelt statt mit Transparenz, damit keine Mischfarben entstehen.
+  Platz fuer die spaeteren Formregler und das Oszilloskop (Schritt 13)
+  wird dann geschaffen.
+- **Symbol im Spiel** (`scenes/ui/time_stage_indicator.tscn`): kleines Feld
+  oben links mit dem Symbol der Stufe in ihrer Farbe.
+- Symbole: `graphics/ui/ui_time_stage_icons.png` (48 x 16, drei weisse
+  Symbole); sie werden im Code mit Palettenfarben eingefaerbt (weiss x Farbe
+  = genau diese Farbe).
+- Jedes Level braucht beide UI-Szenen (spaeter Teil der Level-Vorlage,
+  Schritt 15).
 
 Offene Punkte:
 
@@ -1143,7 +1162,7 @@ gekuerzt, nicht der Puffer.
   Sendern, Durchlaufen sendet ein Signal an Ziele (Plattform an/aus);
   Schnittstelle Signal-Empfaenger. Dabei: Aufloesung 960 x 540, Plattform
   mit Wartezeit an den Enden.
-- [ ] 6. Bedienfeld des Time Shifters: Shift halten = Bedienfeld gross in
+- [x] 6. Bedienfeld des Time Shifters: Shift halten = Bedienfeld gross in
   der Mitte, Spiel pausiert; Zeitregler per Maus; kleines Symbol fuer die
   Zeitstufe im Spiel.
 - [ ] 7. Tod und Klonstation: toedliche Objekte, Neustart am Levelanfang.
@@ -1204,14 +1223,15 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 07.11.2026, Version v0.11**
+**Stand vom 07.11.2026, Version v0.12**
 
 - **Phase:** Meilenstein 1, Fundament (Ziel 10.11.).
-- **Zuletzt erledigt:** Schritte 5 und 5a (Zeitblase, Lichtschranke).
-- **Naechster Schritt:** 6 (Bedienfeld des Time Shifters).
-- **Spielbar:** Testlevel mit Platzhalter-Professor: laufen, springen,
-  Kamera folgt; Zeitblase mit Tasten 1/2/3, fliegende Plattformen
-  reagieren darauf; Lichtschranke schaltet eine Plattform an und aus.
+- **Zuletzt erledigt:** Schritt 6 (Bedienfeld des Time Shifters).
+- **Naechster Schritt:** 7 (Tod und Klonstation).
+- **Spielbar:** Testlevel mit dem Professor (Idle-Sprite): laufen,
+  springen, Kamera folgt; Shift + Maus stellt die Zeitstufe ein, fliegende
+  Plattformen reagieren auf die Blase; Lichtschranke schaltet eine
+  Plattform an und aus.
 - **Noch zu testen (vom Nutzer):** nichts.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente

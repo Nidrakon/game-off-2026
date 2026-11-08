@@ -51,6 +51,18 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.14 - 2026-11-07: Schritt 8 - Entwickler-Menue (F1)**
+
+- F1 oeffnet das Entwickler-Menue (nur beim Start aus dem Editor):
+  Unverwundbar, Level neu starten, Level-Auswahl.
+- Strg + Linksklick setzt den Professor an die Mausposition.
+- Standardschrift ohne Kantenglaettung, damit auch Text nur Palettenfarben
+  hat.
+- "Alle Upgrades" und Test-Szenarien folgen, sobald es Upgrades
+  (Schritt 14) und Spielstaende (Schritt 16) gibt.
+- Geprueft: automatischer Test (9 Pruefungen), Farbpruefung der
+  Bildaufnahme (keine Fremdfarben), bisherige Tests, Exporte.
+
 **v0.13 - 2026-11-07: Schritt 7 - Tod und Klonstation**
 
 - Das Level beginnt in der Klonstation: Der Professor erscheint mit

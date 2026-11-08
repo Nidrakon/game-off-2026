@@ -38,7 +38,7 @@ func _ready() -> void:
 
 ## Toedlich getroffen: Bewegung stoppt, das Bild flackert und verschwindet.
 func die() -> void:
-	if is_dead:
+	if is_dead or _is_invulnerable():
 		return
 	is_dead = true
 	velocity = Vector2.ZERO
@@ -139,6 +139,12 @@ func _handle_jump() -> void:
 	# Taste beim Steigen losgelassen: Sprung abkuerzen (kleiner Sprung).
 	if _controls_enabled() and Input.is_action_just_released("jump") and velocity.y < 0.0:
 		velocity.y *= settings.jump_release_multiplier
+
+
+## Schalter "Unverwundbar" im Entwickler-Menue (falls vorhanden).
+func _is_invulnerable() -> bool:
+	var dev_menu := get_node_or_null("/root/DevMenu")
+	return dev_menu != null and dev_menu.invulnerable
 
 
 func _controls_enabled() -> bool:

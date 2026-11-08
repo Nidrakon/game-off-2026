@@ -91,7 +91,7 @@ Offene Punkte:
 | Texturfilter | Nearest (scharfe Pixel) |
 | Renderer | Compatibility (laeuft am zuverlaessigsten im Browser) |
 | Fenstermodus | Entwicklung: Fenster 1440 x 810 (x1,5). Fertiges Spiel: Windows Vollbild (auf Full HD genau x2); Browser eingebettet in 960 x 540 (x1) mit Vollbild-Knopf |
-| Standardschrift | [Datei, Groesse, Lizenz] |
+| Standardschrift | vorerst Godot-Standardschrift ohne Kantenglaettung (`gui/theme/default_font_antialiasing` aus, damit keine Mischfarben entstehen); eigene Pixelschrift offen |
 | Versionsverwaltung | Git, oeffentliches Repo auf GitHub (`Nidrakon/game-off-2026`), Branch `main`, Autor "Nidrakon" mit GitHub-noreply-Adresse (nie eine private E-Mail, siehe 1.12). Die KI fuehrt Pull, Commit, Push, Merge und Pull Requests aus |
 | Export | Voreinstellungen "Web" und "Windows" nach `build/` (siehe 6.1) |
 
@@ -247,7 +247,7 @@ Sprach-Unterordner.
 
 | Name | Datei | Aufgabe |
 | --- | --- | --- |
-| [z. B. `GameState`] | [`scripts/autoload/game_state.gd`] | [Spielfortschritt] |
+| `DevMenu` | `scripts/autoload/dev_menu.gd` | Entwickler-Menue (F1), Teleport, Schalter "Unverwundbar" (1.9); nur im Debug-Build aktiv |
 
 **Kollisionsebenen:**
 
@@ -455,6 +455,17 @@ Repo, siehe 1.12).
 Nur beim Start aus dem Editor (Debug-Build) aktiv, im exportierten Spiel
 nicht vorhanden.
 
+**Stand (Schritt 8, 07.11.2026):** Autoload `DevMenu`
+(`scripts/autoload/dev_menu.gd`). Vorhanden: F1-Menue mit "Invulnerable:
+ON/OFF" (bleibt auch nach Neustart des Levels an), "Restart level" und der
+Level-Auswahl (listet automatisch alle Szenen aus `scenes/levels/` und
+`scenes/test/`, scrollt); Teleport per Strg + Linksklick (auch bei
+geschlossenem Menue). Exportierte Builds sind Release-Builds, dort ist alles
+abgeschaltet. Noch nicht vorhanden: "Alle Upgrades" (folgt mit Schritt 14),
+Test-Szenarien, Testmodus und "Stand als Szenario speichern" (folgen mit
+dem Spielstand, Schritt 16), Hauptmenue-Sprung (Schritt 16). Das Menue nutzt
+nur Palettenfarben; Texte englisch direkt im Code (kein Teil des Spiels).
+
 - **F1** oeffnet das Entwickler-Menue (Spiel pausiert). Im fertigen
   Release-Build fuer den Jam ist es deaktiviert.
 - **Direkter Einstieg in ein beliebiges Level.**
@@ -465,7 +476,7 @@ nicht vorhanden.
   scrollt.
 - **Testmodus:** Nach dem Laden eines Szenarios wird in eine eigene
   Testdatei gespeichert; der echte Spielstand bleibt unberuehrt.
-- **Teleport:** [z. B. Strg + Linksklick] setzt die Figur an die Mausposition.
+- **Teleport:** Strg + Linksklick setzt die Figur an die Mausposition.
 - **Unverwundbar** (Schalter).
 - **Sprung zur Levelauswahl / ins Hauptmenue.**
 - **Aktuellen Stand als Szenario speichern.**
@@ -1201,8 +1212,10 @@ gekuerzt, nicht der Puffer.
   der Mitte, Spiel pausiert; Zeitregler per Maus; kleines Symbol fuer die
   Zeitstufe im Spiel.
 - [x] 7. Tod und Klonstation: toedliche Objekte, Neustart am Levelanfang.
-- [ ] 8. F1-Entwicklermenue (1.9): Unverwundbar, Teleport, Level-Auswahl,
-  alle Upgrades.
+- [x] 8. F1-Entwicklermenue (1.9): Unverwundbar, Teleport, Level-Auswahl,
+  alle Upgrades. (Umgesetzt: Unverwundbar, Teleport, Level-Auswahl, Level
+  neu starten. "Alle Upgrades" folgt mit Schritt 14, Test-Szenarien und
+  Testmodus mit Schritt 16.)
 
 **Meilenstein 2: Spielelemente und Vertical Slice (Ziel 17.11.)**
 
@@ -1258,11 +1271,12 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 07.11.2026, Version v0.13**
+**Stand vom 07.11.2026, Version v0.14**
 
 - **Phase:** Meilenstein 1, Fundament (Ziel 10.11.).
-- **Zuletzt erledigt:** Schritt 7 (Tod und Klonstation).
-- **Naechster Schritt:** 8 (F1-Entwicklermenue).
+- **Zuletzt erledigt:** Schritt 8 (F1-Entwicklermenue). Meilenstein 1
+  damit abgeschlossen.
+- **Naechster Schritt:** 9 (Projektil und Projektil-Werfer).
 - **Spielbar:** Testlevel mit dem Professor (Idle-Sprite): laufen,
   springen, Kamera folgt; Shift + Maus stellt die Zeitstufe ein, fliegende
   Plattformen reagieren auf die Blase; Lichtschranke schaltet eine

@@ -254,7 +254,8 @@ Sprach-Unterordner.
 | Ebene | Name | Wer liegt darauf |
 | --- | --- | --- |
 | 1 | `world` | Terrain (Tiles), feste Hindernisse, fliegende Plattformen |
-| 2 | `player` | Professor (prueft Kollision mit Ebene 1); Lichtschranken erkennen diese Ebene |
+| 2 | `player` | Professor (prueft Kollision mit Ebenen 1 und 3); Lichtschranken und Gefahren erkennen diese Ebene |
+| 3 | `projectile` | Projektile (Professor kann darauf stehen; prueft Ebene 1 fuer den Aufprall) |
 
 Bauprinzip:
 
@@ -389,8 +390,10 @@ Animation, schaut nach rechts, nicht mehr verwendet) und
 `object_flying_platform_placeholder` (64 x 16) und
 `object_light_barrier_emitter_placeholder` (16 x 16, Linse zeigt nach rechts),
 `object_electric_floor_placeholder` (16 x 32, zwei Bilder uebereinander),
-`object_clone_station_placeholder` (48 x 80), `ui_time_stage_icons` und
-`ui_dither_dark` dienen nur zum Testen und
+`object_clone_station_placeholder` (48 x 80),
+`object_projectile_placeholder` (64 x 32, Spitze rechts),
+`object_projectile_launcher_placeholder` (32 x 48, Muendung rechts),
+`ui_time_stage_icons` und `ui_dither_dark` dienen nur zum Testen und
 werden mit der echten Grafik (Schritt 19) ersetzt.
 
 **Professor-Sprite (vom Nutzer, 05.11.2026):** `professor_idle.aseprite`
@@ -803,6 +806,19 @@ Offene Punkte:
   eine Luecke. Die verlangsamten Projektile bleiben toedlich, koennen aber
   als Trittsteine dienen. Eine exzentrische Blase kann Richtung Wand
   geschoben werden.
+- Umgesetzt (Schritt 9, 08.11.2026): `scenes/objects/projectile.tscn`,
+  64 x 32 px, fliegt nur waagrecht und verschwindet beim Aufprall auf Ebene 1
+  (Tiles, Plattformen, Werfer) oder nach `max_distance`. Oberseite begehbar,
+  man fliegt mit. Die Seiten sind toedlich (Kind-Node `SideHazard`, 4 px
+  Abstand zu Ober- und Unterkante). Der Stoss von unten ist **nicht**
+  toedlich. Wer gerade oben stand, hat 0,15 s Schonzeit, damit das
+  Herunterlaufen an der Kante nicht sofort toetet.
+- **Projektil-Werfer:** `scenes/objects/projectile_launcher.tscn` (32 x 48,
+  fest, Ebene 1). Im Inspector je Werfer: `direction` (rechts/links),
+  `fire_interval` (Standard 4 s), `first_shot_delay` (Standard 1 s, zum
+  Versetzen mehrerer Werfer), `projectile_speed` (Standard 120 px/s, langsamer
+  als der Professor), `max_distance`, `active`. Sein Takt laeuft in der
+  Zeitblase mit. Er ist Signal-Empfaenger (Lichtschranke kann ihn schalten).
 
 **Pendel / rotierende Gefahr**
 
@@ -848,7 +864,7 @@ Offene Punkte:
 
 - Alles, was von Ausloesern (Lichtschranke, spaeter Schalter) gesteuert
   wird, hat die Funktionen `activate()`, `deactivate()` und `toggle()`.
-  Bisher: fliegende Plattform. Spaetere Empfaenger (z. B. Tuer) bauen
+  Bisher: fliegende Plattform, Projektil-Werfer. Spaetere Empfaenger (z. B. Tuer) bauen
   dieselben drei Funktionen ein; der Ausloeser muss dafuer nicht geaendert
   werden.
 - Idee: aus der Ferne mit gestreckter Blase abbremsen, um sie zu erreichen,
@@ -866,6 +882,8 @@ Offene Punkte:
 
 - Alles Toedliche nutzt den Baustein `Hazard` (Area2D, erkennt Ebene 2
   "player"): Beruehrt der Professor die Flaeche, ruft er dessen `die()` auf.
+  Geprueft wird jeden Physik-Schritt; abgeleitete Skripte koennen ueber
+  `_is_safe_for()` Ausnahmen festlegen (z. B. Schonzeit beim Projektil).
   Spaetere Gefahren (Projektil, Pendel) bauen darauf auf. Fuer eine
   unsichtbare Todeszone (z. B. Abgrund) genuegt eine Area2D mit
   `hazard.gd` und einer Form.
@@ -1219,7 +1237,7 @@ gekuerzt, nicht der Puffer.
 
 **Meilenstein 2: Spielelemente und Vertical Slice (Ziel 17.11.)**
 
-- [ ] 9. Projektil und Projektil-Werfer: toedlich bei seitlicher
+- [x] 9. Projektil und Projektil-Werfer: toedlich bei seitlicher
   Beruehrung, man kann daraufstehen und mitfliegen.
 - [ ] 10. Schalter bzw. Trefferflaeche und Tuer (Projektil loest Impuls
   aus).
@@ -1271,17 +1289,17 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 07.11.2026, Version v0.14**
+**Stand vom 08.11.2026, Version v0.15**
 
-- **Phase:** Meilenstein 1, Fundament (Ziel 10.11.).
-- **Zuletzt erledigt:** Schritt 8 (F1-Entwicklermenue). Meilenstein 1
-  damit abgeschlossen.
-- **Naechster Schritt:** 9 (Projektil und Projektil-Werfer).
+- **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
+- **Zuletzt erledigt:** Schritt 9 (Projektil und Projektil-Werfer).
+- **Naechster Schritt:** 10 (Schalter bzw. Trefferflaeche und Tuer).
 - **Spielbar:** Testlevel mit dem Professor (Idle-Sprite): laufen,
   springen, Kamera folgt; Shift + Maus stellt die Zeitstufe ein, fliegende
   Plattformen reagieren auf die Blase; Lichtschranke schaltet eine
   Plattform an und aus; Start in der Klonstation, Starkstrom-Luecke ist
-  toedlich, danach Neustart.
+  toedlich, danach Neustart; zwei Werfer feuern Projektile (Mitfliegen
+  moeglich, seitlich toedlich); F1-Entwicklermenue.
 - **Noch zu testen (vom Nutzer):** nichts.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente

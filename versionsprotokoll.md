@@ -51,6 +51,19 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.15 - 2026-11-08: Schritt 9 - Projektil und Projektil-Werfer**
+
+- Werfer feuern im einstellbaren Takt grosse Projektile nach links oder
+  rechts; Projektil und Werfer-Takt reagieren auf die Zeitblase.
+- Auf dem Projektil kann man stehen und mitfliegen; seitliche Beruehrung ist
+  toedlich, der Stoss von unten nicht; beim Aufprall verschwindet es.
+- Neue Kollisionsebene 3 `projectile`; `Hazard` prueft jetzt jeden
+  Physik-Schritt und erlaubt Ausnahmen.
+- Testlevel: Werfer hoch oben (Mitfliegen ueber das Level) und am Boden
+  rechts (mit Prellwand).
+- Geprueft: automatischer Test (14 Pruefungen), Bildaufnahme, bisherige
+  Tests, Palette, Exporte.
+
 **v0.14 - 2026-11-07: Schritt 8 - Entwickler-Menue (F1)**
 
 - F1 oeffnet das Entwickler-Menue (nur beim Start aus dem Editor):

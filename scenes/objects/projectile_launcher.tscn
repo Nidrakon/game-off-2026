@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/objects/projectile_launcher.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://graphics/sprites/objects/object_projectile_launcher_placeholder.png" id="2_texture"]
+[ext_resource type="Script" path="res://scripts/time_bubble/time_affected.gd" id="3_time"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(32, 48)
+
+[node name="ProjectileLauncher" type="StaticBody2D"]
+collision_mask = 0
+script = ExtResource("1_script")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_texture")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_body")
+
+[node name="TimeAffected" type="Node2D" parent="."]
+script = ExtResource("3_time")
+bounds = Rect2(-16, -24, 32, 48)

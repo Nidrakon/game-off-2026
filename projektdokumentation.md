@@ -532,7 +532,7 @@ umbenannt oder umnummeriert, steht der alte Name hier mit dabei.
 | Werkstatt | Startbereich ganz unten, zaehlt nicht als eigentlicher Bereich |
 | Bereich | Grosser Teil des Labors (z. B. Teslakammer), besteht aus mehreren Leveln |
 | Level | Einzelner, abgeschlossener Abschnitt innerhalb eines Bereichs |
-| Testlevel | Testszene zum Ausprobieren der Grundsysteme (`scenes/test/test_level.tscn`), derzeit Startszene des Projekts |
+| Testlevel | Testszene zum Ausprobieren der Grundsysteme (`scenes/test/test_level.tscn`), derzeit Startszene des Projekts; heller Testhintergrund (Node `TestBackground`, Farbe `b2ba90`, im Inspector aenderbar; nur im Testlevel, 09.11.2026) |
 
 ### 1.11 Game Jam: Game Off 2026
 
@@ -671,13 +671,17 @@ aenderbar; Skript `scripts/player/movement_settings.gd`):
 
 | Gruppe | Wert | Standard |
 | --- | --- | --- |
-| Laufen | Hoechstgeschwindigkeit | 160 px/s (10 Tiles/s) |
+| Laufen | Hoechstgeschwindigkeit | 200 px/s (12,5 Tiles/s), vom Nutzer auf die Laufanimation abgestimmt (09.11.2026) |
 | Laufen | Beschleunigung am Boden / Abbremsen / in der Luft | 1500 / 2000 / 1100 px/s² |
 | Springen | Sprunghoehe (gehalten) | 96 px (6 Tiles); tatsaechlich ca. 100 px durch die Berechnung in Physik-Schritten |
-| Springen | Zeit bis zum hoechsten Punkt | 0,44 s |
-| Springen | Fallen schneller als Steigen | Faktor 1,6; hoechste Fallgeschwindigkeit 520 px/s |
-| Springen | Kleiner Sprung (Taste beim Steigen losgelassen) | Steiggeschwindigkeit x 0,45 (ca. 43 px hoch) |
+| Springen | Zeit bis zum hoechsten Punkt | 0,35 s |
+| Springen | Fallen schneller als Steigen | Faktor 1,6; hoechste Fallgeschwindigkeit 1000 px/s |
+| Springen | Kleiner Sprung (Taste beim Steigen losgelassen) | Steiggeschwindigkeit x 0,6 (ca. 59 px hoch) |
 | Sprunghilfen | Coyote Time / Sprungpuffer | 0,10 s / 0,12 s |
+
+Die Werte vom 09.11.2026 (Lauftempo, Steigzeit, Fallgeschwindigkeit,
+kleiner Sprung) hat der Nutzer selbst eingestellt; sie sind auch die
+Standardwerte im Skript.
 
 Die Schwerkraft wird aus Sprunghoehe und Steigzeit berechnet. Fuer das
 Leveldesign: Vom Boden erreichbar sind Kanten bis 5 Tiles (80 px) Hoehe;
@@ -1332,10 +1336,12 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 09.11.2026, Version v0.17**
+**Stand vom 09.11.2026, Version v0.18**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
-- **Zuletzt erledigt:** Schritt 10 (Trefferflaeche und Tuer).
+- **Zuletzt erledigt:** Schritt 10 (Trefferflaeche und Tuer); heller
+  Testhintergrund. Der Nutzer stimmt das Lauftempo (`run_speed`) selbst auf
+  die Laufanimation ab.
 - **Naechster Schritt:** 11 (Pendel bzw. rotierende Gefahr).
 - **Spielbar:** Testlevel mit dem Professor (Idle-Sprite): laufen,
   springen, Kamera folgt; Shift + Maus stellt die Zeitstufe ein, fliegende
@@ -1344,8 +1350,7 @@ gekuerzt, nicht der Puffer.
   toedlich, danach Neustart; zwei Werfer feuern Projektile (Mitfliegen
   moeglich, seitlich toedlich); das Boden-Projektil trifft eine
   Trefferflaeche und schaltet damit eine Tuer auf und zu; F1-Entwicklermenue.
-- **Noch zu testen (vom Nutzer):** Schritt 10 (Trefferflaeche und Tuer),
-  Laufanimation, Projektil-Fehlbild behoben, Zeitstufe per Shift + Mausrad.
+- **Noch zu testen (vom Nutzer):** nichts.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente
   (2.4), Reihenfolge der Upgrades (2.3), Look, Sound und Musik (1.2).

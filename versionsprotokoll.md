@@ -51,6 +51,11 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.18 - 2026-11-09: Heller Testhintergrund, neue Bewegungswerte**
+
+- Testlevel bekommt einen hellen Hintergrund (`b2ba90`, Node `TestBackground`), nur zum Testen; echte Level behalten die dunkle Grundfarbe.
+- Bewegungswerte vom Nutzer eingestellt und als Standard uebernommen: Lauftempo 200 px/s, Steigzeit 0,35 s, hoechste Fallgeschwindigkeit 1000 px/s, kleiner Sprung x 0,6.
+
 **v0.17 - 2026-11-09: Laufanimation, Projektil-Fehlbild, Mausrad**
 
 - Professor-Sprite vom Nutzer aktualisiert: Idle neu, Laufanimation (8 Frames) dazu; Umschalten Idle/Lauf im Professor-Skript.

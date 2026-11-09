@@ -1,17 +1,17 @@
-[gd_resource type="Resource" script_class="MovementSettings" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="MovementSettings" format=3 uid="uid://d2tdc5snvq8wf"]
 
-[ext_resource type="Script" path="res://scripts/player/movement_settings.gd" id="1_settings"]
+[ext_resource type="Script" uid="uid://6kiqr7f4btk6" path="res://scripts/player/movement_settings.gd" id="1_settings"]
 
 [resource]
 script = ExtResource("1_settings")
-run_speed = 160.0
+run_speed = 200.0
 ground_acceleration = 1500.0
 ground_deceleration = 2000.0
 air_acceleration = 1100.0
 jump_height = 96.0
-time_to_apex = 0.44
+time_to_apex = 0.35
 fall_gravity_multiplier = 1.6
-max_fall_speed = 520.0
-jump_release_multiplier = 0.45
+max_fall_speed = 1000.0
+jump_release_multiplier = 0.6
 coyote_time = 0.1
 jump_buffer_time = 0.12

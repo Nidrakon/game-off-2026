@@ -70,8 +70,13 @@ func _fire() -> void:
 	projectile.direction = sign_x
 	projectile.speed = projectile_speed
 	projectile.max_distance = max_distance
+	# Position VOR dem Einhaengen setzen: Ein AnimatableBody2D, das schon im
+	# Level haengt, uebernimmt eine neue Position erst im naechsten
+	# Physik-Schritt. Dazwischen stuende es fuer ein Bild bei (0, 0).
+	var parent := get_parent() as Node2D
+	projectile.position = parent.to_local(global_position + Vector2(sign_x * MUZZLE_DISTANCE, 0.0))
 	# Neben den Werfer in den Level haengen: Der Werfer bleibt davon unberuehrt.
-	get_parent().add_child(projectile)
-	projectile.global_position = global_position + Vector2(sign_x * MUZZLE_DISTANCE, 0.0)
+	parent.add_child(projectile)
 	projectile.add_collision_exception_with(self)
+	# Keine Bild-Glaettung von einer frueheren Stelle her (Physik-Interpolation).
 	projectile.reset_physics_interpolation()

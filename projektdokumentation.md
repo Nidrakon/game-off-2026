@@ -253,7 +253,7 @@ Sprach-Unterordner.
 
 | Ebene | Name | Wer liegt darauf |
 | --- | --- | --- |
-| 1 | `world` | Terrain (Tiles), feste Hindernisse, fliegende Plattformen |
+| 1 | `world` | Terrain (Tiles), feste Hindernisse, fliegende Plattformen, Werfer, Trefferflaechen, Tueren |
 | 2 | `player` | Professor (prueft Kollision mit Ebenen 1 und 3); Lichtschranken und Gefahren erkennen diese Ebene |
 | 3 | `projectile` | Projektile (Professor kann darauf stehen; prueft Ebene 1 fuer den Aufprall) |
 
@@ -396,12 +396,16 @@ Animation, schaut nach rechts, nicht mehr verwendet) und
 `ui_time_stage_icons` und `ui_dither_dark` dienen nur zum Testen und
 werden mit der echten Grafik (Schritt 19) ersetzt.
 
-**Professor-Sprite (vom Nutzer, 05.11.2026):** `professor_idle.aseprite`
-(Rahmen 64 x 64, Figur ca. 30 x 57 px, also gut 3,5 Tiles hoch; 4 Frames
-Idle), exportiert als Streifen `professor_idle_sheet.png`
-(`Aseprite -b graphics/source/professor_idle.aseprite --sheet
-graphics/sprites/professor/professor_idle_sheet.png --sheet-type horizontal`),
-eingebunden ueber `professor_sprite_frames.tres` (Animation `idle`). Die
+**Professor-Sprite (vom Nutzer, 05.11.2026, aktualisiert 09.11.2026):**
+`graphics/source/professor.aseprite` (Rahmen 64 x 64, Figur ca. 30 x 57 px,
+also gut 3,5 Tiles hoch; 12 Frames: Tag `Idle` = Frames 1-4, Tag `Run` =
+Frames 5-12). Die Ebenen ausser `charakter` sind Hilfsebenen des Nutzers und
+bleiben unsichtbar; der Export nimmt nur sichtbare Ebenen. Exportiert als
+Streifen `professor_sheet.png` (`Aseprite -b graphics/source/professor.aseprite
+--sheet graphics/sprites/professor/professor_sheet.png --sheet-type
+horizontal`), eingebunden ueber `professor_sprite_frames.tres` (Animationen
+`idle` und `run`, Bilddauern wie in Aseprite). Laufanimation am Boden ab
+10 px/s, in der Luft vorerst Idle (bis es eine Sprunganimation gibt). Die
 Fuesse stehen in Zeile 62 des Rahmens. **Festgelegt am 07.11.2026:** Die
 Figur bleibt in dieser Groesse; Kollision, Bewegung, Zeitblase und Level
 sind darauf abgestimmt (siehe 2.2, 2.9). Neue Figuren-Sprites sollten im
@@ -524,6 +528,7 @@ umbenannt oder umnummeriert, steht der alte Name hier mit dabei.
 | "Kupplung" | Shift-Taste halten: Bedienfeld einblenden, Spiel pausiert |
 | Schrotthaufen | Fundstelle, mit der der Professor den Time Shifter um eine Funktion erweitert (Upgrade) |
 | Klonstation | Checkpoint am Anfang jedes Levels (siehe 2.6) |
+| Trefferflaeche, Schalter | Wird von einem Projektil ausgeloest und sendet ein Signal (`impact_switch`, siehe 2.4) |
 | Werkstatt | Startbereich ganz unten, zaehlt nicht als eigentlicher Bereich |
 | Bereich | Grosser Teil des Labors (z. B. Teslakammer), besteht aus mehreren Leveln |
 | Level | Einzelner, abgeschlossener Abschnitt innerhalb eines Bereichs |
@@ -645,6 +650,7 @@ Status: vorlaeufig festgehalten, kann sich noch aendern.
 | Springen | `jump` | Leertaste | [ ] | [ ] |
 | Bedienfeld des Time Shifters ("Kupplung") | `time_shifter_panel` | Shift gedrueckt halten | [ ] | [ ] |
 | Regler im Bedienfeld bedienen | (Maus-Eingabe auf die Regler) | Maus | [ ] | [ ] |
+| Zeitstufe per Mausrad (Wunsch des Nutzers, 09.11.2026) | (Mausrad bei offenem Bedienfeld) | Shift + Rad hoch = schneller, Shift + Rad runter = langsamer | [ ] | [ ] |
 | [Pause] | `pause` | [offen, z. B. Esc] | [ ] | [ ] |
 
 - **Shift als "Kupplung":** Solange Shift gehalten wird, erscheint das
@@ -763,6 +769,10 @@ Formregler erlauben, gezielt nur einzelne Objekte zu erfassen.
   klicken oder die Nadel ziehen; die gewaehlte Stufe leuchtet, die anderen
   sind abgedunkelt, die Nadel schwenkt hin. Shift loslassen: Bedienfeld
   weg, Spiel laeuft mit der neuen Stufe weiter.
+- Alternativ (09.11.2026): Shift + Mausrad hoch = eine Stufe schneller,
+  Shift + Mausrad runter = eine Stufe langsamer; an den Enden bleibt die
+  Stufe stehen (kein Umlauf). Wirkt ueberall im Fenster, die Maus muss nicht
+  ueber dem Regler sein.
 - Das Bedienfeld wird 2-fach gezeichnet (448 x 288 px) und im Code mit
   Palettenfarben gemalt (`scripts/ui/time_gauge.gd`). Der Hintergrund wird
   mit einem Rastermuster (`ui_dither_dark.png`, jedes zweite Pixel dunkel)
@@ -813,6 +823,10 @@ Offene Punkte:
   Abstand zu Ober- und Unterkante). Der Stoss von unten ist **nicht**
   toedlich. Wer gerade oben stand, hat 0,15 s Schonzeit, damit das
   Herunterlaufen an der Kante nicht sofort toetet.
+- Wichtig beim Erzeugen per Code (Fehler behoben am 09.11.2026): Die Position
+  eines AnimatableBody2D **vor** `add_child()` setzen. Im Baum uebernimmt er
+  eine neue Position erst im naechsten Physik-Schritt; vorher stand das
+  Projektil fuer ein Bild bei (0, 0) (links oben im Level).
 - **Projektil-Werfer:** `scenes/objects/projectile_launcher.tscn` (32 x 48,
   fest, Ebene 1). Im Inspector je Werfer: `direction` (rechts/links),
   `fire_interval` (Standard 4 s), `first_shot_delay` (Standard 1 s, zum
@@ -862,11 +876,12 @@ Offene Punkte:
 
 **Signal-Empfaenger (Schnittstelle, 07.11.2026)**
 
-- Alles, was von Ausloesern (Lichtschranke, spaeter Schalter) gesteuert
+- Alles, was von Ausloesern (Lichtschranke, Trefferflaeche) gesteuert
   wird, hat die Funktionen `activate()`, `deactivate()` und `toggle()`.
-  Bisher: fliegende Plattform, Projektil-Werfer. Spaetere Empfaenger (z. B. Tuer) bauen
-  dieselben drei Funktionen ein; der Ausloeser muss dafuer nicht geaendert
-  werden.
+  Bisher: fliegende Plattform, Projektil-Werfer, Tuer. Spaetere Empfaenger
+  bauen dieselben drei Funktionen ein; der Ausloeser muss dafuer nicht
+  geaendert werden. Das Senden an die Ziele uebernimmt bei allen Ausloesern
+  `scripts/objects/signal_sender.gd`.
 - Idee: aus der Ferne mit gestreckter Blase abbremsen, um sie zu erreichen,
   dann beschleunigen (z. B. um vor einer sich schliessenden Tuer anzukommen).
 
@@ -900,6 +915,34 @@ Offene Punkte:
 
 - Werden von Projektilen ausgeloest (elektrischer Impuls) und oeffnen z. B.
   Tueren.
+- Umgesetzt (Schritt 10, 08.11.2026): `scenes/objects/impact_switch.tscn`
+  (16 x 48, fest, Ebene 1, Node in der Mitte). Im Inspector: `targets` und
+  `action` (umschalten / einschalten / ausschalten) wie bei der
+  Lichtschranke. Nur Projektile loesen aus, der Professor nicht; er kann aber
+  darauf stehen. Beim Treffer verschwindet das Projektil und es spruehen kurz
+  Funken. Beliebig viele Treffer, je Treffer ein Signal.
+- Technik: Das Projektil ruft beim Aufprall `on_projectile_hit()` am
+  getroffenen Objekt auf, falls es die Funktion hat. Spaetere Objekte, die auf
+  Treffer reagieren, bauen dieselbe Funktion ein.
+- Offen: Synchron-Raetsel (zwei Treffer innerhalb von ca. 0,5 s, siehe
+  Projektil). Noch nicht gebaut, Umsetzung folgt, wenn das erste Level es
+  braucht.
+
+**Tuer (Schritt 10, 08.11.2026)**
+
+- `scenes/objects/door.tscn` (16 x 80, Ebene 1, Node in der Mitte der
+  geschlossenen Tuer). Im Inspector: `travel` (Weg von zu nach auf, Standard
+  80 px nach oben), `move_time` (Standard 0,4 s), `start_open`.
+- Signal-Empfaenger: `activate()` = oeffnen, `deactivate()` = schliessen,
+  `toggle()` = umschalten. Oeffnen und Schliessen laufen in der Zeitblase
+  langsamer oder schneller.
+- Haelt den Professor und Projektile auf. Steht beim Schliessen jemand im Weg
+  (Ebene 2 oder 3), wartet sie und schliesst danach weiter; es gibt also kein
+  Einklemmen und keinen Tod durch die Tuer.
+- Liegt hinter den Tiles (`z_index` -1). Beim Levelbau einen Sturz aus Tiles
+  ueber die Tuer setzen, der mindestens so hoch ist wie der Weg `travel` und
+  unten weniger als die Sprunghoehe (ca. 100 px) Luecke laesst: Dann
+  verschwindet die offene Tuer darin und man kann sie nicht ueberspringen.
 
 **Magnet (Idee fuer die Teslakammer)**
 
@@ -1239,7 +1282,7 @@ gekuerzt, nicht der Puffer.
 
 - [x] 9. Projektil und Projektil-Werfer: toedlich bei seitlicher
   Beruehrung, man kann daraufstehen und mitfliegen.
-- [ ] 10. Schalter bzw. Trefferflaeche und Tuer (Projektil loest Impuls
+- [x] 10. Schalter bzw. Trefferflaeche und Tuer (Projektil loest Impuls
   aus).
 - [ ] 11. Pendel bzw. rotierende Gefahr.
 - [ ] 12. Timer bzw. Zeitschaltuhr (z. B. Tuer bleibt laenger offen).
@@ -1289,18 +1332,20 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 08.11.2026, Version v0.15**
+**Stand vom 09.11.2026, Version v0.17**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
-- **Zuletzt erledigt:** Schritt 9 (Projektil und Projektil-Werfer).
-- **Naechster Schritt:** 10 (Schalter bzw. Trefferflaeche und Tuer).
+- **Zuletzt erledigt:** Schritt 10 (Trefferflaeche und Tuer).
+- **Naechster Schritt:** 11 (Pendel bzw. rotierende Gefahr).
 - **Spielbar:** Testlevel mit dem Professor (Idle-Sprite): laufen,
   springen, Kamera folgt; Shift + Maus stellt die Zeitstufe ein, fliegende
   Plattformen reagieren auf die Blase; Lichtschranke schaltet eine
   Plattform an und aus; Start in der Klonstation, Starkstrom-Luecke ist
   toedlich, danach Neustart; zwei Werfer feuern Projektile (Mitfliegen
-  moeglich, seitlich toedlich); F1-Entwicklermenue.
-- **Noch zu testen (vom Nutzer):** nichts.
+  moeglich, seitlich toedlich); das Boden-Projektil trifft eine
+  Trefferflaeche und schaltet damit eine Tuer auf und zu; F1-Entwicklermenue.
+- **Noch zu testen (vom Nutzer):** Schritt 10 (Trefferflaeche und Tuer),
+  Laufanimation, Projektil-Fehlbild behoben, Zeitstufe per Shift + Mausrad.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente
   (2.4), Reihenfolge der Upgrades (2.3), Look, Sound und Musik (1.2).

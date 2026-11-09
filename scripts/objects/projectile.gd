@@ -18,6 +18,8 @@ var max_distance := 4000.0
 
 var _flown := 0.0
 var _ride_grace_left := 0.0
+# Nimmt das Ergebnis der Hindernis-Pruefung auf (wird wiederverwendet).
+var _collision := KinematicCollision2D.new()
 
 @onready var _time: TimeAffected = $TimeAffected
 @onready var _sprite: Sprite2D = $Sprite
@@ -37,7 +39,12 @@ func _physics_process(delta: float) -> void:
 	# Die Zeit des Projektils laeuft mit dem Tempo aus der Zeitblase.
 	var motion := Vector2(direction * speed * _time.time_scale * delta, 0.0)
 	# Vorab pruefen, ob der naechste Schritt ein Hindernis trifft (Ebene 1).
-	if test_move(global_transform, motion):
+	if test_move(global_transform, motion, _collision):
+		# Das getroffene Objekt erfaehrt davon, falls es darauf reagiert
+		# (z. B. die Trefferflaeche). Eine einfache Wand hat die Funktion nicht.
+		var hit_object := _collision.get_collider()
+		if hit_object != null and hit_object.has_method("on_projectile_hit"):
+			hit_object.on_projectile_hit()
 		queue_free()
 		return
 	position += motion

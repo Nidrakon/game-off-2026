@@ -14,6 +14,8 @@ signal died
 const FLICKER_STEP := 0.05
 ## Dauer des Flackerns beim Sterben (Sekunden), danach ist er verschwunden.
 const DEATH_FLICKER_TIME := 0.5
+## Ab dieser Geschwindigkeit (Pixel pro Sekunde) laeuft die Laufanimation.
+const RUN_ANIMATION_MIN_SPEED := 10.0
 
 ## true, sobald der Professor tot ist; dann reagiert er auf nichts mehr.
 var is_dead := false
@@ -80,6 +82,15 @@ func _physics_process(delta: float) -> void:
 	_apply_horizontal_movement(delta)
 	_handle_jump()
 	move_and_slide()
+	_update_animation()
+
+
+func _update_animation() -> void:
+	# Laufen nur am Boden und wenn er sich wirklich bewegt (gegen eine Wand
+	# laufen setzt velocity.x auf 0). In der Luft vorerst Idle, bis es eine
+	# Sprunganimation gibt.
+	var running := is_on_floor() and absf(velocity.x) > RUN_ANIMATION_MIN_SPEED
+	_sprite.play(&"run" if running else &"idle")
 
 
 func _update_timers(delta: float) -> void:

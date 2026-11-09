@@ -51,6 +51,20 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.17 - 2026-11-09: Laufanimation, Projektil-Fehlbild, Mausrad**
+
+- Professor-Sprite vom Nutzer aktualisiert: Idle neu, Laufanimation (8 Frames) dazu; Umschalten Idle/Lauf im Professor-Skript.
+- Fehler behoben: Neue Projektile standen fuer ein Bild bei (0, 0); der Werfer setzt die Position jetzt vor dem Einhaengen.
+- Zeitstufe zusaetzlich mit Shift + Mausrad einstellbar (hoch = schneller, runter = langsamer).
+
+**v0.16 - 2026-11-08: Schritt 10, Trefferflaeche und Tuer**
+
+- Neu: Trefferflaeche (`impact_switch`): Projektile loesen sie aus, sie sendet ein Signal an ihre Ziele und zeigt kurz Funken.
+- Neu: Tuer (`door`): Signal-Empfaenger, reagiert auf die Zeitblase, wartet beim Schliessen, wenn jemand im Weg steht.
+- Projektil meldet dem getroffenen Objekt den Aufprall (`on_projectile_hit()`).
+- Senden an Ziele in `SignalSender` ausgelagert, Lichtschranke nutzt es ebenfalls.
+- Testlevel: Tuer mit Sturz links der Lichtschranke, Trefferflaeche an der Prellwand; das Boden-Projektil schaltet die Tuer im Takt.
+
 **v0.15 - 2026-11-08: Schritt 9 - Projektil und Projektil-Werfer**
 
 - Werfer feuern im einstellbaren Takt grosse Projektile nach links oder

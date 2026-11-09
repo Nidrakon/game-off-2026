@@ -7,9 +7,6 @@ extends Area2D
 ## Im Editor sind Strahl und Sender sofort sichtbar (@tool), damit man sie
 ## beim Levelbau richtig platzieren kann.
 
-## Was die Lichtschranke bei den Zielen ausloest.
-enum Action { TOGGLE, ACTIVATE, DEACTIVATE }
-
 ## Wird gesendet, wenn jemand den Strahl durchquert.
 signal triggered
 
@@ -23,7 +20,7 @@ signal triggered
 ## activate(), deactivate() und toggle() (siehe Doku 2.4, Signal-Empfaenger).
 @export var targets: Array[Node] = []
 ## Was bei den Zielen passiert: umschalten, einschalten oder ausschalten.
-@export var action := Action.TOGGLE
+@export var action := SignalSender.Action.TOGGLE
 ## Nur einmal ausloesen; danach erlischt der Strahl.
 @export var one_shot := false
 
@@ -69,25 +66,7 @@ func _on_body_entered(_body: Node2D) -> void:
 	_flash_left = FLASH_TIME
 	queue_redraw()
 	triggered.emit()
-	for target in targets:
-		_send_to(target)
-
-
-func _send_to(target: Node) -> void:
-	if target == null:
-		return
-	var method: String
-	match action:
-		Action.TOGGLE:
-			method = "toggle"
-		Action.ACTIVATE:
-			method = "activate"
-		Action.DEACTIVATE:
-			method = "deactivate"
-	if target.has_method(method):
-		target.call(method)
-	else:
-		push_warning("%s: Ziel %s kennt die Funktion %s() nicht." % [name, target.name, method])
+	SignalSender.send(targets, action, self)
 
 
 func _update_shape() -> void:

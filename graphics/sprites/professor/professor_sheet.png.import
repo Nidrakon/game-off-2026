@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://doukp3al1m1jw"
-path="res://.godot/imported/professor_idle_sheet.png-a94e586ebeb43fbe79163b6c2199b883.ctex"
+uid="uid://b4ixfgr8oob00"
+path="res://.godot/imported/professor_sheet.png-b96ca3263bbbc20ebf01dc95f6a2533b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/sprites/professor/professor_idle_sheet.png"
-dest_files=["res://.godot/imported/professor_idle_sheet.png-a94e586ebeb43fbe79163b6c2199b883.ctex"]
+source_file="res://graphics/sprites/professor/professor_sheet.png"
+dest_files=["res://.godot/imported/professor_sheet.png-b96ca3263bbbc20ebf01dc95f6a2533b.ctex"]
 
 [params]
 

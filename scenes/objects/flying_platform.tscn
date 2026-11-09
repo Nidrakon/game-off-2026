@@ -18,6 +18,7 @@ centered = false
 [node name="Collision" type="CollisionShape2D" parent="."]
 position = Vector2(32, 5)
 shape = SubResource("RectangleShape2D_top")
+one_way_collision = true
 
 [node name="TimeAffected" type="Node2D" parent="."]
 script = ExtResource("3_time")

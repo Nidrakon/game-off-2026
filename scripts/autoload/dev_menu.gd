@@ -5,7 +5,7 @@ extends Node
 ##
 ## - F1: Menue oeffnen/schliessen (Spiel pausiert).
 ## - Strg + Linksklick: Professor an die Mausposition setzen (Teleport).
-## - Unverwundbar, Level neu starten, Level-Auswahl.
+## - Unverwundbar, Zeit-Markierungen, Level neu starten, Level-Auswahl.
 ## Texte sind englisch und bewusst nicht in Datendateien: Das Menue ist kein
 ## Teil des Spiels.
 
@@ -23,12 +23,15 @@ const COLOR_TITLE := Color("f9c22b")
 
 ## Professor stirbt nicht (Hazards wirken nicht).
 var invulnerable := false
+## Objekte in der Zeitblase farbig umranden (nur zum Testen, Standard aus).
+var show_time_markers := false
 ## Ist das Menue gerade offen?
 var is_open := false
 
 var _layer: CanvasLayer
 var _level_list: VBoxContainer
 var _invulnerable_button: Button
+var _markers_button: Button
 
 
 func _ready() -> void:
@@ -37,6 +40,8 @@ func _ready() -> void:
 		set_process_unhandled_input(false)
 		return
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	# Sprites aus Aseprite live nachladen (siehe Doku 1.8, Aseprite-Sync).
+	add_child(preload("res://scripts/dev/sprite_hot_reload.gd").new())
 	_build_ui()
 	_layer.visible = false
 
@@ -59,6 +64,11 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_invulnerable_toggled(on: bool) -> void:
 	invulnerable = on
 	_invulnerable_button.text = "Invulnerable: " + ("ON" if on else "OFF")
+
+
+func _on_markers_toggled(on: bool) -> void:
+	show_time_markers = on
+	_markers_button.text = "Time markers: " + ("ON" if on else "OFF")
 
 
 func _set_open(open: bool) -> void:
@@ -133,6 +143,12 @@ func _build_ui() -> void:
 	_invulnerable_button.toggled.connect(_on_invulnerable_toggled)
 	box.add_child(_invulnerable_button)
 	_on_invulnerable_toggled(false)
+
+	_markers_button = _make_button("")
+	_markers_button.toggle_mode = true
+	_markers_button.toggled.connect(_on_markers_toggled)
+	box.add_child(_markers_button)
+	_on_markers_toggled(false)
 
 	var restart := _make_button("Restart level")
 	restart.pressed.connect(_restart_level)

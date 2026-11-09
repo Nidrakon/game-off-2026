@@ -51,6 +51,30 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.22 - 2026-11-09: Sprunganimation, eigene Arbeitsdatei fuer den Sync**
+
+- Sprunganimation (Platzhalter des Nutzers, 8 Bilder): laeuft in der Luft einmal ab dem Absprung und bleibt auf dem letzten Bild.
+- Aseprite-Sync: `play_once` fuer einmalige Animationen (auch Aseprite-"Repeat"); lokale Ueberschreibung `data/aseprite_sync.local.cfg` (nicht im Repo) fuer eine Arbeitsdatei ausserhalb des Projekts, die beim Export ins Projekt kopiert wird.
+
+**v0.21 - 2026-11-09: Aseprite-Sync**
+
+- Editor-Plugin `addons/aseprite_sync`: exportiert die Aseprite-Datei des Professors beim Speichern automatisch als Sheet plus JSON und baut die SpriteFrames neu (Tags = Animationen, Bilddauern aus Aseprite).
+- Live-Nachladen im laufenden Spiel (nur Debug-Start aus dem Editor).
+- Liste der Dateien in `data/aseprite_sync.cfg`.
+
+**v0.20 - 2026-11-09: Nachbesserungen Schritt 11**
+
+- Fliegende Plattformen von unten durchspringbar (Einweg-Kollision).
+- Farbige Umrandung zeitmanipulierter Objekte nur noch per F1-Schalter "Time markers" (Standard aus).
+- Projektil-Werfer mit Ladebalken, der sich bis zum naechsten Schuss fuellt und auf die Zeitblase reagiert; Werfer-Sprite mit Fenster dafuer.
+- Pendel: Kugel-Bild dreht sich nicht mehr mit.
+
+**v0.19 - 2026-11-09: Schritt 11, Pendel und rotierende Gefahr**
+
+- Neu: Pendel (`pendulum`) mit Stachelkugel, schwingt oder dreht sich; Laenge, Ausschlag, Periode, Startstellung und Drehrichtung im Inspector; reagiert auf die Zeitblase; im Editor sichtbar.
+- Lichtschranken werden auch von Projektilen ausgeloest; Mitfliegen zaehlt als ein Durchqueren.
+- Testlevel: Pendel unter Block 2, rotierende Stachelkugel am Boden vor der Tuer.
+
 **v0.18 - 2026-11-09: Heller Testhintergrund, neue Bewegungswerte**
 
 - Testlevel bekommt einen hellen Hintergrund (`b2ba90`, Node `TestBackground`), nur zum Testen; echte Level behalten die dunkle Grundfarbe.

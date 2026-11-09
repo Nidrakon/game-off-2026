@@ -2,6 +2,7 @@ extends AnimatableBody2D
 ## Fliegende Plattform: faehrt zwischen Startpunkt und Startpunkt + travel hin
 ## und her, an den Enden weich abgebremst. In der Zeitblase faehrt sie
 ## langsamer oder schneller. Der Professor kann darauf stehen und mitfahren.
+## Von unten kann man durch sie hindurchspringen (Einweg-Kollision).
 ## Die Werte gehoeren zum Level und werden je Plattform im Inspector gesetzt.
 ##
 ## Signal-Empfaenger (Doku 2.4): Ausloeser wie die Lichtschranke rufen

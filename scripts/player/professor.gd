@@ -86,11 +86,17 @@ func _physics_process(delta: float) -> void:
 
 
 func _update_animation() -> void:
-	# Laufen nur am Boden und wenn er sich wirklich bewegt (gegen eine Wand
-	# laufen setzt velocity.x auf 0). In der Luft vorerst Idle, bis es eine
-	# Sprunganimation gibt.
-	var running := is_on_floor() and absf(velocity.x) > RUN_ANIMATION_MIN_SPEED
-	_sprite.play(&"run" if running else &"idle")
+	# In der Luft: Sprung (laeuft einmal ab dem Absprung und bleibt dann auf
+	# dem letzten Bild). Am Boden: Laufen, wenn er sich wirklich bewegt (gegen
+	# eine Wand laufen setzt velocity.x auf 0), sonst Idle.
+	var target := &"idle"
+	if not is_on_floor():
+		target = &"jump"
+	elif absf(velocity.x) > RUN_ANIMATION_MIN_SPEED:
+		target = &"run"
+	# Nur beim Wechsel neu starten, damit der Sprung nicht immer von vorn beginnt.
+	if _sprite.animation != target and _sprite.sprite_frames.has_animation(target):
+		_sprite.play(target)
 
 
 func _update_timers(delta: float) -> void:

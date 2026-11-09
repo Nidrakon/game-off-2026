@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/objects/pendulum.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://graphics/sprites/objects/object_spike_ball_placeholder.png" id="2_texture"]
+[ext_resource type="Script" path="res://scripts/objects/hazard.gd" id="3_hazard"]
+[ext_resource type="Script" path="res://scripts/time_bubble/time_affected.gd" id="4_time"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_weight"]
+radius = 13.0
+
+[node name="Pendulum" type="Node2D"]
+physics_interpolation_mode = 1
+script = ExtResource("1_script")
+
+[node name="Weight" type="Area2D" parent="."]
+position = Vector2(0, 96)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("3_hazard")
+
+[node name="Collision" type="CollisionShape2D" parent="Weight"]
+shape = SubResource("CircleShape2D_weight")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, 96)
+texture = ExtResource("2_texture")
+
+[node name="TimeAffected" type="Node2D" parent="."]
+position = Vector2(0, 96)
+script = ExtResource("4_time")
+bounds = Rect2(-16, -16, 32, 32)

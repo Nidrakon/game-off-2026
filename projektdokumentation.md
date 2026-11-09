@@ -234,6 +234,7 @@ res://
   data/          # Datendateien (Werte, Level-Listen, Test-Szenarien)
   dialogues/     # Texte, die im Spiel angezeigt werden (je Sprache ein Unterordner)
   tools/         # Hilfsskripte ausserhalb des Spiels, von der Engine ignoriert
+  addons/        # Editor-Plugins (eigener Code, z. B. Aseprite-Sync, siehe 1.8)
 ```
 
 Angelegt am 01.11.2026. Git speichert keine leeren Ordner; deshalb liegt in
@@ -255,7 +256,7 @@ Sprach-Unterordner.
 | --- | --- | --- |
 | 1 | `world` | Terrain (Tiles), feste Hindernisse, fliegende Plattformen, Werfer, Trefferflaechen, Tueren |
 | 2 | `player` | Professor (prueft Kollision mit Ebenen 1 und 3); Lichtschranken und Gefahren erkennen diese Ebene |
-| 3 | `projectile` | Projektile (Professor kann darauf stehen; prueft Ebene 1 fuer den Aufprall) |
+| 3 | `projectile` | Projektile (Professor kann darauf stehen; prueft Ebene 1 fuer den Aufprall); Lichtschranken erkennen diese Ebene |
 
 Bauprinzip:
 
@@ -396,16 +397,19 @@ Animation, schaut nach rechts, nicht mehr verwendet) und
 `ui_time_stage_icons` und `ui_dither_dark` dienen nur zum Testen und
 werden mit der echten Grafik (Schritt 19) ersetzt.
 
-**Professor-Sprite (vom Nutzer, 05.11.2026, aktualisiert 09.11.2026):**
+**Professor-Sprite (vom Nutzer, 05.11.2026, aktualisiert 09.11.2026;
+wird ueber den Aseprite-Sync automatisch exportiert, siehe 1.8):**
 `graphics/source/professor.aseprite` (Rahmen 64 x 64, Figur ca. 30 x 57 px,
-also gut 3,5 Tiles hoch; 12 Frames: Tag `Idle` = Frames 1-4, Tag `Run` =
-Frames 5-12). Die Ebenen ausser `charakter` sind Hilfsebenen des Nutzers und
+also gut 3,5 Tiles hoch; 20 Frames: Tag `Idle` = Frames 1-4, Tag `Run` =
+Frames 5-12, Tag `Jump` = Frames 13-20, Jump noch Platzhalter des Nutzers). Die Ebenen ausser `charakter` sind Hilfsebenen des Nutzers und
 bleiben unsichtbar; der Export nimmt nur sichtbare Ebenen. Exportiert als
 Streifen `professor_sheet.png` (`Aseprite -b graphics/source/professor.aseprite
 --sheet graphics/sprites/professor/professor_sheet.png --sheet-type
 horizontal`), eingebunden ueber `professor_sprite_frames.tres` (Animationen
-`idle` und `run`, Bilddauern wie in Aseprite). Laufanimation am Boden ab
-10 px/s, in der Luft vorerst Idle (bis es eine Sprunganimation gibt). Die
+`idle`, `run`, `jump`, Bilddauern wie in Aseprite). Laufanimation am Boden
+ab 10 px/s, sonst Idle. In der Luft (Sprung oder von einer Kante gefallen)
+laeuft `jump` einmal ab Beginn und bleibt auf dem letzten Bild stehen; 8 x
+0,08 s = 0,64 s, etwa so lang wie ein voller Sprung (ca. 0,63 s). Die
 Fuesse stehen in Zeile 62 des Rahmens. **Festgelegt am 07.11.2026:** Die
 Figur bleibt in dieser Groesse; Kollision, Bewegung, Zeitblase und Level
 sind darauf abgestimmt (siehe 2.2, 2.9). Neue Figuren-Sprites sollten im
@@ -453,6 +457,46 @@ Repo, siehe 1.12).
 | --- | --- | --- |
 | `check_palette.gd` | Prueft alle PNGs in `graphics/` auf Farben ausserhalb von Resurrect 64 (Rueckgabe 0 = OK) | `godot --headless --path . --script tools/check_palette.gd` (Konsolenfassung von Godot) |
 
+**Aseprite-Sync (09.11.2026, Wunsch des Nutzers)**
+
+Der Nutzer zeichnet direkt in der Aseprite-Datei und sieht das Ergebnis
+sofort im Spiel, ohne dass jemand von Hand exportiert.
+
+- **Editor-Plugin** `addons/aseprite_sync/` (eigener Code, keine fremde
+  Erweiterung). Einschalten unter Projekt > Projekteinstellungen > Plugins
+  ("Aseprite Sync", Haken bei Aktiviert). Es prueft jede Sekunde, ob eine der
+  Aseprite-Dateien aus `data/aseprite_sync.cfg` gespeichert wurde, und dann:
+  Export als Sheet-PNG plus JSON (Bildpositionen, Dauern, Tags) ueber die
+  Aseprite-Kommandozeile, neu einlesen, SpriteFrames neu aufbauen. Jeder Tag
+  wird eine Animation (Name klein geschrieben), Bilddauern wie in Aseprite,
+  Richtung vorwaerts / rueckwaerts / hin und zurueck. Ausgeblendete Ebenen
+  (Hilfsebenen) kommen nicht ins Bild. Von Hand: Projekt > Werkzeuge >
+  "Aseprite: Sync now".
+- **Pfad zu Aseprite:** Editor-Einstellung `aseprite_sync/aseprite_path`
+  (lokal, nicht im Repo). Ist sie leer, sucht das Plugin an den ueblichen
+  Installationsorten (Programme-Ordner, Steam).
+- **Live im laufenden Spiel:** Beim Debug-Start aus dem Editor legt das
+  DevMenu `scripts/dev/sprite_hot_reload.gd` an. Er bemerkt einen neuen
+  Export (JSON geaendert), liest Sheet und Daten direkt von der Festplatte und
+  tauscht die Animationen aller betroffenen Figuren aus, auch nach einem
+  Level-Neustart. Im Export-Build ist das aus.
+- Gemeinsamer Code: `scripts/tools/aseprite_sync.gd` (`AsepriteSync`).
+- Weitere Figuren: Abschnitt in `data/aseprite_sync.cfg` ergaenzen
+  (`source`, `sheet`, `frames`, optional `play_once`).
+- `play_once`: Animationen, die einmal laufen und auf dem letzten Bild stehen
+  bleiben (Professor: `jump`); ebenso Tags, bei denen in Aseprite "Repeat"
+  gesetzt ist. Alle anderen laufen in Schleife.
+- **Eigene Arbeitsdatei ausserhalb des Projekts:** In
+  `data/aseprite_sync.local.cfg` (in `.gitignore`, nur auf dem Rechner)
+  im selben Abschnitt `source` mit dem vollen Pfad setzen. Das Plugin
+  beobachtet dann diese Datei und kopiert sie bei jedem Export nach
+  `graphics/source/...` ins Projekt, damit das Repo den aktuellen Stand hat.
+  Beim Nutzer eingerichtet (09.11.2026): seine Datei
+  `character_mad_inventor.aseprite` im eigenen Aseprite-Ordner.
+- Animationen, die das Spiel benutzt, muessen als Tag existieren: `Idle`,
+  `Run`, `Jump` (Professor). Neue Tags sind sofort als Animation vorhanden, werden
+  aber erst abgespielt, wenn der Code sie benutzt.
+
 ### 1.9 Entwickler-Werkzeuge (Testen ohne Durchspielen)
 
 > **Ausfuellhinweis:** Frueh einplanen, spaetestens wenn das Spiel mehr als
@@ -485,6 +529,9 @@ nur Palettenfarben; Texte englisch direkt im Code (kein Teil des Spiels).
   Testdatei gespeichert; der echte Spielstand bleibt unberuehrt.
 - **Teleport:** Strg + Linksklick setzt die Figur an die Mausposition.
 - **Unverwundbar** (Schalter).
+- **Time markers** (Schalter, Standard aus, 09.11.2026): Objekte in der
+  Zeitblase farbig umranden. Nur zum Testen; im fertigen Spiel gibt es keine
+  Umrandung (das Menue ist im Export aus).
 - **Sprung zur Levelauswahl / ins Hauptmenue.**
 - **Aktuellen Stand als Szenario speichern.**
 - [Weitere, z. B. Clip-Aufnahme fuer Abspann oder Trailer]
@@ -733,7 +780,9 @@ die Schieberegler zur Formung der Sphaere noch.
 - Zusammenhaengende Objekte (z. B. ein Pendel) werden als Ganzes
   beeinflusst.
 - Empfehlung: beeinflusste Objekte sichtbar markieren (z. B. farbiger
-  Schimmer).
+  Schimmer). Festgelegt am 09.11.2026: keine farbige Umrandung im fertigen
+  Spiel (nur als Test-Option, siehe 2.3 Umsetzung). Ob es spaeter eine
+  andere Kennzeichnung gibt (z. B. Shader), ist offen.
 
 **Werte** (Datendatei `data/time_bubble_settings.tres`, im Inspector
 aenderbar; Skript `scripts/time_bubble/time_bubble_settings.gd`):
@@ -764,7 +813,9 @@ Formregler erlauben, gezielt nur einzelne Objekte zu erfassen.
   rechnerisch, ohne Physik-Ebene), und stellt `time_scale` bereit. Das
   Objekt rechnet mit `delta * time_scale`.
 - Markierung: Beeinflusste Objekte bekommen einen 1-px-Rahmen in der Farbe
-  der Stufe (Palettenfarbe, nicht halbtransparent).
+  der Stufe (Palettenfarbe, nicht halbtransparent). **Nur zum Testen**
+  (festgelegt am 09.11.2026): Standard aus, einschaltbar im F1-Menue
+  ("Time markers"); im fertigen Spiel nie sichtbar.
 - Zeitstufe umschalten (Schritt 6): Shift halten oeffnet das Bedienfeld
   (`scenes/ui/time_shifter_panel.tscn`), das Spiel pausiert. Der
   **Zeitregler** sieht aus wie eine Tankanzeige: Bogen aus drei Stuecken
@@ -837,6 +888,10 @@ Offene Punkte:
   Versetzen mehrerer Werfer), `projectile_speed` (Standard 120 px/s, langsamer
   als der Professor), `max_distance`, `active`. Sein Takt laeuft in der
   Zeitblase mit. Er ist Signal-Empfaenger (Lichtschranke kann ihn schalten).
+- Ladebalken (09.11.2026, Wunsch des Nutzers): Im Gehaeuse fuellt sich ein
+  senkrechter gelber Balken (6 x 22 px) bis zum naechsten Schuss; ist er voll,
+  feuert der Werfer. Er laeuft mit dem Takt, also auch langsamer oder
+  schneller in der Zeitblase, und bleibt stehen, solange der Werfer aus ist.
 
 **Pendel / rotierende Gefahr**
 
@@ -845,6 +900,20 @@ Offene Punkte:
 - Ideen fuer Beschleunigung: Ein schneller schwingendes Pendel trifft einen
   Schalter oder zerschlaegt eine Wand; zwei gegenlaeufige Pendel
   synchronisieren, um eine Luecke zu erzeugen.
+- Umgesetzt (Schritt 11, 09.11.2026): `scenes/objects/pendulum.tscn`, eine
+  Szene fuer beide Varianten. Der Node ist der Aufhaengepunkt; daran haengt an
+  einer Stange eine Stachelkugel (32 x 32, toedlicher Kreis mit Radius 13,
+  etwas nachsichtig). Nur die Kugel ist toedlich, die Stange nicht. Im
+  Inspector: `mode` (schwingen / drehen), `length` (Standard 96 px),
+  `amplitude` (nur schwingen, Grad zu jeder Seite, Standard 45), `period`
+  (ganze Schwingung bzw. Drehung, Standard 1,6 s), `start_phase` (zum
+  Versetzen mehrerer Pendel), `clockwise` (nur drehen). Im Editor sofort an
+  der Startstellung sichtbar. Die Zeitblase wirkt, sobald sie die Kugel
+  beruehrt. Das Bild der Kugel dreht sich nicht mit (sonst passen Licht und
+  Schatten nicht), nur die Stange schwenkt.
+- Noch nicht gebaut: Pendel trifft Schalter bzw. zerschlaegt eine Wand
+  (Ideen oben); Pendel als Signal-Empfaenger. Folgt, wenn ein Level es
+  braucht.
 
 **Fliegende Plattform**
 
@@ -861,6 +930,8 @@ Offene Punkte:
   wartet auf ein Signal) und `wait_time` (Pause an jedem Ende in Sekunden,
   laeuft in der Zeitblase mit; Standard 0). Die Plattform ist
   Signal-Empfaenger (siehe unten).
+- Von unten durchspringbar (09.11.2026, Wunsch des Nutzers): Einweg-Kollision,
+  man stoesst nicht mit dem Kopf an und landet oben drauf.
 
 **Lichtschranke (neu, 07.11.2026, Wunsch des Nutzers)**
 
@@ -875,8 +946,10 @@ Offene Punkte:
 - Loest einmal pro Durchqueren aus; wer im Strahl stehen bleibt, loest nicht
   erneut aus. Beim Ausloesen blitzt der Strahl kurz weiss.
 - Aussehen: Strahl 3 px (`e83b3b`, Kern `f68181`), verbraucht `6e2727`.
-- Offen: Ob die Zeitblase auf die Lichtschranke wirkt (bisher nicht) und ob
-  auch Projektile sie ausloesen (dann deren Ebene in die Maske aufnehmen).
+- Auch Projektile loesen sie aus (festgelegt am 09.11.2026). Ausgeloest wird
+  nur, wenn der Strahl vorher frei war: Wer auf einem Projektil mitfliegt,
+  durchquert den Strahl zusammen mit ihm, das zaehlt als ein Durchqueren.
+- Offen: Ob die Zeitblase auf die Lichtschranke wirkt (bisher nicht).
 
 **Signal-Empfaenger (Schnittstelle, 07.11.2026)**
 
@@ -1288,7 +1361,7 @@ gekuerzt, nicht der Puffer.
   Beruehrung, man kann daraufstehen und mitfliegen.
 - [x] 10. Schalter bzw. Trefferflaeche und Tuer (Projektil loest Impuls
   aus).
-- [ ] 11. Pendel bzw. rotierende Gefahr.
+- [x] 11. Pendel bzw. rotierende Gefahr.
 - [ ] 12. Timer bzw. Zeitschaltuhr (z. B. Tuer bleibt laenger offen).
 - [ ] 13. Formregler: vertikal, horizontal, Radius, dazu die
   Oszilloskop-Anzeige.
@@ -1336,21 +1409,21 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 09.11.2026, Version v0.18**
+**Stand vom 09.11.2026, Version v0.19**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
-- **Zuletzt erledigt:** Schritt 10 (Trefferflaeche und Tuer); heller
-  Testhintergrund. Der Nutzer stimmt das Lauftempo (`run_speed`) selbst auf
-  die Laufanimation ab.
-- **Naechster Schritt:** 11 (Pendel bzw. rotierende Gefahr).
+- **Zuletzt erledigt:** Schritt 11 (Pendel bzw. rotierende Gefahr);
+  Projektile loesen Lichtschranken aus.
+- **Naechster Schritt:** 12 (Timer bzw. Zeitschaltuhr).
 - **Spielbar:** Testlevel mit dem Professor (Idle-Sprite): laufen,
   springen, Kamera folgt; Shift + Maus stellt die Zeitstufe ein, fliegende
   Plattformen reagieren auf die Blase; Lichtschranke schaltet eine
   Plattform an und aus; Start in der Klonstation, Starkstrom-Luecke ist
   toedlich, danach Neustart; zwei Werfer feuern Projektile (Mitfliegen
   moeglich, seitlich toedlich); das Boden-Projektil trifft eine
-  Trefferflaeche und schaltet damit eine Tuer auf und zu; F1-Entwicklermenue.
-- **Noch zu testen (vom Nutzer):** nichts.
+  Trefferflaeche und schaltet damit eine Tuer auf und zu; ein Pendel unter
+  Block 2 und eine rotierende Stachelkugel am Boden; F1-Entwicklermenue.
+- **Noch zu testen (vom Nutzer):** Schritt 11.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente
   (2.4), Reihenfolge der Upgrades (2.3), Look, Sound und Musik (1.2).

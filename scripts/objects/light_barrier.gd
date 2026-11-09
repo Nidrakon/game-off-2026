@@ -1,7 +1,7 @@
 @tool
 extends Area2D
 ## Lichtschranke: ein Laserstrahl zwischen zwei Sendern. Laeuft der Professor
-## hindurch, sendet sie ein Signal an alle Ziele in "targets" (z. B. eine
+## hindurch oder fliegt ein Projektil hindurch (Ebenen 2 und 3), sendet sie ein Signal an alle Ziele in "targets" (z. B. eine
 ## fliegende Plattform an- oder ausschalten).
 ## Der Node selbst ist Sender A; Sender B liegt bei "beam_end".
 ## Im Editor sind Strahl und Sender sofort sichtbar (@tool), damit man sie
@@ -58,7 +58,12 @@ func _process(delta: float) -> void:
 
 
 func _on_body_entered(_body: Node2D) -> void:
-	if _used:
+	# Nur ausloesen, wenn der Strahl vorher frei war. Wer auf einem Projektil
+	# mitfliegt, durchquert den Strahl zusammen mit ihm; das zaehlt als ein
+	# Durchqueren (sonst wuerde "umschalten" zweimal schalten = nichts).
+	var inside := get_overlapping_bodies()
+	inside.erase(_body)
+	if _used or not inside.is_empty():
 		return
 	if one_shot:
 		_used = true

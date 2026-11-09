@@ -29,3 +29,6 @@ CLAUDE.local.md
 # Asset inbox: content is not versioned, only the marker file
 /_inbox/*
 !/_inbox/.gdignore
+
+# Lokale Einstellungen (Pfade auf dem eigenen Rechner), nicht versionieren
+data/*.local.cfg

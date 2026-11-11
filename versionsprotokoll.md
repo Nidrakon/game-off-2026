@@ -51,6 +51,12 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.23 - 2026-11-09: Schritt 12, Zeitschaltuhr**
+
+- Neu: Zeitschaltuhr (`time_switch`): Signal startet einen Countdown, sendet beim Start und beim Ablauf je ein Signal an ihre Ziele; Restzeit als Tortenstueck auf dem Ziffernblatt; reagiert auf die Zeitblase; Optionen Neustart, Autostart, Wiederholen.
+- Testlevel: Trefferflaeche -> Zeitschaltuhr -> Tuer (2,5 s offen).
+- Aseprite-Sync: Option `layers`, exportiert nur die Ebene `charakter`, auch wenn sie beim Speichern ausgeblendet ist (vorher landeten eingeblendete Hilfsebenen im Spiel).
+
 **v0.22 - 2026-11-09: Sprunganimation, eigene Arbeitsdatei fuer den Sync**
 
 - Sprunganimation (Platzhalter des Nutzers, 8 Bilder): laeuft in der Luft einmal ab dem Absprung und bleibt auf dem letzten Bild.

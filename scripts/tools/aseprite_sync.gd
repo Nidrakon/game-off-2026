@@ -18,7 +18,8 @@ const BASE_FPS := 10.0
 
 
 ## Liest die Eintraege aus data/aseprite_sync.cfg (plus lokale Ueberschreibung).
-## Jeder Eintrag: { name, source, project_source, sheet, data, frames, play_once }.
+## Jeder Eintrag: { name, source, project_source, sheet, data, frames,
+## play_once, layers }.
 ## "source" ist die Datei, in der gezeichnet wird; "project_source" die Kopie
 ## im Projekt (gleich, wenn es keine lokale Ueberschreibung gibt).
 static func load_entries() -> Array[Dictionary]:
@@ -42,6 +43,7 @@ static func load_entries() -> Array[Dictionary]:
 			"data": sheet.get_basename() + ".json",
 			"frames": config.get_value(section, "frames", ""),
 			"play_once": config.get_value(section, "play_once", PackedStringArray()),
+			"layers": config.get_value(section, "layers", PackedStringArray()),
 		})
 	return entries
 
@@ -55,10 +57,15 @@ static func modified_time(path: String) -> int:
 
 
 ## Exportiert Sheet und Daten mit dem Aseprite-Kommandozeilenmodus.
-## Ausgeblendete Ebenen (Hilfsebenen) kommen dabei nicht mit ins Bild.
+## Sind "layers" angegeben, kommen nur diese Ebenen ins Bild, egal ob sie
+## beim Speichern sichtbar waren (Hilfsebenen bleiben so immer draussen).
+## Sonst gilt: nur sichtbare Ebenen.
 static func export_sheet(aseprite_exe: String, entry: Dictionary) -> Error:
-	var args := PackedStringArray([
-		"-b", ProjectSettings.globalize_path(entry.source),
+	var args := PackedStringArray(["-b"])
+	for layer in entry.get("layers", PackedStringArray()):
+		args.append_array(["--layer", layer])
+	args.append_array([
+		ProjectSettings.globalize_path(entry.source),
 		"--sheet", ProjectSettings.globalize_path(entry.sheet),
 		"--sheet-type", "horizontal",
 		"--data", ProjectSettings.globalize_path(entry.data),

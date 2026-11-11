@@ -486,6 +486,10 @@ sofort im Spiel, ohne dass jemand von Hand exportiert.
 - `play_once`: Animationen, die einmal laufen und auf dem letzten Bild stehen
   bleiben (Professor: `jump`); ebenso Tags, bei denen in Aseprite "Repeat"
   gesetzt ist. Alle anderen laufen in Schleife.
+- `layers`: nur diese Ebenen exportieren, egal ob sie beim Speichern sichtbar
+  sind (Professor: `charakter`). Grund (09.11.2026): Der Nutzer blendet beim
+  Zeichnen Hilfsebenen ein und die Figur aus; ohne diese Angabe landete
+  genau dieser Zustand im Spiel.
 - **Eigene Arbeitsdatei ausserhalb des Projekts:** In
   `data/aseprite_sync.local.cfg` (in `.gitignore`, nur auf dem Rechner)
   im selben Abschnitt `source` mit dem vollen Pfad setzen. Das Plugin
@@ -955,7 +959,8 @@ Offene Punkte:
 
 - Alles, was von Ausloesern (Lichtschranke, Trefferflaeche) gesteuert
   wird, hat die Funktionen `activate()`, `deactivate()` und `toggle()`.
-  Bisher: fliegende Plattform, Projektil-Werfer, Tuer. Spaetere Empfaenger
+  Bisher: fliegende Plattform, Projektil-Werfer, Tuer, Zeitschaltuhr (die
+  selbst auch Ausloeser ist). Spaetere Empfaenger
   bauen dieselben drei Funktionen ein; der Ausloeser muss dafuer nicht
   geaendert werden. Das Senden an die Ziele uebernimmt bei allen Ausloesern
   `scripts/objects/signal_sender.gd`.
@@ -969,6 +974,22 @@ Offene Punkte:
 - Gut zum Erlernen der Mechanik ohne Gefahr.
 - Ideen: Tuer mit Zeitschaltuhr laenger offen halten; Bombe bremsen, um zu
   entkommen, oder beschleunigen, um eine Wand zu sprengen.
+- Umgesetzt (Schritt 12, 09.11.2026): Zeitschaltuhr
+  `scenes/objects/time_switch.tscn` (32 x 32, Node in der Mitte, keine
+  Kollision). Sie sitzt zwischen Ausloeser und Zielen: Ein Signal startet den
+  Countdown und sendet sofort `start_action` (Standard einschalten, z. B. Tuer
+  auf); nach Ablauf sendet sie `end_action` (Standard ausschalten, Tuer zu).
+  Im Inspector: `duration` (Standard 3 s), `targets`, `start_action`,
+  `end_action`, `restart_on_trigger` (neues Signal startet die Zeit von vorn,
+  Standard an), `autostart`, `repeat` (Taktgeber, startet nach Ablauf neu).
+- Signal-Empfaenger: `activate()` = starten bzw. neu starten,
+  `deactivate()` = sofort beenden, `toggle()` = starten bzw. beenden. Ein
+  Neustart waehrend des Laufens sendet kein zweites Startsignal (wichtig bei
+  "umschalten").
+- Ziffernblatt: Die Restzeit schrumpft als gelbes Tortenstueck im
+  Uhrzeigersinn, im letzten Viertel rot; der Zeiger steht an der Kante.
+  In der Zeitblase laeuft sie langsamer oder schneller.
+- Noch nicht gebaut: Zeitbombe (Idee oben).
 
 **Toedliche Objekte: Baustein Hazard (07.11.2026)**
 
@@ -1362,7 +1383,7 @@ gekuerzt, nicht der Puffer.
 - [x] 10. Schalter bzw. Trefferflaeche und Tuer (Projektil loest Impuls
   aus).
 - [x] 11. Pendel bzw. rotierende Gefahr.
-- [ ] 12. Timer bzw. Zeitschaltuhr (z. B. Tuer bleibt laenger offen).
+- [x] 12. Timer bzw. Zeitschaltuhr (z. B. Tuer bleibt laenger offen).
 - [ ] 13. Formregler: vertikal, horizontal, Radius, dazu die
   Oszilloskop-Anzeige.
 - [ ] 14. Schrotthaufen und Upgrades: Regler werden schrittweise
@@ -1409,21 +1430,20 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 09.11.2026, Version v0.19**
+**Stand vom 09.11.2026, Version v0.23**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
-- **Zuletzt erledigt:** Schritt 11 (Pendel bzw. rotierende Gefahr);
-  Projektile loesen Lichtschranken aus.
-- **Naechster Schritt:** 12 (Timer bzw. Zeitschaltuhr).
-- **Spielbar:** Testlevel mit dem Professor (Idle-Sprite): laufen,
+- **Zuletzt erledigt:** Schritt 12 (Zeitschaltuhr).
+- **Naechster Schritt:** 13 (Formregler und Oszilloskop-Anzeige).
+- **Spielbar:** Testlevel mit dem Professor (Idle-, Lauf- und Sprunganimation): laufen,
   springen, Kamera folgt; Shift + Maus stellt die Zeitstufe ein, fliegende
   Plattformen reagieren auf die Blase; Lichtschranke schaltet eine
   Plattform an und aus; Start in der Klonstation, Starkstrom-Luecke ist
   toedlich, danach Neustart; zwei Werfer feuern Projektile (Mitfliegen
   moeglich, seitlich toedlich); das Boden-Projektil trifft eine
-  Trefferflaeche und schaltet damit eine Tuer auf und zu; ein Pendel unter
+  Trefferflaeche, die startet eine Zeitschaltuhr, die die Tuer 2,5 s oeffnet; ein Pendel unter
   Block 2 und eine rotierende Stachelkugel am Boden; F1-Entwicklermenue.
-- **Noch zu testen (vom Nutzer):** Schritt 11.
+- **Noch zu testen (vom Nutzer):** Schritt 12.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente
   (2.4), Reihenfolge der Upgrades (2.3), Look, Sound und Musik (1.2).

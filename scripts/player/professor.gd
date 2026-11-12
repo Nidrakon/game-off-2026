@@ -17,6 +17,8 @@ const DEATH_FLICKER_TIME := 0.5
 
 ## true, sobald der Professor tot ist; dann reagiert er auf nichts mehr.
 var is_dead := false
+## true, sobald er das Level durch den Ausgang verlassen hat.
+var is_leaving := false
 
 # Restzeit, in der nach dem Verlassen einer Kante noch gesprungen werden darf.
 var _coyote_timer := 0.0
@@ -39,12 +41,22 @@ func _ready() -> void:
 
 ## Toedlich getroffen: Bewegung stoppt, das Bild flackert und verschwindet.
 func die() -> void:
-	if is_dead or _is_invulnerable():
+	if is_dead or is_leaving or _is_invulnerable():
 		return
 	is_dead = true
 	velocity = Vector2.ZERO
 	_start_flicker(DEATH_FLICKER_TIME)
 	died.emit()
+
+
+## Verlaesst das Level durch den Ausgang: Steuerung dauerhaft gesperrt,
+## unsichtbar (er ist durch die Tuer gegangen), Gefahren wirken nicht mehr.
+func leave_level() -> void:
+	is_leaving = true
+	velocity = Vector2.ZERO
+	_controls_locked = INF
+	_flicker_left = 0.0
+	_sprite.visible = false
 
 
 ## Erscheinen in der Klonstation: kurz flackern, Steuerung so lange gesperrt.
@@ -73,7 +85,7 @@ func _start_flicker(duration: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if is_dead:
+	if is_dead or is_leaving:
 		return
 	_controls_locked = maxf(_controls_locked - delta, 0.0)
 	_update_timers(delta)

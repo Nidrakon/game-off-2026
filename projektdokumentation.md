@@ -254,6 +254,7 @@ Sprach-Unterordner.
 | Name | Datei | Aufgabe |
 | --- | --- | --- |
 | `Upgrades` | `scripts/autoload/upgrades.gd` (Klasse `TimeShifterUpgrades`) | Freigeschaltete Upgrades des Time Shifters (2.3); bleiben beim Neustart des Levels erhalten |
+| `LevelFlow` | `scripts/autoload/level_flow.gd` | Levelfolge aus `data/level_order.tres`, Wechsel zum naechsten Level mit Abblenden (2.9) |
 | `DevMenu` | `scripts/autoload/dev_menu.gd` | Entwickler-Menue (F1), Teleport, Schalter "Unverwundbar" (1.9); nur im Debug-Build aktiv |
 
 **Kollisionsebenen:**
@@ -402,6 +403,8 @@ seit Schritt 12a blau), `object_deadly_laser_emitter_placeholder` (16 x 16,
 dunkles Gehaeuse mit gelben Warnstreifen, grosse rote Linse rechts),
 `object_scrap_heap_placeholder` (32 x 48: oben der Haufen 32 x 24 mit
 Zahnrad, Rohr, Spule, Feder und Glasroehre, unten die Reste),
+`object_level_exit_placeholder` (64 x 64: links geschlossene Schiebetuer
+32 x 64 mit Lampenfeld und Warnstreifen, rechts offen),
 `object_electric_floor_placeholder` (16 x 32, zwei Bilder uebereinander),
 `object_clone_station_placeholder` (48 x 80),
 `object_projectile_placeholder` (64 x 32, Spitze rechts),
@@ -638,6 +641,8 @@ umbenannt oder umnummeriert, steht der alte Name hier mit dabei.
 | Werkstatt | Startbereich ganz unten, zaehlt nicht als eigentlicher Bereich |
 | Bereich | Grosser Teil des Labors (z. B. Teslakammer), besteht aus mehreren Leveln |
 | Level | Einzelner, abgeschlossener Abschnitt innerhalb eines Bereichs |
+| Ausgang | Schiebetuer am Ende eines Levels, fuehrt zum naechsten Level der Reihenfolge (`level_exit`, siehe 2.9) |
+| Level-Vorlage | Szene `level_base`, von der jedes Level erbt (siehe 2.9) |
 | Testlevel | Testszene zum Ausprobieren der Grundsysteme (`scenes/test/test_level.tscn`), derzeit Startszene des Projekts; heller Testhintergrund (Node `TestBackground`, Farbe `b2ba90`, im Inspector aenderbar; nur im Testlevel, 09.11.2026) |
 
 ### 1.11 Game Jam: Game Off 2026
@@ -1376,6 +1381,68 @@ Fortschritt bleibt erhalten.
   **Festgelegt am 10.11.2026:** Die Level baut der Nutzer selbst; die KI
   liefert die Bausteine.
 
+**Level-Builder (umgesetzt in Schritt 15, 12.11.2026)**
+
+So entsteht ein neues Level:
+
+1. Im Godot-Editor: Szene > Neue geerbte Szene, `scenes/levels/level_base.tscn`
+   waehlen, als `scenes/levels/<name>.tscn` speichern (englisch,
+   `snake_case`; der Dateiname ist die Kennung des Levels und wird danach
+   nicht mehr geaendert).
+2. Den Node `Ground` waehlen und mit dem Tileset malen (die Vorlage bringt
+   einen Raum von 60 x 34 Tiles mit Boden, Decke und Waenden mit, der
+   beliebig umgemalt und vergroessert werden darf). Die Kameragrenzen
+   folgen automatisch der bemalten Flaeche (Skript `scripts/levels/level.gd`,
+   Schalter `auto_camera_limits`).
+3. `CloneStation` (Start) und `LevelExit` (Ziel) an ihre Plaetze ziehen.
+4. Bausteine aus `scenes/objects/` per Drag-and-drop aus dem Dateisystem
+   ins Level ziehen und im Inspector einstellen (Tabelle unten). Signale:
+   beim Ausloeser die Ziele in `targets` eintragen.
+5. Das Level in `data/level_order.tres` an der gewuenschten Stelle der
+   Liste `levels` eintragen.
+
+Die Vorlage enthaelt: Hintergrund (`Background`), `Ground`, `CloneStation`,
+`LevelExit`, `Professor`, `Camera` (folgt dem Professor), Zeitsymbol
+(`TimeStageIndicator`) und Bedienfeld (`TimeShifterPanel`). Aendert sich die
+Vorlage (z. B. neues UI-Element), haben es sofort alle Level. Geerbte Nodes
+lassen sich im Level verschieben und einstellen, aber nicht loeschen.
+
+**Bausteine** (alle in `scenes/objects/`, Node-Ursprung jeweils wie
+angegeben; Details in 2.4):
+
+| Baustein | Szene | Ursprung | Wichtige Einstellungen |
+| --- | --- | --- | --- |
+| Klonstation | `clone_station` | Boden, Mitte | `spawn_time`, `restart_delay` |
+| Ausgang | `level_exit` | Boden, Mitte | `target_level` (leer = Reihenfolge) |
+| Fliegende Plattform | `flying_platform` | Mitte | `travel`, `travel_time`, `start_offset`, `wait_time`, `active` |
+| Lichtschranke | `light_barrier` | Sender A | `beam_end`, `targets`, `action`, `one_shot` |
+| Toedlicher Laser | `deadly_laser` | Sender A | `beam_end`, Takt, `start_offset`, `always_on`, `active` |
+| Starkstrom-Boden | `electric_floor` | links oben | `width_tiles` |
+| Projektil-Werfer | `projectile_launcher` | Mitte | Richtung, Takt, Tempo, `projectiles_block_laser` |
+| Trefferflaeche | `impact_switch` | Mitte | `targets`, `action` |
+| Tuer | `door` | Mitte | `travel`, `move_time`, `start_open` (Signal-Empfaenger) |
+| Zeitschaltuhr | `time_switch` | Mitte | `duration`, `targets`, Aktionen, `repeat` |
+| Pendel / Stachelkugel | `pendulum` | Aufhaengung bzw. Achse | `mode`, `length`, `amplitude`, `period`, `start_phase`, `clockwise` |
+| Schrotthaufen | `scrap_heap` | Boden, Mitte | `upgrade` |
+
+**Levelfolge:** `data/level_order.tres` (Skript `scripts/levels/level_order.gd`)
+listet die Level in Spielreihenfolge. Das globale System `LevelFlow` laedt
+beim Spielstart das erste Level (Hauptszene `scenes/boot.tscn`, wird mit
+Schritt 16 zum Titelbildschirm). Der Ausgang fuehrt zum naechsten Eintrag;
+nach dem letzten erscheint ein vorlaeufiger Endbildschirm ("To be
+continued...", Taste = von vorn). Liegt ein Level nicht in der Liste (z. B.
+das Testlevel), fuehrt sein Ausgang zum ersten Level.
+
+**Ausgang:** Schiebetuer 32 x 64 mit blinkendem gruenen Pfeil nach oben (das
+naechste Level liegt eine Etage hoeher). Laeuft der Professor hinein, geht
+die Tuer auf, er verschwindet (Steuerung gesperrt, Gefahren wirken nicht
+mehr), der Bildschirm blendet ueber das Rastermuster ab, das naechste Level
+laedt und blendet wieder auf (je Stufe 0,12 s, nur Palettenfarben).
+
+**Beispiel-Level (Platzhalter):** `level_example_1` (Bloecke zum Springen)
+und `level_example_2` (toedlicher Laser bis zur Decke) zeigen Vorlage und
+Levelfolge. Sie werden durch die echten Level des Nutzers ersetzt.
+
 **Erstes Level: Tutorial in der Werkstatt (festgelegt am 10.11.2026)**
 
 Ein gefuehrtes Tutorial mit langsam steigender Schwierigkeit:
@@ -1661,7 +1728,7 @@ gekuerzt, nicht der Puffer.
   die Oszilloskop-Anzeige.
 - [x] 14. Schrotthaufen und Upgrades: Regler werden schrittweise
   freigeschaltet.
-- [ ] 15. Level-Builder und Levelfolge: Level-Vorlage (Klonstation,
+- [x] 15. Level-Builder und Levelfolge: Level-Vorlage (Klonstation,
   Ausgang), alle Elemente als Drag-and-drop-Bausteine, Levelreihenfolge in
   einer Datendatei, Wechsel zum naechsten Level.
 - [ ] 16. Titelbildschirm (New Game, Continue, Beenden) und Speichern bzw.
@@ -1717,12 +1784,13 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 12.11.2026, Version v0.36**
+**Stand vom 12.11.2026, Version v0.37**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
-- **Zuletzt erledigt:** Schritt 14 (Schrotthaufen und Upgrades).
-- **Naechster Schritt:** 15 (Level-Builder und Levelfolge).
-- **Spielbar:** Testlevel mit dem Professor (Idle-, Lauf- und Sprunganimation): laufen,
+- **Zuletzt erledigt:** Schritt 15 (Level-Vorlage, Ausgang, Levelfolge).
+- **Naechster Schritt:** 16 (Titelbildschirm, Speichern und Laden).
+- **Spielbar:** Start (F5) mit zwei Beispiel-Leveln, verbunden ueber den Ausgang,
+  danach vorlaeufiger Endbildschirm. Testlevel (ueber F1 oder F6) mit dem Professor (Idle-, Lauf- und Sprunganimation): laufen,
   springen, Kamera folgt; Shift + Maus stellt Zeitstufe ein, Radius und Form nach dem
   Fund der Schrotthaufen (Stufe, Block 1); fliegende
   Plattformen reagieren auf die Blase; Lichtschranke schaltet eine

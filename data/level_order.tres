@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="LevelOrder" format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/level_order.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+levels = Array[String](["res://scenes/levels/level_example_1.tscn", "res://scenes/levels/level_example_2.tscn"])

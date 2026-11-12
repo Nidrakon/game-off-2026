@@ -51,6 +51,13 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.37 - 2026-11-12: Schritt 15: Level-Builder und Levelfolge**
+
+- Level-Vorlage `scenes/levels/level_base.tscn` (Raum, Klonstation, Ausgang, Professor, Kamera, UI); neue Level als geerbte Szene, Kameragrenzen automatisch aus dem Boden.
+- Ausgang (`level_exit`): Schiebetuer, Professor verschwindet darin, Abblenden ueber das Rastermuster, naechstes Level.
+- Levelreihenfolge in `data/level_order.tres`, globales System `LevelFlow`; Hauptszene `scenes/boot.tscn` startet das erste Level, nach dem letzten ein vorlaeufiger Endbildschirm.
+- Zwei Beispiel-Level, Bausteine-Tabelle und Anleitung zum Levelbau in der Doku (2.9).
+
 **v0.36 - 2026-11-12: Schritt 14: Schrotthaufen und Upgrades**
 
 - Globales System `Upgrades`: Radius (Drehregler) und Form (Cursor) werden freigeschaltet, bleiben beim Neustart des Levels erhalten, Kennungen fuer den Spielstand.

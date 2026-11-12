@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="ProfessorAnimationSettings" format=3 uid="uid://dkscel8ufiiso"]
+
+[ext_resource type="Script" uid="uid://ct8o3gy81nuka" path="res://scripts/player/professor_animation_settings.gd" id="1_settings"]
+
+[resource]
+script = ExtResource("1_settings")
+takeoff_time = 0.15

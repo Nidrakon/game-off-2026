@@ -4,14 +4,3 @@
 
 [resource]
 script = ExtResource("1_settings")
-run_speed = 200.0
-ground_acceleration = 1500.0
-ground_deceleration = 2000.0
-air_acceleration = 1100.0
-jump_height = 96.0
-time_to_apex = 0.35
-fall_gravity_multiplier = 1.6
-max_fall_speed = 1000.0
-jump_release_multiplier = 0.6
-coyote_time = 0.1
-jump_buffer_time = 0.12

@@ -12,8 +12,16 @@ extends Resource
 @export_range(1.0, 5.0, 0.1) var fast_factor: float = 2.0
 
 @export_group("Form")
-## Radius der Blase in Pixeln (1 Tile = 16 px).
+## Radius der Blase beim Start in Pixeln (1 Tile = 16 px).
 @export var radius: float = 80.0
+## Kleinster und groesster Radius, der sich mit dem Drehregler einstellen laesst.
+@export var radius_min: float = 32.0
+@export var radius_max: float = 80.0
+## Groesste Streckung durch den Cursor: Das Ei wird hoechstens so oft so lang
+## wie der Durchmesser des Kreises (2 = doppelt so lang).
+@export_range(1.0, 5.0, 0.1) var stretch_max: float = 2.0
+## Nahe den Mittellinien des Cursors rastet die Achse auf 0 ein (Anteil des Wegs).
+@export_range(0.0, 0.3, 0.01) var stretch_snap: float = 0.08
 
 @export_group("Aussehen")
 ## Farbe der Blase und der Markierung je Stufe (aus der Palette).

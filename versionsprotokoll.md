@@ -51,6 +51,67 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.34 - 2026-11-12: Drehregler begrenzt und magnetisch**
+
+- Groesster Radius 128 -> 80 px (untere Haelfte des alten Bereichs); Skala des Drehreglers umfasst den neuen Bereich.
+- Drehregler zeigt beim Klicken/Ziehen immer zur Maus (Luecke unten = naeherer Anschlag).
+- Oszilloskop wieder mit festem Massstab (groesstes Ei reicht gerade bis an den Rand), kein Herauszoomen mehr noetig.
+
+**v0.33 - 2026-11-12: Oszilloskop: Professor bleibt in der Mitte**
+
+- Kreuz des Professors wieder fest in der Bildschirmmitte, Groesse des Kreises bleibt; nur wenn die Spitze des Eis sonst ueber den Rand ragt, zoomt die Anzeige heraus.
+
+**v0.32 - 2026-11-12: Groessere Darstellung auf dem Oszilloskop**
+
+- Das Ei steht mittig auf dem Bildschirm (Kreuz des Professors rueckt gegen die Streckrichtung), das groesste Ei reicht gerade von Rand zu Rand; der Kreis mit Startradius wird dadurch etwa 1,5-mal so gross.
+
+**v0.31 - 2026-11-12: Kleineres Ei, Oszilloskop zeigt es immer ganz**
+
+- Groesste Streckung 2,5 -> 2 (Ei hoechstens doppelt so lang wie der Kreis).
+- Oszilloskop: Massstab aus groesstem Radius und groesster Streckung berechnet, das Ei ist immer vollstaendig zu sehen.
+
+**v0.30 - 2026-11-11: Zeitblase als Ei in Cursorrichtung**
+
+- Die Blase streckt sich in Richtung des Cursors (auch schraeg, z. B. Ecke x = y = 1) statt getrennt je Achse.
+- Form ist ein Ei: Halbkreis um den Professor, schmaler Teil (halbe Ellipse) nach aussen. Beruehrungstest ueber das Umriss-Polygon; Oszilloskop zeigt dieselbe Form.
+
+**v0.29 - 2026-11-11: Cursor auf dem Oszilloskop statt Schieberegler**
+
+- Formregler: Die beiden Schieberegler sind entfallen, stattdessen ein in x und y beweglicher Cursor auf dem Oszilloskop (Klicken/Ziehen, Einrasten an den Mittellinien, Rechtsklick = Mitte). Oszilloskop auf 152 x 152 vergroessert.
+- Sprungwerte: Die eingestellten Werte entsprechen bereits den Standardwerten, keine Aenderung noetig.
+
+**v0.28 - 2026-11-11: Verzoegerten Absprung zurueckgenommen**
+
+- Ausholen vor dem Sprung wieder entfernt (Steuerung fuehlte sich indirekt an): Sprung startet sofort, Absprung-Bild zeitgesteuert nach dem Abheben (`takeoff_time` 0,1 s wieder in den Animationswerten).
+
+**v0.27 - 2026-11-11: Ausholen vor dem Sprung, Entwurf der Sprung-Bilder**
+
+- Sprung beginnt erst nach dem Absprung-Bild: Ausholzeit `jump_windup_time` (0,1 s) in den Bewegungswerten; Coyote-Sprung und Kante waehrend des Ausholens springen sofort.
+- Absprung-Zeit aus den Animationswerten entfernt (jetzt Teil der Bewegung), Landungszeit 0,1 s.
+- Entwurf der 5 Sprung-Bilder in einer Kopie der Arbeitsdatei des Nutzers (ausserhalb des Repos), Hilfsebenen ausgefuellt.
+
+**v0.26 - 2026-11-11: Sprunganimation nach Geschwindigkeit**
+
+- Sprung (jetzt 5 Bilder) wird nach der senkrechten Geschwindigkeit gezeigt: Steigen, Hoehepunkt, Fallen; Absprung- und Landungsbild zeitgesteuert.
+- Neuer Animator im Professor (`professor_animator.gd`), Werte in `data/professor_animation.tres` (Zeiten, Hoehepunkt-Geschwindigkeit, Bildnummern, Laufschwelle).
+- Aseprite-Sync: `play_once` fuer den Sprung entfernt (nicht mehr noetig).
+
+**v0.25 - 2026-11-11: Schritt 13, Formregler und Oszilloskop**
+
+- Zeitblase mit Radius (32 bis 128 px) und einseitiger Streckung je Achse (Ei-Form, bis 2,5-facher Durchmesser); Erfassung und Zeichnung als Ellipse.
+- Bedienfeld neu aufgebaut: Zeitregler, Oszilloskop (Leuchtspur der Blasenform, Tempo je Zeitstufe), vertikaler und horizontaler Schieberegler, Drehregler fuer den Radius; Rechtsklick setzt zurueck, Schieber rasten in der Mitte ein.
+- Grenzen und Einrasten in `data/time_bubble_settings.tres`.
+
+**v0.24 - 2026-11-11: Konzept Intro, Tutorial und neue Bausteine (nur Doku)**
+
+- Intro als Comic zum Durchklicken ohne Text, vier Szenen; neue Pointe am Ende (Keycard war nie kaputt) (3.5).
+- Tutorial-Level in der Werkstatt, Level baut der Nutzer selbst; neue Bausteine Wandhinweis, Interaktionstaste E, Fahrstuhl, Rohre-Tileset (2.2, 2.9).
+- Toedlicher Laser im Takt geplant, Lichtschranke wird blau (2.4).
+- Zeitblase spaeter als Shader mit Wobble und chromatischer Aberration (2.3, 1.7, 1.11).
+- Neue Regel 17: Zeiten jedes Bausteins im Inspector einstellbar, mit Startversatz (1.4).
+- Aufgabenliste: neue Schritte 12a, 16a, 19a, 19b; Schritte 17, 22, 23 angepasst.
+- Aseprite-Sync: Professor exportiert wieder alle beim Speichern sichtbaren Ebenen, auch Hilfsebenen (zum Testen gewollt); `layers` bleibt als Option.
+
 **v0.23 - 2026-11-09: Schritt 12, Zeitschaltuhr**
 
 - Neu: Zeitschaltuhr (`time_switch`): Signal startet einen Countdown, sendet beim Start und beim Ablauf je ein Signal an ihre Ziele; Restzeit als Tortenstueck auf dem Ziffernblatt; reagiert auf die Zeitblase; Optionen Neustart, Autostart, Wiederholen.

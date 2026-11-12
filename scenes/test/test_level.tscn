@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://b4cpu81l4003h"]
 
-[ext_resource type="TileSet" path="res://graphics/tilesets/tileset_placeholder.tres" id="1_euepx"]
+[ext_resource type="TileSet" uid="uid://d0qfria3qtena" path="res://graphics/tilesets/tileset_placeholder.tres" id="1_euepx"]
 [ext_resource type="PackedScene" path="res://scenes/player/professor.tscn" id="2_fn47k"]
 [ext_resource type="Script" uid="uid://bnjqlogb0fru0" path="res://scripts/camera/level_camera.gd" id="3_ipv86"]
 [ext_resource type="PackedScene" path="res://scenes/objects/light_barrier.tscn" id="3_mr7is"]
@@ -75,17 +75,17 @@ position = Vector2(1064, 472)
 targets = [NodePath("../TimeSwitch")]
 action = 1
 
-[node name="PendulumSwing" parent="." instance=ExtResource("15_pendulum")]
+[node name="PendulumSwing" parent="." unique_id=1681843596 instance=ExtResource("15_pendulum")]
 position = Vector2(464, 368)
 period = 1.4
 
-[node name="PendulumRotate" parent="." instance=ExtResource("15_pendulum")]
+[node name="PendulumRotate" parent="." unique_id=149904272 instance=ExtResource("15_pendulum")]
 position = Vector2(800, 450)
 mode = 1
 length = 32.0
 period = 2.0
 
-[node name="TimeSwitch" parent="." node_paths=PackedStringArray("targets") instance=ExtResource("16_timer")]
+[node name="TimeSwitch" parent="." unique_id=281475416 node_paths=PackedStringArray("targets") instance=ExtResource("16_timer")]
 position = Vector2(928, 432)
 duration = 2.5
 targets = [NodePath("../Door")]

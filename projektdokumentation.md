@@ -180,6 +180,11 @@ Windows; siehe Kapitel 6.]
 16. **Jam-Regeln einhalten:** Alles, was die Teilnahme an der Game Off 2026
     gefaehrden koennte (Deadline, oeffentliches Repo, Lizenzen), hat Vorrang.
     Die KI weist rechtzeitig auf die Deadline hin (siehe 1.11).
+17. **Zeiten jedes Bausteins einstellbar (festgelegt am 10.11.2026):** Jeder
+    Baustein mit Takt, Tempo oder Dauer bekommt dafuer Parameter im
+    Inspector, damit der Nutzer beim Levelbau steuern kann, wie schnell er
+    laeuft. Wo mehrere Exemplare gegeneinander versetzt laufen sollen, kommt
+    ein Startversatz dazu. Alle diese Zeiten laufen in der Zeitblase mit.
 
 **Kenntnisstand des Nutzers:** Erste kleine Spiele mit Godot entwickelt,
 Basiskenntnisse in GDScript. Daraus folgt:
@@ -371,7 +376,9 @@ mit allen Verweisen.
 - Ausnahme (festgelegt am 04.11.2026): Die **Zeitblase** darf
   halbtransparent sein; die dabei auf dem Bildschirm entstehenden
   Mischfarben sind erlaubt. Die Ausgangsfarben kommen trotzdem aus der
-  Palette. Umsetzung voraussichtlich als Shader.
+  Palette. Umsetzung voraussichtlich als Shader. Das gilt auch fuer die
+  Farben, die die chromatische Aberration des geplanten Blasen-Shaders
+  erzeugt (siehe 2.3, Darstellung der Zeitblase, 10.11.2026).
 - Feste Grundfarben: [Hintergrund, Schrift, Umriss, Hervorhebung].
 - Stilregeln: [Lichtrichtung, Umrissfarbe, Abstufungen je Material,
   Verlaeufe ja/nein].
@@ -400,16 +407,49 @@ werden mit der echten Grafik (Schritt 19) ersetzt.
 **Professor-Sprite (vom Nutzer, 05.11.2026, aktualisiert 09.11.2026;
 wird ueber den Aseprite-Sync automatisch exportiert, siehe 1.8):**
 `graphics/source/professor.aseprite` (Rahmen 64 x 64, Figur ca. 30 x 57 px,
-also gut 3,5 Tiles hoch; 20 Frames: Tag `Idle` = Frames 1-4, Tag `Run` =
-Frames 5-12, Tag `Jump` = Frames 13-20, Jump noch Platzhalter des Nutzers). Die Ebenen ausser `charakter` sind Hilfsebenen des Nutzers und
-bleiben unsichtbar; der Export nimmt nur sichtbare Ebenen. Exportiert als
+also gut 3,5 Tiles hoch; 17 Frames: Tag `Idle` = Frames 1-4, Tag `Run` =
+Frames 5-12, Tag `Jump` = Frames 13-17, Stand 11.11.2026). Die Ebenen ausser
+`charakter` sind Hilfsebenen des Nutzers; der Export nimmt, was beim
+Speichern sichtbar ist (siehe 1.8). Exportiert als
 Streifen `professor_sheet.png` (`Aseprite -b graphics/source/professor.aseprite
 --sheet graphics/sprites/professor/professor_sheet.png --sheet-type
 horizontal`), eingebunden ueber `professor_sprite_frames.tres` (Animationen
 `idle`, `run`, `jump`, Bilddauern wie in Aseprite). Laufanimation am Boden
-ab 10 px/s, sonst Idle. In der Luft (Sprung oder von einer Kante gefallen)
-laeuft `jump` einmal ab Beginn und bleibt auf dem letzten Bild stehen; 8 x
-0,08 s = 0,64 s, etwa so lang wie ein voller Sprung (ca. 0,63 s). Die
+ab 10 px/s, sonst Idle.
+
+**Sprunganimation geschwindigkeitsgesteuert (Wunsch des Nutzers,
+11.11.2026):** Die 5 Bilder von `jump` werden nicht nach Zeit abgespielt,
+sondern vom Animator (`scripts/player/professor_animator.gd`, Kind-Node
+`Animator` im Professor) gewaehlt:
+
+| Bild (im Tag, ab 0) | Wann | Steuerung |
+| --- | --- | --- |
+| 0 Absprung | direkt nach dem Absprung, `takeoff_time` lang (0,1 s); der Sprung selbst startet sofort beim Druecken | Zeit |
+| 1 Steigen | steigt schneller als `apex_speed` | Geschwindigkeit |
+| 2 Hoehepunkt | langsamer als `apex_speed` (120 px/s), kurz vor und nach dem hoechsten Punkt | Geschwindigkeit |
+| 3 Fallen | faellt schneller als `apex_speed` | Geschwindigkeit |
+| 4 Landung | nach dem Aufsetzen, `landing_time` lang (0,1 s), dann Idle bzw. Laufen | Zeit |
+
+Faellt er ohne Sprung von einer Kante, gibt es kein Absprungbild (er beginnt
+mit dem Hoehepunkt-Bild).
+
+**Verworfen (11.11.2026):** Ein verzoegerter Absprung (erst das
+Absprung-Bild am Boden, dann der Sprung) wurde ausprobiert und vom Nutzer
+wieder verworfen, weil sich die Steuerung dadurch indirekt anfuehlt. Der
+Sprung startet sofort beim Druecken; das Absprung-Bild erscheint direkt
+nach dem Abheben.
+
+**Entwurf der Sprung-Bilder (11.11.2026):** Auf Wunsch hat die KI in einer
+Kopie der Arbeitsdatei des Nutzers (`character_mad_inventor_jump_entwurf.aseprite`,
+im Aseprite-Ordner des Nutzers, nicht im Repo) die 5 Sprung-Bilder entworfen:
+aus dem aufrechten Laufbild zusammengesetzt (Ducken, Strecken mit Arm nach
+vorn oben, Beine angezogen mit Arm nach vorn, Fallen mit Arm hoch, Ducken),
+Hilfsebenen (Kopf, Hand, Fuss) passend ausgefuellt. Der Nutzer uebernimmt bzw.
+ueberarbeitet daraus, was ihm gefaellt. Alle Werte und die Bildnummern stehen in
+`data/professor_animation.tres` (Skript
+`scripts/player/professor_animation_settings.gd`), dazu `run_min_speed`.
+Bei einem vollen Sprung (Start ca. 550 px/s) steht das Hoehepunkt-Bild mit
+120 px/s etwa 0,13 s. Die
 Fuesse stehen in Zeile 62 des Rahmens. **Festgelegt am 07.11.2026:** Die
 Figur bleibt in dieser Groesse; Kollision, Bewegung, Zeitblase und Level
 sind darauf abgestimmt (siehe 2.2, 2.9). Neue Figuren-Sprites sollten im
@@ -484,12 +524,16 @@ sofort im Spiel, ohne dass jemand von Hand exportiert.
 - Weitere Figuren: Abschnitt in `data/aseprite_sync.cfg` ergaenzen
   (`source`, `sheet`, `frames`, optional `play_once`).
 - `play_once`: Animationen, die einmal laufen und auf dem letzten Bild stehen
-  bleiben (Professor: `jump`); ebenso Tags, bei denen in Aseprite "Repeat"
-  gesetzt ist. Alle anderen laufen in Schleife.
-- `layers`: nur diese Ebenen exportieren, egal ob sie beim Speichern sichtbar
-  sind (Professor: `charakter`). Grund (09.11.2026): Der Nutzer blendet beim
-  Zeichnen Hilfsebenen ein und die Figur aus; ohne diese Angabe landete
-  genau dieser Zustand im Spiel.
+  bleiben; ebenso Tags, bei denen in Aseprite "Repeat" gesetzt ist. Alle
+  anderen laufen in Schleife. Beim Professor derzeit leer (der Sprung wird
+  vom Animator Bild fuer Bild gesetzt).
+- `layers` (optional): nur diese Ebenen exportieren, egal ob sie beim
+  Speichern sichtbar sind. **Beim Professor bewusst nicht gesetzt**
+  (Wunsch des Nutzers, 11.11.2026): Exportiert wird, was beim Speichern
+  sichtbar ist, auch eingeblendete Hilfsebenen, damit der Nutzer sie zum
+  Testen im Spiel sieht. Folge: Mit eingeblendeten Hilfsebenen meldet
+  `check_palette.gd` halbtransparente Pixel im Sheet. Vor einem Release
+  die Datei mit ausgeblendeten Hilfsebenen speichern.
 - **Eigene Arbeitsdatei ausserhalb des Projekts:** In
   `data/aseprite_sync.local.cfg` (in `.gitignore`, nur auf dem Rechner)
   im selben Abschnitt `source` mit dem vollen Pfad setzen. Das Plugin
@@ -580,6 +624,11 @@ umbenannt oder umnummeriert, steht der alte Name hier mit dabei.
 | Schrotthaufen | Fundstelle, mit der der Professor den Time Shifter um eine Funktion erweitert (Upgrade) |
 | Klonstation | Checkpoint am Anfang jedes Levels (siehe 2.6) |
 | Trefferflaeche, Schalter | Wird von einem Projektil ausgeloest und sendet ein Signal (`impact_switch`, siehe 2.4) |
+| Zeitschaltuhr | Countdown zwischen Ausloeser und Zielen (`time_switch`, siehe 2.4) |
+| Toedlicher Laser | Strahl zwischen zwei Sendern im Takt an und aus, toetet bei Beruehrung (geplant, `deadly_laser`, siehe 2.4) |
+| Wandhinweis | Aufgemalte Taste(n) mit Wort an der Hintergrundwand, Baustein fuer das Tutorial (geplant, `wall_hint`, siehe 2.9) |
+| Rohre | Tileset mit Rohren und Dampf, automatisch verbindend, Vorder- und Hintergrund (geplant, `tileset_pipes`, siehe 2.9) |
+| Fahrstuhl | Steht in der Werkstatt; zu Beginn nicht nutzbar (Keycard "geroestet"), am Ende faehrt der Professor damit nach unten (siehe 3.5) |
 | Werkstatt | Startbereich ganz unten, zaehlt nicht als eigentlicher Bereich |
 | Bereich | Grosser Teil des Labors (z. B. Teslakammer), besteht aus mehreren Leveln |
 | Level | Einzelner, abgeschlossener Abschnitt innerhalb eines Bereichs |
@@ -609,6 +658,8 @@ Ansatz eigenstaendiger. Damit der Bezug eindeutig wird:
 - Bedienung ueber die **Shift-Taste** als "Kupplung" wie beim Gangschalten
   (siehe 2.2).
 - Option: sichtbare Farb- bzw. Pixelverschiebung innerhalb der Blase.
+  Geplant (10.11.2026) als Shader mit Wobble und chromatischer Aberration,
+  siehe 2.3, Darstellung der Zeitblase.
 
 **Regeln:**
 
@@ -699,6 +750,7 @@ Status: vorlaeufig festgehalten, kann sich noch aendern.
 | Nach links laufen | `move_left` | A | [ ] | [ ] |
 | Nach rechts laufen | `move_right` | D | [ ] | [ ] |
 | Springen | `jump` | Leertaste | [ ] | [ ] |
+| Interagieren (geplant, 10.11.2026) | `interact` | E (physische Taste) | [ ] | [ ] |
 | Bedienfeld des Time Shifters ("Kupplung") | `time_shifter_panel` | Shift gedrueckt halten | [ ] | [ ] |
 | Regler im Bedienfeld bedienen | (Maus-Eingabe auf die Regler) | Maus | [ ] | [ ] |
 | Zeitstufe per Mausrad (Wunsch des Nutzers, 09.11.2026) | (Mausrad bei offenem Bedienfeld) | Shift + Rad hoch = schneller, Shift + Rad runter = langsamer | [ ] | [ ] |
@@ -710,6 +762,8 @@ Status: vorlaeufig festgehalten, kann sich noch aendern.
 - Im normalen Spiel zeigt ein kleines Symbol oben links die aktuelle
   Zeitstufe (umgesetzt in Schritt 6). Die Blase selbst ist in der Spielwelt
   immer sichtbar.
+- **Interagieren (E):** z. B. am Fahrstuhl in der Werkstatt; dann erscheint
+  eine Sprechblase des Professors (siehe 2.9 Tutorial, 3.5).
 - Offen: Belegung von W und S (bisher nur "WASD" genannt).
 - Die vorlaeufigen Tasten 1 / 2 / 3 aus Schritt 5 sind mit Schritt 6
   entfallen.
@@ -757,14 +811,13 @@ oder schneller laeuft. Der Professor selbst wird **nicht** beeinflusst.
 - **Zeitregler mit Anzeige** (Optik aehnlich einer Tankanzeige): drei feste
   Stufen: langsam (links), normal (Mitte), schnell (rechts). Nicht
   stufenlos.
-- **Vertikaler Schieberegler:** verformt die Sphaere in Y-Richtung
-  (elliptisch) bzw. verschiebt sie exzentrisch nach oben oder unten.
-- **Horizontaler Schieberegler:** verformt die Sphaere in X-Richtung bzw.
-  verschiebt sie exzentrisch nach links oder rechts. So kann die Blase vom
+- **Cursor auf dem Oszilloskop (ersetzt seit 11.11.2026 die beiden
+  Schieberegler):** in x und y beweglich; streckt die Sphaere zum Ei in
+  Richtung des Cursors (jede Richtung, auch schraeg). So kann die Blase vom
   Professor weg in eine Richtung zeigen.
 - **Drehregler:** Radius der Sphaere.
 - **Oszilloskop-Anzeige:** zeigt im XY-Modus als Lissajous-Figur die
-  aktuelle Form der Sphaere (Kreis bzw. Ellipse). Die Figur pulsiert oder
+  aktuelle Form der Sphaere (Kreis bzw. Ei). Die Figur pulsiert oder
   rotiert je nach Zeitstufe langsamer oder schneller.
 
 **Freischalten (festgelegt):** Vier Stellgroessen koennen fummelig werden,
@@ -772,7 +825,7 @@ deshalb werden die Regler schrittweise freigeschaltet. Der Professor findet
 Schrotthaufen, mit denen er den Time Shifter verbessert und eine neue
 Funktion erhaelt. Sie liegen frei platziert, jeweils kurz bevor ein Level die
 neue Funktion braucht (nicht an Bereichsgrenzen gebunden). Zu Beginn fehlen
-die Schieberegler zur Formung der Sphaere noch.
+der Cursor zur Formung der Sphaere noch.
 
 **Regeln der Zeitblase:**
 
@@ -785,8 +838,29 @@ die Schieberegler zur Formung der Sphaere noch.
   beeinflusst.
 - Empfehlung: beeinflusste Objekte sichtbar markieren (z. B. farbiger
   Schimmer). Festgelegt am 09.11.2026: keine farbige Umrandung im fertigen
-  Spiel (nur als Test-Option, siehe 2.3 Umsetzung). Ob es spaeter eine
-  andere Kennzeichnung gibt (z. B. Shader), ist offen.
+  Spiel (nur als Test-Option, siehe 2.3 Umsetzung). Sichtbar wird die
+  Wirkung kuenftig ueber den Blasen-Shader (siehe unten).
+
+**Darstellung der Zeitblase als Shader (geplant, festgelegt am 10.11.2026):**
+
+Die Blase wird spaeter nicht mehr als farbiger Kreis gezeichnet, sondern als
+Shader, der das Bild innerhalb ihres Bereichs leicht verzerrt.
+
+- **Effekt:** kleiner Wobble, als wuerde man durch Wasser oder eine
+  gekruemmte Glasscheibe schauen.
+- **Bereich:** nur innerhalb von Radius bzw. Form der Blase (auch bei der
+  Eiform durch den Formregler).
+- **Farben:** zusaetzlich eine leichte chromatische Aberration (Rot-Gruen-
+  bzw. Rot-Blau-Verschiebung der Farbkanaele wie bei alten 3D-Brillen). Die
+  dabei entstehenden Farben ausserhalb von Resurrect 64 sind erlaubt
+  (Ausnahme Zeitblase, 1.7). Passt zur Themen-Option "Farb- bzw.
+  Pixelverschiebung" (1.11).
+- **Stellschrauben:** Staerke von Verzerrung und Farbverschiebung als
+  Parameter, um zu experimentieren.
+- **Tempo (festgelegt):** Der Wobble passt zur Zeitstufe: langsam = traege,
+  schnell = hektisch, auf "normal" kaum sichtbar.
+- Ersetzt den bisherigen farbigen Kreis (siehe Umsetzung unten). Die Farben
+  langsam / normal / schnell bleiben fuer Bedienfeld und Symbol.
 
 **Werte** (Datendatei `data/time_bubble_settings.tres`, im Inspector
 aenderbar; Skript `scripts/time_bubble/time_bubble_settings.gd`):
@@ -794,12 +868,56 @@ aenderbar; Skript `scripts/time_bubble/time_bubble_settings.gd`):
 | Wert | Standard |
 | --- | --- |
 | Tempo auf Stufe langsam / schnell | x 0,3 / x 2,0 |
-| Radius | 80 px (5 Tiles) |
+| Radius beim Start / kleinster / groesster | 80 / 32 / 80 px (groesster bis 12.11.2026: 128) |
+| Groesste Streckung (Laenge des Eis) | 2-mal der Durchmesser (`stretch_max`; bis 12.11.2026: 2,5) |
+| Einrasten des Cursors an den Mittellinien | 8 % des Wegs (`stretch_snap`) |
 | Farbe langsam / normal / schnell | `4d9be6` (Blau) / `c7dcd0` (Hellgrau) / `fb6b1d` (Orange) |
 | Deckkraft Flaeche / Rand / Rand auf "normal" | 0,12 / 0,7 / 0,25 |
 
-Radius-Grenzen und Verformungs-Grenzen folgen mit den Formreglern
-(Schritt 13).
+**Formregler (umgesetzt in Schritt 13, 11.11.2026):**
+
+- **Verhalten (festgelegt am 11.11.2026):** einseitig strecken, als Ei in
+  Richtung des Cursors. Cursor in der Mitte = Kreis. Cursor rechts: Das Ei
+  streckt sich nach rechts vom Professor weg, die linke Kante bleibt beim
+  Radius. Cursor in der Ecke (z. B. x = y = 1): Ei schraeg nach rechts
+  unten. Verformen und Verschieben stecken damit im Cursor.
+- **Eiform (Wunsch des Nutzers, 11.11.2026):** Der breite Teil liegt um den
+  Professor, der schmale zeigt nach aussen. Hinten ein Halbkreis mit dem
+  Radius um den Professor, vorn eine halbe Ellipse bis zur Spitze (gleiche
+  Breite am Uebergang, also ohne Knick).
+- **Cursor statt Schieberegler (Wunsch des Nutzers, 11.11.2026):** Die
+  beiden Schieberegler sind entfallen. Auf dem Oszilloskop sitzt ein
+  Fadenkreuz-Cursor (offenes Quadrat in `fbb954` mit gestrichelten Linien in
+  `9e4539` quer ueber den Bildschirm). Klicken oder Ziehen auf dem
+  Bildschirm setzt ihn; der Rand des Cursor-Bereichs (6 px innerhalb des
+  Bildschirms) ist volle Streckung. Nahe den Mittellinien rastet jede Achse
+  einzeln ein.
+- Rechnung: Staerke a = Laenge des Cursor-Vektors (hoechstens 1, die Ecken
+  zaehlen also wie die Seitenmitten), Richtung = Richtung des Vektors.
+  Abstand der Spitze vom Professor = Radius x (1 + 2a x (stretch_max - 1)).
+  Beruehrung: Umriss als Polygon (64 Punkte) gegen das Rechteck des Objekts.
+- **Drehregler:** Radius, 32 bis 80 px (12.11.2026 auf die untere Haelfte
+  des alten Bereichs begrenzt, groesser war zu gross; die Skala umfasst den
+  neuen Bereich, der Startradius 80 steht damit am rechten Anschlag).
+  Bedienung "magnetisch": Klicken bzw. Maustaste halten, der Zeiger dreht
+  sich zur Maus (links unten = kleinster, oben = Mitte, rechts unten =
+  groesster Radius). Zeigt die Maus in die Luecke unten, bleibt er am
+  naeheren Anschlag. Die Maus darf beim Ziehen den Regler verlassen.
+- Rechtsklick setzt zurueck (auf dem Oszilloskop: Cursor in die Mitte;
+  auf dem Drehregler: Startradius).
+- **Oszilloskop:** gruene Leuchtspur auf dunklem Raster zeigt die Form der
+  Blase relativ zum Professor (kleines Kreuz, immer in der Bildschirmmitte).
+  Fester Massstab (12.11.2026): Die Spitze des groesstmoeglichen Eis
+  (groesster Radius, volle Streckung) reicht vom Kreuz gerade bis an den
+  Rand, jede Form ist also immer vollstaendig zu sehen. Der Kreis mit
+  Startradius hat etwa 23 px Radius. Der Leuchtpunkt laeuft je nach Zeitstufe langsamer oder schneller um
+  (0,25 / 0,7 / 2 Umlaeufe pro Sekunde), auch bei pausiertem Spiel.
+- Die Blase im Spiel zeichnet sich als Ei; Objekte werden erfasst, sobald
+  sie das Ei beruehren.
+- Beim Neustart des Levels ist die Blase wieder ein Kreis mit Startradius
+  (wie die Zeitstufe, die auf "normal" zurueckgeht).
+- Alle Regler sind derzeit von Anfang an da; das schrittweise Freischalten
+  folgt mit Schritt 14.
 
 **Zusammenspiel:** Jedes Objekt aus 2.4 reagiert auf die Blase; die
 Formregler erlauben, gezielt nur einzelne Objekte zu erfassen.
@@ -813,7 +931,7 @@ Formregler erlauben, gezielt nur einzelne Objekte zu erfassen.
 - Alles, was auf die Blase reagiert, bekommt den Baustein `TimeAffected`
   (Kind-Node, `scripts/time_bubble/time_affected.gd`) mit der Flaeche des
   Objekts (`bounds`). Er prueft jeden Physik-Schritt, ob diese Flaeche die
-  Blase beruehrt (Rechteck gegen Kreis bzw. spaeter Ellipse, rein
+  Blase beruehrt (Rechteck gegen Kreis bzw. seit Schritt 13 Ei, rein
   rechnerisch, ohne Physik-Ebene), und stellt `time_scale` bereit. Das
   Objekt rechnet mit `delta * time_scale`.
 - Markierung: Beeinflusste Objekte bekommen einen 1-px-Rahmen in der Farbe
@@ -836,8 +954,11 @@ Formregler erlauben, gezielt nur einzelne Objekte zu erfassen.
   Palettenfarben gemalt (`scripts/ui/time_gauge.gd`). Der Hintergrund wird
   mit einem Rastermuster (`ui_dither_dark.png`, jedes zweite Pixel dunkel)
   abgedunkelt statt mit Transparenz, damit keine Mischfarben entstehen.
-  Platz fuer die spaeteren Formregler und das Oszilloskop (Schritt 13)
-  wird dann geschaffen.
+- Aufbau seit Schritt 13: Node `Controls` (440 x 152, 2-fach gezeichnet,
+  mittig) mit Zeitregler links, Oszilloskop mit Cursor (152 x 152) und
+  Drehregler rechts. Skripte in `scripts/ui/`: `time_gauge.gd`,
+  `oscilloscope.gd`, `radius_knob.gd`; gemeinsamer Look in
+  `panel_style.gd`. Das Mausrad mit Shift bleibt fuer die Zeitstufe.
 - **Symbol im Spiel** (`scenes/ui/time_stage_indicator.tscn`): kleines Feld
   oben links mit dem Symbol der Stufe in ihrer Farbe.
 - Symbole: `graphics/ui/ui_time_stage_icons.png` (48 x 16, drei weisse
@@ -950,10 +1071,33 @@ Offene Punkte:
 - Loest einmal pro Durchqueren aus; wer im Strahl stehen bleibt, loest nicht
   erneut aus. Beim Ausloesen blitzt der Strahl kurz weiss.
 - Aussehen: Strahl 3 px (`e83b3b`, Kern `f68181`), verbraucht `6e2727`.
+  **Geplant (10.11.2026):** Die Lichtschranke wird auf Blau umgestellt,
+  damit Rot dem toedlichen Laser vorbehalten ist (Farben aus Resurrect 64,
+  Umsetzung zusammen mit dem Laser).
 - Auch Projektile loesen sie aus (festgelegt am 09.11.2026). Ausgeloest wird
   nur, wenn der Strahl vorher frei war: Wer auf einem Projektil mitfliegt,
   durchquert den Strahl zusammen mit ihm, das zaehlt als ein Durchqueren.
 - Offen: Ob die Zeitblase auf die Lichtschranke wirkt (bisher nicht).
+
+**Toedlicher Laser (geplant, festgelegt am 10.11.2026)**
+
+- Laserstrahl zwischen zwei Sendern wie bei der Lichtschranke, aber
+  toedlich: Beruehrt der Professor den Strahl, stirbt er. Er sendet kein
+  Signal.
+- Aufbau wie `light_barrier`: Node = Sender A, Sender B bei `beam_end`
+  (relativ), im Editor sichtbar.
+- Tod ueber den Baustein `Hazard` (Ebene 2 "player"); der Schalter
+  "Unverwundbar" im F1-Menue gilt.
+- **Takt (festgelegt):** Der Laser geht im Takt an und aus. Im Inspector:
+  Dauer an, Dauer aus und Startversatz (zum Versetzen mehrerer Laser);
+  optional dauerhaft an. Der Takt laeuft in der Zeitblase langsamer oder
+  schneller mit.
+- **Aussehen:** Rot, damit er sich klar von der (dann blauen) Lichtschranke
+  unterscheidet; dickerer Strahl und leichtes Flackern. Kurz vor dem
+  Einschalten erscheint als Warnung ein duenner, blasser Strahl
+  (festgelegt). Alle Farben aus Resurrect 64.
+- Offen: ob er zusaetzlich Signal-Empfaenger ist (`activate()`,
+  `deactivate()`, `toggle()`) und ob Projektile den Strahl blockieren.
 
 **Signal-Empfaenger (Schnittstelle, 07.11.2026)**
 
@@ -1074,7 +1218,8 @@ Offene Punkte:
     eine Sicherheitsabfrage.
   - Hinweis: Im Browser kann sich ein Spiel nicht selbst beenden (siehe
     6.2); dort wird Beenden voraussichtlich ausgeblendet.
-- **Intro-Sequenz** nach New Game (siehe 3.5).
+- **Intro-Sequenz** nach New Game: Comic zum Durchklicken (siehe 3.5),
+  danach startet das Spiel direkt in der Werkstatt.
 - **Hauptmenue / Levelauswahl:** [offen]
 - **Pause:** [offen]
 - **Einstellungen:** [offen]
@@ -1133,7 +1278,11 @@ Fortschritt bleibt erhalten.
   dargestellt als **Sprechblase ueber dem Professor**. Inhalt und Beispiele
   siehe 3.6.
 - Respawn-Kommentar an der Klonstation (siehe 2.6).
-- Intro und Abspann siehe 3.5.
+- Intro und Abspann siehe 3.5. Das Intro kommt ohne Text aus (nur Bilder
+  und vereinzelte Emoji-Sprechblasen).
+- Fahrstuhl in der Werkstatt: Mit E erscheint eine Sprechblase des
+  Professors (Keycard geroestet, Fahrstuhl nicht nutzbar). Text englisch
+  in einer Datendatei, Wortlaut offen.
 - [Offen: Ausloeser der Sprueche (zufaellig, an bestimmten Stellen), ob das
   Spiel dabei weiterlaeuft, Datenformat der Textdateien.]
 
@@ -1168,6 +1317,43 @@ Fortschritt bleibt erhalten.
 - **Wer baut die Level:** Level-Builder in Godot: Alle Spielelemente
   (Plattformen, Projektile, Pendel, Timer, Schalter usw.) sind fertige
   Bausteine, die sich per Drag-and-drop ins Level ziehen lassen.
+  **Festgelegt am 10.11.2026:** Die Level baut der Nutzer selbst; die KI
+  liefert die Bausteine.
+
+**Erstes Level: Tutorial in der Werkstatt (festgelegt am 10.11.2026)**
+
+Ein gefuehrtes Tutorial mit langsam steigender Schwierigkeit:
+
+1. **Laufen:** An der Wand im Hintergrund sind die Tasten A und D
+   aufgemalt, darunter "Move".
+2. **Interagieren:** Am Fahrstuhl steht der Hinweis E zum Interagieren. Mit
+   E erscheint die Sprechblase zur geroesteten Keycard.
+3. **Springen:** Vor der ersten Sprungstelle steht an der Wand Leertaste mit
+   "Jump".
+4. **Time Shifter:** Hinweis Shift halten fuer das Bedienfeld, dann Mausrad
+   bzw. Maus zum Einstellen der Zeit.
+5. **Erstes Pflichtraetsel:** ein einfaches Raetsel, das nur mit dem Time
+   Shifter loesbar ist. Der Nutzer entwirft es selbst.
+
+**Baustein Wandhinweis (geplant):** Objekt, das der Nutzer per
+Drag-and-drop ins Level zieht. Im Inspector werden die Taste(n) und das Wort
+eingestellt (englisch, ueber eine Text-ID aus einer Datendatei). Liegt im
+Hintergrund, keine Kollision.
+
+**Baustein Rohre, Tileset (geplant):** Rohre mit Dampf als Bau- und
+Dekoelement, kein eigenes Jump-and-Run-Element. Das Tileset erstellt die
+KI, der Nutzer malt damit im Level.
+
+- Groesse: 16 x 16 px pro Tile, das Rohr fuellt etwa ein Tile.
+- Automatisches Verbinden als Terrain im Tileset von Godot (Autotiling):
+  Beim Malen werden Geraden, Ecken, T-Stuecke, Kreuzungen und Enden
+  automatisch passend gewaehlt.
+- Zwei Varianten: **Vordergrund** mit Kollision (Ebene 1 "world"), nutzbar
+  als Wand oder Plattform; **Hintergrund** ohne Kollision, reine Deko hinter
+  der Spielebene.
+- Grafik: Palette Resurrect 64, Pixel Art, Quelle als `.aseprite`. Dampf
+  optional leicht animiert.
+- Name: `tileset_pipes`.
 
 | Level | Thema / Hintergrund | Song | Neue Elemente | Besonderheit |
 | --- | --- | --- | --- | --- |
@@ -1230,19 +1416,48 @@ Ziel und Motivation (festgelegt): Der Professor hat Pizza bestellt und muss
 von ganz unten im Labor nach oben, um die Lieferung entgegenzunehmen. Die
 zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
 
-1. **Intro-Sequenz** (so knapp wie moeglich, damit der Spieler sofort weiss,
-   worum es geht): Der Professor arbeitet am Time Shifter, z. B. mit einem
-   Schweissgeraet. Er ist Professor, hat den Time Shifter entwickelt und
-   Pizza bestellt. Beim ersten Test zerstoert er aus Versehen per EMP die
-   Keycard. Mission: von ganz unten nach oben zur Pizzalieferung.
+1. **Intro-Sequenz** (Konzept festgelegt am 10.11.2026; ersetzt den
+   frueheren Entwurf):
+   - **Form:** Comic zum Durchklicken, **kein Text**. Nur Bilder und
+     vereinzelte Emoji-Sprechblasen (z. B. Pizza-Symbol).
+   - Geteilte Szenen bauen sich Klick fuer Klick auf: Erst erscheint das
+     linke Panel, beim naechsten Klick das rechte. Das linke Panel bleibt
+     stehen, bis zur naechsten Szene weitergeklickt wird.
+   - Jedes Panel ist leicht animiert (kleine Schleife aus etwa 2 bis 3
+     Frames, z. B. Schweissfunken, wackelndes Telefon), kein richtiges
+     Video.
+   - Danach startet direkt das Spiel in der Werkstatt.
+   - **Szenen:**
+     1. *Pizza-Bestellung* (geteilt, Trennwand in der Mitte): Links
+        telefoniert der Erfinder, Sprechblase mit Pizza-Emoji. Rechts nimmt
+        der Lieferdienst die Bestellung entgegen.
+     2. *Schweissen:* Der Erfinder schweisst am Time Shifter. Der Spieler
+        soll verstehen, dass er an einer Zeitmaschine baut.
+     3. *Keycard und Lieferwagen* (geteilt): Links zerstoert ein
+        elektrischer Impuls des Time Shifters die Keycard. Rechts faehrt ein
+        Transporter mit Pizza-Symbol zum Labor.
+     4. *Ankunft* (geteilt): Rechts klingelt der Lieferdienst am Eingang zum
+        unterirdischen Labor. Links erschrickt der Professor: Ohne Keycard
+        kommt er nicht hoch und muss durch seinen eigenen Einbrecherschutz,
+        also das Testareal mit den Fallen.
+   - **Im Spiel danach:** Die Werkstatt hat einen Fahrstuhl. Interagiert der
+     Spieler damit (E), erscheint eine Sprechblase des Professors: Keycard
+     geroestet, Fahrstuhl nicht nutzbar. So wird ohne Text im Intro klar,
+     warum der Fahrstuhl nicht geht.
+   - Offen: Klick bzw. Taste zum Weiterschalten, Ueberspringen des Intros;
+     Bildgroesse und Aufteilung der Panels; Text der Fahrstuhl-Sprechblase
+     (englisch, Datendatei).
 2. **Werkstatt** (Start), dann **Selbstschussanlage**, dann
    **Teslakammer** (siehe 2.9).
 3. **Ende und Abspann:** Nach dem letzten Level nimmt der Professor oben die
    Pizza entgegen und faehrt mit dem Fahrstuhl zurueck ins Labor. Die
    Fahrstuhlfahrt nach unten ist der Abspann (Credits laufen waehrend der
-   Fahrt); dabei isst er genuesslich seine Pizza. Pointe: Eigentlich haette
-   er die ganze Zeit den Fahrstuhl nehmen koennen, aber das waere nur halb
-   so viel Spass gewesen.
+   Fahrt); dabei isst er genuesslich seine Pizza. **Pointe (neu, festgelegt
+   am 10.11.2026):** Nachdem er oben die Pizza abgeholt hat, haelt er die
+   Keycard an den Fahrstuhl, und sie funktioniert doch: Sie war nie kaputt.
+   Er faehrt mit der Pizza nach unten, waehrend der Abspann laeuft.
+   (Ersetzt die alte Pointe "Eigentlich haette er die ganze Zeit den
+   Fahrstuhl nehmen koennen".)
 
 Verworfene Alternativen: nur Keycard ohne Pizza-Motivation; Tier als
 Spielfigur (Schildkroete, Hase, Faultier, Laborratte); Keycard zerfaellt
@@ -1269,7 +1484,7 @@ durch Alterung (unrealistisch bei Plastik).
     ich die nur hingelegt?"
   - "Mein Kaffee-Beschleuniger hat uebrigens auch mal so angefangen."
   - "Nummer 47, auf ein Neues." (Respawn)
-- Spoiler: [offen; Vorschlag: die Fahrstuhl-Pointe nicht auf der
+- Spoiler: [offen; Vorschlag: die Keycard-Pointe am Fahrstuhl nicht auf der
   Store-Seite verraten].
 - Uebersetzung: Spieltexte nur auf Englisch; deutsche Entwuerfe frei statt
   woertlich uebertragen, Wortwitz und Ton erhalten.
@@ -1384,8 +1599,10 @@ gekuerzt, nicht der Puffer.
   aus).
 - [x] 11. Pendel bzw. rotierende Gefahr.
 - [x] 12. Timer bzw. Zeitschaltuhr (z. B. Tuer bleibt laenger offen).
-- [ ] 13. Formregler: vertikal, horizontal, Radius, dazu die
-  Oszilloskop-Anzeige.
+- [ ] 12a. Toedlicher Laser im Takt (an, aus, Startversatz, Warnstrahl),
+  dazu Lichtschranke auf Blau umstellen (eingeschoben am 10.11.2026, 2.4).
+- [x] 13. Formregler: Cursor auf dem Oszilloskop (x und y), Radius, dazu
+  die Oszilloskop-Anzeige.
 - [ ] 14. Schrotthaufen und Upgrades: Regler werden schrittweise
   freigeschaltet.
 - [ ] 15. Level-Builder und Levelfolge: Level-Vorlage (Klonstation,
@@ -1393,8 +1610,15 @@ gekuerzt, nicht der Puffer.
   einer Datendatei, Wechsel zum naechsten Level.
 - [ ] 16. Titelbildschirm (New Game, Continue, Beenden) und Speichern bzw.
   Laden (2.5, 2.7).
-- [ ] 17. Werkstatt und erste Level der Selbstschussanlage bauen
-  (Platzhalter-Grafik). Danach: kompletter Testdurchlauf = Vertical Slice.
+- [ ] 16a. Bausteine fuer Werkstatt und Tutorial (eingeschoben am
+  10.11.2026, 2.9): Interaktionstaste E (`interact`), Fahrstuhl mit
+  Sprechblase (geroestete Keycard), Wandhinweis (Taste(n) und Wort per
+  Text-ID). Die Sprechblase nutzt das System aus Schritt 18; bis dahin eine
+  einfache Fassung.
+- [ ] 17. Werkstatt (Tutorial) und erste Level der Selbstschussanlage
+  bauen (Platzhalter-Grafik). **Die Level baut der Nutzer**, die KI liefert
+  die Bausteine und hilft. Danach: kompletter Testdurchlauf = Vertical
+  Slice.
 
 **Meilenstein 3: Inhalt und Grafik (Ziel 24.11.)**
 
@@ -1402,10 +1626,17 @@ gekuerzt, nicht der Puffer.
   englisch in Datendatei) inkl. Respawn-Kommentar.
 - [ ] 19. Grafik: Farbpalette festlegen, Professor-Sprite mit Animationen,
   Tileset und Objekte der Selbstschussanlage.
+- [ ] 19a. Tileset Rohre mit Autotiling, Vorder- und Hintergrund, Dampf
+  optional animiert (eingeschoben am 10.11.2026, 2.9).
+- [ ] 19b. Zeitblase als Shader: Wobble und chromatische Aberration im
+  Bereich der Blase, Tempo je Zeitstufe, Staerke einstellbar (eingeschoben am
+  10.11.2026, 2.3).
 - [ ] 20. Restliche Level der Selbstschussanlage.
 - [ ] 21. Teslakammer: Grafik, ggf. Magnet, Level.
-- [ ] 22. Intro-Sequenz (3.5).
-- [ ] 23. Ende und Abspann mit Fahrstuhlfahrt (3.5).
+- [ ] 22. Intro-Sequenz: Comic zum Durchklicken ohne Text, vier Szenen,
+  Panels mit kleinen Animationsschleifen (3.5).
+- [ ] 23. Ende und Abspann: Keycard funktioniert doch, Fahrstuhlfahrt nach
+  unten mit Pizza, Credits waehrend der Fahrt (3.5).
 
 **Meilenstein 4: Ton, Feinschliff, Abgabe (Ziel 28.11., Puffer bis 01.12.)**
 
@@ -1430,20 +1661,20 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 09.11.2026, Version v0.23**
+**Stand vom 12.11.2026, Version v0.34**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
-- **Zuletzt erledigt:** Schritt 12 (Zeitschaltuhr).
-- **Naechster Schritt:** 13 (Formregler und Oszilloskop-Anzeige).
+- **Zuletzt erledigt:** Schritt 13 (Formregler und Oszilloskop), Cursor statt Schieberegler, Eiform.
+- **Naechster Schritt:** 12a (Toedlicher Laser, Lichtschranke blau), danach 14.
 - **Spielbar:** Testlevel mit dem Professor (Idle-, Lauf- und Sprunganimation): laufen,
-  springen, Kamera folgt; Shift + Maus stellt die Zeitstufe ein, fliegende
+  springen, Kamera folgt; Shift + Maus stellt Zeitstufe und Form der Blase ein, fliegende
   Plattformen reagieren auf die Blase; Lichtschranke schaltet eine
   Plattform an und aus; Start in der Klonstation, Starkstrom-Luecke ist
   toedlich, danach Neustart; zwei Werfer feuern Projektile (Mitfliegen
   moeglich, seitlich toedlich); das Boden-Projektil trifft eine
   Trefferflaeche, die startet eine Zeitschaltuhr, die die Tuer 2,5 s oeffnet; ein Pendel unter
   Block 2 und eine rotierende Stachelkugel am Boden; F1-Entwicklermenue.
-- **Noch zu testen (vom Nutzer):** Schritt 12.
+- **Noch zu testen (vom Nutzer):** nichts offen.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente
   (2.4), Reihenfolge der Upgrades (2.3), Look, Sound und Musik (1.2).

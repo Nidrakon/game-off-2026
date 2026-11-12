@@ -14,8 +14,6 @@ signal died
 const FLICKER_STEP := 0.05
 ## Dauer des Flackerns beim Sterben (Sekunden), danach ist er verschwunden.
 const DEATH_FLICKER_TIME := 0.5
-## Ab dieser Geschwindigkeit (Pixel pro Sekunde) laeuft die Laufanimation.
-const RUN_ANIMATION_MIN_SPEED := 10.0
 
 ## true, sobald der Professor tot ist; dann reagiert er auf nichts mehr.
 var is_dead := false
@@ -32,6 +30,7 @@ var _flicker_left := 0.0
 var _flicker_step_left := 0.0
 
 @onready var _sprite: AnimatedSprite2D = $Sprite
+@onready var _animator: Node = $Animator
 
 
 func _ready() -> void:
@@ -82,21 +81,8 @@ func _physics_process(delta: float) -> void:
 	_apply_horizontal_movement(delta)
 	_handle_jump()
 	move_and_slide()
-	_update_animation()
-
-
-func _update_animation() -> void:
-	# In der Luft: Sprung (laeuft einmal ab dem Absprung und bleibt dann auf
-	# dem letzten Bild). Am Boden: Laufen, wenn er sich wirklich bewegt (gegen
-	# eine Wand laufen setzt velocity.x auf 0), sonst Idle.
-	var target := &"idle"
-	if not is_on_floor():
-		target = &"jump"
-	elif absf(velocity.x) > RUN_ANIMATION_MIN_SPEED:
-		target = &"run"
-	# Nur beim Wechsel neu starten, damit der Sprung nicht immer von vorn beginnt.
-	if _sprite.animation != target and _sprite.sprite_frames.has_animation(target):
-		_sprite.play(target)
+	# Animation passend zur Bewegung waehlen (Kind-Node Animator).
+	_animator.update(delta)
 
 
 func _update_timers(delta: float) -> void:

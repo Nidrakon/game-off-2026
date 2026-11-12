@@ -15,6 +15,9 @@ var direction := 1.0
 var speed := 120.0
 ## Weiteste Flugstrecke, falls es nichts trifft (Pixel).
 var max_distance := 4000.0
+## Haelt den Strahl eines toedlichen Lasers auf (hinter dem Projektil ist er
+## unterbrochen). Wird vom Werfer gesetzt.
+var blocks_laser := false
 
 var _flown := 0.0
 var _ride_grace_left := 0.0

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/objects/deadly_laser.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/time_bubble/time_affected.gd" id="2_time"]
+
+[node name="DeadlyLaser" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_script")
+
+[node name="TimeAffected" type="Node2D" parent="."]
+script = ExtResource("2_time")
+bounds = Rect2(-4, -148, 8, 152)

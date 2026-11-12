@@ -27,10 +27,11 @@ signal triggered
 ## Dauer des Aufblitzens nach dem Ausloesen (Sekunden).
 const FLASH_TIME := 0.15
 ## Farben aus der Palette: Rand und Kern des Strahls, Blitz, erloschen.
-const COLOR_BEAM := Color("e83b3b")
-const COLOR_CORE := Color("f68181")
+## Blau, damit Rot dem toedlichen Laser vorbehalten bleibt (Doku 2.4).
+const COLOR_BEAM := Color("4d9be6")
+const COLOR_CORE := Color("8fd3ff")
 const COLOR_FLASH := Color("ffffff")
-const COLOR_OFF := Color("6e2727")
+const COLOR_OFF := Color("484a77")
 
 const EMITTER_TEXTURE := preload("res://graphics/sprites/objects/object_light_barrier_emitter_placeholder.png")
 

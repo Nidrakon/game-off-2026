@@ -35,6 +35,8 @@ const COLOR_BAR_TOP := Color("fbff86")
 @export var projectile_speed := 120.0
 ## Weiteste Flugstrecke der Projektile (Pixel).
 @export var max_distance := 4000.0
+## Die Projektile halten den Strahl toedlicher Laser auf (Doku 2.4).
+@export var projectiles_block_laser := false
 ## Feuert der Werfer beim Start? Aus = er wartet auf ein Signal.
 @export var active := true
 
@@ -116,6 +118,7 @@ func _fire() -> void:
 	projectile.direction = sign_x
 	projectile.speed = projectile_speed
 	projectile.max_distance = max_distance
+	projectile.blocks_laser = projectiles_block_laser
 	# Position VOR dem Einhaengen setzen: Ein AnimatableBody2D, das schon im
 	# Level haengt, uebernimmt eine neue Position erst im naechsten
 	# Physik-Schritt. Dazwischen stuende es fuer ein Bild bei (0, 0).

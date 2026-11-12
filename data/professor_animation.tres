@@ -4,4 +4,3 @@
 
 [resource]
 script = ExtResource("1_settings")
-takeoff_time = 0.15

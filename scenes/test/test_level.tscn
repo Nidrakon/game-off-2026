@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" path="res://scenes/objects/impact_switch.tscn" id="14_switch"]
 [ext_resource type="PackedScene" path="res://scenes/objects/pendulum.tscn" id="15_pendulum"]
 [ext_resource type="PackedScene" path="res://scenes/objects/time_switch.tscn" id="16_timer"]
+[ext_resource type="PackedScene" path="res://scenes/objects/deadly_laser.tscn" id="17_laser"]
 
 [node name="TestLevel" type="Node2D" unique_id=442466204]
 
@@ -89,6 +90,9 @@ period = 2.0
 position = Vector2(928, 432)
 duration = 2.5
 targets = [NodePath("../Door")]
+
+[node name="DeadlyLaser" parent="." unique_id=526186123 instance=ExtResource("17_laser")]
+position = Vector2(304, 488)
 
 [node name="Professor" parent="." unique_id=1051863681 instance=ExtResource("2_fn47k")]
 position = Vector2(48, 496)

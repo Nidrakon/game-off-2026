@@ -51,6 +51,13 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.35 - 2026-11-12: Schritt 12a: Toedlicher Laser, Lichtschranke blau**
+
+- Toedlicher Laser (`deadly_laser`): Takt mit an, aus, Startversatz, Warnstrahl, optional dauerhaft an; laeuft mit der Zeitblase; Signal-Empfaenger; rot, dick, flackernd.
+- Projektile koennen den Strahl aufhalten (Werfer-Parameter `projectiles_block_laser`, Standard aus).
+- Lichtschranke auf Blau umgestellt (Strahl und Linse), neuer Platzhalter fuer den Laser-Sender.
+- Testlevel: Laser bei x = 304.
+
 **v0.34 - 2026-11-12: Drehregler begrenzt und magnetisch**
 
 - Groesster Radius 128 -> 80 px (untere Haelfte des alten Bereichs); Skala des Drehreglers umfasst den neuen Bereich.

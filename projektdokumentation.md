@@ -396,7 +396,9 @@ Platzhalter-Grafiken: `tileset_placeholder` (drei Tiles: Boden-Oberseite,
 Boden-Fuellung, Block), `professor_placeholder` (16 x 32, ein Bild ohne
 Animation, schaut nach rechts, nicht mehr verwendet) und
 `object_flying_platform_placeholder` (64 x 16) und
-`object_light_barrier_emitter_placeholder` (16 x 16, Linse zeigt nach rechts),
+`object_light_barrier_emitter_placeholder` (16 x 16, Linse zeigt nach rechts,
+seit Schritt 12a blau), `object_deadly_laser_emitter_placeholder` (16 x 16,
+dunkles Gehaeuse mit gelben Warnstreifen, grosse rote Linse rechts),
 `object_electric_floor_placeholder` (16 x 32, zwei Bilder uebereinander),
 `object_clone_station_placeholder` (48 x 80),
 `object_projectile_placeholder` (64 x 32, Spitze rechts),
@@ -625,7 +627,7 @@ umbenannt oder umnummeriert, steht der alte Name hier mit dabei.
 | Klonstation | Checkpoint am Anfang jedes Levels (siehe 2.6) |
 | Trefferflaeche, Schalter | Wird von einem Projektil ausgeloest und sendet ein Signal (`impact_switch`, siehe 2.4) |
 | Zeitschaltuhr | Countdown zwischen Ausloeser und Zielen (`time_switch`, siehe 2.4) |
-| Toedlicher Laser | Strahl zwischen zwei Sendern im Takt an und aus, toetet bei Beruehrung (geplant, `deadly_laser`, siehe 2.4) |
+| Toedlicher Laser | Strahl zwischen zwei Sendern im Takt an und aus, toetet bei Beruehrung (`deadly_laser`, Schritt 12a, siehe 2.4) |
 | Wandhinweis | Aufgemalte Taste(n) mit Wort an der Hintergrundwand, Baustein fuer das Tutorial (geplant, `wall_hint`, siehe 2.9) |
 | Rohre | Tileset mit Rohren und Dampf, automatisch verbindend, Vorder- und Hintergrund (geplant, `tileset_pipes`, siehe 2.9) |
 | Fahrstuhl | Steht in der Werkstatt; zu Beginn nicht nutzbar (Keycard "geroestet"), am Ende faehrt der Professor damit nach unten (siehe 3.5) |
@@ -1011,7 +1013,9 @@ Offene Punkte:
   fest, Ebene 1). Im Inspector je Werfer: `direction` (rechts/links),
   `fire_interval` (Standard 4 s), `first_shot_delay` (Standard 1 s, zum
   Versetzen mehrerer Werfer), `projectile_speed` (Standard 120 px/s, langsamer
-  als der Professor), `max_distance`, `active`. Sein Takt laeuft in der
+  als der Professor), `max_distance`, `active`, `projectiles_block_laser`
+  (Standard aus; an = seine Projektile halten toedliche Laser auf, 12a).
+  Sein Takt laeuft in der
   Zeitblase mit. Er ist Signal-Empfaenger (Lichtschranke kann ihn schalten).
 - Ladebalken (09.11.2026, Wunsch des Nutzers): Im Gehaeuse fuellt sich ein
   senkrechter gelber Balken (6 x 22 px) bis zum naechsten Schuss; ist er voll,
@@ -1070,16 +1074,15 @@ Offene Punkte:
   und Sender sind schon im Editor sichtbar.
 - Loest einmal pro Durchqueren aus; wer im Strahl stehen bleibt, loest nicht
   erneut aus. Beim Ausloesen blitzt der Strahl kurz weiss.
-- Aussehen: Strahl 3 px (`e83b3b`, Kern `f68181`), verbraucht `6e2727`.
-  **Geplant (10.11.2026):** Die Lichtschranke wird auf Blau umgestellt,
-  damit Rot dem toedlichen Laser vorbehalten ist (Farben aus Resurrect 64,
-  Umsetzung zusammen mit dem Laser).
+- Aussehen (seit Schritt 12a blau, damit Rot dem toedlichen Laser
+  vorbehalten ist): Strahl 3 px (`4d9be6`, Kern `8fd3ff`), verbraucht
+  `484a77`, Blitz weiss. Linse des Senders ebenfalls blau.
 - Auch Projektile loesen sie aus (festgelegt am 09.11.2026). Ausgeloest wird
   nur, wenn der Strahl vorher frei war: Wer auf einem Projektil mitfliegt,
   durchquert den Strahl zusammen mit ihm, das zaehlt als ein Durchqueren.
 - Offen: Ob die Zeitblase auf die Lichtschranke wirkt (bisher nicht).
 
-**Toedlicher Laser (geplant, festgelegt am 10.11.2026)**
+**Toedlicher Laser (festgelegt am 10.11.2026, umgesetzt in Schritt 12a)**
 
 - Laserstrahl zwischen zwei Sendern wie bei der Lichtschranke, aber
   toedlich: Beruehrt der Professor den Strahl, stirbt er. Er sendet kein
@@ -1096,15 +1099,35 @@ Offene Punkte:
   unterscheidet; dickerer Strahl und leichtes Flackern. Kurz vor dem
   Einschalten erscheint als Warnung ein duenner, blasser Strahl
   (festgelegt). Alle Farben aus Resurrect 64.
-- Offen: ob er zusaetzlich Signal-Empfaenger ist (`activate()`,
-  `deactivate()`, `toggle()`) und ob Projektile den Strahl blockieren.
+- **Signal-Empfaenger (festgelegt am 12.11.2026):** `activate()` schaltet
+  ein (der Takt beginnt mit dem Warnstrahl), `deactivate()` schaltet ganz
+  aus (Takt steht), `toggle()` schaltet um.
+- **Projektile (festgelegt am 12.11.2026):** Optional halten Projektile den
+  Strahl auf; hinter dem Projektil ist er unterbrochen. Einstellbar am
+  Werfer (`projectiles_block_laser`, Standard aus), weil die Projektile vom
+  Werfer erzeugt werden.
+- **Umsetzung (Schritt 12a, 12.11.2026):** Szene
+  `scenes/objects/deadly_laser.tscn`, Skript `scripts/objects/deadly_laser.gd`
+  (abgeleitet von `Hazard`). Im Inspector: `beam_end` (Standard 9 Tiles nach
+  oben), Gruppe Takt: `on_time` und `off_time` (je 1,5 s, die Warnung zaehlt
+  zur Aus-Zeit), `start_offset` (Versatz im Takt beim Levelstart, 0 =
+  beginnt mit "an"), `warning_time` (0,4 s), `always_on`; Gruppe Steuerung:
+  `active` (laeuft beim Start). Zustaende aus, Warnung, an; toedlich nur
+  "an" (steht der Professor beim Einschalten im Strahl, stirbt er). Der Takt
+  laeuft mit der Zeitblase, sobald sie irgendeinen Teil des Strahls
+  beruehrt. Signal `switched(is_on)` beim An- und Ausgehen.
+- **Aussehen (umgesetzt):** an = 5 px `ae2334` aussen, 3 px `e83b3b`, Kern
+  1 px `f68181`, der flackernd weiss aufblitzt (aussen dann 4 px); Warnung =
+  1 px `f68181` gestrichelt; aus = nur die Sender. Im Editor wird der
+  Strahl immer "an" gezeigt.
+- Im Testlevel steht ein Laser bei x = 304 (vor Block 1) im Standardtakt.
 
 **Signal-Empfaenger (Schnittstelle, 07.11.2026)**
 
 - Alles, was von Ausloesern (Lichtschranke, Trefferflaeche) gesteuert
   wird, hat die Funktionen `activate()`, `deactivate()` und `toggle()`.
   Bisher: fliegende Plattform, Projektil-Werfer, Tuer, Zeitschaltuhr (die
-  selbst auch Ausloeser ist). Spaetere Empfaenger
+  selbst auch Ausloeser ist), toedlicher Laser. Spaetere Empfaenger
   bauen dieselben drei Funktionen ein; der Ausloeser muss dafuer nicht
   geaendert werden. Das Senden an die Ziele uebernimmt bei allen Ausloesern
   `scripts/objects/signal_sender.gd`.
@@ -1599,7 +1622,7 @@ gekuerzt, nicht der Puffer.
   aus).
 - [x] 11. Pendel bzw. rotierende Gefahr.
 - [x] 12. Timer bzw. Zeitschaltuhr (z. B. Tuer bleibt laenger offen).
-- [ ] 12a. Toedlicher Laser im Takt (an, aus, Startversatz, Warnstrahl),
+- [x] 12a. Toedlicher Laser im Takt (an, aus, Startversatz, Warnstrahl),
   dazu Lichtschranke auf Blau umstellen (eingeschoben am 10.11.2026, 2.4).
 - [x] 13. Formregler: Cursor auf dem Oszilloskop (x und y), Radius, dazu
   die Oszilloskop-Anzeige.
@@ -1661,11 +1684,11 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 12.11.2026, Version v0.34**
+**Stand vom 12.11.2026, Version v0.35**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
-- **Zuletzt erledigt:** Schritt 13 (Formregler und Oszilloskop), Cursor statt Schieberegler, Eiform.
-- **Naechster Schritt:** 12a (Toedlicher Laser, Lichtschranke blau), danach 14.
+- **Zuletzt erledigt:** Schritt 12a (Toedlicher Laser, Lichtschranke blau).
+- **Naechster Schritt:** 14 (Schrotthaufen und Upgrades).
 - **Spielbar:** Testlevel mit dem Professor (Idle-, Lauf- und Sprunganimation): laufen,
   springen, Kamera folgt; Shift + Maus stellt Zeitstufe und Form der Blase ein, fliegende
   Plattformen reagieren auf die Blase; Lichtschranke schaltet eine
@@ -1673,7 +1696,8 @@ gekuerzt, nicht der Puffer.
   toedlich, danach Neustart; zwei Werfer feuern Projektile (Mitfliegen
   moeglich, seitlich toedlich); das Boden-Projektil trifft eine
   Trefferflaeche, die startet eine Zeitschaltuhr, die die Tuer 2,5 s oeffnet; ein Pendel unter
-  Block 2 und eine rotierende Stachelkugel am Boden; F1-Entwicklermenue.
+  Block 2 und eine rotierende Stachelkugel am Boden; ein toedlicher Laser im
+  Takt vor Block 1; F1-Entwicklermenue.
 - **Noch zu testen (vom Nutzer):** nichts offen.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente

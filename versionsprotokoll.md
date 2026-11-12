@@ -51,6 +51,14 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.36 - 2026-11-12: Schritt 14: Schrotthaufen und Upgrades**
+
+- Globales System `Upgrades`: Radius (Drehregler) und Form (Cursor) werden freigeschaltet, bleiben beim Neustart des Levels erhalten, Kennungen fuer den Spielstand.
+- Schrotthaufen (`scrap_heap`): funkelt, beim Beruehren wird das Upgrade eingebaut, Funken, Reste bleiben; Einblendung mit Texten aus `dialogues/upgrades.json`.
+- Gesperrte Regler: Abdeckplatte statt Drehregler, Oszilloskop ohne Cursor.
+- F1-Menue: "Unlock all upgrades", "Reset upgrades". Export-Filter fuer `dialogues/*.json`.
+- Testlevel: zwei Schrotthaufen (Stufe: Radius, Block 1: Form).
+
 **v0.35 - 2026-11-12: Schritt 12a: Toedlicher Laser, Lichtschranke blau**
 
 - Toedlicher Laser (`deadly_laser`): Takt mit an, aus, Startversatz, Warnstrahl, optional dauerhaft an; laeuft mit der Zeitblase; Signal-Empfaenger; rot, dick, flackernd.

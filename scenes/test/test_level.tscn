@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" path="res://scenes/objects/pendulum.tscn" id="15_pendulum"]
 [ext_resource type="PackedScene" path="res://scenes/objects/time_switch.tscn" id="16_timer"]
 [ext_resource type="PackedScene" path="res://scenes/objects/deadly_laser.tscn" id="17_laser"]
+[ext_resource type="PackedScene" path="res://scenes/objects/scrap_heap.tscn" id="18_scrap"]
 
 [node name="TestLevel" type="Node2D" unique_id=442466204]
 
@@ -93,6 +94,13 @@ targets = [NodePath("../Door")]
 
 [node name="DeadlyLaser" parent="." unique_id=526186123 instance=ExtResource("17_laser")]
 position = Vector2(304, 488)
+
+[node name="ScrapHeapRadius" parent="." instance=ExtResource("18_scrap")]
+position = Vector2(224, 448)
+
+[node name="ScrapHeapShape" parent="." instance=ExtResource("18_scrap")]
+position = Vector2(352, 416)
+upgrade = 1
 
 [node name="Professor" parent="." unique_id=1051863681 instance=ExtResource("2_fn47k")]
 position = Vector2(48, 496)

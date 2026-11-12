@@ -5,7 +5,8 @@ extends Node
 ##
 ## - F1: Menue oeffnen/schliessen (Spiel pausiert).
 ## - Strg + Linksklick: Professor an die Mausposition setzen (Teleport).
-## - Unverwundbar, Zeit-Markierungen, Level neu starten, Level-Auswahl.
+## - Unverwundbar, Zeit-Markierungen, Level neu starten, Level-Auswahl,
+##   alle Upgrades freischalten bzw. zuruecksetzen.
 ## Texte sind englisch und bewusst nicht in Datendateien: Das Menue ist kein
 ## Teil des Spiels.
 
@@ -153,6 +154,14 @@ func _build_ui() -> void:
 	var restart := _make_button("Restart level")
 	restart.pressed.connect(_restart_level)
 	box.add_child(restart)
+
+	var all_upgrades := _make_button("Unlock all upgrades")
+	all_upgrades.pressed.connect(Upgrades.unlock_all)
+	box.add_child(all_upgrades)
+
+	var reset_upgrades := _make_button("Reset upgrades")
+	reset_upgrades.pressed.connect(Upgrades.reset)
+	box.add_child(reset_upgrades)
 
 	box.add_child(_make_label("Levels", COLOR_TITLE))
 	var scroll := ScrollContainer.new()

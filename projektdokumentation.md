@@ -253,6 +253,7 @@ Sprach-Unterordner.
 
 | Name | Datei | Aufgabe |
 | --- | --- | --- |
+| `Upgrades` | `scripts/autoload/upgrades.gd` (Klasse `TimeShifterUpgrades`) | Freigeschaltete Upgrades des Time Shifters (2.3); bleiben beim Neustart des Levels erhalten |
 | `DevMenu` | `scripts/autoload/dev_menu.gd` | Entwickler-Menue (F1), Teleport, Schalter "Unverwundbar" (1.9); nur im Debug-Build aktiv |
 
 **Kollisionsebenen:**
@@ -399,6 +400,8 @@ Animation, schaut nach rechts, nicht mehr verwendet) und
 `object_light_barrier_emitter_placeholder` (16 x 16, Linse zeigt nach rechts,
 seit Schritt 12a blau), `object_deadly_laser_emitter_placeholder` (16 x 16,
 dunkles Gehaeuse mit gelben Warnstreifen, grosse rote Linse rechts),
+`object_scrap_heap_placeholder` (32 x 48: oben der Haufen 32 x 24 mit
+Zahnrad, Rohr, Spule, Feder und Glasroehre, unten die Reste),
 `object_electric_floor_placeholder` (16 x 32, zwei Bilder uebereinander),
 `object_clone_station_placeholder` (48 x 80),
 `object_projectile_placeholder` (64 x 32, Spitze rechts),
@@ -562,8 +565,9 @@ ON/OFF" (bleibt auch nach Neustart des Levels an), "Restart level" und der
 Level-Auswahl (listet automatisch alle Szenen aus `scenes/levels/` und
 `scenes/test/`, scrollt); Teleport per Strg + Linksklick (auch bei
 geschlossenem Menue). Exportierte Builds sind Release-Builds, dort ist alles
-abgeschaltet. Noch nicht vorhanden: "Alle Upgrades" (folgt mit Schritt 14),
-Test-Szenarien, Testmodus und "Stand als Szenario speichern" (folgen mit
+abgeschaltet. Seit Schritt 14: "Unlock all upgrades" und "Reset upgrades"
+(wirken sofort, Schrotthaufen im Level passen sich an). Noch nicht
+vorhanden: Test-Szenarien, Testmodus und "Stand als Szenario speichern" (folgen mit
 dem Spielstand, Schritt 16), Hauptmenue-Sprung (Schritt 16). Das Menue nutzt
 nur Palettenfarben; Texte englisch direkt im Code (kein Teil des Spiels).
 
@@ -829,6 +833,35 @@ Funktion erhaelt. Sie liegen frei platziert, jeweils kurz bevor ein Level die
 neue Funktion braucht (nicht an Bereichsgrenzen gebunden). Zu Beginn fehlen
 der Cursor zur Formung der Sphaere noch.
 
+**Upgrades (umgesetzt in Schritt 14, 12.11.2026):**
+
+- Von Anfang an da: Zeitregler (langsam, normal, schnell) und die Anzeige des
+  Oszilloskops. Freischaltbar: **Radius** (Drehregler) und **Form** (Cursor
+  auf dem Oszilloskop). Die Reihenfolge legt das Leveldesign fest: Jeder
+  Schrotthaufen hat im Inspector `upgrade` (Radius oder Form).
+- Gesperrte Regler: Statt des Drehreglers sitzt eine Abdeckplatte mit vier
+  Schrauben und leerem Einbauschlitz im Gehaeuse; auf dem Oszilloskop fehlt
+  der Cursor (die Form wird trotzdem angezeigt). Beide reagieren dann nicht
+  auf die Maus; die Blase bleibt beim Startradius bzw. Kreis.
+- **Schrotthaufen** (`scenes/objects/scrap_heap.tscn`, Skript
+  `scripts/objects/scrap_heap.gd`): Node unten in der Mitte (auf den Boden
+  stellen), 32 x 24 px, funkelt (gelb-weisses Kreuz an wechselnden Stellen).
+  Beruehrt der Professor ihn, wird das Upgrade sofort eingebaut (keine
+  Taste noetig), Funken fliegen, vom Haufen bleiben Reste. Signal
+  `collected(upgrade)`. Ist das Upgrade schon da, liegen von Anfang an nur
+  die Reste.
+- **Einblendung** (`scripts/ui/upgrade_message.gd`): Kasten oben in der
+  Mitte, Ueberschrift "TIME SHIFTER UPGRADE", Name und Bedienhinweis, 5 s
+  lang (Spielzeit), dann weg. Texte in `dialogues/upgrades.json` (englisch,
+  Kennungen `upgrade_radius`, `upgrade_shape`). Damit die Datei im Export
+  landet, steht `dialogues/*.json` im Include-Filter beider Export-Vorlagen.
+- Globales System `Upgrades` (Autoload): `has()`, `unlock()`,
+  `unlock_all()`, `reset()`; fuer den Spielstand (Schritt 16) `get_ids()` und
+  `set_ids()` mit festen Kennungen. Die Upgrades bleiben beim Neustart des
+  Levels (Tod) erhalten.
+- Im Testlevel: Schrotthaufen "Radius" auf der Stufe (x = 224), "Form" auf
+  Block 1 (x = 352), dazwischen der Laser.
+
 **Regeln der Zeitblase:**
 
 - Die Blase ist dauerhaft aktiv; auf Stufe "normal" ist sie faktisch aus.
@@ -918,8 +951,8 @@ aenderbar; Skript `scripts/time_bubble/time_bubble_settings.gd`):
   sie das Ei beruehren.
 - Beim Neustart des Levels ist die Blase wieder ein Kreis mit Startradius
   (wie die Zeitstufe, die auf "normal" zurueckgeht).
-- Alle Regler sind derzeit von Anfang an da; das schrittweise Freischalten
-  folgt mit Schritt 14.
+- Drehregler und Cursor werden seit Schritt 14 ueber Schrotthaufen
+  freigeschaltet (siehe Upgrades oben).
 
 **Zusammenspiel:** Jedes Objekt aus 2.4 reagiert auf die Blase; die
 Formregler erlauben, gezielt nur einzelne Objekte zu erfassen.
@@ -1611,8 +1644,8 @@ gekuerzt, nicht der Puffer.
 - [x] 7. Tod und Klonstation: toedliche Objekte, Neustart am Levelanfang.
 - [x] 8. F1-Entwicklermenue (1.9): Unverwundbar, Teleport, Level-Auswahl,
   alle Upgrades. (Umgesetzt: Unverwundbar, Teleport, Level-Auswahl, Level
-  neu starten. "Alle Upgrades" folgt mit Schritt 14, Test-Szenarien und
-  Testmodus mit Schritt 16.)
+  neu starten, alle Upgrades (Schritt 14). Test-Szenarien und Testmodus
+  folgen mit Schritt 16.)
 
 **Meilenstein 2: Spielelemente und Vertical Slice (Ziel 17.11.)**
 
@@ -1626,7 +1659,7 @@ gekuerzt, nicht der Puffer.
   dazu Lichtschranke auf Blau umstellen (eingeschoben am 10.11.2026, 2.4).
 - [x] 13. Formregler: Cursor auf dem Oszilloskop (x und y), Radius, dazu
   die Oszilloskop-Anzeige.
-- [ ] 14. Schrotthaufen und Upgrades: Regler werden schrittweise
+- [x] 14. Schrotthaufen und Upgrades: Regler werden schrittweise
   freigeschaltet.
 - [ ] 15. Level-Builder und Levelfolge: Level-Vorlage (Klonstation,
   Ausgang), alle Elemente als Drag-and-drop-Bausteine, Levelreihenfolge in
@@ -1684,13 +1717,14 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 12.11.2026, Version v0.35**
+**Stand vom 12.11.2026, Version v0.36**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
-- **Zuletzt erledigt:** Schritt 12a (Toedlicher Laser, Lichtschranke blau).
-- **Naechster Schritt:** 14 (Schrotthaufen und Upgrades).
+- **Zuletzt erledigt:** Schritt 14 (Schrotthaufen und Upgrades).
+- **Naechster Schritt:** 15 (Level-Builder und Levelfolge).
 - **Spielbar:** Testlevel mit dem Professor (Idle-, Lauf- und Sprunganimation): laufen,
-  springen, Kamera folgt; Shift + Maus stellt Zeitstufe und Form der Blase ein, fliegende
+  springen, Kamera folgt; Shift + Maus stellt Zeitstufe ein, Radius und Form nach dem
+  Fund der Schrotthaufen (Stufe, Block 1); fliegende
   Plattformen reagieren auf die Blase; Lichtschranke schaltet eine
   Plattform an und aus; Start in der Klonstation, Starkstrom-Luecke ist
   toedlich, danach Neustart; zwei Werfer feuern Projektile (Mitfliegen

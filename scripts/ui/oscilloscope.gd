@@ -9,6 +9,10 @@ extends Control
 ## Kreis, je weiter aussen, desto laenger. Klicken oder Ziehen auf dem
 ## Bildschirm setzt den Cursor, nahe den Mittellinien rastet er ein,
 ## Rechtsklick setzt ihn auf die Mitte.
+##
+## Upgrade (Doku 2.3): Der Cursor erscheint erst, wenn der Professor das
+## Upgrade "Form" an einem Schrotthaufen gefunden hat. Vorher zeigt das
+## Oszilloskop nur die Form (Kreis) an.
 
 ## Abstand der Spur zum Bildschirmrand in Pixeln, wenn das Ei bis an den
 ## Rand reicht.
@@ -52,6 +56,8 @@ func _process(delta: float) -> void:
 
 
 func _gui_input(event: InputEvent) -> void:
+	if not is_cursor_unlocked():
+		return
 	var button := event as InputEventMouseButton
 	if button and button.button_index == MOUSE_BUTTON_LEFT:
 		_dragging = button.pressed
@@ -64,6 +70,11 @@ func _gui_input(event: InputEvent) -> void:
 	elif event is InputEventMouseMotion and _dragging:
 		_set_from_position((event as InputEventMouseMotion).position)
 		accept_event()
+
+
+## Ist der Cursor schon eingebaut (Upgrade "Form")?
+func is_cursor_unlocked() -> bool:
+	return Upgrades.has(TimeShifterUpgrades.Upgrade.SHAPE)
 
 
 func _find_bubble() -> TimeBubble:
@@ -151,12 +162,14 @@ func _draw() -> void:
 			draw_rect(Rect2(x, k, 1, 1), COLOR_GRID)
 		for k in range(int(screen.position.x), int(screen.end.x), 1 if i == 2 else 3):
 			draw_rect(Rect2(k, y, 1, 1), COLOR_GRID)
-	# Cursor-Linien (gestrichelt, unter der Spur)
+	# Cursor-Linien (gestrichelt, unter der Spur), nur mit Upgrade "Form"
+	var with_cursor := is_cursor_unlocked()
 	var cursor := get_cursor_position()
-	for k in range(int(screen.position.y), int(screen.end.y), 4):
-		draw_rect(Rect2(cursor.x, k, 1, 2), COLOR_CURSOR_LINE)
-	for k in range(int(screen.position.x), int(screen.end.x), 4):
-		draw_rect(Rect2(k, cursor.y, 2, 1), COLOR_CURSOR_LINE)
+	if with_cursor:
+		for k in range(int(screen.position.y), int(screen.end.y), 4):
+			draw_rect(Rect2(cursor.x, k, 1, 2), COLOR_CURSOR_LINE)
+		for k in range(int(screen.position.x), int(screen.end.x), 4):
+			draw_rect(Rect2(k, cursor.y, 2, 1), COLOR_CURSOR_LINE)
 	# Nachleuchten: die ganze Figur schwach
 	var glow := PackedVector2Array()
 	for i in 49:
@@ -174,6 +187,8 @@ func _draw() -> void:
 	draw_rect(Rect2(c.x - 2, c.y, 5, 1), COLOR_HEAD)
 	draw_rect(Rect2(c.x, c.y - 2, 1, 5), COLOR_HEAD)
 	# Cursor: offenes Quadrat (7 x 7) mit Mittelpunkt, ueber allem
+	if not with_cursor:
+		return
 	draw_rect(Rect2(cursor.x - 3, cursor.y - 3, 7, 1), COLOR_CURSOR)
 	draw_rect(Rect2(cursor.x - 3, cursor.y + 3, 7, 1), COLOR_CURSOR)
 	draw_rect(Rect2(cursor.x - 3, cursor.y - 2, 1, 5), COLOR_CURSOR)

@@ -1,0 +1,11 @@
+{
+	"upgrade_header": "TIME SHIFTER UPGRADE",
+	"upgrade_radius": {
+		"title": "Radius knob installed",
+		"hint": "Hold Shift and turn the knob to resize the time bubble."
+	},
+	"upgrade_shape": {
+		"title": "Shape cursor installed",
+		"hint": "Hold Shift and drag the cursor on the oscilloscope to stretch the time bubble."
+	}
+}

@@ -18,6 +18,7 @@ boot_splash/show_image=false
 
 [autoload]
 
+Upgrades="*res://scripts/autoload/upgrades.gd"
 DevMenu="*res://scripts/autoload/dev_menu.gd"
 
 [display]

@@ -5,6 +5,9 @@ extends Control
 ## rechts unten = groesster Radius). Zeigt die Maus in die Luecke unten, bleibt
 ## der Zeiger am naeheren Anschlag. Rechtsklick setzt auf den Startradius
 ## zurueck.
+##
+## Upgrade (Doku 2.3): Solange der Professor das Upgrade "Radius" noch nicht
+## an einem Schrotthaufen gefunden hat, sitzt hier nur eine Abdeckplatte.
 
 ## So nah an der Mitte wird die Maus ignoriert (Richtung waere unklar).
 const DEAD_ZONE := 2.0
@@ -27,7 +30,7 @@ func _process(_delta: float) -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	var bubble := _find_bubble()
-	if bubble == null:
+	if bubble == null or not is_unlocked():
 		return
 	var button := event as InputEventMouseButton
 	if button and button.button_index == MOUSE_BUTTON_LEFT:
@@ -58,6 +61,11 @@ func _point_to(local_position: Vector2) -> void:
 	bubble.radius = lerpf(bubble.settings.radius_min, bubble.settings.radius_max, fraction)
 
 
+## Ist der Regler schon eingebaut (Upgrade "Radius")?
+func is_unlocked() -> bool:
+	return Upgrades.has(TimeShifterUpgrades.Upgrade.RADIUS)
+
+
 ## Stellung des Reglers: 0 = kleinster, 1 = groesster Radius.
 func get_fraction() -> float:
 	var bubble := _find_bubble()
@@ -74,6 +82,9 @@ func _find_bubble() -> TimeBubble:
 
 func _draw() -> void:
 	PanelStyle.draw_housing(self, Rect2(Vector2.ZERO, size))
+	if not is_unlocked():
+		PanelStyle.draw_cover(self, Rect2(Vector2.ZERO, size))
+		return
 	var center := (size * 0.5).floor()
 	# Skala: Striche fuer klein, Mitte, gross
 	for i in 5:

@@ -46,6 +46,9 @@ func die() -> void:
 	is_dead = true
 	velocity = Vector2.ZERO
 	_start_flicker(DEATH_FLICKER_TIME)
+	var save := get_node_or_null("/root/SaveGame")
+	if save:
+		save.register_death()
 	died.emit()
 
 

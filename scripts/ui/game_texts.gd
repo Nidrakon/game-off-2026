@@ -16,6 +16,13 @@ static func get_text(file: String, id: String) -> String:
 	return str(_cache[file].get(id, id))
 
 
+## Liste von Texten zur Kennung (z. B. alle zufaelligen Sprueche).
+static func get_list(file: String, id: String) -> Array:
+	get_text(file, id)
+	var value: Variant = _cache[file].get(id, [])
+	return value if value is Array else [value]
+
+
 ## Zwischenspeicher leeren (z. B. nachdem eine Textdatei geaendert wurde).
 static func clear_cache() -> void:
 	_cache.clear()

@@ -29,6 +29,10 @@ var test_mode := false
 
 ## Kennung des zuletzt erreichten Levels (leer = noch keins).
 var current_level := ""
+## Nummer des aktuellen Klons (Doku 2.6): beginnt bei 1, jeder Tod zaehlt hoch.
+var clone_number := 1
+# Ist der Professor seit dem letzten Erscheinen gestorben? (Respawn-Spruch)
+var _respawn_pending := false
 var _flags := {}
 
 
@@ -59,12 +63,15 @@ func get_data() -> Dictionary:
 		"level": current_level,
 		"upgrades": Array(Upgrades.get_ids()),
 		"flags": _flags.keys(),
+		"clone": clone_number,
 	}
 
 
 ## Stand aus Daten uebernehmen (Spielstand oder Test-Szenario).
 func apply_data(data: Dictionary) -> void:
 	current_level = str(data.get("level", ""))
+	clone_number = maxi(1, int(data.get("clone", 1)))
+	_respawn_pending = false
 	Upgrades.set_ids(PackedStringArray(data.get("upgrades", [])))
 	_flags.clear()
 	for flag in data.get("flags", []):
@@ -105,6 +112,20 @@ func continue_game() -> bool:
 	apply_data(data)
 	LevelFlow.go_to(_level_path(current_level))
 	return true
+
+
+## Der Professor ist gestorben: naechster Klon (Respawn-Spruch folgt).
+func register_death() -> void:
+	clone_number += 1
+	_respawn_pending = true
+
+
+## Fuer den Respawn-Spruch: Ist er seit dem letzten Erscheinen gestorben?
+## Setzt die Marke zurueck.
+func take_respawn_pending() -> bool:
+	var pending := _respawn_pending
+	_respawn_pending = false
+	return pending
 
 
 ## Vom Level aufgerufen (Level-Vorlage), sobald es startet. Nur Level aus der

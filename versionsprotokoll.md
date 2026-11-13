@@ -51,6 +51,10 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.44 - 2026-11-13: Schritt 18: Sprechblasen-System**
+
+- Zufaellige Sprueche des Professors und Respawn-Spruch mit Klon-Nummer (zaehlt im Spielstand mit); Texte in `dialogues/speech.json`, Einstellungen in `data/speech_settings.tres`.
+
 **v0.43 - 2026-11-13: Schritt 17: Werkstatt als Wimmelbild, Deko, Platzhalter-Level**
 
 - 18 Deko-Requisiten (Atlas `deco_workshop`, teils animiert, Zeitblase) als Bausteine in der Baukasten-Gruppe "Deko".

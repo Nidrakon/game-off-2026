@@ -1,14 +1,12 @@
 class_name SpeechBubble
 extends Node2D
-## Sprechblase ueber einer Figur (Doku 2.8), einfache Fassung bis zum
-## Sprechblasen-System in Schritt 18: weisser Kasten mit Umriss und Spitze
-## nach unten, Text aus dialogues/speech.json. Haengt an der Figur (folgt ihr)
-## und verschwindet nach einer Zeit, die sich nach der Textlaenge richtet.
-## Das Spiel laeuft dabei weiter. Nur Palettenfarben.
+## Sprechblase ueber einer Figur (Doku 2.8): weisser Kasten mit Umriss und
+## Spitze nach unten, Text aus dialogues/speech.json. Haengt an der Figur
+## (folgt ihr) und verschwindet nach einer Zeit, die sich nach der Textlaenge
+## richtet (data/speech_settings.tres). Das Spiel laeuft dabei weiter. Die
+## Sprueche des Professors steuert scripts/player/professor_quips.gd.
+## Nur Palettenfarben.
 
-## Grundzeit und Zusatzzeit pro Zeichen (Sekunden).
-const BASE_TIME := 2.0
-const TIME_PER_CHAR := 0.05
 ## Groesste Breite des Kastens (Pixel), danach wird umgebrochen.
 const MAX_WIDTH := 220.0
 const FONT_SIZE := 12
@@ -20,17 +18,34 @@ var _time_left := 0.0
 var _panel: PanelContainer
 
 
+## Einstellungen (Lesezeit), gemeinsam mit den Spruechen des Professors.
+const SETTINGS := preload("res://data/speech_settings.tres")
+
+
 ## Laesst "speaker" den Text mit dieser Kennung sagen. "height" = Abstand der
 ## Blasenspitze ueber dem Node der Figur (beim Professor ueber dem Kopf).
 ## Eine vorherige Blase derselben Figur verschwindet.
 static func say(speaker: Node2D, text_id: String, height := 64.0) -> SpeechBubble:
+	return say_text(speaker, GameTexts.get_text("speech", text_id), height)
+
+
+## Wie say(), aber mit fertigem Text (z. B. Spruch mit Klon-Nummer).
+static func say_text(speaker: Node2D, text: String, height := 64.0) -> SpeechBubble:
 	for child in speaker.get_children():
 		if child is SpeechBubble:
 			child.queue_free()
 	var bubble := SpeechBubble.new()
-	bubble._build(GameTexts.get_text("speech", text_id), height)
+	bubble._build(text, height)
 	speaker.add_child(bubble)
 	return bubble
+
+
+## Hat die Figur gerade eine Sprechblase?
+static func is_speaking(speaker: Node) -> bool:
+	for child in speaker.get_children():
+		if child is SpeechBubble and not child.is_queued_for_deletion():
+			return true
+	return false
 
 
 ## Text der Blase (fuer Tests).
@@ -40,7 +55,7 @@ func get_text() -> String:
 
 func _build(text: String, height: float) -> void:
 	z_index = 50
-	_time_left = BASE_TIME + TIME_PER_CHAR * text.length()
+	_time_left = SETTINGS.bubble_base_time + SETTINGS.bubble_time_per_char * text.length()
 	position = Vector2(0, -height)
 	_panel = PanelContainer.new()
 	var style := StyleBoxFlat.new()

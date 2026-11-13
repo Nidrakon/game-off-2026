@@ -1408,8 +1408,23 @@ Fortschritt bleibt erhalten.
 - Spieltexte liest `scripts/ui/game_texts.gd` (`GameTexts.get_text(datei,
   kennung)`) aus `dialogues/<datei>.json`; fehlt eine Kennung, erscheint die
   Kennung selbst.
-- [Offen: Ausloeser der Sprueche (zufaellig, an bestimmten Stellen), ob das
-  Spiel dabei weiterlaeuft, Datenformat der Textdateien.]
+- **Sprechblasen-System (umgesetzt in Schritt 18, 13.11.2026):** Baustein
+  `Quips` im Professor (`scripts/player/professor_quips.gd`):
+  - Zufaellige Sprueche in zufaelligen Abstaenden (35 bis 70 s, erster nach
+    20 s), nie zweimal hintereinander derselbe, nur wenn gerade keine Blase
+    steht. Das Spiel laeuft dabei weiter.
+  - Respawn-Spruch nach jedem Tod beim Erscheinen in der Klonstation, mit
+    Klon-Nummer (Platzhalter `{n}`, z. B. "Clone #47. Let's try that
+    again."). Die Klon-Nummer beginnt bei 1, jeder Tod zaehlt hoch; sie
+    steht im Spielstand (`clone`).
+  - Texte in `dialogues/speech.json`: Liste `quips_random` (12 Sprueche,
+    frei uebersetzt aus 3.6 plus neue im selben Ton), Liste `quips_respawn`
+    (5 Varianten). Weitere Sprueche einfach in die Listen schreiben.
+  - Einstellungen in `data/speech_settings.tres` (Klasse `SpeechSettings`):
+    Abstaende, erste Wartezeit, an/aus, Wahrscheinlichkeit und Wartezeit des
+    Respawn-Spruchs, Lesezeit der Blase (Grundzeit + Zeit pro Zeichen).
+  - `SpeechBubble.say(figur, text_id)` bzw. `say_text(figur, text)`;
+    `GameTexts.get_list()` liest Listen.
 
 ### 2.9 Leveldesign
 
@@ -1943,7 +1958,7 @@ gekuerzt, nicht der Puffer.
 
 **Meilenstein 3: Inhalt und Grafik (Ziel 24.11.)**
 
-- [ ] 18. Sprechblasen-System fuer die Sprueche des Professors (Texte
+- [x] 18. Sprechblasen-System fuer die Sprueche des Professors (Texte
   englisch in Datendatei) inkl. Respawn-Kommentar.
 - [ ] 19. Grafik: Farbpalette festlegen, Professor-Sprite mit Animationen,
   Tileset und Objekte der Selbstschussanlage.
@@ -1984,7 +1999,7 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 13.11.2026, Version v0.43**
+**Stand vom 13.11.2026, Version v0.44**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
 - **Zuletzt erledigt:** Baukasten mit Rohren (19a), Dampfaustritt, Wand- und Bodenelementen; Streckenanzeige der Plattform im Editor.

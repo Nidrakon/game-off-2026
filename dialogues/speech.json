@@ -1,3 +1,24 @@
 {
-	"speech_elevator_keycard": "My keycard is toast. Literally. Guess I'm taking the scenic route... through my own traps."
+	"speech_elevator_keycard": "My keycard is toast. Literally. Guess I'm taking the scenic route... through my own traps.",
+	"quips_random": [
+		"Without my exoskeleton I'd never have survived that jump.",
+		"Good thing I reinforced my bones with titanium.",
+		"The cloning station was my best idea. Well, second best. Right after the pizza teleporter. Which never worked.",
+		"Note to self: sentry guns don't recognize faces. Only keycards.",
+		"My anti-gravity boots would be handy right now. They're upstairs. Next to the front door.",
+		"These X-ray goggles would really help here. Where did I put them?",
+		"My coffee accelerator started out like this, too.",
+		"Who designed these traps? Oh. Right. Me.",
+		"Mental note: install fewer death lasers.",
+		"Time is relative. Cold pizza is not.",
+		"If that pizza gets cold, I'm suing myself.",
+		"Safety first. Second. Somewhere on the list, anyway."
+	],
+	"quips_respawn": [
+		"Clone #{n}. Let's try that again.",
+		"Clone #{n}, reporting for duty. Again.",
+		"Number {n}. Memories intact. Dignity... less so.",
+		"Clone #{n}. The last one had it coming.",
+		"Clone #{n}. Still hungry."
+	]
 }

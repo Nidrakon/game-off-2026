@@ -51,6 +51,13 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.38 - 2026-11-13: Schritt 16: Titelbildschirm, Speichern und Laden**
+
+- Titelbildschirm als Hauptszene: New Game (Sicherheitsabfrage bei vorhandenem Spielstand), Continue (ausgegraut ohne Spielstand), Quit (im Browser ausgeblendet); Texte in `dialogues/menu.json`.
+- Globales System `SaveGame`: JSON in `user://` mit Version, Level, Upgrades und Marken; automatisch am Levelanfang; sicheres Schreiben, beschaedigte Dateien als `.bak`.
+- F1-Menue: Hauptmenue, Test-Szenarien (`data/dev_scenarios/`, mit `based_on`, Testmodus mit eigener Datei), "Save state as scenario"; zwei Spalten.
+- Endbildschirm fuehrt zum Titel, Startszene `boot` entfernt.
+
 **v0.37 - 2026-11-12: Schritt 15: Level-Builder und Levelfolge**
 
 - Level-Vorlage `scenes/levels/level_base.tscn` (Raum, Klonstation, Ausgang, Professor, Kamera, UI); neue Level als geerbte Szene, Kameragrenzen automatisch aus dem Boden.

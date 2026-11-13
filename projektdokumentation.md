@@ -255,6 +255,7 @@ Sprach-Unterordner.
 | --- | --- | --- |
 | `Upgrades` | `scripts/autoload/upgrades.gd` (Klasse `TimeShifterUpgrades`) | Freigeschaltete Upgrades des Time Shifters (2.3); bleiben beim Neustart des Levels erhalten |
 | `LevelFlow` | `scripts/autoload/level_flow.gd` | Levelfolge aus `data/level_order.tres`, Wechsel zum naechsten Level mit Abblenden (2.9) |
+| `SaveGame` | `scripts/autoload/save_game.gd` | Spielstand speichern und laden, Fortschrittsmarken, Testmodus (2.7) |
 | `DevMenu` | `scripts/autoload/dev_menu.gd` | Entwickler-Menue (F1), Teleport, Schalter "Unverwundbar" (1.9); nur im Debug-Build aktiv |
 
 **Kollisionsebenen:**
@@ -569,10 +570,15 @@ Level-Auswahl (listet automatisch alle Szenen aus `scenes/levels/` und
 `scenes/test/`, scrollt); Teleport per Strg + Linksklick (auch bei
 geschlossenem Menue). Exportierte Builds sind Release-Builds, dort ist alles
 abgeschaltet. Seit Schritt 14: "Unlock all upgrades" und "Reset upgrades"
-(wirken sofort, Schrotthaufen im Level passen sich an). Noch nicht
-vorhanden: Test-Szenarien, Testmodus und "Stand als Szenario speichern" (folgen mit
-dem Spielstand, Schritt 16), Hauptmenue-Sprung (Schritt 16). Das Menue nutzt
-nur Palettenfarben; Texte englisch direkt im Code (kein Teil des Spiels).
+(wirken sofort, Schrotthaufen im Level passen sich an). Seit Schritt 16:
+"Main menu" (Titelbildschirm), Liste der Test-Szenarien (Klick laedt
+Spielstand und Level, danach Testmodus; die Titelzeile zeigt dann
+"TEST MODE") und "Save state as scenario" (legt aus dem aktuellen Stand
+`data/dev_scenarios/saved_<datum_zeit>.json` an, mit Level, Position des
+Professors und Spielstand; Datei danach gern sinnvoll umbenennen). Das
+Menue hat zwei Spalten (links Schalter und Aktionen, rechts Szenarien und
+Level), nutzt nur Palettenfarben; Texte englisch direkt im Code (kein Teil
+des Spiels).
 
 - **F1** oeffnet das Entwickler-Menue (Spiel pausiert). Im fertigen
   Release-Build fuer den Jam ist es deaktiviert.
@@ -602,17 +608,23 @@ nur Palettenfarben; Texte englisch direkt im Code (kein Teil des Spiels).
 	"based_on": "[andere_kennung]",
 	"scene": "res://scenes/levels/[level].tscn",
 	"marker": "[NodeName des Startpunkts]",
-	"save": { "flags": [], "levels": {}, "characters": [] }
+	"position": [x, y],
+	"save": { "upgrades": [], "flags": [] }
 }
 ```
 
 `based_on` baut auf einem anderen Szenario auf (Ketten wie "Anfang ->
 Mitte -> vor dem Boss"); `marker` ist der Name eines Knotens im Level und
-uebersteht Umbauten besser als feste Koordinaten.
+uebersteht Umbauten besser als feste Koordinaten. `position` (optional,
+Weltkoordinaten) gilt, wenn kein `marker` gesetzt ist; ohne beides startet
+der Professor an der Klonstation. Beim Zusammenfuehren mit `based_on`
+werden Listen im Spielstand (Upgrades, Marken) vereinigt, alles andere
+nimmt den Wert des Szenarios selbst.
 
 | Kennung | Name | Stand |
 | --- | --- | --- |
-| `new_game` | Neues Spiel | frischer Spielstand |
+| `new_game` | New game | frischer Spielstand, erstes Beispiel-Level |
+| `example_2_all_upgrades` | Example 2, all upgrades | Beispiel-Level 2 mit Radius und Form (baut auf `new_game` auf) |
 
 Mit jedem Schritt, der einen neuen Spielabschnitt baut, legt die KI ein
 passendes Szenario an.
@@ -643,7 +655,7 @@ umbenannt oder umnummeriert, steht der alte Name hier mit dabei.
 | Level | Einzelner, abgeschlossener Abschnitt innerhalb eines Bereichs |
 | Ausgang | Schiebetuer am Ende eines Levels, fuehrt zum naechsten Level der Reihenfolge (`level_exit`, siehe 2.9) |
 | Level-Vorlage | Szene `level_base`, von der jedes Level erbt (siehe 2.9) |
-| Testlevel | Testszene zum Ausprobieren der Grundsysteme (`scenes/test/test_level.tscn`), derzeit Startszene des Projekts; heller Testhintergrund (Node `TestBackground`, Farbe `b2ba90`, im Inspector aenderbar; nur im Testlevel, 09.11.2026) |
+| Testlevel | Testszene zum Ausprobieren der Grundsysteme (`scenes/test/test_level.tscn`), ueber F1 oder F6 erreichbar; heller Testhintergrund (Node `TestBackground`, Farbe `b2ba90`, im Inspector aenderbar; nur im Testlevel, 09.11.2026) |
 
 ### 1.11 Game Jam: Game Off 2026
 
@@ -1278,7 +1290,16 @@ Offene Punkte:
   - New Game ueberschreibt einen vorhandenen Spielstand; vorher erscheint
     eine Sicherheitsabfrage.
   - Hinweis: Im Browser kann sich ein Spiel nicht selbst beenden (siehe
-    6.2); dort wird Beenden voraussichtlich ausgeblendet.
+    6.2); dort wird Beenden ausgeblendet.
+  - **Umgesetzt (Schritt 16, 12.11.2026):** `scenes/ui/title_screen.tscn`
+    (Skript `scripts/ui/title_screen.gd`) ist die Hauptszene. Schriftzug
+    "TIME SHIFTER", Knoepfe New Game, Continue, Quit; bedienbar mit Maus
+    und Tastatur (Pfeiltasten, Enter; Fokus startet auf Continue, ohne
+    Spielstand auf New Game). Sicherheitsabfrage als Kasten mit Yes/No
+    (Fokus auf No, Esc = No). Texte in `dialogues/menu.json`. Platzhalter-
+    Look in Palettenfarben, echte Gestaltung mit Schritt 19.
+  - Bis das Intro (3.5) gebaut ist, startet New Game direkt im ersten Level
+    der Reihenfolge.
 - **Intro-Sequenz** nach New Game: Comic zum Durchklicken (siehe 3.5),
   danach startet das Spiel direkt in der Werkstatt.
 - **Hauptmenue / Levelauswahl:** [offen]
@@ -1320,16 +1341,31 @@ Fortschritt bleibt erhalten.
 
 ### 2.7 Spielstand und Fortschritt
 
-- **Was wird gespeichert:** der Spielfortschritt (erreichtes Level,
-  freigeschaltete Upgrades); Details [offen].
+- **Was wird gespeichert:** der Spielfortschritt: erreichtes Level
+  (Kennung = Dateiname), freigeschaltete Upgrades (Kennungen) und
+  Fortschrittsmarken. Nicht gespeichert: Zustand innerhalb eines Levels
+  (Neustart am Levelanfang).
 - **Wo der Spieler nach dem Laden startet:** am Anfang des zuletzt
   erreichten Levels (Klonstation).
 - **Anzahl Spielstaende:** einer (New Game ueberschreibt ihn).
-- **Wann gespeichert wird:** automatisch zu Beginn jedes Levels, passend zum
-  Checkpoint; im Browser [offen].
-- **Technik:** [z. B. JSON-Datei in `user://`, genau eine Stelle im Code
-  speichert und laedt, Versionsnummer im Spielstand, sauberer Rueckfall bei
-  fehlender oder beschaedigter Datei].
+- **Wann gespeichert wird:** automatisch zu Beginn jedes Levels aus der
+  Levelreihenfolge (auch beim Neustart nach dem Tod; so bleiben Upgrades aus
+  dem Level erhalten). Das Testlevel speichert nicht. Im Browser genauso:
+  Godot legt `user://` dort dauerhaft im Browser-Speicher (IndexedDB) ab.
+- **Technik (umgesetzt in Schritt 16):** globales System `SaveGame`
+  (`scripts/autoload/save_game.gd`), die einzige Stelle, die speichert und
+  laedt. JSON-Datei `user://savegame.json` mit `version` (derzeit 1),
+  `level`, `upgrades`, `flags`. Geschrieben wird erst in eine Zwischendatei,
+  dann umbenannt (bricht das Schreiben ab, bleibt der alte Stand heil).
+  Fehlt die Datei, gibt es keinen Spielstand; ist sie beschaedigt oder
+  stammt aus einer neueren Version, wird sie als `.bak` beiseite gelegt.
+  Aeltere Versionen wandelt `_upgrade_data()` um, sobald sich das Format
+  aendert. Continue laedt den Stand und startet am Anfang des gespeicherten
+  Levels (unbekannte Kennung = erstes Level). New Game setzt alles zurueck;
+  der alte Stand wird beim ersten Level ueberschrieben.
+- **Testmodus:** Nach dem Laden eines Test-Szenarios (F1) wird in
+  `user://savegame_test.json` gespeichert; der echte Spielstand bleibt
+  unberuehrt. New Game oder Continue beenden den Testmodus.
 - **Fortschrittsmarken (Story Flags):** benannte Ja-Nein-Marken fuer jede
   Teilhandlung; Benennung siehe 1.6.
 
@@ -1427,10 +1463,10 @@ angegeben; Details in 2.4):
 
 **Levelfolge:** `data/level_order.tres` (Skript `scripts/levels/level_order.gd`)
 listet die Level in Spielreihenfolge. Das globale System `LevelFlow` laedt
-beim Spielstart das erste Level (Hauptszene `scenes/boot.tscn`, wird mit
-Schritt 16 zum Titelbildschirm). Der Ausgang fuehrt zum naechsten Eintrag;
-nach dem letzten erscheint ein vorlaeufiger Endbildschirm ("To be
-continued...", Taste = von vorn). Liegt ein Level nicht in der Liste (z. B.
+bei New Game das erste Level (Hauptszene ist seit Schritt 16 der
+Titelbildschirm). Der Ausgang fuehrt zum naechsten Eintrag; nach dem
+letzten erscheint ein vorlaeufiger Endbildschirm ("To be continued...",
+Taste = Titelbildschirm). Liegt ein Level nicht in der Liste (z. B.
 das Testlevel), fuehrt sein Ausgang zum ersten Level.
 
 **Ausgang:** Schiebetuer 32 x 64 mit blinkendem gruenen Pfeil nach oben (das
@@ -1731,7 +1767,7 @@ gekuerzt, nicht der Puffer.
 - [x] 15. Level-Builder und Levelfolge: Level-Vorlage (Klonstation,
   Ausgang), alle Elemente als Drag-and-drop-Bausteine, Levelreihenfolge in
   einer Datendatei, Wechsel zum naechsten Level.
-- [ ] 16. Titelbildschirm (New Game, Continue, Beenden) und Speichern bzw.
+- [x] 16. Titelbildschirm (New Game, Continue, Beenden) und Speichern bzw.
   Laden (2.5, 2.7).
 - [ ] 16a. Bausteine fuer Werkstatt und Tutorial (eingeschoben am
   10.11.2026, 2.9): Interaktionstaste E (`interact`), Fahrstuhl mit
@@ -1784,12 +1820,13 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 12.11.2026, Version v0.37**
+**Stand vom 13.11.2026, Version v0.38**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
-- **Zuletzt erledigt:** Schritt 15 (Level-Vorlage, Ausgang, Levelfolge).
-- **Naechster Schritt:** 16 (Titelbildschirm, Speichern und Laden).
-- **Spielbar:** Start (F5) mit zwei Beispiel-Leveln, verbunden ueber den Ausgang,
+- **Zuletzt erledigt:** Schritt 16 (Titelbildschirm, Speichern und Laden, Test-Szenarien).
+- **Naechster Schritt:** 16a (Bausteine fuer Werkstatt und Tutorial).
+- **Spielbar:** Start (F5) mit Titelbildschirm (New Game, Continue, Quit), zwei
+  Beispiel-Level ueber den Ausgang verbunden, automatisches Speichern am Levelanfang,
   danach vorlaeufiger Endbildschirm. Testlevel (ueber F1 oder F6) mit dem Professor (Idle-, Lauf- und Sprunganimation): laufen,
   springen, Kamera folgt; Shift + Maus stellt Zeitstufe ein, Radius und Form nach dem
   Fund der Schrotthaufen (Stufe, Block 1); fliegende

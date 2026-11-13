@@ -1,0 +1,9 @@
+{
+	"menu_title": "TIME SHIFTER",
+	"menu_new_game": "New Game",
+	"menu_continue": "Continue",
+	"menu_quit": "Quit",
+	"menu_confirm_new_game": "Start a new game?\nYour saved progress will be lost.",
+	"menu_yes": "Yes",
+	"menu_no": "No"
+}

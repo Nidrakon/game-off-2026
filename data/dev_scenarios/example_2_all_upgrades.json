@@ -1,0 +1,8 @@
+{
+	"name": "Example 2, all upgrades",
+	"order": 20,
+	"based_on": "new_game",
+	"scene": "res://scenes/levels/level_example_2.tscn",
+	"marker": "",
+	"save": { "upgrades": ["upgrade_radius", "upgrade_shape"], "flags": [] }
+}

@@ -3,7 +3,8 @@ extends Node2D
 ## Grundlage jedes Levels (Doku 2.9, Level-Vorlage): Wurzel der Szene
 ## scenes/levels/level_base.tscn, von der alle Level erben. Stellt beim Start
 ## die Kameragrenzen automatisch auf die bemalte Flaeche des Bodens (Node
-## "Ground"), damit man sie nicht von Hand pflegen muss.
+## "Ground"), damit man sie nicht von Hand pflegen muss. Meldet den Start dem
+## Spielstand (automatisches Speichern am Levelanfang, Doku 2.7).
 
 ## Kameragrenzen automatisch aus den Tiles von "Ground" setzen.
 @export var auto_camera_limits := true
@@ -12,6 +13,7 @@ extends Node2D
 func _ready() -> void:
 	if auto_camera_limits:
 		_fit_camera_to_ground()
+	SaveGame.on_level_started(scene_file_path)
 
 
 func _fit_camera_to_ground() -> void:

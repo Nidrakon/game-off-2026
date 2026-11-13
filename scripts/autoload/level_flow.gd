@@ -12,6 +12,8 @@ signal level_changed(path: String)
 
 ## Datei mit der Reihenfolge.
 const ORDER_FILE := "res://data/level_order.tres"
+## Titelbildschirm (Hauptmenue).
+const TITLE_SCENE := "res://scenes/ui/title_screen.tscn"
 ## Bildschirm nach dem letzten Level (vorlaeufig, bis das Ende gebaut ist).
 const END_SCENE := "res://scenes/ui/end_placeholder.tscn"
 ## Dauer je Abblend-Stufe (Sekunden).
@@ -96,6 +98,8 @@ func go_to(path: String) -> void:
 
 ## Abblenden (cover = true) bzw. wieder aufblenden.
 func _fade(cover: bool) -> void:
+	if _layer == null:
+		_build_overlay()
 	_layer.visible = true
 	if cover:
 		_dither.visible = true
@@ -110,6 +114,8 @@ func _fade(cover: bool) -> void:
 
 
 func _build_overlay() -> void:
+	if _layer != null:
+		return
 	_layer = CanvasLayer.new()
 	_layer.layer = 90
 	_layer.visible = false

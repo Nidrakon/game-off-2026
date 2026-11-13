@@ -51,6 +51,17 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.41 - 2026-11-13: Baukasten-Leiste im Editor**
+
+- Editor-Plugin `addons/building_blocks/`: Reiter "Baukasten" rechts neben dem Inspector mit allen Bausteinen (Vorschaubild, Tooltip, Ziehen oder Doppelklick), "Neues Level anlegen" (geerbte Szene, Eintrag in die Reihenfolge) und "Testlauf starten" (Testmodus, wahlweise alle Upgrades).
+- Bausteine-Liste in `data/building_blocks.json`; Schnellstart ueber `user://dev_quickstart.json` im Entwickler-Menue.
+
+**v0.40 - 2026-11-13: Schritt 17 begonnen: Grundgerueste der Level**
+
+- `level_workshop` (Tutorial-Hinweise in Reihenfolge, Fahrstuhl, Sprungblock, Platz fuer das Pflichtraetsel) und leeres `level_sentry_01`; Levelreihenfolge jetzt Werkstatt -> Selbstschussanlage 1, Beispiel-Level nur noch fuer Tests.
+- Szenario `new_game` startet in der Werkstatt.
+- Titelbildschirm: 0,3 s Eingabesperre nach dem Erscheinen (verhindert versehentliches New Game).
+
 **v0.39 - 2026-11-13: Schritt 16a: Bausteine fuer Werkstatt und Tutorial**
 
 - Eingabe-Aktion `interact` (E), Grundbaustein `Interactable` mit schwebender E-Tastenkappe.

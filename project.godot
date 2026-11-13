@@ -33,7 +33,7 @@ window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/aseprite_sync/plugin.cfg")
+enabled=PackedStringArray("res://addons/aseprite_sync/plugin.cfg", "res://addons/building_blocks/plugin.cfg")
 
 [gui]
 

@@ -239,7 +239,7 @@ res://
   data/          # Datendateien (Werte, Level-Listen, Test-Szenarien)
   dialogues/     # Texte, die im Spiel angezeigt werden (je Sprache ein Unterordner)
   tools/         # Hilfsskripte ausserhalb des Spiels, von der Engine ignoriert
-  addons/        # Editor-Plugins (eigener Code, z. B. Aseprite-Sync, siehe 1.8)
+  addons/        # Editor-Plugins (eigener Code: Aseprite-Sync, siehe 1.8; Baukasten, siehe 2.9)
 ```
 
 Angelegt am 01.11.2026. Git speichert keine leeren Ordner; deshalb liegt in
@@ -653,7 +653,8 @@ umbenannt oder umnummeriert, steht der alte Name hier mit dabei.
 | Rohre | Tileset mit Rohren und Dampf, automatisch verbindend, Vorder- und Hintergrund (geplant, `tileset_pipes`, siehe 2.9) |
 | Fahrstuhl | Steht in der Werkstatt; zu Beginn nicht nutzbar (Keycard "geroestet"), am Ende faehrt der Professor damit nach unten (`elevator`, siehe 3.5) |
 | E-Anzeige | Tastenkappe "E" ueber einem Objekt, mit dem der Professor gerade interagieren kann (`Interactable`, siehe 2.9) |
-| Werkstatt | Startbereich ganz unten, zaehlt nicht als eigentlicher Bereich |
+| Werkstatt | Startbereich ganz unten, zaehlt nicht als eigentlicher Bereich (Level `level_workshop`) |
+| Selbstschussanlage | Erster Bereich, Schwerpunkt Projektile (Level-Kennungen `level_sentry_01`, `level_sentry_02` ...) |
 | Bereich | Grosser Teil des Labors (z. B. Teslakammer), besteht aus mehreren Leveln |
 | Level | Einzelner, abgeschlossener Abschnitt innerhalb eines Bereichs |
 | Ausgang | Schiebetuer am Ende eines Levels, fuehrt zum naechsten Level der Reihenfolge (`level_exit`, siehe 2.9) |
@@ -1304,6 +1305,9 @@ Offene Punkte:
     Look in Palettenfarben, echte Gestaltung mit Schritt 19.
   - Bis das Intro (3.5) gebaut ist, startet New Game direkt im ersten Level
     der Reihenfolge.
+  - Eingabesperre (13.11.2026): Die Knoepfe reagieren erst 0,3 s nach dem
+    Erscheinen, damit eine noch gedrueckte Taste vom Endbildschirm nicht
+    sofort New Game ausloest.
 - **Intro-Sequenz** nach New Game: Comic zum Durchklicken (siehe 3.5),
   danach startet das Spiel direkt in der Werkstatt.
 - **Hauptmenue / Levelauswahl:** [offen]
@@ -1435,7 +1439,34 @@ Fortschritt bleibt erhalten.
 
 **Level-Builder (umgesetzt in Schritt 15, 12.11.2026)**
 
-So entsteht ein neues Level:
+**Baukasten-Leiste im Editor (Wunsch des Nutzers, 13.11.2026):** Plugin
+`addons/building_blocks/` (wie im Projekt "Just another Jump n Run"). Im
+Editor rechts erscheint der Reiter "Baukasten" neben dem Inspector:
+
+- **Bausteine** nach Gruppen (Level, Plattformen & Tueren, Gefahren,
+  Ausloeser & Schalter) mit Vorschaubild. Ins Level ziehen (landet an der
+  Mausposition) oder doppelklicken (landet in der Bildmitte, auf 8 px
+  eingerastet, vor dem Professor, wird ausgewaehlt; Strg+Z macht es
+  rueckgaengig). Der Tooltip erklaert die wichtigsten Einstellungen.
+- **Neues Level anlegen ...:** fragt nach dem Dateinamen (Vorschlag: naechste
+  freie Nummer `level_sentry_NN`; nur Kleinbuchstaben, Ziffern und `_`),
+  legt eine geerbte Szene der Vorlage an, traegt sie hinten in
+  `data/level_order.tres` ein (abschaltbar) und oeffnet sie.
+- **Testlauf starten:** speichert die offene Szene und startet sie direkt im
+  Testmodus (der echte Spielstand bleibt unberuehrt), mit Haken "alle
+  Upgrades" auch mit Drehregler und Cursor. Technik: Die Leiste schreibt
+  `user://dev_quickstart.json`, das Entwickler-Menue liest und loescht die
+  Datei beim Start.
+- Die Liste steht in `data/building_blocks.json` (Name, Gruppe, Szene,
+  Vorschaubild mit optionalem Ausschnitt `icon_region`, Beschreibung). Neue
+  Bausteine traegt die KI dort ein. Vorschaubilder sind die Platzhalter-
+  Grafiken der Objekte; der Wandhinweis hat ein eigenes
+  (`addons/building_blocks/icons/wall_hint.png`).
+- Das Plugin ist in den Projekteinstellungen aktiviert; falls die Leiste
+  fehlt: Projekt > Projekteinstellungen > Plugins > "Baukasten" an.
+
+So entsteht ein neues Level (von Hand; mit dem Baukasten erledigen
+"Neues Level anlegen" die Schritte 1 und 5):
 
 1. Im Godot-Editor: Szene > Neue geerbte Szene, `scenes/levels/level_base.tscn`
    waehlen, als `scenes/levels/<name>.tscn` speichern (englisch,
@@ -1493,7 +1524,28 @@ die Tuer auf, er verschwindet (Steuerung gesperrt, Gefahren wirken nicht
 mehr), der Bildschirm blendet ueber das Rastermuster ab, das naechste Level
 laedt und blendet wieder auf (je Stufe 0,12 s, nur Palettenfarben).
 
-**Beispiel-Level (Platzhalter):** `level_example_1` (Bloecke zum Springen,
+**Grundgerueste fuer Schritt 17 (13.11.2026):** Die KI hat zwei Level
+angelegt, die der Nutzer ausbaut. Die Reihenfolge in `data/level_order.tres`
+ist jetzt Werkstatt -> Selbstschussanlage 1.
+
+- `level_workshop` (Werkstatt, Tutorial): Klonstation links, dann in der
+  Reihenfolge des Tutorials die Wandhinweise "A D Move", Fahrstuhl mit
+  "E Interact", "SPACE Jump" vor einem 3 Tiles hohen Block (nur per
+  Sprung), "SHIFT Hold: Time Shifter" und "WHEEL Change time". Rechts davon
+  ist Platz fuer das erste Pflichtraetsel (entwirft der Nutzer), ganz
+  rechts der Ausgang. Ein Bildschirm breit; Raum, Hinweise und Positionen
+  duerfen frei geaendert werden.
+- `level_sentry_01` (erstes Level der Selbstschussanlage): leerer Raum aus
+  der Vorlage.
+- Weitere Level der Selbstschussanlage: `level_sentry_02` usw. als geerbte
+  Szene anlegen und in die Reihenfolge eintragen.
+- Szenario `new_game` startet jetzt in der Werkstatt.
+- Die automatischen Tests pruefen jedes Level der echten Reihenfolge
+  (laedt, hat Klonstation, Ausgang, Professor und Kamera); fuer Ablauf-
+  Tests setzen sie eine eigene Reihenfolge mit den Beispiel-Leveln.
+
+**Beispiel-Level (Platzhalter, nicht mehr in der Reihenfolge; bleiben fuer
+Tests und als Anschauung, ueber F1 erreichbar):** `level_example_1` (Bloecke zum Springen,
 seit 16a mit Fahrstuhl und drei Wandhinweisen "A D Move", "E Interact",
 "SPACE Jump")
 und `level_example_2` (toedlicher Laser bis zur Decke) zeigen Vorlage und
@@ -1814,7 +1866,8 @@ gekuerzt, nicht der Puffer.
 - [ ] 17. Werkstatt (Tutorial) und erste Level der Selbstschussanlage
   bauen (Platzhalter-Grafik). **Die Level baut der Nutzer**, die KI liefert
   die Bausteine und hilft. Danach: kompletter Testdurchlauf = Vertical
-  Slice.
+  Slice. (In Arbeit: Grundgerueste `level_workshop` und `level_sentry_01`
+  angelegt, 13.11.2026.)
 
 **Meilenstein 3: Inhalt und Grafik (Ziel 24.11.)**
 
@@ -1857,14 +1910,15 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 13.11.2026, Version v0.39**
+**Stand vom 13.11.2026, Version v0.41**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
-- **Zuletzt erledigt:** Schritt 16a (Taste E, Fahrstuhl mit Sprechblase, Wandhinweis).
-- **Naechster Schritt:** 17 (Werkstatt und erste Level bauen; die Level baut der Nutzer).
+- **Zuletzt erledigt:** Schritt 16a; fuer Schritt 17 Grundgerueste der Werkstatt und des ersten Levels der Selbstschussanlage, Baukasten-Leiste im Editor.
+- **Naechster Schritt:** 17 laeuft: Der Nutzer baut Werkstatt-Raetsel und Level der Selbstschussanlage; die KI liefert fehlende Bausteine. Danach Testdurchlauf (Vertical Slice).
 - **Spielbar:** Start (F5) mit Titelbildschirm (New Game, Continue, Quit), zwei
-  Beispiel-Level ueber den Ausgang verbunden (Beispiel 1 mit Fahrstuhl, E = Sprechblase,
-  und Wandhinweisen), automatisches Speichern am Levelanfang,
+  Werkstatt (Tutorial-Hinweise, Fahrstuhl mit Sprechblase, Sprungblock) und leeres
+  erstes Level der Selbstschussanlage ueber den Ausgang verbunden, automatisches
+  Speichern am Levelanfang,
   danach vorlaeufiger Endbildschirm. Testlevel (ueber F1 oder F6) mit dem Professor (Idle-, Lauf- und Sprunganimation): laufen,
   springen, Kamera folgt; Shift + Maus stellt Zeitstufe ein, Radius und Form nach dem
   Fund der Schrotthaufen (Stufe, Block 1); fliegende

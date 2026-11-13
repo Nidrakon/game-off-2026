@@ -9,6 +9,9 @@ extends Control
 ## dialogues/menu.json, nur Palettenfarben.
 
 const TEXT_FILE := "res://dialogues/menu.json"
+## So lange nach dem Erscheinen reagieren die Knoepfe nicht (Sekunden), damit
+## eine noch gedrueckte Taste vom vorigen Bildschirm nichts ausloest.
+const INPUT_DELAY := 0.3
 
 # Farben aus der Palette.
 const COLOR_BG := Color("2e222f")
@@ -59,6 +62,9 @@ func _ready() -> void:
 	_quit.pressed.connect(_on_quit)
 	_yes.pressed.connect(_start_new_game)
 	_no.pressed.connect(_close_confirm)
+	_set_menu_enabled(false)
+	await get_tree().create_timer(INPUT_DELAY).timeout
+	_set_menu_enabled(true)
 	(_continue if not _continue.disabled else _new_game).grab_focus()
 
 

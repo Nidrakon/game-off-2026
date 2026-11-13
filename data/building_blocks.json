@@ -1,0 +1,97 @@
+[
+	{
+		"name": "Ausgang",
+		"category": "level",
+		"path": "res://scenes/objects/level_exit.tscn",
+		"icon": "res://graphics/sprites/objects/object_level_exit_placeholder.png",
+		"icon_region": [0, 0, 32, 64],
+		"description": "Schiebetuer zum naechsten Level. Jede Level-Vorlage hat schon einen. Ein zusaetzlicher Ausgang kann mit 'Target Level' woandershin fuehren."
+	},
+	{
+		"name": "Schrotthaufen",
+		"category": "level",
+		"path": "res://scenes/objects/scrap_heap.tscn",
+		"icon": "res://graphics/sprites/objects/object_scrap_heap_placeholder.png",
+		"icon_region": [0, 0, 32, 24],
+		"description": "Upgrade fuer den Time Shifter. 'Upgrade': Radius (Drehregler) oder Form (Cursor). Auf den Boden stellen."
+	},
+	{
+		"name": "Fahrstuhl",
+		"category": "level",
+		"path": "res://scenes/objects/elevator.tscn",
+		"icon": "res://graphics/sprites/objects/object_elevator_placeholder.png",
+		"description": "Fahrstuhl der Werkstatt. Mit E sagt der Professor den Text 'Text Id' (dialogues/speech.json)."
+	},
+	{
+		"name": "Wandhinweis",
+		"category": "level",
+		"path": "res://scenes/objects/wall_hint.tscn",
+		"icon": "res://addons/building_blocks/icons/wall_hint.png",
+		"description": "Aufgemalte Tasten mit Wort. 'Keys': Tastenbeschriftungen, 'Text Id': Wort aus dialogues/hints.json, 'Paint': Wandfarbe."
+	},
+	{
+		"name": "Fliegende Plattform",
+		"category": "plattformen",
+		"path": "res://scenes/objects/flying_platform.tscn",
+		"icon": "res://graphics/sprites/objects/object_flying_platform_placeholder.png",
+		"description": "Faehrt hin und her. 'Travel': Weg, 'Travel Time', 'Start Offset', 'Wait Time', 'Active'. Signal-Empfaenger, reagiert auf die Zeitblase."
+	},
+	{
+		"name": "Tuer",
+		"category": "plattformen",
+		"path": "res://scenes/objects/door.tscn",
+		"icon": "res://graphics/sprites/objects/object_door_placeholder.png",
+		"description": "Oeffnet und schliesst auf Signal. 'Travel', 'Move Time', 'Start Open'."
+	},
+	{
+		"name": "Projektil-Werfer",
+		"category": "gefahren",
+		"path": "res://scenes/objects/projectile_launcher.tscn",
+		"icon": "res://graphics/sprites/objects/object_projectile_launcher_placeholder.png",
+		"description": "Feuert Projektile (oben begehbar, seitlich toedlich). 'Direction', 'Fire Interval', 'First Shot Delay', 'Projectile Speed', 'Projectiles Block Laser'."
+	},
+	{
+		"name": "Toedlicher Laser",
+		"category": "gefahren",
+		"path": "res://scenes/objects/deadly_laser.tscn",
+		"icon": "res://graphics/sprites/objects/object_deadly_laser_emitter_placeholder.png",
+		"description": "Roter Strahl im Takt. 'Beam End', 'On Time', 'Off Time', 'Start Offset', 'Warning Time', 'Always On', 'Active'. Signal-Empfaenger."
+	},
+	{
+		"name": "Starkstrom-Boden",
+		"category": "gefahren",
+		"path": "res://scenes/objects/electric_floor.tscn",
+		"icon": "res://graphics/sprites/objects/object_electric_floor_placeholder.png",
+		"icon_region": [0, 0, 16, 16],
+		"description": "Toedliche Bodenplatten statt Boden-Tiles. 'Width Tiles'. Ursprung links oben."
+	},
+	{
+		"name": "Pendel / Stachelkugel",
+		"category": "gefahren",
+		"path": "res://scenes/objects/pendulum.tscn",
+		"icon": "res://graphics/sprites/objects/object_spike_ball_placeholder.png",
+		"description": "Stachelkugel an einer Stange. 'Mode': schwingen oder rotieren, 'Length', 'Amplitude', 'Period', 'Start Phase', 'Clockwise'."
+	},
+	{
+		"name": "Lichtschranke",
+		"category": "schalter",
+		"path": "res://scenes/objects/light_barrier.tscn",
+		"icon": "res://graphics/sprites/objects/object_light_barrier_emitter_placeholder.png",
+		"description": "Blauer Strahl, sendet beim Durchqueren ein Signal. 'Beam End', 'Targets', 'Action', 'One Shot'."
+	},
+	{
+		"name": "Trefferflaeche",
+		"category": "schalter",
+		"path": "res://scenes/objects/impact_switch.tscn",
+		"icon": "res://graphics/sprites/objects/object_impact_switch_placeholder.png",
+		"icon_region": [0, 0, 32, 64],
+		"description": "Wird von einem Projektil ausgeloest und sendet ein Signal. 'Targets', 'Action'."
+	},
+	{
+		"name": "Zeitschaltuhr",
+		"category": "schalter",
+		"path": "res://scenes/objects/time_switch.tscn",
+		"icon": "res://graphics/sprites/objects/object_time_switch_placeholder.png",
+		"description": "Countdown zwischen Ausloeser und Zielen. 'Duration', 'Targets', 'Start Action', 'End Action', 'Autostart', 'Repeat'."
+	}
+]

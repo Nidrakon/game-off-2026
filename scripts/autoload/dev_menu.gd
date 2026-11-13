@@ -19,6 +19,9 @@ extends Node
 const LEVEL_FOLDERS := ["res://scenes/levels", "res://scenes/test"]
 ## Ordner der Test-Szenarien.
 const SCENARIO_FOLDER := "res://data/dev_scenarios"
+## Schnellstart aus dem Baukasten ("Testlauf starten"): wird beim Start
+## gelesen und sofort geloescht (gilt also nur fuer diesen einen Start).
+const QUICKSTART := "user://dev_quickstart.json"
 
 # Farben aus der Palette.
 const COLOR_BG := Color("2e222f")
@@ -50,6 +53,7 @@ func _ready() -> void:
 		set_process_unhandled_input(false)
 		return
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	_apply_quickstart()
 	# Sprites aus Aseprite live nachladen (siehe Doku 1.8, Aseprite-Sync).
 	add_child(preload("res://scripts/dev/sprite_hot_reload.gd").new())
 	_build_ui()
@@ -109,6 +113,21 @@ func _restart_level() -> void:
 func _load_level(path: String) -> void:
 	_set_open(false)
 	get_tree().change_scene_to_file(path)
+
+
+## Testlauf aus dem Baukasten: Testmodus (echter Spielstand bleibt
+## unberuehrt), wahlweise alle Upgrades.
+func _apply_quickstart() -> void:
+	if not FileAccess.file_exists(QUICKSTART):
+		return
+	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(QUICKSTART))
+	DirAccess.remove_absolute(QUICKSTART)
+	if not data is Dictionary:
+		return
+	if data.get("test_mode", false):
+		SaveGame.test_mode = true
+	if data.get("all_upgrades", false):
+		Upgrades.unlock_all()
 
 
 func _go_to_main_menu() -> void:

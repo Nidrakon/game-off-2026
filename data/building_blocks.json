@@ -1,10 +1,74 @@
 [
 	{
+		"name": "Boden",
+		"category": "gelaende",
+		"path": "res://scenes/objects/floor_block.tscn",
+		"icon": "res://graphics/tilesets/tileset_placeholder.png",
+		"icon_region": [
+			0,
+			0,
+			16,
+			16
+		],
+		"description": "Bodenstueck mit Kante oben. 'Size Tiles': Breite und Hoehe in Tiles. Ursprung links oben, auf das 16er-Raster setzen."
+	},
+	{
+		"name": "Wand",
+		"category": "gelaende",
+		"path": "res://scenes/objects/wall_block.tscn",
+		"icon": "res://graphics/tilesets/tileset_placeholder.png",
+		"icon_region": [
+			32,
+			0,
+			16,
+			16
+		],
+		"description": "Senkrechte Wand aus Block-Tiles (1 x 6). 'Size Tiles' fuer Breite und Hoehe."
+	},
+	{
+		"name": "Block",
+		"category": "gelaende",
+		"path": "res://scenes/objects/solid_block.tscn",
+		"icon": "res://graphics/tilesets/tileset_placeholder.png",
+		"icon_region": [
+			32,
+			0,
+			16,
+			16
+		],
+		"description": "Fester Block (2 x 2), z. B. Kiste, Saeule oder Hindernis. 3 Tiles hoch = nur per Sprung zu ueberwinden."
+	},
+	{
+		"name": "Steg",
+		"category": "gelaende",
+		"path": "res://scenes/objects/ledge.tscn",
+		"icon": "res://graphics/tilesets/tileset_placeholder.png",
+		"icon_region": [
+			0,
+			0,
+			16,
+			16
+		],
+		"description": "Von unten durchspringbarer Steg (4 x 1, 'One Way'). Man landet oben und stoesst nicht mit dem Kopf an."
+	},
+	{
+		"name": "Dampfaustritt",
+		"category": "rohre",
+		"path": "res://scenes/objects/steam_vent.tscn",
+		"icon": "res://addons/building_blocks/icons/steam_vent.png",
+		"description": "Dampfwolken im Takt, z. B. an einem Rohrende. 'Direction', 'Interval', 'Puff Time', 'Start Offset', 'Reach'. Deko, laeuft mit der Zeitblase."
+	},
+	{
 		"name": "Ausgang",
 		"category": "level",
 		"path": "res://scenes/objects/level_exit.tscn",
 		"icon": "res://graphics/sprites/objects/object_level_exit_placeholder.png",
-		"icon_region": [0, 0, 32, 64],
+		"icon_region": [
+			0,
+			0,
+			32,
+			64
+		],
 		"description": "Schiebetuer zum naechsten Level. Jede Level-Vorlage hat schon einen. Ein zusaetzlicher Ausgang kann mit 'Target Level' woandershin fuehren."
 	},
 	{
@@ -12,7 +76,12 @@
 		"category": "level",
 		"path": "res://scenes/objects/scrap_heap.tscn",
 		"icon": "res://graphics/sprites/objects/object_scrap_heap_placeholder.png",
-		"icon_region": [0, 0, 32, 24],
+		"icon_region": [
+			0,
+			0,
+			32,
+			24
+		],
 		"description": "Upgrade fuer den Time Shifter. 'Upgrade': Radius (Drehregler) oder Form (Cursor). Auf den Boden stellen."
 	},
 	{
@@ -62,7 +131,12 @@
 		"category": "gefahren",
 		"path": "res://scenes/objects/electric_floor.tscn",
 		"icon": "res://graphics/sprites/objects/object_electric_floor_placeholder.png",
-		"icon_region": [0, 0, 16, 16],
+		"icon_region": [
+			0,
+			0,
+			16,
+			16
+		],
 		"description": "Toedliche Bodenplatten statt Boden-Tiles. 'Width Tiles'. Ursprung links oben."
 	},
 	{
@@ -84,7 +158,12 @@
 		"category": "schalter",
 		"path": "res://scenes/objects/impact_switch.tscn",
 		"icon": "res://graphics/sprites/objects/object_impact_switch_placeholder.png",
-		"icon_region": [0, 0, 32, 64],
+		"icon_region": [
+			0,
+			0,
+			32,
+			64
+		],
 		"description": "Wird von einem Projektil ausgeloest und sendet ein Signal. 'Targets', 'Action'."
 	},
 	{

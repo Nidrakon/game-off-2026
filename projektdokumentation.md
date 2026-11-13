@@ -650,7 +650,9 @@ umbenannt oder umnummeriert, steht der alte Name hier mit dabei.
 | Zeitschaltuhr | Countdown zwischen Ausloeser und Zielen (`time_switch`, siehe 2.4) |
 | Toedlicher Laser | Strahl zwischen zwei Sendern im Takt an und aus, toetet bei Beruehrung (`deadly_laser`, Schritt 12a, siehe 2.4) |
 | Wandhinweis | Aufgemalte Taste(n) mit Wort an der Hintergrundwand, Baustein fuer das Tutorial (`wall_hint`, Schritt 16a, siehe 2.9) |
-| Rohre | Tileset mit Rohren und Dampf, automatisch verbindend, Vorder- und Hintergrund (geplant, `tileset_pipes`, siehe 2.9) |
+| Rohre | Tileset mit Rohren, automatisch verbindend, Vorder- und Hintergrund (`tileset_pipes`, Ebenen `PipesFront`/`PipesBack`, siehe 2.9) |
+| Dampfaustritt | Dampfwolken im Takt, Deko (`steam_vent`, siehe 2.9) |
+| Wand- und Bodenelemente | Feste Bloecke zum Hineinziehen: Boden, Wand, Block, Steg (`terrain_block`, siehe 2.9) |
 | Fahrstuhl | Steht in der Werkstatt; zu Beginn nicht nutzbar (Keycard "geroestet"), am Ende faehrt der Professor damit nach unten (`elevator`, siehe 3.5) |
 | E-Anzeige | Tastenkappe "E" ueber einem Objekt, mit dem der Professor gerade interagieren kann (`Interactable`, siehe 2.9) |
 | Werkstatt | Startbereich ganz unten, zaehlt nicht als eigentlicher Bereich (Level `level_workshop`) |
@@ -1116,6 +1118,12 @@ Offene Punkte:
   Signal-Empfaenger (siehe unten).
 - Von unten durchspringbar (09.11.2026, Wunsch des Nutzers): Einweg-Kollision,
   man stoesst nicht mit dem Kopf an und landet oben drauf.
+- Anzeige im Editor (Wunsch des Nutzers, 13.11.2026): Die Plattform zeigt
+  im Editor ihre Strecke: gelbe gestrichelte Linie von der Startposition zum
+  Wendepunkt (`travel`), dort ein blauer Umriss der Plattform, und eine
+  gruene Raute, wo sie beim Levelstart steht (`start_offset`; bei 0 unter
+  der Plattform). Aendert sich `travel` oder `start_offset`, passt sich die
+  Anzeige sofort an. Im Spiel unsichtbar.
 
 **Lichtschranke (neu, 07.11.2026, Wunsch des Nutzers)**
 
@@ -1462,6 +1470,14 @@ Editor rechts erscheint der Reiter "Baukasten" neben dem Inspector:
   Bausteine traegt die KI dort ein. Vorschaubilder sind die Platzhalter-
   Grafiken der Objekte; der Wandhinweis hat ein eigenes
   (`addons/building_blocks/icons/wall_hint.png`).
+- **Malen** (seit 13.11.2026): drei Knoepfe "Boden & Waende malen",
+  "Rohre vorn malen", "Rohre hinten malen". Sie waehlen im offenen Level
+  die Ebene `Ground`, `PipesFront` bzw. `PipesBack` aus; unten oeffnet sich
+  der TileMap-Editor. Fuer Rohre dort den Reiter "Terrains" und das Terrain
+  "Rohr vorn (Kollision)" bzw. "Rohr hinten (Deko)" waehlen, dann malen.
+- Gruppen seit 13.11.2026 zusaetzlich "Waende & Boeden" (Boden, Wand, Block,
+  Steg) und "Rohre & Dampf" (Dampfaustritt). Doppelklick rastet jetzt auf
+  16 px (ein Tile) ein.
 - Das Plugin ist in den Projekteinstellungen aktiviert; falls die Leiste
   fehlt: Projekt > Projekteinstellungen > Plugins > "Baukasten" an.
 
@@ -1509,6 +1525,8 @@ angegeben; Details in 2.4):
 | Schrotthaufen | `scrap_heap` | Boden, Mitte | `upgrade` |
 | Fahrstuhl | `elevator` | Boden, Mitte der Tuer | `text_id`, `prompt_offset` |
 | Wandhinweis | `wall_hint` | Mitte oben | `keys`, `text_id`, `paint` |
+| Boden / Wand / Block / Steg | `floor_block`, `wall_block`, `solid_block`, `ledge` (alle `terrain_block`) | links oben | `size_tiles`, `style` (Boden oder Block), `one_way` |
+| Dampfaustritt | `steam_vent` | Austrittsstelle | `direction`, `interval`, `puff_time`, `start_offset`, `reach` |
 
 **Levelfolge:** `data/level_order.tres` (Skript `scripts/levels/level_order.gd`)
 listet die Level in Spielreihenfolge. Das globale System `LevelFlow` laedt
@@ -1588,7 +1606,32 @@ Professor im Bereich, schwebt bei `prompt_offset` eine weisse Tastenkappe
 `interacted`. Kuenftige Objekte zum Interagieren erben davon. Tastenkappen
 zeichnet `scripts/ui/key_cap.gd` (Breite passt sich der Beschriftung an).
 
-**Baustein Rohre, Tileset (geplant):** Rohre mit Dampf als Bau- und
+**Umgesetzt (13.11.2026, Wunsch des Nutzers: Rohre sowie Wand- und
+Bodenelemente in den Baukasten):**
+
+- **Rohre:** `graphics/tilesets/tileset_pipes.tres` (Grafik
+  `tileset_pipes.png` 128 x 64, Quelle `graphics/source/tileset_pipes.aseprite`,
+  Platzhalter in Palettenfarben). 16 Kacheln je Variante, eine je
+  Kombination der vier Anschluesse (Enden mit Kappe, Gerade mit Ring, Ecken,
+  T-Stuecke, Kreuzung mit Muffe). Terrain-Set "Seiten passend" mit zwei
+  Terrains: "Rohr vorn (Kollision)" in Kupfer (Kollision in Rohrform, 10 px
+  dick, Ebene 1) und "Rohr hinten (Deko)" dunkel, ohne Kollision. Die
+  Level-Vorlage hat die Ebenen `PipesBack` (hinter allem, z_index -5,
+  Kollision aus) und `PipesFront`. Gemalt wird ueber die Mal-Knoepfe im
+  Baukasten. Erzeugt per Skript; neu erzeugen statt von Hand aendern, bis
+  die echte Grafik kommt (Schritt 19).
+- **Dampfaustritt** (`scenes/objects/steam_vent.tscn`): Dampfwolken (weiss,
+  hellgrau, grau) im Takt (`interval`, `puff_time`, `start_offset`),
+  Richtung und Reichweite einstellbar, laeuft mit der Zeitblase (Regel 17),
+  keine Kollision. Im Editor eine Vorschau-Wolke.
+- **Wand- und Bodenelemente** (`scripts/objects/terrain_block.gd`): fester
+  Block (StaticBody2D, Ebene 1) aus den Gelaende-Tiles, Groesse
+  `size_tiles` in Tiles, `style` Boden (Kante oben, Fuellung) oder Block,
+  `one_way` = von unten durchspringbar. Vier Voreinstellungen: Boden 6 x 2,
+  Wand 1 x 6, Block 2 x 2, Steg 4 x 1 (durchspringbar). Ursprung links oben,
+  im Editor sofort in Groesse sichtbar.
+
+**Baustein Rohre, Tileset (Planung, 10.11.2026):** Rohre mit Dampf als Bau- und
 Dekoelement, kein eigenes Jump-and-Run-Element. Das Tileset erstellt die
 KI, der Nutzer malt damit im Level.
 
@@ -1875,8 +1918,10 @@ gekuerzt, nicht der Puffer.
   englisch in Datendatei) inkl. Respawn-Kommentar.
 - [ ] 19. Grafik: Farbpalette festlegen, Professor-Sprite mit Animationen,
   Tileset und Objekte der Selbstschussanlage.
-- [ ] 19a. Tileset Rohre mit Autotiling, Vorder- und Hintergrund, Dampf
-  optional animiert (eingeschoben am 10.11.2026, 2.9).
+- [x] 19a. Tileset Rohre mit Autotiling, Vorder- und Hintergrund, Dampf
+  optional animiert (eingeschoben am 10.11.2026, 2.9). (Umgesetzt am
+  13.11.2026 als Platzhalter-Grafik mit Dampfaustritt-Baustein; echte
+  Grafik mit Schritt 19.)
 - [ ] 19b. Zeitblase als Shader: Wobble und chromatische Aberration im
   Bereich der Blase, Tempo je Zeitstufe, Staerke einstellbar (eingeschoben am
   10.11.2026, 2.3).
@@ -1910,10 +1955,10 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 13.11.2026, Version v0.41**
+**Stand vom 13.11.2026, Version v0.42**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
-- **Zuletzt erledigt:** Schritt 16a; fuer Schritt 17 Grundgerueste der Werkstatt und des ersten Levels der Selbstschussanlage, Baukasten-Leiste im Editor.
+- **Zuletzt erledigt:** Baukasten mit Rohren (19a), Dampfaustritt, Wand- und Bodenelementen; Streckenanzeige der Plattform im Editor.
 - **Naechster Schritt:** 17 laeuft: Der Nutzer baut Werkstatt-Raetsel und Level der Selbstschussanlage; die KI liefert fehlende Bausteine. Danach Testdurchlauf (Vertical Slice).
 - **Spielbar:** Start (F5) mit Titelbildschirm (New Game, Continue, Quit), zwei
   Werkstatt (Tutorial-Hinweise, Fahrstuhl mit Sprechblase, Sprungblock) und leeres
@@ -1929,7 +1974,7 @@ gekuerzt, nicht der Puffer.
   Trefferflaeche, die startet eine Zeitschaltuhr, die die Tuer 2,5 s oeffnet; ein Pendel unter
   Block 2 und eine rotierende Stachelkugel am Boden; ein toedlicher Laser im
   Takt vor Block 1; F1-Entwicklermenue.
-- **Noch zu testen (vom Nutzer):** nichts offen.
+- **Noch zu testen (vom Nutzer):** Rohre malen, Wand- und Bodenelemente, Dampf, Streckenanzeige der Plattform (Test gesammelt nach Schritt 23).
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente
   (2.4), Reihenfolge der Upgrades (2.3), Look, Sound und Musik (1.2).

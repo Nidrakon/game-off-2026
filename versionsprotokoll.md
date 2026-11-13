@@ -51,6 +51,14 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.42 - 2026-11-13: Rohre, Wand- und Bodenelemente im Baukasten, Streckenanzeige der Plattform**
+
+- Tileset Rohre (`tileset_pipes`) mit Autotiling, vorn mit Kollision, hinten als Deko; Ebenen `PipesFront`/`PipesBack` in der Level-Vorlage (Schritt 19a, Platzhalter-Grafik).
+- Baustein Dampfaustritt (`steam_vent`), Takt laeuft mit der Zeitblase.
+- Wand- und Bodenelemente (`terrain_block`: Boden, Wand, Block, Steg) mit Groesse in Tiles.
+- Baukasten: Mal-Knoepfe fuer Boden, Rohre vorn und hinten; neue Gruppen; Einrasten auf 16 px.
+- Fliegende Plattform zeigt im Editor Strecke, Wendepunkt und Startposition.
+
 **v0.41 - 2026-11-13: Baukasten-Leiste im Editor**
 
 - Editor-Plugin `addons/building_blocks/`: Reiter "Baukasten" rechts neben dem Inspector mit allen Bausteinen (Vorschaubild, Tooltip, Ziehen oder Doppelklick), "Neues Level anlegen" (geerbte Szene, Eintrag in die Reihenfolge) und "Testlauf starten" (Testmodus, wahlweise alle Upgrades).

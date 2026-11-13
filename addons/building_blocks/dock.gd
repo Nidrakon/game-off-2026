@@ -8,6 +8,9 @@ extends VBoxContainer
 ##     traegt sie in die Levelreihenfolge ein und oeffnet sie.
 ##   - "Testlauf starten": speichert die Szene und startet sie im Testmodus
 ##     (der echte Spielstand bleibt unberuehrt), wahlweise mit allen Upgrades.
+##   - "Malen": waehlt im offenen Level die Mal-Ebene fuer Boden und Waende
+##     (Ground) bzw. Rohre vorn (PipesFront) oder hinten (PipesBack); unten
+##     oeffnet sich der TileMap-Editor.
 ## Texte deutsch: Die Leiste ist ein Werkzeug fuer den Nutzer, kein Teil des
 ## Spiels.
 
@@ -18,13 +21,21 @@ const LEVEL_ORDER := "res://data/level_order.tres"
 ## Wird beim Testlauf geschrieben und vom Entwickler-Menue beim Start gelesen.
 const QUICKSTART := "user://dev_quickstart.json"
 const CATEGORY_TITLES := {
+	"gelaende": "Waende & Boeden",
+	"rohre": "Rohre & Dampf",
 	"level": "Level",
 	"plattformen": "Plattformen & Tueren",
 	"gefahren": "Gefahren",
 	"schalter": "Ausloeser & Schalter",
 }
 ## Raster, auf das per Doppelklick eingefuegte Bausteine einrasten (Pixel).
-const SNAP := 8.0
+const SNAP := 16.0
+## Mal-Ebenen: Knopftext, Node im Level, Hinweis, Vorschaubild (Ausschnitt).
+const PAINT_LAYERS := [
+	["Boden & Waende malen", "Ground", "Unten im TileMap-Editor ein Tile waehlen und malen (Boden-Oberseite, Fuellung, Block).", "res://graphics/tilesets/tileset_placeholder.png", Rect2(0, 0, 16, 16)],
+	["Rohre vorn malen", "PipesFront", "Unten Reiter 'Terrains' > 'Rohr vorn (Kollision)' waehlen und malen; die Rohre verbinden sich selbst.", "res://graphics/tilesets/tileset_pipes.png", Rect2(48, 48, 16, 16)],
+	["Rohre hinten malen", "PipesBack", "Unten Reiter 'Terrains' > 'Rohr hinten (Deko)' waehlen und malen; keine Kollision, liegt hinter allem.", "res://graphics/tilesets/tileset_pipes.png", Rect2(112, 48, 16, 16)],
+]
 const COLOR_TITLE := Color("f9c22b")
 const COLOR_HINT := Color("9babb2")
 
@@ -95,6 +106,26 @@ func _build_tools() -> void:
 	_all_upgrades.button_pressed = true
 	_all_upgrades.tooltip_text = "Beim Testlauf Drehregler und Cursor freischalten."
 	test_row.add_child(_all_upgrades)
+
+	var paint_title := Label.new()
+	paint_title.text = "Malen"
+	paint_title.add_theme_color_override("font_color", COLOR_TITLE)
+	add_child(paint_title)
+	var paint_row := HFlowContainer.new()
+	add_child(paint_row)
+	for layer in PAINT_LAYERS:
+		var paint := Button.new()
+		paint.text = layer[0]
+		paint.tooltip_text = layer[2]
+		var atlas := AtlasTexture.new()
+		atlas.atlas = load(layer[3])
+		atlas.region = layer[4]
+		paint.icon = atlas
+		paint.expand_icon = false
+		paint.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		paint.focus_mode = Control.FOCUS_NONE
+		paint.pressed.connect(select_paint_layer.bind(layer[1], layer[2]))
+		paint_row.add_child(paint)
 
 	var hint := Label.new()
 	hint.text = "Bausteine ins Level ziehen oder doppelklicken (Bildmitte). Tooltip = Erklaerung."
@@ -209,6 +240,19 @@ func insert_block(path: String) -> void:
 	EditorInterface.get_selection().clear()
 	EditorInterface.get_selection().add_node(block)
 	_status.text = "Eingefuegt: %s" % block.name
+
+
+## Waehlt die Mal-Ebene im offenen Level aus; der TileMap-Editor oeffnet sich.
+func select_paint_layer(node_name: String, hint: String) -> void:
+	var root := EditorInterface.get_edited_scene_root()
+	var layer := root.get_node_or_null(node_name) if root != null else null
+	if layer == null:
+		_status.text = "Im offenen Level gibt es keine Ebene '%s' (nur in Leveln aus der Vorlage)." % node_name
+		return
+	EditorInterface.get_selection().clear()
+	EditorInterface.get_selection().add_node(layer)
+	EditorInterface.edit_node(layer)
+	_status.text = "%s gewaehlt. %s" % [node_name, hint]
 
 
 func _free_name(root: Node, base: String) -> String:

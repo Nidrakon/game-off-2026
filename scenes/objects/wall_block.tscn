@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/objects/terrain_block.tscn" id="1_base"]
+
+[node name="WallBlock" instance=ExtResource("1_base")]
+size_tiles = Vector2i(1, 6)
+style = 1

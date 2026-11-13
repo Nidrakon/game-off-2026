@@ -51,6 +51,12 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.48 - 2026-11-13: Schritt 21: Teslakammer, Elektromagnet**
+
+- Elektromagnet (`magnet`): Takt, Warnflackern, zieht den Professor nach oben, Schweben, Signal-Empfaenger, Zeitblase; im Baukasten.
+- Tesla-Rueckwand (blau, Kupferspulen), Baukasten-Knopf "Rueckwand Tesla".
+- Platzhalter `level_tesla_01` (Laser, Magnetlift, Schrotthaufen Form), Szenario `tesla_01`, Durchlauf-Test.
+
 **v0.47 - 2026-11-13: Schritt 20: Platzhalter Selbstschussanlage 3**
 
 - `level_sentry_03`: Raketen-Fahrt ueber eine Starkstrom-Grube, Schrotthaufen "Radius"; Szenarien `sentry_02`, `sentry_03`; automatischer Durchlauf-Test.

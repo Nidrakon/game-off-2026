@@ -25,6 +25,12 @@ var _coyote_timer := 0.0
 # Restzeit, in der ein zu frueh gedrueckter Sprung noch ausgefuehrt wird.
 var _jump_buffer_timer := 0.0
 
+# Hebt ein Elektromagnet ihn in diesem Physik-Schritt an? (Zielgeschwindigkeit
+# nach oben und Beschleunigung, gesetzt von magnet.gd)
+var _magnet_active := false
+var _magnet_target := 0.0
+var _magnet_accel := 0.0
+
 # Restzeit, in der die Steuerung gesperrt ist (beim Erscheinen).
 var _controls_locked := 0.0
 # Restzeit des Flackerns und Zeit bis zum naechsten Wechsel.
@@ -113,7 +119,20 @@ func _update_timers(delta: float) -> void:
 		_jump_buffer_timer = maxf(_jump_buffer_timer - delta, 0.0)
 
 
+## Vom Elektromagneten jeden Physik-Schritt aufgerufen, solange der
+## Professor in seinem Feld steht: statt der Schwerkraft geht es mit
+## "target_speed" nach oben (0 = schweben).
+func apply_magnet_lift(target_speed: float, accel: float) -> void:
+	_magnet_active = true
+	_magnet_target = target_speed
+	_magnet_accel = accel
+
+
 func _apply_gravity(delta: float) -> void:
+	if _magnet_active:
+		_magnet_active = false
+		velocity.y = move_toward(velocity.y, -_magnet_target, _magnet_accel * delta)
+		return
 	if is_on_floor():
 		return
 	# Beim Fallen staerkere Schwerkraft: der Sprung fuehlt sich knackiger an.

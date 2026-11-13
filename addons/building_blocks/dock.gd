@@ -137,6 +137,17 @@ func _build_tools() -> void:
 	fill_wall.focus_mode = Control.FOCUS_NONE
 	fill_wall.pressed.connect(fill_back_wall)
 	paint_row.add_child(fill_wall)
+	var fill_tesla := Button.new()
+	fill_tesla.text = "Rueckwand Tesla"
+	fill_tesla.tooltip_text = "Wie 'Rueckwand fuellen', aber im Look der Teslakammer (blaue Paneele, Kupferspulen)."
+	var tesla_icon := AtlasTexture.new()
+	tesla_icon.atlas = load("res://graphics/tilesets/tileset_wall.png")
+	tesla_icon.region = Rect2(112, 0, 16, 16)
+	fill_tesla.icon = tesla_icon
+	fill_tesla.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	fill_tesla.focus_mode = Control.FOCUS_NONE
+	fill_tesla.pressed.connect(fill_back_wall.bind(BackWall.Variant.TESLA))
+	paint_row.add_child(fill_tesla)
 
 	var hint := Label.new()
 	hint.text = "Bausteine ins Level ziehen oder doppelklicken (Bildmitte). Tooltip = Erklaerung."
@@ -267,7 +278,7 @@ func select_paint_layer(node_name: String, hint: String) -> void:
 
 
 ## Fuellt BackWall passend zu Ground (rueckgaengig mit Strg+Z).
-func fill_back_wall() -> void:
+func fill_back_wall(variant := BackWall.Variant.LAB) -> void:
 	var root := EditorInterface.get_edited_scene_root()
 	var wall := root.get_node_or_null("BackWall") as TileMapLayer if root != null else null
 	var ground := root.get_node_or_null("Ground") as TileMapLayer if root != null else null
@@ -277,7 +288,7 @@ func fill_back_wall() -> void:
 	var before := wall.tile_map_data
 	var temp := TileMapLayer.new()
 	temp.tile_set = wall.tile_set
-	var count := BackWall.fill(temp, ground)
+	var count := BackWall.fill(temp, ground, variant)
 	var after := temp.tile_map_data
 	temp.free()
 	undo_redo.create_action("Rueckwand fuellen")

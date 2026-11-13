@@ -629,6 +629,7 @@ nimmt den Wert des Szenarios selbst.
 | `example_2_all_upgrades` | Example 2, all upgrades | Beispiel-Level 2 mit Radius und Form (baut auf `new_game` auf) |
 | `sentry_02` | Sentry 2 (placeholder) | Platzhalter Selbstschussanlage 2 |
 | `sentry_03` | Sentry 3, rocket ride (placeholder) | Platzhalter Selbstschussanlage 3 (Raketen-Fahrt) |
+| `tesla_01` | Tesla 1, lasers and magnet (placeholder) | Platzhalter Teslakammer 1, mit Upgrade Radius |
 
 Mit jedem Schritt, der einen neuen Spielabschnitt baut, legt die KI ein
 passendes Szenario an.
@@ -1292,6 +1293,19 @@ Offene Punkte:
 
 - Elektromagnet, der rhythmisch an- und ausgeht und per Zeitblase gesteuert
   wird.
+- **Umgesetzt (Schritt 21, 13.11.2026):** `scenes/objects/magnet.tscn`
+  (Skript `scripts/objects/magnet.gd`, fester Koerper auf Ebene 1, Ursprung
+  oben Mitte, an die Decke setzen). Solange das Feld an ist, zieht er den
+  Professor nach oben, wenn dieser unter ihm im Feld steht (Metallteile im
+  Exoskelett); dicht darunter schwebt er und kann seitlich weg, z. B. auf
+  einen hohen Vorsprung. Feldlinien laufen nach oben, kurz vor dem
+  Ausschalten flackert das Feld (Warnung). Im Inspector: Takt `on_time` 3 s,
+  `off_time` 2 s, `start_offset`, `warning_time` 0,6 s, `always_on`,
+  `active`; Feld `reach` 460 px, `field_width` 48 px, `lift_speed`
+  240 px/s, `lift_accel`, `hover_gap`. Signal-Empfaenger; der Takt laeuft
+  mit der Zeitblase, wenn sie den Magneten beruehrt. Im Editor zeigt ein
+  gestrichelter Rahmen das Feld. Der Professor hat dafuer
+  `apply_magnet_lift()` (ersetzt im selben Schritt die Schwerkraft).
 
 **Umfang:** Die Elemente reichen fuer einen Jam. Lieber kombinieren als
 neue erfinden.
@@ -1576,7 +1590,7 @@ laedt und blendet wieder auf (je Stufe 0,12 s, nur Palettenfarben).
 **Grundgerueste fuer Schritt 17 (13.11.2026):** Die KI hat zwei Level
 angelegt, die der Nutzer ausbaut. Die Reihenfolge in `data/level_order.tres`
 ist jetzt Werkstatt -> Selbstschussanlage 1 -> Selbstschussanlage 2
--> Selbstschussanlage 3 (Platzhalter).
+-> Selbstschussanlage 3 -> Teslakammer 1 (Platzhalter).
 
 - `level_workshop` (Werkstatt, Tutorial): Klonstation links, dann in der
   Reihenfolge des Tutorials die Wandhinweise "A D Move", Fahrstuhl mit
@@ -1611,6 +1625,12 @@ ist jetzt Werkstatt -> Selbstschussanlage 1 -> Selbstschussanlage 2
   (z_index -20).
 - **Wandhinweis:** neue Einstellung `plate` (Standard an): helles Schild
   hinter Tasten und Wort; z_index jetzt -7 (vor der Deko).
+- **Teslakammer, Platzhalter** `level_tesla_01` (Schritt 21): Tesla-Rueckwand,
+  Schrotthaufen "Form" am Anfang, zwei Laser bis zur Decke (versetzt),
+  dann ein Magnetlift auf einen hohen Vorsprung (y = 240) mit dem Ausgang;
+  Deko Teslaspulen, Generator, Computer. Rueckwand im Tesla-Look: dunkelblaue
+  Paneele mit Kupferspulen (rechte Haelfte von `tileset_wall.png`),
+  `BackWall.fill(..., Variant.TESLA)` bzw. Baukasten-Knopf "Rueckwand Tesla".
 - **Platzhalter-Level** `level_sentry_03` (Schritt 20): Raketen-Fahrt. Eine
   30 Tiles lange Starkstrom-Grube ist nicht zu ueberspringen; man stellt
   sich auf den Geschuetzturm (x = 192), steigt auf die austretende Rakete
@@ -2012,7 +2032,8 @@ gekuerzt, nicht der Puffer.
 - [ ] 20. Restliche Level der Selbstschussanlage. (Platzhalter
   `level_sentry_02` und `level_sentry_03` von der KI, 13.11.2026; die echten
   Level baut der Nutzer.)
-- [ ] 21. Teslakammer: Grafik, ggf. Magnet, Level.
+- [x] 21. Teslakammer: Grafik, ggf. Magnet, Level. (13.11.2026: Tesla-Rueckwand,
+  Elektromagnet, Platzhalter `level_tesla_01`; echte Level baut der Nutzer.)
 - [ ] 22. Intro-Sequenz: Comic zum Durchklicken ohne Text, vier Szenen,
   Panels mit kleinen Animationsschleifen (3.5).
 - [ ] 23. Ende und Abspann: Keycard funktioniert doch, Fahrstuhlfahrt nach
@@ -2041,7 +2062,7 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 13.11.2026, Version v0.47**
+**Stand vom 13.11.2026, Version v0.48**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
 - **Zuletzt erledigt:** Baukasten mit Rohren (19a), Dampfaustritt, Wand- und Bodenelementen; Streckenanzeige der Plattform im Editor.

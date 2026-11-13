@@ -10,9 +10,13 @@ extends RefCounted
 const PANEL := 4
 
 
+## Varianten der Wand: Labor (dunkelviolett) und Teslakammer (blau, Spulen).
+enum Variant { LAB, TESLA }
+
+
 ## Fuellt "wall" ueberall dort, wo "ground" innerhalb seiner bemalten Flaeche
 ## frei ist (also im Inneren des Raums). Vorhandene Wand-Tiles werden ersetzt.
-static func fill(wall: TileMapLayer, ground: TileMapLayer) -> int:
+static func fill(wall: TileMapLayer, ground: TileMapLayer, variant := Variant.LAB) -> int:
 	wall.clear()
 	var used := ground.get_used_rect()
 	var count := 0
@@ -21,7 +25,7 @@ static func fill(wall: TileMapLayer, ground: TileMapLayer) -> int:
 			var cell := Vector2i(x, y)
 			if ground.get_cell_source_id(cell) != -1:
 				continue
-			wall.set_cell(cell, 0, _tile_for(cell, ground))
+			wall.set_cell(cell, 0, _tile_for(cell, ground) + Vector2i(4 * variant, 0))
 			count += 1
 	return count
 

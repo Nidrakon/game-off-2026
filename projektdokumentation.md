@@ -1544,7 +1544,8 @@ laedt und blendet wieder auf (je Stufe 0,12 s, nur Palettenfarben).
 
 **Grundgerueste fuer Schritt 17 (13.11.2026):** Die KI hat zwei Level
 angelegt, die der Nutzer ausbaut. Die Reihenfolge in `data/level_order.tres`
-ist jetzt Werkstatt -> Selbstschussanlage 1.
+ist jetzt Werkstatt -> Selbstschussanlage 1 -> Selbstschussanlage 2
+(Platzhalter).
 
 - `level_workshop` (Werkstatt, Tutorial): Klonstation links, dann in der
   Reihenfolge des Tutorials die Wandhinweise "A D Move", Fahrstuhl mit
@@ -1553,8 +1554,35 @@ ist jetzt Werkstatt -> Selbstschussanlage 1.
   ist Platz fuer das erste Pflichtraetsel (entwirft der Nutzer), ganz
   rechts der Ausgang. Ein Bildschirm breit; Raum, Hinweise und Positionen
   duerfen frei geaendert werden.
-- `level_sentry_01` (erstes Level der Selbstschussanlage): leerer Raum aus
-  der Vorlage.
+- `level_sentry_01` (erstes Level der Selbstschussanlage): baut der Nutzer.
+- **Werkstatt als Wimmelbild (Wunsch des Nutzers, 13.11.2026):** Die
+  Werkstatt ist dicht mit Deko gefuellt: Paneel-Rueckwand (Ebene `BackWall`),
+  Rohrleitungen im Hintergrund mit drei Dampfaustritten, Werkbank mit
+  Schraubstock und Werkzeug, Werkzeugwaende, Regale, Tafeln mit
+  Formel-Kritzeleien, Zahnraeder, Generatoren, Teslaspulen, Computer,
+  Roboterarme, Jetpacks, Glasroehren, Manometer, Kisten, Faesser, Kabelsalat,
+  Pizzakartons, Time-Shifter-Prototyp, Haengelampen (zusammen ca. 70
+  Requisiten). Die Tutorial-Hinweise stehen auf hellen Schildern und bleiben
+  lesbar; rechts bleibt Platz fuer das Pflichtraetsel.
+- **Deko-Requisiten** (`scenes/objects/deco_prop.tscn`, Skript
+  `scripts/objects/deco_prop.gd`): 18 Requisiten aus dem Atlas
+  `graphics/sprites/deco/deco_workshop.png` (Quelle `graphics/source/deco_workshop.aseprite`,
+  Ausschnitte in `deco_workshop.json`). Im Inspector `prop` (Auswahlliste),
+  `flip`, bei animierten (Generator, Teslaspule, Computer, Glasroehre,
+  Manometer) `frame_time` und `start_offset`; die Animation laeuft mit der
+  Zeitblase (Regel 17). Ursprung unten Mitte, keine Kollision, z_index -8.
+  Je Requisit eine Voreinstellung in `scenes/deco/` und ein Eintrag in der
+  Baukasten-Gruppe "Deko".
+- **Rueckwand** (`graphics/tilesets/tileset_wall.tres`, Grafik
+  `tileset_wall.png`): dunkle Metallpaneele aus 3 x 3 Teilen (Ecken mit
+  Nieten, Kanten, Mitte), dazu Lueftungsgitter, Warnstreifen und
+  Kabelkanal; ohne Kollision. Ebene `BackWall` in der Level-Vorlage
+  (z_index -20).
+- **Wandhinweis:** neue Einstellung `plate` (Standard an): helles Schild
+  hinter Tasten und Wort; z_index jetzt -7 (vor der Deko).
+- **Platzhalter-Level** `level_sentry_02`: Starkstrom-Luecke (5 Tiles,
+  ueberspringen) und ein Werfer am rechten Rand, der Projektile ueber den
+  Boden schickt (darueber springen oder mit der Zeitblase bremsen).
 - Weitere Level der Selbstschussanlage: `level_sentry_02` usw. als geerbte
   Szene anlegen und in die Reihenfolge eintragen.
 - Szenario `new_game` startet jetzt in der Werkstatt.
@@ -1909,8 +1937,9 @@ gekuerzt, nicht der Puffer.
 - [ ] 17. Werkstatt (Tutorial) und erste Level der Selbstschussanlage
   bauen (Platzhalter-Grafik). **Die Level baut der Nutzer**, die KI liefert
   die Bausteine und hilft. Danach: kompletter Testdurchlauf = Vertical
-  Slice. (In Arbeit: Grundgerueste `level_workshop` und `level_sentry_01`
-  angelegt, 13.11.2026.)
+  Slice. (KI-Teil erledigt am 13.11.2026: Werkstatt als Wimmelbild,
+  Deko-Requisiten, Rueckwand, Platzhalter-Level `level_sentry_02`. Offen:
+  Pflichtraetsel und echte Level durch den Nutzer.)
 
 **Meilenstein 3: Inhalt und Grafik (Ziel 24.11.)**
 
@@ -1955,7 +1984,7 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 13.11.2026, Version v0.42**
+**Stand vom 13.11.2026, Version v0.43**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
 - **Zuletzt erledigt:** Baukasten mit Rohren (19a), Dampfaustritt, Wand- und Bodenelementen; Streckenanzeige der Plattform im Editor.

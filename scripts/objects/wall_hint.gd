@@ -24,6 +24,12 @@ enum Paint { DARK, LIGHT, YELLOW, RED, BLUE }
 	set(value):
 		paint = value
 		queue_redraw()
+## Helles Schild hinter dem Hinweis, damit er auf vollem Hintergrund lesbar
+## bleibt (z. B. vor der Paneelwand der Werkstatt).
+@export var plate := true:
+	set(value):
+		plate = value
+		queue_redraw()
 
 const PAINT_COLORS := {
 	Paint.DARK: Color("3e3546"),
@@ -36,11 +42,16 @@ const PAINT_COLORS := {
 const KEY_GAP := 4.0
 const WORD_GAP := 6.0
 const WORD_SIZE := 12
+## Rand des Schilds um Tasten und Wort (Pixel) und seine Farben (Palette).
+const PLATE_MARGIN := 5.0
+const COLOR_PLATE := Color("c7dcd0")
+const COLOR_PLATE_EDGE := Color("2e222f")
+const COLOR_PLATE_SHADE := Color("9babb2")
 
 
 func _ready() -> void:
 	# Hinter allem im Level, aber vor dem Hintergrund (Wand).
-	z_index = -10
+	z_index = -7
 
 
 ## Das angezeigte Wort.
@@ -60,6 +71,18 @@ func _draw() -> void:
 	total += KEY_GAP * maxf(keys.size() - 1, 0)
 	var x := -floorf(total * 0.5)
 	var font := ThemeDB.fallback_font
+	if plate:
+		var word_w := 0.0
+		if get_word() != "":
+			word_w = font.get_string_size(get_word(), HORIZONTAL_ALIGNMENT_LEFT, -1, WORD_SIZE).x
+		var width := ceilf(maxf(total, word_w)) + PLATE_MARGIN * 2.0
+		var height := KeyCap.HEIGHT + 1.0 + (WORD_GAP + 12.0 if get_word() != "" else 0.0) + PLATE_MARGIN * 2.0
+		var r := Rect2(-floorf(width * 0.5), -PLATE_MARGIN, width, height)
+		draw_rect(r, COLOR_PLATE_EDGE)
+		draw_rect(r.grow(-1), COLOR_PLATE)
+		draw_rect(Rect2(r.position.x + 1, r.end.y - 2, r.size.x - 2, 1), COLOR_PLATE_SHADE)
+		draw_rect(Rect2(r.position.x + 2, r.position.y + 2, 1, 1), COLOR_PLATE_SHADE)
+		draw_rect(Rect2(r.end.x - 3, r.position.y + 2, 1, 1), COLOR_PLATE_SHADE)
 	for i in keys.size():
 		var rect := Rect2(x, 0, widths[i], KeyCap.HEIGHT)
 		draw_rect(Rect2(rect.position, Vector2(rect.size.x, 1)), color)

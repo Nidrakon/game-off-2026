@@ -51,6 +51,13 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.43 - 2026-11-13: Schritt 17: Werkstatt als Wimmelbild, Deko, Platzhalter-Level**
+
+- 18 Deko-Requisiten (Atlas `deco_workshop`, teils animiert, Zeitblase) als Bausteine in der Baukasten-Gruppe "Deko".
+- Rueckwand-Tileset (Paneele, Gitter, Warnstreifen, Kabelkanal), Ebene `BackWall` in der Vorlage.
+- Werkstatt dicht bestueckt (ca. 70 Requisiten, Hintergrundrohre mit Dampf); Wandhinweise mit hellem Schild.
+- Platzhalter-Level `level_sentry_02` (Starkstrom-Luecke, Werfer), in der Reihenfolge nach `level_sentry_01`.
+
 **v0.42 - 2026-11-13: Rohre, Wand- und Bodenelemente im Baukasten, Streckenanzeige der Plattform**
 
 - Tileset Rohre (`tileset_pipes`) mit Autotiling, vorn mit Kollision, hinten als Deko; Ebenen `PipesFront`/`PipesBack` in der Level-Vorlage (Schritt 19a, Platzhalter-Grafik).

@@ -1,176 +1,410 @@
 [
 	{
+		"category": "gelaende",
+		"description": "Bodenstueck mit Kante oben. 'Size Tiles': Breite und Hoehe in Tiles. Ursprung links oben, auf das 16er-Raster setzen.",
+		"icon": "res://graphics/tilesets/tileset_placeholder.png",
+		"icon_region": [
+			0.0,
+			0.0,
+			16.0,
+			16.0
+		],
 		"name": "Boden",
-		"category": "gelaende",
-		"path": "res://scenes/objects/floor_block.tscn",
-		"icon": "res://graphics/tilesets/tileset_placeholder.png",
-		"icon_region": [
-			0,
-			0,
-			16,
-			16
-		],
-		"description": "Bodenstueck mit Kante oben. 'Size Tiles': Breite und Hoehe in Tiles. Ursprung links oben, auf das 16er-Raster setzen."
+		"path": "res://scenes/objects/floor_block.tscn"
 	},
 	{
+		"category": "gelaende",
+		"description": "Senkrechte Wand aus Block-Tiles (1 x 6). 'Size Tiles' fuer Breite und Hoehe.",
+		"icon": "res://graphics/tilesets/tileset_placeholder.png",
+		"icon_region": [
+			32.0,
+			0.0,
+			16.0,
+			16.0
+		],
 		"name": "Wand",
-		"category": "gelaende",
-		"path": "res://scenes/objects/wall_block.tscn",
-		"icon": "res://graphics/tilesets/tileset_placeholder.png",
-		"icon_region": [
-			32,
-			0,
-			16,
-			16
-		],
-		"description": "Senkrechte Wand aus Block-Tiles (1 x 6). 'Size Tiles' fuer Breite und Hoehe."
+		"path": "res://scenes/objects/wall_block.tscn"
 	},
 	{
+		"category": "gelaende",
+		"description": "Fester Block (2 x 2), z. B. Kiste, Saeule oder Hindernis. 3 Tiles hoch = nur per Sprung zu ueberwinden.",
+		"icon": "res://graphics/tilesets/tileset_placeholder.png",
+		"icon_region": [
+			32.0,
+			0.0,
+			16.0,
+			16.0
+		],
 		"name": "Block",
-		"category": "gelaende",
-		"path": "res://scenes/objects/solid_block.tscn",
-		"icon": "res://graphics/tilesets/tileset_placeholder.png",
-		"icon_region": [
-			32,
-			0,
-			16,
-			16
-		],
-		"description": "Fester Block (2 x 2), z. B. Kiste, Saeule oder Hindernis. 3 Tiles hoch = nur per Sprung zu ueberwinden."
+		"path": "res://scenes/objects/solid_block.tscn"
 	},
 	{
+		"category": "gelaende",
+		"description": "Von unten durchspringbarer Steg (4 x 1, 'One Way'). Man landet oben und stoesst nicht mit dem Kopf an.",
+		"icon": "res://graphics/tilesets/tileset_placeholder.png",
+		"icon_region": [
+			0.0,
+			0.0,
+			16.0,
+			16.0
+		],
 		"name": "Steg",
-		"category": "gelaende",
-		"path": "res://scenes/objects/ledge.tscn",
-		"icon": "res://graphics/tilesets/tileset_placeholder.png",
-		"icon_region": [
-			0,
-			0,
-			16,
-			16
-		],
-		"description": "Von unten durchspringbarer Steg (4 x 1, 'One Way'). Man landet oben und stoesst nicht mit dem Kopf an."
+		"path": "res://scenes/objects/ledge.tscn"
 	},
 	{
-		"name": "Dampfaustritt",
 		"category": "rohre",
-		"path": "res://scenes/objects/steam_vent.tscn",
+		"description": "Dampfwolken im Takt, z. B. an einem Rohrende. 'Direction', 'Interval', 'Puff Time', 'Start Offset', 'Reach'. Deko, laeuft mit der Zeitblase.",
 		"icon": "res://addons/building_blocks/icons/steam_vent.png",
-		"description": "Dampfwolken im Takt, z. B. an einem Rohrende. 'Direction', 'Interval', 'Puff Time', 'Start Offset', 'Reach'. Deko, laeuft mit der Zeitblase."
+		"name": "Dampfaustritt",
+		"path": "res://scenes/objects/steam_vent.tscn"
 	},
 	{
-		"name": "Ausgang",
 		"category": "level",
-		"path": "res://scenes/objects/level_exit.tscn",
+		"description": "Schiebetuer zum naechsten Level. Jede Level-Vorlage hat schon einen. Ein zusaetzlicher Ausgang kann mit 'Target Level' woandershin fuehren.",
 		"icon": "res://graphics/sprites/objects/object_level_exit_placeholder.png",
 		"icon_region": [
-			0,
-			0,
-			32,
-			64
+			0.0,
+			0.0,
+			32.0,
+			64.0
 		],
-		"description": "Schiebetuer zum naechsten Level. Jede Level-Vorlage hat schon einen. Ein zusaetzlicher Ausgang kann mit 'Target Level' woandershin fuehren."
+		"name": "Ausgang",
+		"path": "res://scenes/objects/level_exit.tscn"
 	},
 	{
-		"name": "Schrotthaufen",
 		"category": "level",
-		"path": "res://scenes/objects/scrap_heap.tscn",
+		"description": "Upgrade fuer den Time Shifter. 'Upgrade': Radius (Drehregler) oder Form (Cursor). Auf den Boden stellen.",
 		"icon": "res://graphics/sprites/objects/object_scrap_heap_placeholder.png",
 		"icon_region": [
-			0,
-			0,
-			32,
-			24
+			0.0,
+			0.0,
+			32.0,
+			24.0
 		],
-		"description": "Upgrade fuer den Time Shifter. 'Upgrade': Radius (Drehregler) oder Form (Cursor). Auf den Boden stellen."
+		"name": "Schrotthaufen",
+		"path": "res://scenes/objects/scrap_heap.tscn"
 	},
 	{
-		"name": "Fahrstuhl",
 		"category": "level",
-		"path": "res://scenes/objects/elevator.tscn",
+		"description": "Fahrstuhl der Werkstatt. Mit E sagt der Professor den Text 'Text Id' (dialogues/speech.json).",
 		"icon": "res://graphics/sprites/objects/object_elevator_placeholder.png",
-		"description": "Fahrstuhl der Werkstatt. Mit E sagt der Professor den Text 'Text Id' (dialogues/speech.json)."
+		"name": "Fahrstuhl",
+		"path": "res://scenes/objects/elevator.tscn"
 	},
 	{
-		"name": "Wandhinweis",
 		"category": "level",
-		"path": "res://scenes/objects/wall_hint.tscn",
+		"description": "Aufgemalte Tasten mit Wort. 'Keys': Tastenbeschriftungen, 'Text Id': Wort aus dialogues/hints.json, 'Paint': Wandfarbe.",
 		"icon": "res://addons/building_blocks/icons/wall_hint.png",
-		"description": "Aufgemalte Tasten mit Wort. 'Keys': Tastenbeschriftungen, 'Text Id': Wort aus dialogues/hints.json, 'Paint': Wandfarbe."
+		"name": "Wandhinweis",
+		"path": "res://scenes/objects/wall_hint.tscn"
 	},
 	{
-		"name": "Fliegende Plattform",
 		"category": "plattformen",
-		"path": "res://scenes/objects/flying_platform.tscn",
+		"description": "Faehrt hin und her. 'Travel': Weg, 'Travel Time', 'Start Offset', 'Wait Time', 'Active'. Signal-Empfaenger, reagiert auf die Zeitblase.",
 		"icon": "res://graphics/sprites/objects/object_flying_platform_placeholder.png",
-		"description": "Faehrt hin und her. 'Travel': Weg, 'Travel Time', 'Start Offset', 'Wait Time', 'Active'. Signal-Empfaenger, reagiert auf die Zeitblase."
+		"name": "Fliegende Plattform",
+		"path": "res://scenes/objects/flying_platform.tscn"
 	},
 	{
-		"name": "Tuer",
 		"category": "plattformen",
-		"path": "res://scenes/objects/door.tscn",
+		"description": "Oeffnet und schliesst auf Signal. 'Travel', 'Move Time', 'Start Open'.",
 		"icon": "res://graphics/sprites/objects/object_door_placeholder.png",
-		"description": "Oeffnet und schliesst auf Signal. 'Travel', 'Move Time', 'Start Open'."
+		"name": "Tuer",
+		"path": "res://scenes/objects/door.tscn"
 	},
 	{
-		"name": "Projektil-Werfer",
 		"category": "gefahren",
-		"path": "res://scenes/objects/projectile_launcher.tscn",
+		"description": "Feuert Projektile (oben begehbar, seitlich toedlich). 'Direction', 'Fire Interval', 'First Shot Delay', 'Projectile Speed', 'Projectiles Block Laser'.",
 		"icon": "res://graphics/sprites/objects/object_projectile_launcher_placeholder.png",
-		"description": "Feuert Projektile (oben begehbar, seitlich toedlich). 'Direction', 'Fire Interval', 'First Shot Delay', 'Projectile Speed', 'Projectiles Block Laser'."
+		"name": "Projektil-Werfer",
+		"path": "res://scenes/objects/projectile_launcher.tscn"
 	},
 	{
-		"name": "Toedlicher Laser",
 		"category": "gefahren",
-		"path": "res://scenes/objects/deadly_laser.tscn",
+		"description": "Roter Strahl im Takt. 'Beam End', 'On Time', 'Off Time', 'Start Offset', 'Warning Time', 'Always On', 'Active'. Signal-Empfaenger.",
 		"icon": "res://graphics/sprites/objects/object_deadly_laser_emitter_placeholder.png",
-		"description": "Roter Strahl im Takt. 'Beam End', 'On Time', 'Off Time', 'Start Offset', 'Warning Time', 'Always On', 'Active'. Signal-Empfaenger."
+		"name": "Toedlicher Laser",
+		"path": "res://scenes/objects/deadly_laser.tscn"
 	},
 	{
-		"name": "Starkstrom-Boden",
 		"category": "gefahren",
-		"path": "res://scenes/objects/electric_floor.tscn",
+		"description": "Toedliche Bodenplatten statt Boden-Tiles. 'Width Tiles'. Ursprung links oben.",
 		"icon": "res://graphics/sprites/objects/object_electric_floor_placeholder.png",
 		"icon_region": [
-			0,
-			0,
-			16,
-			16
+			0.0,
+			0.0,
+			16.0,
+			16.0
 		],
-		"description": "Toedliche Bodenplatten statt Boden-Tiles. 'Width Tiles'. Ursprung links oben."
+		"name": "Starkstrom-Boden",
+		"path": "res://scenes/objects/electric_floor.tscn"
 	},
 	{
-		"name": "Pendel / Stachelkugel",
 		"category": "gefahren",
-		"path": "res://scenes/objects/pendulum.tscn",
+		"description": "Stachelkugel an einer Stange. 'Mode': schwingen oder rotieren, 'Length', 'Amplitude', 'Period', 'Start Phase', 'Clockwise'.",
 		"icon": "res://graphics/sprites/objects/object_spike_ball_placeholder.png",
-		"description": "Stachelkugel an einer Stange. 'Mode': schwingen oder rotieren, 'Length', 'Amplitude', 'Period', 'Start Phase', 'Clockwise'."
+		"name": "Pendel / Stachelkugel",
+		"path": "res://scenes/objects/pendulum.tscn"
 	},
 	{
-		"name": "Lichtschranke",
 		"category": "schalter",
-		"path": "res://scenes/objects/light_barrier.tscn",
+		"description": "Blauer Strahl, sendet beim Durchqueren ein Signal. 'Beam End', 'Targets', 'Action', 'One Shot'.",
 		"icon": "res://graphics/sprites/objects/object_light_barrier_emitter_placeholder.png",
-		"description": "Blauer Strahl, sendet beim Durchqueren ein Signal. 'Beam End', 'Targets', 'Action', 'One Shot'."
+		"name": "Lichtschranke",
+		"path": "res://scenes/objects/light_barrier.tscn"
 	},
 	{
-		"name": "Trefferflaeche",
 		"category": "schalter",
-		"path": "res://scenes/objects/impact_switch.tscn",
+		"description": "Wird von einem Projektil ausgeloest und sendet ein Signal. 'Targets', 'Action'.",
 		"icon": "res://graphics/sprites/objects/object_impact_switch_placeholder.png",
 		"icon_region": [
-			0,
-			0,
-			32,
-			64
+			0.0,
+			0.0,
+			32.0,
+			64.0
 		],
-		"description": "Wird von einem Projektil ausgeloest und sendet ein Signal. 'Targets', 'Action'."
+		"name": "Trefferflaeche",
+		"path": "res://scenes/objects/impact_switch.tscn"
 	},
 	{
-		"name": "Zeitschaltuhr",
 		"category": "schalter",
-		"path": "res://scenes/objects/time_switch.tscn",
+		"description": "Countdown zwischen Ausloeser und Zielen. 'Duration', 'Targets', 'Start Action', 'End Action', 'Autostart', 'Repeat'.",
 		"icon": "res://graphics/sprites/objects/object_time_switch_placeholder.png",
-		"description": "Countdown zwischen Ausloeser und Zielen. 'Duration', 'Targets', 'Start Action', 'End Action', 'Autostart', 'Repeat'."
+		"name": "Zeitschaltuhr",
+		"path": "res://scenes/objects/time_switch.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			0.0,
+			0.0,
+			80.0,
+			40.0
+		],
+		"name": "Werkbank",
+		"path": "res://scenes/deco/workbench.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			82.0,
+			0.0,
+			64.0,
+			48.0
+		],
+		"name": "Werkzeugwand",
+		"path": "res://scenes/deco/tool_wall.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			148.0,
+			0.0,
+			48.0,
+			56.0
+		],
+		"name": "Regal",
+		"path": "res://scenes/deco/shelf.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset').",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			198.0,
+			0.0,
+			48.0,
+			72.0
+		],
+		"name": "Generator",
+		"path": "res://scenes/deco/generator.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset').",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			296.0,
+			0.0,
+			32.0,
+			64.0
+		],
+		"name": "Teslaspule",
+		"path": "res://scenes/deco/tesla_coil.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset').",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			362.0,
+			0.0,
+			56.0,
+			48.0
+		],
+		"name": "Computer",
+		"path": "res://scenes/deco/console.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			0.0,
+			74.0,
+			40.0,
+			56.0
+		],
+		"name": "Roboterarm",
+		"path": "res://scenes/deco/robot_arm.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			42.0,
+			74.0,
+			28.0,
+			44.0
+		],
+		"name": "Jetpack",
+		"path": "res://scenes/deco/jetpack.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset').",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			72.0,
+			74.0,
+			20.0,
+			52.0
+		],
+		"name": "Glasroehre",
+		"path": "res://scenes/deco/tube.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			114.0,
+			74.0,
+			64.0,
+			40.0
+		],
+		"name": "Tafel",
+		"path": "res://scenes/deco/chalkboard.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			180.0,
+			74.0,
+			16.0,
+			40.0
+		],
+		"name": "Haengelampe",
+		"path": "res://scenes/deco/lamp.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			198.0,
+			74.0,
+			28.0,
+			28.0
+		],
+		"name": "Kiste",
+		"path": "res://scenes/deco/crate.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset').",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			228.0,
+			74.0,
+			36.0,
+			32.0
+		],
+		"name": "Manometer",
+		"path": "res://scenes/deco/gauges.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			302.0,
+			74.0,
+			48.0,
+			10.0
+		],
+		"name": "Kabelsalat",
+		"path": "res://scenes/deco/cables.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			352.0,
+			74.0,
+			32.0,
+			40.0
+		],
+		"name": "Prototyp",
+		"path": "res://scenes/deco/prototype.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			386.0,
+			74.0,
+			32.0,
+			20.0
+		],
+		"name": "Pizzakartons",
+		"path": "res://scenes/deco/pizza_boxes.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			420.0,
+			74.0,
+			20.0,
+			28.0
+		],
+		"name": "Fass",
+		"path": "res://scenes/deco/barrel.tscn"
+	},
+	{
+		"category": "deko",
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			442.0,
+			74.0,
+			48.0,
+			48.0
+		],
+		"name": "Riesenzahnrad",
+		"path": "res://scenes/deco/big_gear.tscn"
 	}
 ]

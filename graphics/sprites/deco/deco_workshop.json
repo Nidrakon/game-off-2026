@@ -1,0 +1,20 @@
+{
+	"workbench": {"x": 0, "y": 0, "w": 80, "h": 40, "frames": 1},
+	"tool_wall": {"x": 82, "y": 0, "w": 64, "h": 48, "frames": 1},
+	"shelf": {"x": 148, "y": 0, "w": 48, "h": 56, "frames": 1},
+	"generator": {"x": 198, "y": 0, "w": 48, "h": 72, "frames": 2},
+	"tesla_coil": {"x": 296, "y": 0, "w": 32, "h": 64, "frames": 2},
+	"console": {"x": 362, "y": 0, "w": 56, "h": 48, "frames": 2},
+	"robot_arm": {"x": 0, "y": 74, "w": 40, "h": 56, "frames": 1},
+	"jetpack": {"x": 42, "y": 74, "w": 28, "h": 44, "frames": 1},
+	"tube": {"x": 72, "y": 74, "w": 20, "h": 52, "frames": 2},
+	"chalkboard": {"x": 114, "y": 74, "w": 64, "h": 40, "frames": 1},
+	"lamp": {"x": 180, "y": 74, "w": 16, "h": 40, "frames": 1},
+	"crate": {"x": 198, "y": 74, "w": 28, "h": 28, "frames": 1},
+	"gauges": {"x": 228, "y": 74, "w": 36, "h": 32, "frames": 2},
+	"cables": {"x": 302, "y": 74, "w": 48, "h": 10, "frames": 1},
+	"prototype": {"x": 352, "y": 74, "w": 32, "h": 40, "frames": 1},
+	"pizza_boxes": {"x": 386, "y": 74, "w": 32, "h": 20, "frames": 1},
+	"barrel": {"x": 420, "y": 74, "w": 20, "h": 28, "frames": 1},
+	"big_gear": {"x": 442, "y": 74, "w": 48, "h": 48, "frames": 1}
+}

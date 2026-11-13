@@ -126,6 +126,17 @@ func _build_tools() -> void:
 		paint.focus_mode = Control.FOCUS_NONE
 		paint.pressed.connect(select_paint_layer.bind(layer[1], layer[2]))
 		paint_row.add_child(paint)
+	var fill_wall := Button.new()
+	fill_wall.text = "Rueckwand fuellen"
+	fill_wall.tooltip_text = "Fuellt die Ebene BackWall mit der Paneelwand, ueberall im Inneren der bemalten Flaeche von Ground (z. B. nach dem Vergroessern eines Raums). Strg+Z macht es rueckgaengig."
+	var wall_icon := AtlasTexture.new()
+	wall_icon.atlas = load("res://graphics/tilesets/tileset_wall.png")
+	wall_icon.region = Rect2(16, 16, 16, 16)
+	fill_wall.icon = wall_icon
+	fill_wall.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	fill_wall.focus_mode = Control.FOCUS_NONE
+	fill_wall.pressed.connect(fill_back_wall)
+	paint_row.add_child(fill_wall)
 
 	var hint := Label.new()
 	hint.text = "Bausteine ins Level ziehen oder doppelklicken (Bildmitte). Tooltip = Erklaerung."
@@ -253,6 +264,27 @@ func select_paint_layer(node_name: String, hint: String) -> void:
 	EditorInterface.get_selection().add_node(layer)
 	EditorInterface.edit_node(layer)
 	_status.text = "%s gewaehlt. %s" % [node_name, hint]
+
+
+## Fuellt BackWall passend zu Ground (rueckgaengig mit Strg+Z).
+func fill_back_wall() -> void:
+	var root := EditorInterface.get_edited_scene_root()
+	var wall := root.get_node_or_null("BackWall") as TileMapLayer if root != null else null
+	var ground := root.get_node_or_null("Ground") as TileMapLayer if root != null else null
+	if wall == null or ground == null:
+		_status.text = "Im offenen Level fehlen die Ebenen BackWall oder Ground (nur in Leveln aus der Vorlage)."
+		return
+	var before := wall.tile_map_data
+	var temp := TileMapLayer.new()
+	temp.tile_set = wall.tile_set
+	var count := BackWall.fill(temp, ground)
+	var after := temp.tile_map_data
+	temp.free()
+	undo_redo.create_action("Rueckwand fuellen")
+	undo_redo.add_do_property(wall, "tile_map_data", after)
+	undo_redo.add_undo_property(wall, "tile_map_data", before)
+	undo_redo.commit_action()
+	_status.text = "Rueckwand gefuellt (%d Tiles)." % count
 
 
 func _free_name(root: Node, base: String) -> String:

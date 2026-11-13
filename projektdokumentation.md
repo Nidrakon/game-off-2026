@@ -1674,6 +1674,23 @@ Bodenelemente in den Baukasten):**
   Wand 1 x 6, Block 2 x 2, Steg 4 x 1 (durchspringbar). Ursprung links oben,
   im Editor sofort in Groesse sichtbar.
 
+**Grafik Schritt 19 (13.11.2026):**
+
+- Gelaende-Tiles neu gezeichnet (Datei und Anordnung unveraendert, damit
+  alle Level und die Wand- und Bodenbausteine sie sofort nutzen):
+  Bodenplatte mit heller Metallkante und Nieten, dunkle Fuellplatten,
+  Stahlblock mit Fase und Kreuzstrebe. Dateinamen bleiben
+  `tileset_placeholder.*` (Umbenennen wuerde alle Level beruehren).
+- Werfer als gepanzerter Geschuetzturm mit Rohr, Warnstreifen und
+  Warnlampe; das Fenster fuer den Ladebalken liegt an derselben Stelle.
+- Projektil als Rakete: Rumpf mit Ringen und Warnzeichen, rote Spitze,
+  Flossen, Duese; oben flach (man faehrt darauf mit).
+- Rueckwand: Die Level-Vorlage bringt die Paneelwand schon fuer den
+  Standardraum mit. Nach dem Umbauen eines Raums fuellt der Baukasten-Knopf
+  "Rueckwand fuellen" sie passend nach (`scripts/levels/back_wall.gd`:
+  Platten 4 x 4, Warnstreifen ueber dem Boden, Kabelkanal 9 Tiles darueber,
+  vereinzelt Lueftungsgitter; mit Strg+Z rueckgaengig).
+
 **Baustein Rohre, Tileset (Planung, 10.11.2026):** Rohre mit Dampf als Bau- und
 Dekoelement, kein eigenes Jump-and-Run-Element. Das Tileset erstellt die
 KI, der Nutzer malt damit im Level.
@@ -1960,8 +1977,10 @@ gekuerzt, nicht der Puffer.
 
 - [x] 18. Sprechblasen-System fuer die Sprueche des Professors (Texte
   englisch in Datendatei) inkl. Respawn-Kommentar.
-- [ ] 19. Grafik: Farbpalette festlegen, Professor-Sprite mit Animationen,
-  Tileset und Objekte der Selbstschussanlage.
+- [x] 19. Grafik: Farbpalette festlegen, Professor-Sprite mit Animationen,
+  Tileset und Objekte der Selbstschussanlage. (13.11.2026: Palette steht seit
+  Schritt 1, Professor-Sprite vom Nutzer; Gelaende-Tiles, Rueckwand, Werfer
+  und Projektil neu gezeichnet, siehe 2.9 "Grafik Schritt 19".)
 - [x] 19a. Tileset Rohre mit Autotiling, Vorder- und Hintergrund, Dampf
   optional animiert (eingeschoben am 10.11.2026, 2.9). (Umgesetzt am
   13.11.2026 als Platzhalter-Grafik mit Dampfaustritt-Baustein; echte
@@ -1999,7 +2018,7 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 13.11.2026, Version v0.44**
+**Stand vom 13.11.2026, Version v0.45**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
 - **Zuletzt erledigt:** Baukasten mit Rohren (19a), Dampfaustritt, Wand- und Bodenelementen; Streckenanzeige der Plattform im Editor.

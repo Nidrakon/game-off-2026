@@ -51,6 +51,11 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.45 - 2026-11-13: Schritt 19: Grafik der Selbstschussanlage**
+
+- Gelaende-Tiles, Werfer (Geschuetzturm) und Projektil (Rakete) neu gezeichnet.
+- Rueckwand in der Level-Vorlage vorbefuellt; Baukasten-Knopf "Rueckwand fuellen" (`BackWall.fill`).
+
 **v0.44 - 2026-11-13: Schritt 18: Sprechblasen-System**
 
 - Zufaellige Sprueche des Professors und Respawn-Spruch mit Klon-Nummer (zaehlt im Spielstand mit); Texte in `dialogues/speech.json`, Einstellungen in `data/speech_settings.tres`.

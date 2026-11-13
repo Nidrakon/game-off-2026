@@ -1,0 +1,8 @@
+{
+	"name": "Sentry 3, rocket ride (placeholder)",
+	"order": 40,
+	"based_on": "new_game",
+	"scene": "res://scenes/levels/level_sentry_03.tscn",
+	"marker": "",
+	"save": { "upgrades": [], "flags": [] }
+}

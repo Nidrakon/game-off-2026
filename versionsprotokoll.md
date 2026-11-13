@@ -51,6 +51,10 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.47 - 2026-11-13: Schritt 20: Platzhalter Selbstschussanlage 3**
+
+- `level_sentry_03`: Raketen-Fahrt ueber eine Starkstrom-Grube, Schrotthaufen "Radius"; Szenarien `sentry_02`, `sentry_03`; automatischer Durchlauf-Test.
+
 **v0.46 - 2026-11-13: Schritt 19b: Zeitblase als Shader**
 
 - Linse in der Form der Blase: Wobble und chromatische Aberration, Tempo je Zeitstufe, Staerken einstellbar; farbige Flaeche entfaellt, Rand bleibt.

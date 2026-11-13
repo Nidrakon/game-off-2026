@@ -627,6 +627,8 @@ nimmt den Wert des Szenarios selbst.
 | --- | --- | --- |
 | `new_game` | New game | frischer Spielstand, erstes Beispiel-Level |
 | `example_2_all_upgrades` | Example 2, all upgrades | Beispiel-Level 2 mit Radius und Form (baut auf `new_game` auf) |
+| `sentry_02` | Sentry 2 (placeholder) | Platzhalter Selbstschussanlage 2 |
+| `sentry_03` | Sentry 3, rocket ride (placeholder) | Platzhalter Selbstschussanlage 3 (Raketen-Fahrt) |
 
 Mit jedem Schritt, der einen neuen Spielabschnitt baut, legt die KI ein
 passendes Szenario an.
@@ -1574,7 +1576,7 @@ laedt und blendet wieder auf (je Stufe 0,12 s, nur Palettenfarben).
 **Grundgerueste fuer Schritt 17 (13.11.2026):** Die KI hat zwei Level
 angelegt, die der Nutzer ausbaut. Die Reihenfolge in `data/level_order.tres`
 ist jetzt Werkstatt -> Selbstschussanlage 1 -> Selbstschussanlage 2
-(Platzhalter).
+-> Selbstschussanlage 3 (Platzhalter).
 
 - `level_workshop` (Werkstatt, Tutorial): Klonstation links, dann in der
   Reihenfolge des Tutorials die Wandhinweise "A D Move", Fahrstuhl mit
@@ -1609,6 +1611,11 @@ ist jetzt Werkstatt -> Selbstschussanlage 1 -> Selbstschussanlage 2
   (z_index -20).
 - **Wandhinweis:** neue Einstellung `plate` (Standard an): helles Schild
   hinter Tasten und Wort; z_index jetzt -7 (vor der Deko).
+- **Platzhalter-Level** `level_sentry_03` (Schritt 20): Raketen-Fahrt. Eine
+  30 Tiles lange Starkstrom-Grube ist nicht zu ueberspringen; man stellt
+  sich auf den Geschuetzturm (x = 192), steigt auf die austretende Rakete
+  (90 px/s, alle 4 s) und faehrt hinueber bis zum Ausgang. Am Anfang liegt
+  der Schrotthaufen "Radius". Ein automatischer Test faehrt das Level durch.
 - **Platzhalter-Level** `level_sentry_02`: Starkstrom-Luecke (5 Tiles,
   ueberspringen) und ein Werfer am rechten Rand, der Projektile ueber den
   Boden schickt (darueber springen oder mit der Zeitblase bremsen).
@@ -2002,7 +2009,9 @@ gekuerzt, nicht der Puffer.
 - [x] 19b. Zeitblase als Shader: Wobble und chromatische Aberration im
   Bereich der Blase, Tempo je Zeitstufe, Staerke einstellbar (eingeschoben am
   10.11.2026, 2.3).
-- [ ] 20. Restliche Level der Selbstschussanlage.
+- [ ] 20. Restliche Level der Selbstschussanlage. (Platzhalter
+  `level_sentry_02` und `level_sentry_03` von der KI, 13.11.2026; die echten
+  Level baut der Nutzer.)
 - [ ] 21. Teslakammer: Grafik, ggf. Magnet, Level.
 - [ ] 22. Intro-Sequenz: Comic zum Durchklicken ohne Text, vier Szenen,
   Panels mit kleinen Animationsschleifen (3.5).
@@ -2032,7 +2041,7 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 13.11.2026, Version v0.46**
+**Stand vom 13.11.2026, Version v0.47**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
 - **Zuletzt erledigt:** Baukasten mit Rohren (19a), Dampfaustritt, Wand- und Bodenelementen; Streckenanzeige der Plattform im Editor.

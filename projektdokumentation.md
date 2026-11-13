@@ -406,6 +406,8 @@ dunkles Gehaeuse mit gelben Warnstreifen, grosse rote Linse rechts),
 Zahnrad, Rohr, Spule, Feder und Glasroehre, unten die Reste),
 `object_level_exit_placeholder` (64 x 64: links geschlossene Schiebetuer
 32 x 64 mit Lampenfeld und Warnstreifen, rechts offen),
+`object_elevator_placeholder` (64 x 80: Fahrstuhltuer mit Etagenanzeige,
+rechts Keycard-Leser),
 `object_electric_floor_placeholder` (16 x 32, zwei Bilder uebereinander),
 `object_clone_station_placeholder` (48 x 80),
 `object_projectile_placeholder` (64 x 32, Spitze rechts),
@@ -647,9 +649,10 @@ umbenannt oder umnummeriert, steht der alte Name hier mit dabei.
 | Trefferflaeche, Schalter | Wird von einem Projektil ausgeloest und sendet ein Signal (`impact_switch`, siehe 2.4) |
 | Zeitschaltuhr | Countdown zwischen Ausloeser und Zielen (`time_switch`, siehe 2.4) |
 | Toedlicher Laser | Strahl zwischen zwei Sendern im Takt an und aus, toetet bei Beruehrung (`deadly_laser`, Schritt 12a, siehe 2.4) |
-| Wandhinweis | Aufgemalte Taste(n) mit Wort an der Hintergrundwand, Baustein fuer das Tutorial (geplant, `wall_hint`, siehe 2.9) |
+| Wandhinweis | Aufgemalte Taste(n) mit Wort an der Hintergrundwand, Baustein fuer das Tutorial (`wall_hint`, Schritt 16a, siehe 2.9) |
 | Rohre | Tileset mit Rohren und Dampf, automatisch verbindend, Vorder- und Hintergrund (geplant, `tileset_pipes`, siehe 2.9) |
-| Fahrstuhl | Steht in der Werkstatt; zu Beginn nicht nutzbar (Keycard "geroestet"), am Ende faehrt der Professor damit nach unten (siehe 3.5) |
+| Fahrstuhl | Steht in der Werkstatt; zu Beginn nicht nutzbar (Keycard "geroestet"), am Ende faehrt der Professor damit nach unten (`elevator`, siehe 3.5) |
+| E-Anzeige | Tastenkappe "E" ueber einem Objekt, mit dem der Professor gerade interagieren kann (`Interactable`, siehe 2.9) |
 | Werkstatt | Startbereich ganz unten, zaehlt nicht als eigentlicher Bereich |
 | Bereich | Grosser Teil des Labors (z. B. Teslakammer), besteht aus mehreren Leveln |
 | Level | Einzelner, abgeschlossener Abschnitt innerhalb eines Bereichs |
@@ -773,7 +776,7 @@ Status: vorlaeufig festgehalten, kann sich noch aendern.
 | Nach links laufen | `move_left` | A | [ ] | [ ] |
 | Nach rechts laufen | `move_right` | D | [ ] | [ ] |
 | Springen | `jump` | Leertaste | [ ] | [ ] |
-| Interagieren (geplant, 10.11.2026) | `interact` | E (physische Taste) | [ ] | [ ] |
+| Interagieren (seit Schritt 16a) | `interact` | E (physische Taste) | [ ] | [ ] |
 | Bedienfeld des Time Shifters ("Kupplung") | `time_shifter_panel` | Shift gedrueckt halten | [ ] | [ ] |
 | Regler im Bedienfeld bedienen | (Maus-Eingabe auf die Regler) | Maus | [ ] | [ ] |
 | Zeitstufe per Mausrad (Wunsch des Nutzers, 09.11.2026) | (Mausrad bei offenem Bedienfeld) | Shift + Rad hoch = schneller, Shift + Rad runter = langsamer | [ ] | [ ] |
@@ -786,7 +789,8 @@ Status: vorlaeufig festgehalten, kann sich noch aendern.
   Zeitstufe (umgesetzt in Schritt 6). Die Blase selbst ist in der Spielwelt
   immer sichtbar.
 - **Interagieren (E):** z. B. am Fahrstuhl in der Werkstatt; dann erscheint
-  eine Sprechblase des Professors (siehe 2.9 Tutorial, 3.5).
+  eine Sprechblase des Professors (siehe 2.9 Tutorial, 3.5). Steht der
+  Professor bei einem solchen Objekt, schwebt darueber eine Tastenkappe "E".
 - Offen: Belegung von W und S (bisher nur "WASD" genannt).
 - Die vorlaeufigen Tasten 1 / 2 / 3 aus Schritt 5 sind mit Schritt 6
   entfallen.
@@ -1378,8 +1382,20 @@ Fortschritt bleibt erhalten.
 - Intro und Abspann siehe 3.5. Das Intro kommt ohne Text aus (nur Bilder
   und vereinzelte Emoji-Sprechblasen).
 - Fahrstuhl in der Werkstatt: Mit E erscheint eine Sprechblase des
-  Professors (Keycard geroestet, Fahrstuhl nicht nutzbar). Text englisch
-  in einer Datendatei, Wortlaut offen.
+  Professors (Keycard geroestet, Fahrstuhl nicht nutzbar). Text englisch in
+  `dialogues/speech.json` (Kennung `speech_elevator_keycard`). Vorschlag der
+  KI (12.11.2026, aenderbar): "My keycard is toast. Literally. Guess I'm
+  taking the scenic route... through my own traps." (Entwurf: "Meine
+  Keycard ist Toast. Woertlich. Dann nehme ich wohl die Panoramaroute ...
+  durch meine eigenen Fallen.")
+- **Sprechblase, einfache Fassung (Schritt 16a):** `scripts/ui/speech_bubble.gd`
+  (`SpeechBubble.say(figur, text_id)`): weisser Kasten mit dunklem Rand und
+  Spitze nach unten ueber dem Kopf, folgt der Figur, bricht nach 220 px um,
+  steht 2 s plus 0,05 s pro Zeichen, das Spiel laeuft weiter. Eine neue
+  Blase ersetzt die alte. Das richtige System folgt mit Schritt 18.
+- Spieltexte liest `scripts/ui/game_texts.gd` (`GameTexts.get_text(datei,
+  kennung)`) aus `dialogues/<datei>.json`; fehlt eine Kennung, erscheint die
+  Kennung selbst.
 - [Offen: Ausloeser der Sprueche (zufaellig, an bestimmten Stellen), ob das
   Spiel dabei weiterlaeuft, Datenformat der Textdateien.]
 
@@ -1460,6 +1476,8 @@ angegeben; Details in 2.4):
 | Zeitschaltuhr | `time_switch` | Mitte | `duration`, `targets`, Aktionen, `repeat` |
 | Pendel / Stachelkugel | `pendulum` | Aufhaengung bzw. Achse | `mode`, `length`, `amplitude`, `period`, `start_phase`, `clockwise` |
 | Schrotthaufen | `scrap_heap` | Boden, Mitte | `upgrade` |
+| Fahrstuhl | `elevator` | Boden, Mitte der Tuer | `text_id`, `prompt_offset` |
+| Wandhinweis | `wall_hint` | Mitte oben | `keys`, `text_id`, `paint` |
 
 **Levelfolge:** `data/level_order.tres` (Skript `scripts/levels/level_order.gd`)
 listet die Level in Spielreihenfolge. Das globale System `LevelFlow` laedt
@@ -1475,7 +1493,9 @@ die Tuer auf, er verschwindet (Steuerung gesperrt, Gefahren wirken nicht
 mehr), der Bildschirm blendet ueber das Rastermuster ab, das naechste Level
 laedt und blendet wieder auf (je Stufe 0,12 s, nur Palettenfarben).
 
-**Beispiel-Level (Platzhalter):** `level_example_1` (Bloecke zum Springen)
+**Beispiel-Level (Platzhalter):** `level_example_1` (Bloecke zum Springen,
+seit 16a mit Fahrstuhl und drei Wandhinweisen "A D Move", "E Interact",
+"SPACE Jump")
 und `level_example_2` (toedlicher Laser bis zur Decke) zeigen Vorlage und
 Levelfolge. Sie werden durch die echten Level des Nutzers ersetzt.
 
@@ -1494,10 +1514,27 @@ Ein gefuehrtes Tutorial mit langsam steigender Schwierigkeit:
 5. **Erstes Pflichtraetsel:** ein einfaches Raetsel, das nur mit dem Time
    Shifter loesbar ist. Der Nutzer entwirft es selbst.
 
-**Baustein Wandhinweis (geplant):** Objekt, das der Nutzer per
-Drag-and-drop ins Level zieht. Im Inspector werden die Taste(n) und das Wort
-eingestellt (englisch, ueber eine Text-ID aus einer Datendatei). Liegt im
-Hintergrund, keine Kollision.
+**Baustein Wandhinweis (umgesetzt in Schritt 16a):** Objekt, das der
+Nutzer per Drag-and-drop ins Level zieht (`scenes/objects/wall_hint.tscn`,
+Node = Mitte oben). Im Inspector: `keys` (Beschriftungen der Tasten, z. B.
+"A", "D" oder "SPACE", "SHIFT"), `text_id` (Wort aus `dialogues/hints.json`:
+`hint_move`, `hint_jump`, `hint_interact`, `hint_time_shifter`,
+`hint_time_wheel`; leer = kein Wort) und `paint` (Wandfarbe: dunkel, hell,
+gelb, rot, blau, alle aus der Palette). Aufgemalt wirken die Tasten durch
+Umriss und Schrift in Wandfarbe. Liegt hinter allem (z_index -10), keine
+Kollision, im Editor sofort sichtbar.
+
+**Baustein Fahrstuhl (umgesetzt in Schritt 16a):** `scenes/objects/elevator.tscn`
+(Node = Boden, Mitte der Tuer; 64 x 80 mit Keycard-Leser rechts, dessen
+Lampe rot blinkt). Steht der Professor davor, erscheint die E-Anzeige; E
+laesst ihn den Text `text_id` sagen (Standard `speech_elevator_keycard`).
+
+**Grundbaustein Interagieren (Schritt 16a):** `scripts/objects/interactable.gd`
+(Klasse `Interactable`, Area2D, erkennt Ebene 2). Steht der lebende
+Professor im Bereich, schwebt bei `prompt_offset` eine weisse Tastenkappe
+"E" leicht auf und ab; E ruft `_on_interact()` auf und sendet
+`interacted`. Kuenftige Objekte zum Interagieren erben davon. Tastenkappen
+zeichnet `scripts/ui/key_cap.gd` (Breite passt sich der Beschriftung an).
 
 **Baustein Rohre, Tileset (geplant):** Rohre mit Dampf als Bau- und
 Dekoelement, kein eigenes Jump-and-Run-Element. Das Tileset erstellt die
@@ -1769,7 +1806,7 @@ gekuerzt, nicht der Puffer.
   einer Datendatei, Wechsel zum naechsten Level.
 - [x] 16. Titelbildschirm (New Game, Continue, Beenden) und Speichern bzw.
   Laden (2.5, 2.7).
-- [ ] 16a. Bausteine fuer Werkstatt und Tutorial (eingeschoben am
+- [x] 16a. Bausteine fuer Werkstatt und Tutorial (eingeschoben am
   10.11.2026, 2.9): Interaktionstaste E (`interact`), Fahrstuhl mit
   Sprechblase (geroestete Keycard), Wandhinweis (Taste(n) und Wort per
   Text-ID). Die Sprechblase nutzt das System aus Schritt 18; bis dahin eine
@@ -1820,13 +1857,14 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 13.11.2026, Version v0.38**
+**Stand vom 13.11.2026, Version v0.39**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
-- **Zuletzt erledigt:** Schritt 16 (Titelbildschirm, Speichern und Laden, Test-Szenarien).
-- **Naechster Schritt:** 16a (Bausteine fuer Werkstatt und Tutorial).
+- **Zuletzt erledigt:** Schritt 16a (Taste E, Fahrstuhl mit Sprechblase, Wandhinweis).
+- **Naechster Schritt:** 17 (Werkstatt und erste Level bauen; die Level baut der Nutzer).
 - **Spielbar:** Start (F5) mit Titelbildschirm (New Game, Continue, Quit), zwei
-  Beispiel-Level ueber den Ausgang verbunden, automatisches Speichern am Levelanfang,
+  Beispiel-Level ueber den Ausgang verbunden (Beispiel 1 mit Fahrstuhl, E = Sprechblase,
+  und Wandhinweisen), automatisches Speichern am Levelanfang,
   danach vorlaeufiger Endbildschirm. Testlevel (ueber F1 oder F6) mit dem Professor (Idle-, Lauf- und Sprunganimation): laufen,
   springen, Kamera folgt; Shift + Maus stellt Zeitstufe ein, Radius und Form nach dem
   Fund der Schrotthaufen (Stufe, Block 1); fliegende

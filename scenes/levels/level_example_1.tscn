@@ -1,6 +1,8 @@
 [gd_scene format=4]
 
 [ext_resource type="PackedScene" path="res://scenes/levels/level_base.tscn" id="1_base"]
+[ext_resource type="PackedScene" path="res://scenes/objects/elevator.tscn" id="2_elevator"]
+[ext_resource type="PackedScene" path="res://scenes/objects/wall_hint.tscn" id="3_hint"]
 
 [node name="LevelExample1" instance=ExtResource("1_base")]
 
@@ -9,3 +11,19 @@ tile_map_data = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 
 
 [node name="LevelExit" parent="." index="3"]
 position = Vector2(880, 496)
+
+[node name="Elevator" parent="." index="2" instance=ExtResource("2_elevator")]
+position = Vector2(176, 496)
+
+[node name="HintMove" parent="." index="3" instance=ExtResource("3_hint")]
+position = Vector2(112, 392)
+
+[node name="HintInteract" parent="." index="4" instance=ExtResource("3_hint")]
+position = Vector2(232, 392)
+keys = PackedStringArray("E")
+text_id = "hint_interact"
+
+[node name="HintJump" parent="." index="5" instance=ExtResource("3_hint")]
+position = Vector2(320, 400)
+keys = PackedStringArray("SPACE")
+text_id = "hint_jump"

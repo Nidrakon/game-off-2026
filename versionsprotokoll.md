@@ -51,6 +51,14 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.39 - 2026-11-13: Schritt 16a: Bausteine fuer Werkstatt und Tutorial**
+
+- Eingabe-Aktion `interact` (E), Grundbaustein `Interactable` mit schwebender E-Tastenkappe.
+- Fahrstuhl (`elevator`): Keycard-Leser blinkt rot, E = Sprechblase "Keycard geroestet" (Text in `dialogues/speech.json`, Wortlaut als Vorschlag).
+- Einfache Sprechblase (`SpeechBubble`) bis Schritt 18; Textlader `GameTexts`.
+- Wandhinweis (`wall_hint`): aufgemalte Tasten und Wort aus `dialogues/hints.json`, Wandfarbe aus der Palette.
+- Beispiel-Level 1 mit Fahrstuhl und drei Wandhinweisen.
+
 **v0.38 - 2026-11-13: Schritt 16: Titelbildschirm, Speichern und Laden**
 
 - Titelbildschirm als Hauptszene: New Game (Sicherheitsabfrage bei vorhandenem Spielstand), Continue (ausgegraut ohne Spielstand), Quit (im Browser ausgeblendet); Texte in `dialogues/menu.json`.

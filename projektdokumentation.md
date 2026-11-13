@@ -1341,13 +1341,13 @@ Offene Punkte:
     Spielstand auf New Game). Sicherheitsabfrage als Kasten mit Yes/No
     (Fokus auf No, Esc = No). Texte in `dialogues/menu.json`. Platzhalter-
     Look in Palettenfarben, echte Gestaltung mit Schritt 19.
-  - Bis das Intro (3.5) gebaut ist, startet New Game direkt im ersten Level
-    der Reihenfolge.
+  - New Game zeigt seit Schritt 22 zuerst das Intro (3.5).
   - Eingabesperre (13.11.2026): Die Knoepfe reagieren erst 0,3 s nach dem
     Erscheinen, damit eine noch gedrueckte Taste vom Endbildschirm nicht
     sofort New Game ausloest.
 - **Intro-Sequenz** nach New Game: Comic zum Durchklicken (siehe 3.5),
-  danach startet das Spiel direkt in der Werkstatt.
+  danach startet das Spiel direkt in der Werkstatt (umgesetzt in Schritt 22;
+  Esc ueberspringt).
 - **Hauptmenue / Levelauswahl:** [offen]
 - **Pause:** [offen]
 - **Einstellungen:** [offen]
@@ -1836,9 +1836,19 @@ zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
      Spieler damit (E), erscheint eine Sprechblase des Professors: Keycard
      geroestet, Fahrstuhl nicht nutzbar. So wird ohne Text im Intro klar,
      warum der Fahrstuhl nicht geht.
-   - Offen: Klick bzw. Taste zum Weiterschalten, Ueberspringen des Intros;
-     Bildgroesse und Aufteilung der Panels; Text der Fahrstuhl-Sprechblase
-     (englisch, Datendatei).
+   - **Umgesetzt (Schritt 22, 13.11.2026):** `scenes/ui/intro.tscn`
+     (Skript `scripts/ui/intro.gd`), erscheint nach New Game. Panels in
+     `graphics/intro/` (Platzhalter-Pixelart in Palettenfarben, halb so gross
+     gezeichnet und doppelt angezeigt; geteilte Panels 220 x 180, breites
+     Panel 450 x 180; 2 bis 3 Bilder je Panel, 0,28 s pro Bild). Ablauf in 7
+     Schritten: Szene 1 links, dann rechts; Szene 2 breit; Szene 3 links,
+     dann rechts; Szene 4 erst rechts (Bote klingelt), dann links (Professor
+     erschrickt), damit die Reihenfolge der Handlung stimmt. Weiter mit
+     Leertaste, Enter, Sprung oder Mausklick (0,25 s Eingabesperre je
+     Schritt), Esc ueberspringt das ganze Intro. Unten rechts zeigen
+     Tastenkappen ohne Text, wie es weitergeht. Danach startet das erste
+     Level der Reihenfolge. Die echten Comic-Bilder koennen die PNGs
+     ersetzen (gleiche Groesse und Bilderzahl, siehe `intro_panels.json`).
 2. **Werkstatt** (Start), dann **Selbstschussanlage**, dann
    **Teslakammer** (siehe 2.9).
 3. **Ende und Abspann:** Nach dem letzten Level nimmt der Professor oben die
@@ -2034,7 +2044,7 @@ gekuerzt, nicht der Puffer.
   Level baut der Nutzer.)
 - [x] 21. Teslakammer: Grafik, ggf. Magnet, Level. (13.11.2026: Tesla-Rueckwand,
   Elektromagnet, Platzhalter `level_tesla_01`; echte Level baut der Nutzer.)
-- [ ] 22. Intro-Sequenz: Comic zum Durchklicken ohne Text, vier Szenen,
+- [x] 22. Intro-Sequenz: Comic zum Durchklicken ohne Text, vier Szenen,
   Panels mit kleinen Animationsschleifen (3.5).
 - [ ] 23. Ende und Abspann: Keycard funktioniert doch, Fahrstuhlfahrt nach
   unten mit Pizza, Credits waehrend der Fahrt (3.5).
@@ -2062,7 +2072,7 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 13.11.2026, Version v0.48**
+**Stand vom 13.11.2026, Version v0.49**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
 - **Zuletzt erledigt:** Baukasten mit Rohren (19a), Dampfaustritt, Wand- und Bodenelementen; Streckenanzeige der Plattform im Editor.

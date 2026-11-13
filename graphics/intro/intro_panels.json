@@ -1,0 +1,9 @@
+{
+	"s1_left": {"w": 220, "h": 180, "frames": 2},
+	"s1_right": {"w": 220, "h": 180, "frames": 2},
+	"s2": {"w": 450, "h": 180, "frames": 3},
+	"s3_left": {"w": 220, "h": 180, "frames": 3},
+	"s3_right": {"w": 220, "h": 180, "frames": 2},
+	"s4_right": {"w": 220, "h": 180, "frames": 2},
+	"s4_left": {"w": 220, "h": 180, "frames": 2}
+}

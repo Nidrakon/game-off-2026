@@ -95,11 +95,11 @@ func save_game() -> void:
 
 
 ## Neues Spiel: alles zuruecksetzen (der alte Spielstand wird beim ersten
-## Level ueberschrieben) und das erste Level starten.
+## Level ueberschrieben), Intro-Comic zeigen; danach startet das erste Level.
 func new_game() -> void:
 	test_mode = false
 	apply_data({})
-	LevelFlow.start_game()
+	LevelFlow.go_to(LevelFlow.INTRO_SCENE)
 
 
 ## Weiterspielen: Spielstand laden und am Anfang des erreichten Levels

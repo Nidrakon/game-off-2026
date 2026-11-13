@@ -51,6 +51,10 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.49 - 2026-11-13: Schritt 22: Intro-Comic**
+
+- Vier Szenen ohne Text, sieben animierte Panels (Platzhalter-Pixelart), Klick fuer Klick, Esc ueberspringt; erscheint nach New Game, danach das erste Level.
+
 **v0.48 - 2026-11-13: Schritt 21: Teslakammer, Elektromagnet**
 
 - Elektromagnet (`magnet`): Takt, Warnflackern, zieht den Professor nach oben, Schweben, Signal-Empfaenger, Zeitblase; im Baukasten.

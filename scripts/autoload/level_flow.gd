@@ -14,6 +14,8 @@ signal level_changed(path: String)
 const ORDER_FILE := "res://data/level_order.tres"
 ## Titelbildschirm (Hauptmenue).
 const TITLE_SCENE := "res://scenes/ui/title_screen.tscn"
+## Intro-Comic nach New Game.
+const INTRO_SCENE := "res://scenes/ui/intro.tscn"
 ## Bildschirm nach dem letzten Level (vorlaeufig, bis das Ende gebaut ist).
 const END_SCENE := "res://scenes/ui/end_placeholder.tscn"
 ## Dauer je Abblend-Stufe (Sekunden).

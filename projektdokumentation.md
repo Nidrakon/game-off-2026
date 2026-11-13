@@ -1352,7 +1352,7 @@ Offene Punkte:
 - **Pause:** [offen]
 - **Einstellungen:** [offen]
 - **Credits / Abspann:** waehrend der Fahrstuhlfahrt nach dem letzten Level
-  (siehe 3.5).
+  (siehe 3.5; umgesetzt in Schritt 23).
 
 ### 2.6 Scheitern und Wiederaufnahme
 
@@ -1577,8 +1577,7 @@ angegeben; Details in 2.4):
 listet die Level in Spielreihenfolge. Das globale System `LevelFlow` laedt
 bei New Game das erste Level (Hauptszene ist seit Schritt 16 der
 Titelbildschirm). Der Ausgang fuehrt zum naechsten Eintrag; nach dem
-letzten erscheint ein vorlaeufiger Endbildschirm ("To be continued...",
-Taste = Titelbildschirm). Liegt ein Level nicht in der Liste (z. B.
+letzten folgen Ende und Abspann (Schritt 23). Liegt ein Level nicht in der Liste (z. B.
 das Testlevel), fuehrt sein Ausgang zum ersten Level.
 
 **Ausgang:** Schiebetuer 32 x 64 mit blinkendem gruenen Pfeil nach oben (das
@@ -1860,6 +1859,19 @@ zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
    Er faehrt mit der Pizza nach unten, waehrend der Abspann laeuft.
    (Ersetzt die alte Pointe "Eigentlich haette er die ganze Zeit den
    Fahrstuhl nehmen koennen".)
+   - **Umgesetzt (Schritt 23, 13.11.2026):** `scenes/ui/ending.tscn` (Skript
+     `scripts/ui/ending.gd`), erscheint nach dem letzten Level der
+     Reihenfolge (ersetzt den vorlaeufigen Endbildschirm). Comic ohne Text in
+     drei Schritten (Bilder in `graphics/ending/`): Pizza-Uebergabe am
+     Bunker-Eingang; Professor haelt die Keycard an den Leser, die Lampe
+     springt auf Gruen; Nahaufnahme, Kinnlade faellt. Weiter mit Klick/Taste
+     oder automatisch nach 4 s. Danach Fahrstuhlfahrt nach unten: links isst
+     der Professor seine Pizza (Etagenanzeige laeuft nach unten), rechts
+     laufen die Credits (`dialogues/credits.json`, nur das Pseudonym
+     "Nidrakon"; Engine, Werkzeuge, Palette Resurrect 64 von Kerrie Lake,
+     Code-Assistent, zwei Gags). Am Ende "THE END" und "Clones used: N"
+     (Klon-Nummer aus dem Spielstand), eine Taste fuehrt zum Titel. Esc
+     springt sofort ans Ende. Setzt die Marke `story_finished`.
 
 Verworfene Alternativen: nur Keycard ohne Pizza-Motivation; Tier als
 Spielfigur (Schildkroete, Hase, Faultier, Laborratte); Keycard zerfaellt
@@ -2046,7 +2058,7 @@ gekuerzt, nicht der Puffer.
   Elektromagnet, Platzhalter `level_tesla_01`; echte Level baut der Nutzer.)
 - [x] 22. Intro-Sequenz: Comic zum Durchklicken ohne Text, vier Szenen,
   Panels mit kleinen Animationsschleifen (3.5).
-- [ ] 23. Ende und Abspann: Keycard funktioniert doch, Fahrstuhlfahrt nach
+- [x] 23. Ende und Abspann: Keycard funktioniert doch, Fahrstuhlfahrt nach
   unten mit Pizza, Credits waehrend der Fahrt (3.5).
 
 **Meilenstein 4: Ton, Feinschliff, Abgabe (Ziel 28.11., Puffer bis 01.12.)**
@@ -2072,29 +2084,28 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 13.11.2026, Version v0.49**
+**Stand vom 13.11.2026, Version v0.50**
 
-- **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
-- **Zuletzt erledigt:** Baukasten mit Rohren (19a), Dampfaustritt, Wand- und Bodenelementen; Streckenanzeige der Plattform im Editor.
-- **Naechster Schritt:** 17 laeuft: Der Nutzer baut Werkstatt-Raetsel und Level der Selbstschussanlage; die KI liefert fehlende Bausteine. Danach Testdurchlauf (Vertical Slice).
-- **Spielbar:** Start (F5) mit Titelbildschirm (New Game, Continue, Quit), zwei
-  Werkstatt (Tutorial-Hinweise, Fahrstuhl mit Sprechblase, Sprungblock) und leeres
-  erstes Level der Selbstschussanlage ueber den Ausgang verbunden, automatisches
-  Speichern am Levelanfang,
-  danach vorlaeufiger Endbildschirm. Testlevel (ueber F1 oder F6) mit dem Professor (Idle-, Lauf- und Sprunganimation): laufen,
-  springen, Kamera folgt; Shift + Maus stellt Zeitstufe ein, Radius und Form nach dem
-  Fund der Schrotthaufen (Stufe, Block 1); fliegende
-  Plattformen reagieren auf die Blase; Lichtschranke schaltet eine
-  Plattform an und aus; Start in der Klonstation, Starkstrom-Luecke ist
-  toedlich, danach Neustart; zwei Werfer feuern Projektile (Mitfliegen
-  moeglich, seitlich toedlich); das Boden-Projektil trifft eine
-  Trefferflaeche, die startet eine Zeitschaltuhr, die die Tuer 2,5 s oeffnet; ein Pendel unter
-  Block 2 und eine rotierende Stachelkugel am Boden; ein toedlicher Laser im
-  Takt vor Block 1; F1-Entwicklermenue.
-- **Noch zu testen (vom Nutzer):** Rohre malen, Wand- und Bodenelemente, Dampf, Streckenanzeige der Plattform (Test gesammelt nach Schritt 23).
+- **Phase:** Meilenstein 3, Inhalt und Grafik (Ziel 24.11.); Schritte 17 bis
+  23 von der KI umgesetzt (13.11.2026), Test durch den Nutzer gesammelt.
+- **Zuletzt erledigt:** 17 Werkstatt als Wimmelbild und Platzhalter-Level,
+  18 Sprechblasen-System, 19 Grafik, 19b Blasen-Shader, 20/21 Platzhalter
+  Selbstschussanlage und Teslakammer mit Elektromagnet, 22 Intro, 23 Ende.
+- **Naechster Schritt:** Nutzer testet 17 bis 23 und baut die echten Level
+  (Pflichtraetsel der Werkstatt, `level_sentry_01` und weitere); danach
+  Schritt 24 (Sound und Musik).
+- **Spielbar:** Titel -> Intro-Comic -> Werkstatt -> Selbstschussanlage 1
+  (Nutzer) -> 2 -> 3 -> Teslakammer 1 -> Ende mit Abspann. Speichern am
+  Levelanfang, Sprueche und Respawn-Kommentar, Blasen-Shader, Upgrades ueber
+  Schrotthaufen (Radius in Selbstschussanlage 3, Form in Teslakammer 1).
+  Testlevel ueber F1 oder F6, Baukasten im Editor.
+- **Noch zu testen (vom Nutzer):** Rohre, Wand- und Bodenelemente, Dampf,
+  Plattform-Strecke im Editor; Werkstatt-Wimmelbild und Deko-Bausteine;
+  Sprueche und Respawn; neue Grafik; Blasen-Shader; Platzhalter-Level
+  (Raketen-Fahrt, Magnetlift); Intro; Ende und Abspann.
 - **Bekannte Probleme:** keine.
-- **Groesste offene Punkte:** Levelstruktur (2.9), Beschleunigungs-Elemente
-  (2.4), Reihenfolge der Upgrades (2.3), Look, Sound und Musik (1.2).
+- **Groesste offene Punkte:** echte Level (2.9), Sound und Musik (1.2),
+  echte Comic-Bilder fuer Intro und Ende (Platzhalter vorhanden).
 
 ### 5.2 Versionsprotokoll
 

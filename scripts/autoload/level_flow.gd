@@ -16,8 +16,8 @@ const ORDER_FILE := "res://data/level_order.tres"
 const TITLE_SCENE := "res://scenes/ui/title_screen.tscn"
 ## Intro-Comic nach New Game.
 const INTRO_SCENE := "res://scenes/ui/intro.tscn"
-## Bildschirm nach dem letzten Level (vorlaeufig, bis das Ende gebaut ist).
-const END_SCENE := "res://scenes/ui/end_placeholder.tscn"
+## Ende und Abspann nach dem letzten Level (Schritt 23).
+const END_SCENE := "res://scenes/ui/ending.tscn"
 ## Dauer je Abblend-Stufe (Sekunden).
 const STEP_TIME := 0.12
 const DITHER_TEXTURE := preload("res://graphics/ui/ui_dither_dark.png")

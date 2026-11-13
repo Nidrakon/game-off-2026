@@ -3,7 +3,7 @@ extends Resource
 ## Reihenfolge der Level im Spiel (Doku 2.9). Die Datei liegt in
 ## data/level_order.tres und wird im Inspector bearbeitet: Level hinzufuegen,
 ## entfernen oder verschieben. Der Ausgang eines Levels fuehrt zum naechsten
-## Eintrag, nach dem letzten kommt der (vorlaeufige) Endbildschirm.
+## Eintrag, nach dem letzten kommen das Ende und der Abspann.
 ## Kennung eines Levels (z. B. fuer den Spielstand) ist sein Dateiname ohne
 ## Endung; Dateien deshalb nach dem Anlegen nicht mehr umbenennen.
 

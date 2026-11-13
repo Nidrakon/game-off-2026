@@ -51,6 +51,11 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.50 - 2026-11-13: Schritt 23: Ende und Abspann**
+
+- Comic: Pizza-Uebergabe, Keycard funktioniert doch (gruen), Kinnlade; Fahrstuhlfahrt nach unten mit Pizza und laufenden Credits (`dialogues/credits.json`), THE END mit Klon-Zahl, Taste zum Titel, Esc springt ans Ende.
+- Vorlaeufiger Endbildschirm entfernt; Marke `story_finished`.
+
 **v0.49 - 2026-11-13: Schritt 22: Intro-Comic**
 
 - Vier Szenen ohne Text, sieben animierte Panels (Platzhalter-Pixelart), Klick fuer Klick, Esc ueberspringt; erscheint nach New Game, danach das erste Level.

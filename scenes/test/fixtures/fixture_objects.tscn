@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://b4cpu81l4003h"]
+[gd_scene format=4]
 
 [ext_resource type="TileSet" uid="uid://d0qfria3qtena" path="res://graphics/tilesets/tileset_placeholder.tres" id="1_euepx"]
 [ext_resource type="PackedScene" path="res://scenes/player/professor.tscn" id="2_fn47k"]
@@ -17,7 +17,7 @@
 [ext_resource type="PackedScene" path="res://scenes/objects/deadly_laser.tscn" id="17_laser"]
 [ext_resource type="PackedScene" path="res://scenes/objects/scrap_heap.tscn" id="18_scrap"]
 
-[node name="TestLevel" type="Node2D" unique_id=442466204]
+[node name="FixtureObjects" type="Node2D" unique_id=442466204]
 
 [node name="TestBackground" type="CanvasLayer" parent="." unique_id=124110649]
 layer = -100

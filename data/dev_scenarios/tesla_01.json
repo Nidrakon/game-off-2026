@@ -1,8 +1,0 @@
-{
-	"name": "Tesla 1, lasers and magnet (placeholder)",
-	"order": 50,
-	"based_on": "new_game",
-	"scene": "res://scenes/levels/level_tesla_01.tscn",
-	"marker": "",
-	"save": { "upgrades": ["upgrade_radius"], "flags": [] }
-}

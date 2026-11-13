@@ -1,0 +1,14 @@
+{
+	"name": "Sandbox, all upgrades",
+	"order": 90,
+	"based_on": "new_game",
+	"scene": "res://scenes/test/sandbox.tscn",
+	"marker": "",
+	"save": {
+		"upgrades": [
+			"upgrade_radius",
+			"upgrade_shape"
+		],
+		"flags": []
+	}
+}

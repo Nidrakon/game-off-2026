@@ -1,7 +1,7 @@
 {
 	"name": "New game",
 	"order": 0,
-	"scene": "res://scenes/levels/level_workshop.tscn",
+	"scene": "res://scenes/levels/level_01.tscn",
 	"marker": "",
 	"save": { "upgrades": [], "flags": [] }
 }

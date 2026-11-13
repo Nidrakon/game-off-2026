@@ -138,15 +138,15 @@ func _build_tools() -> void:
 	fill_wall.pressed.connect(fill_back_wall)
 	paint_row.add_child(fill_wall)
 	var fill_tesla := Button.new()
-	fill_tesla.text = "Rueckwand Tesla"
-	fill_tesla.tooltip_text = "Wie 'Rueckwand fuellen', aber im Look der Teslakammer (blaue Paneele, Kupferspulen)."
+	fill_tesla.text = "Rueckwand Elektro"
+	fill_tesla.tooltip_text = "Wie 'Rueckwand fuellen', aber im Elektro-Look (blaue Paneele, Kupferspulen)."
 	var tesla_icon := AtlasTexture.new()
 	tesla_icon.atlas = load("res://graphics/tilesets/tileset_wall.png")
 	tesla_icon.region = Rect2(112, 0, 16, 16)
 	fill_tesla.icon = tesla_icon
 	fill_tesla.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	fill_tesla.focus_mode = Control.FOCUS_NONE
-	fill_tesla.pressed.connect(fill_back_wall.bind(BackWall.Variant.TESLA))
+	fill_tesla.pressed.connect(fill_back_wall.bind(BackWall.Variant.ELECTRO))
 	paint_row.add_child(fill_tesla)
 
 	var hint := Label.new()
@@ -163,7 +163,7 @@ func _build_tools() -> void:
 	_new_level_dialog.title = "Neues Level"
 	var box := VBoxContainer.new()
 	var info := Label.new()
-	info.text = "Dateiname (englisch, snake_case, z. B. level_sentry_02):"
+	info.text = "Dateiname (Vorschlag: naechste freie Nummer, z. B. level_06):"
 	box.add_child(info)
 	_level_name = LineEdit.new()
 	box.add_child(_level_name)
@@ -310,7 +310,7 @@ func _free_name(root: Node, base: String) -> String:
 # --- Aktionen ---------------------------------------------------------------------------
 
 func _ask_new_level() -> void:
-	_level_name.text = _next_free_name("level_sentry_")
+	_level_name.text = _next_free_name("level_")
 	_new_level_dialog.popup_centered(Vector2i(360, 120))
 	_level_name.grab_focus()
 	_level_name.select_all()
@@ -328,7 +328,7 @@ func _next_free_name(prefix: String) -> String:
 func _create_level(id: String) -> void:
 	var valid := RegEx.create_from_string("^[a-z][a-z0-9_]*$")
 	if valid.search(id) == null:
-		_status.text = "Ungueltiger Name: '%s' (englisch, snake_case, z. B. level_sentry_02)." % id
+		_status.text = "Ungueltiger Name: '%s' (nur Kleinbuchstaben, Ziffern und _, z. B. level_06)." % id
 		return
 	var path := "%s/%s.tscn" % [LEVEL_FOLDER, id]
 	if FileAccess.file_exists(path):

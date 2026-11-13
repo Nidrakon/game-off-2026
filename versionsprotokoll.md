@@ -51,6 +51,12 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.51 - 2026-11-13: Lineare Level, Sandbox**
+
+- Bereiche gestrichen: Level heissen `level_01` (Werkstatt) bis `level_05`; `level_sentry_01` des Nutzers ist jetzt `level_02`.
+- Testlevel heisst `sandbox` (Spielwiese des Nutzers); eingefrorene Testszenen fuer die automatischen Tests in `scenes/test/fixtures/` (nicht im F1-Menue); Beispiel-Level dorthin verschoben.
+- Szenarien `level_03`, `level_04`, `level_05`, `sandbox_all_upgrades`; Baukasten schlaegt `level_NN` vor; Level-Vorlage nicht mehr in der F1-Levelauswahl; Rueckwand-Variante "Elektro" statt "Tesla".
+
 **v0.50 - 2026-11-13: Schritt 23: Ende und Abspann**
 
 - Comic: Pizza-Uebergabe, Keycard funktioniert doch (gruen), Kinnlade; Fahrstuhlfahrt nach unten mit Pizza und laufenden Credits (`dialogues/credits.json`), THE END mit Klon-Zahl, Taste zum Titel, Esc springt ans Ende.

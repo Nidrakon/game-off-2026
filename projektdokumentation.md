@@ -626,10 +626,10 @@ nimmt den Wert des Szenarios selbst.
 | Kennung | Name | Stand |
 | --- | --- | --- |
 | `new_game` | New game | frischer Spielstand, erstes Beispiel-Level |
-| `example_2_all_upgrades` | Example 2, all upgrades | Beispiel-Level 2 mit Radius und Form (baut auf `new_game` auf) |
-| `sentry_02` | Sentry 2 (placeholder) | Platzhalter Selbstschussanlage 2 |
-| `sentry_03` | Sentry 3, rocket ride (placeholder) | Platzhalter Selbstschussanlage 3 (Raketen-Fahrt) |
-| `tesla_01` | Tesla 1, lasers and magnet (placeholder) | Platzhalter Teslakammer 1, mit Upgrade Radius |
+| `level_03` | Level 3 (placeholder) | Platzhalter Level 3 |
+| `level_04` | Level 4, rocket ride (placeholder) | Platzhalter Level 4 (Raketen-Fahrt) |
+| `level_05` | Level 5, lasers and magnet (placeholder) | Platzhalter Level 5, mit Upgrade Radius |
+| `sandbox_all_upgrades` | Sandbox, all upgrades | Sandbox mit Radius und Form |
 
 Mit jedem Schritt, der einen neuen Spielabschnitt baut, legt die KI ein
 passendes Szenario an.
@@ -658,13 +658,11 @@ umbenannt oder umnummeriert, steht der alte Name hier mit dabei.
 | Wand- und Bodenelemente | Feste Bloecke zum Hineinziehen: Boden, Wand, Block, Steg (`terrain_block`, siehe 2.9) |
 | Fahrstuhl | Steht in der Werkstatt; zu Beginn nicht nutzbar (Keycard "geroestet"), am Ende faehrt der Professor damit nach unten (`elevator`, siehe 3.5) |
 | E-Anzeige | Tastenkappe "E" ueber einem Objekt, mit dem der Professor gerade interagieren kann (`Interactable`, siehe 2.9) |
-| Werkstatt | Startbereich ganz unten, zaehlt nicht als eigentlicher Bereich (Level `level_workshop`) |
-| Selbstschussanlage | Erster Bereich, Schwerpunkt Projektile (Level-Kennungen `level_sentry_01`, `level_sentry_02` ...) |
-| Bereich | Grosser Teil des Labors (z. B. Teslakammer), besteht aus mehreren Leveln |
-| Level | Einzelner, abgeschlossener Abschnitt innerhalb eines Bereichs |
+| Werkstatt | Erstes Level mit dem Tutorial, ganz unten im Labor (`level_01`) |
+| Level | Einzelner, abgeschlossener Abschnitt; durchnummeriert `level_01`, `level_02` ... bis zum letzten (seit 13.11.2026 keine Bereiche mehr) |
 | Ausgang | Schiebetuer am Ende eines Levels, fuehrt zum naechsten Level der Reihenfolge (`level_exit`, siehe 2.9) |
 | Level-Vorlage | Szene `level_base`, von der jedes Level erbt (siehe 2.9) |
-| Testlevel | Testszene zum Ausprobieren der Grundsysteme (`scenes/test/test_level.tscn`), ueber F1 oder F6 erreichbar; heller Testhintergrund (Node `TestBackground`, Farbe `b2ba90`, im Inspector aenderbar; nur im Testlevel, 09.11.2026) |
+| Sandbox | Grosses Testlevel zum Ausprobieren und Debuggen (`scenes/test/sandbox.tscn`, frueher Testlevel), ueber F1 oder F6 erreichbar; gehoert dem Nutzer zum Experimentieren |
 
 ### 1.11 Game Jam: Game Off 2026
 
@@ -886,7 +884,7 @@ der Cursor zur Formung der Sphaere noch.
   `unlock_all()`, `reset()`; fuer den Spielstand (Schritt 16) `get_ids()` und
   `set_ids()` mit festen Kennungen. Die Upgrades bleiben beim Neustart des
   Levels (Tod) erhalten.
-- Im Testlevel: Schrotthaufen "Radius" auf der Stufe (x = 224), "Form" auf
+- In der Sandbox: Schrotthaufen "Radius" auf der Stufe (x = 224), "Form" auf
   Block 1 (x = 352), dazwischen der Laser.
 
 **Regeln der Zeitblase:**
@@ -1200,7 +1198,7 @@ Offene Punkte:
   1 px `f68181`, der flackernd weiss aufblitzt (aussen dann 4 px); Warnung =
   1 px `f68181` gestrichelt; aus = nur die Sender. Im Editor wird der
   Strahl immer "an" gezeigt.
-- Im Testlevel steht ein Laser bei x = 304 (vor Block 1) im Standardtakt.
+- In der Sandbox steht ein Laser bei x = 304 (vor Block 1) im Standardtakt.
 
 **Signal-Empfaenger (Schnittstelle, 07.11.2026)**
 
@@ -1253,7 +1251,7 @@ Offene Punkte:
 - Reihe knisternder Platten mit Warnstreifen; toedlich bei Beruehrung.
   Wird anstelle von Boden-Tiles in eine Luecke gesetzt (Node an der linken
   oberen Ecke der ersten Platte, Breite `width_tiles`, im Editor sichtbar).
-- Szene `scenes/objects/electric_floor.tscn`. Passt zur Teslakammer.
+- Szene `scenes/objects/electric_floor.tscn`.
 - Offen: ob die Zeitblase auf sie wirkt (z. B. Funken verlangsamen).
 
 **Schalter / Trefferflaechen**
@@ -1289,7 +1287,7 @@ Offene Punkte:
   unten weniger als die Sprunghoehe (ca. 100 px) Luecke laesst: Dann
   verschwindet die offene Tuer darin und man kann sie nicht ueberspringen.
 
-**Magnet (Idee fuer die Teslakammer)**
+**Magnet**
 
 - Elektromagnet, der rhythmisch an- und ausgeht und per Zeitblase gesteuert
   wird.
@@ -1396,7 +1394,7 @@ Fortschritt bleibt erhalten.
 - **Anzahl Spielstaende:** einer (New Game ueberschreibt ihn).
 - **Wann gespeichert wird:** automatisch zu Beginn jedes Levels aus der
   Levelreihenfolge (auch beim Neustart nach dem Tod; so bleiben Upgrades aus
-  dem Level erhalten). Das Testlevel speichert nicht. Im Browser genauso:
+  dem Level erhalten). Die Sandbox speichert nicht. Im Browser genauso:
   Godot legt `user://` dort dauerhaft im Browser-Speicher (IndexedDB) ab.
 - **Technik (umgesetzt in Schritt 16):** globales System `SaveGame`
   (`scripts/autoload/save_game.gd`), die einzige Stelle, die speichert und
@@ -1458,25 +1456,14 @@ Fortschritt bleibt erhalten.
 
 ### 2.9 Leveldesign
 
-- **Struktur:** Ein Bereich ist ein grosser Teil des Labors (z. B. die
-  Teslakammer) und besteht aus mehreren separaten Leveln. Es geht Etage fuer
-  Etage nach oben.
-- **Startbereich:** die Werkstatt des Professors ganz unten im Labor, in der
-  er den Time Shifter baut. Dort beginnt das Spiel; sie zaehlt nicht als
-  eigentlicher Bereich.
-- **Reihenfolge (festgelegt):** Werkstatt -> Selbstschussanlage ->
-  Teslakammer.
-  1. **Selbstschussanlage:** Einstiegsbereich mit Schwerpunkt Projektile,
-     weil die Mechanik dort am klarsten ist. Sanft beginnen mit einzelnen,
-     langsamen Projektilen; die Projektilwand eher spaeter.
-  2. **Teslakammer:** Schwerpunkt Elektrizitaet und eventuell Magnetismus,
-     z. B. Zeitschaltuhren; moegliches neues Objekt: Magnete (siehe 2.4).
-- Jeder Bereich hat einen eigenen Look und eigene Mechaniken.
-- Chemielabor vorerst gestrichen (keine ueberzeugende Idee). Weitere
-  Bereichs-Ideen (nicht festgelegt): Uhrmacher-Raum (Zahnraeder, Timer),
-  Botaniklabor (Ranken).
-- **Umfang:** ca. 8 bis 12 Level realistisch; Empfehlung 3 bis 4
-  Themenbereiche.
+- **Struktur (geaendert am 13.11.2026, Wunsch des Nutzers):** Keine
+  Bereiche mehr. Die Level sind linear durchnummeriert: `level_01`,
+  `level_02`, `level_03` ... bis zum letzten Level; es geht Etage fuer Etage
+  nach oben. `level_01` ist die Werkstatt mit dem Tutorial. Aufbau,
+  Themen und Mechaniken der Level legt der Nutzer selbst fest.
+- **Sandbox:** ein grosses Testlevel zum Ausprobieren und Debuggen
+  (`scenes/test/sandbox.tscn`), nicht Teil der Levelfolge.
+- **Umfang:** ca. 8 bis 12 Level realistisch.
 - **Masse (festgelegt am 07.11.2026, passend zur Figur):** Durchgaenge
   mindestens 4 Tiles (64 px) hoch, damit der Professor (50 px) durchpasst;
   ein 3 Tiles hohes Hindernis ist nur per Sprung zu ueberwinden; Kanten bis
@@ -1502,7 +1489,7 @@ Editor rechts erscheint der Reiter "Baukasten" neben dem Inspector:
   eingerastet, vor dem Professor, wird ausgewaehlt; Strg+Z macht es
   rueckgaengig). Der Tooltip erklaert die wichtigsten Einstellungen.
 - **Neues Level anlegen ...:** fragt nach dem Dateinamen (Vorschlag: naechste
-  freie Nummer `level_sentry_NN`; nur Kleinbuchstaben, Ziffern und `_`),
+  freie Nummer `level_NN`; nur Kleinbuchstaben, Ziffern und `_`),
   legt eine geerbte Szene der Vorlage an, traegt sie hinten in
   `data/level_order.tres` ein (abschaltbar) und oeffnet sie.
 - **Testlauf starten:** speichert die offene Szene und startet sie direkt im
@@ -1578,7 +1565,7 @@ listet die Level in Spielreihenfolge. Das globale System `LevelFlow` laedt
 bei New Game das erste Level (Hauptszene ist seit Schritt 16 der
 Titelbildschirm). Der Ausgang fuehrt zum naechsten Eintrag; nach dem
 letzten folgen Ende und Abspann (Schritt 23). Liegt ein Level nicht in der Liste (z. B.
-das Testlevel), fuehrt sein Ausgang zum ersten Level.
+die Sandbox), fuehrt sein Ausgang zum ersten Level.
 
 **Ausgang:** Schiebetuer 32 x 64 mit blinkendem gruenen Pfeil nach oben (das
 naechste Level liegt eine Etage hoeher). Laeuft der Professor hinein, geht
@@ -1586,71 +1573,51 @@ die Tuer auf, er verschwindet (Steuerung gesperrt, Gefahren wirken nicht
 mehr), der Bildschirm blendet ueber das Rastermuster ab, das naechste Level
 laedt und blendet wieder auf (je Stufe 0,12 s, nur Palettenfarben).
 
-**Grundgerueste fuer Schritt 17 (13.11.2026):** Die KI hat zwei Level
-angelegt, die der Nutzer ausbaut. Die Reihenfolge in `data/level_order.tres`
-ist jetzt Werkstatt -> Selbstschussanlage 1 -> Selbstschussanlage 2
--> Selbstschussanlage 3 -> Teslakammer 1 (Platzhalter).
+**Level (Stand 13.11.2026, linear):** Reihenfolge in `data/level_order.tres`:
+`level_01` -> `level_02` -> `level_03` -> `level_04` -> `level_05`.
 
-- `level_workshop` (Werkstatt, Tutorial): Klonstation links, dann in der
+- `level_01` (Werkstatt, Tutorial): Klonstation links, dann in der
   Reihenfolge des Tutorials die Wandhinweise "A D Move", Fahrstuhl mit
   "E Interact", "SPACE Jump" vor einem 3 Tiles hohen Block (nur per
   Sprung), "SHIFT Hold: Time Shifter" und "WHEEL Change time". Rechts davon
   ist Platz fuer das erste Pflichtraetsel (entwirft der Nutzer), ganz
-  rechts der Ausgang. Ein Bildschirm breit; Raum, Hinweise und Positionen
-  duerfen frei geaendert werden.
-- `level_sentry_01` (erstes Level der Selbstschussanlage): baut der Nutzer.
-- **Werkstatt als Wimmelbild (Wunsch des Nutzers, 13.11.2026):** Die
-  Werkstatt ist dicht mit Deko gefuellt: Paneel-Rueckwand (Ebene `BackWall`),
-  Rohrleitungen im Hintergrund mit drei Dampfaustritten, Werkbank mit
-  Schraubstock und Werkzeug, Werkzeugwaende, Regale, Tafeln mit
-  Formel-Kritzeleien, Zahnraeder, Generatoren, Teslaspulen, Computer,
-  Roboterarme, Jetpacks, Glasroehren, Manometer, Kisten, Faesser, Kabelsalat,
-  Pizzakartons, Time-Shifter-Prototyp, Haengelampen (zusammen ca. 70
-  Requisiten). Die Tutorial-Hinweise stehen auf hellen Schildern und bleiben
-  lesbar; rechts bleibt Platz fuer das Pflichtraetsel.
+  rechts der Ausgang. Dicht als Wimmelbild dekoriert: Paneel-Rueckwand,
+  Rohrleitungen mit Dampf, Werkbank, Werkzeugwaende, Regale, Tafeln,
+  Zahnraeder, Generatoren, Teslaspulen, Computer, Roboterarme, Jetpacks,
+  Glasroehren, Manometer, Kisten, Faesser, Kabel, Pizzakartons, Prototyp,
+  Lampen (ca. 70 Requisiten); Hinweise auf hellen Schildern.
+- `level_02`: baut der Nutzer (frueher `level_sentry_01`).
+- `level_03` (Platzhalter): Starkstrom-Luecke (5 Tiles, ueberspringen) und
+  ein Werfer am rechten Rand, der Projektile ueber den Boden schickt.
+- `level_04` (Platzhalter): Raketen-Fahrt ueber eine 30 Tiles lange
+  Starkstrom-Grube (auf den Geschuetzturm stellen, auf die Rakete steigen);
+  Schrotthaufen "Radius" am Anfang. Ein automatischer Test faehrt es durch.
+- `level_05` (Platzhalter): zwei versetzte Laser bis zur Decke, dann ein
+  Magnetlift auf einen hohen Vorsprung mit dem Ausgang; Schrotthaufen
+  "Form" am Anfang; blaue Rueckwand (Variante Elektro).
+- Die Platzhalter ersetzt der Nutzer durch seine Level; neue Level legt der
+  Baukasten als `level_NN` an.
 - **Deko-Requisiten** (`scenes/objects/deco_prop.tscn`, Skript
-  `scripts/objects/deco_prop.gd`): 18 Requisiten aus dem Atlas
+  `scripts/objects/deco_prop.gd`): Requisiten aus dem Atlas
   `graphics/sprites/deco/deco_workshop.png` (Quelle `graphics/source/deco_workshop.aseprite`,
   Ausschnitte in `deco_workshop.json`). Im Inspector `prop` (Auswahlliste),
-  `flip`, bei animierten (Generator, Teslaspule, Computer, Glasroehre,
-  Manometer) `frame_time` und `start_offset`; die Animation laeuft mit der
-  Zeitblase (Regel 17). Ursprung unten Mitte, keine Kollision, z_index -8.
-  Je Requisit eine Voreinstellung in `scenes/deco/` und ein Eintrag in der
-  Baukasten-Gruppe "Deko".
+  `flip`, bei animierten `frame_time` und `start_offset`; die Animation
+  laeuft mit der Zeitblase (Regel 17). Ursprung unten Mitte, keine
+  Kollision, z_index -8. Je Requisit eine Voreinstellung in `scenes/deco/`
+  und ein Eintrag in der Baukasten-Gruppe "Deko".
 - **Rueckwand** (`graphics/tilesets/tileset_wall.tres`, Grafik
-  `tileset_wall.png`): dunkle Metallpaneele aus 3 x 3 Teilen (Ecken mit
-  Nieten, Kanten, Mitte), dazu Lueftungsgitter, Warnstreifen und
-  Kabelkanal; ohne Kollision. Ebene `BackWall` in der Level-Vorlage
-  (z_index -20).
-- **Wandhinweis:** neue Einstellung `plate` (Standard an): helles Schild
-  hinter Tasten und Wort; z_index jetzt -7 (vor der Deko).
-- **Teslakammer, Platzhalter** `level_tesla_01` (Schritt 21): Tesla-Rueckwand,
-  Schrotthaufen "Form" am Anfang, zwei Laser bis zur Decke (versetzt),
-  dann ein Magnetlift auf einen hohen Vorsprung (y = 240) mit dem Ausgang;
-  Deko Teslaspulen, Generator, Computer. Rueckwand im Tesla-Look: dunkelblaue
-  Paneele mit Kupferspulen (rechte Haelfte von `tileset_wall.png`),
-  `BackWall.fill(..., Variant.TESLA)` bzw. Baukasten-Knopf "Rueckwand Tesla".
-- **Platzhalter-Level** `level_sentry_03` (Schritt 20): Raketen-Fahrt. Eine
-  30 Tiles lange Starkstrom-Grube ist nicht zu ueberspringen; man stellt
-  sich auf den Geschuetzturm (x = 192), steigt auf die austretende Rakete
-  (90 px/s, alle 4 s) und faehrt hinueber bis zum Ausgang. Am Anfang liegt
-  der Schrotthaufen "Radius". Ein automatischer Test faehrt das Level durch.
-- **Platzhalter-Level** `level_sentry_02`: Starkstrom-Luecke (5 Tiles,
-  ueberspringen) und ein Werfer am rechten Rand, der Projektile ueber den
-  Boden schickt (darueber springen oder mit der Zeitblase bremsen).
-- Weitere Level der Selbstschussanlage: `level_sentry_02` usw. als geerbte
-  Szene anlegen und in die Reihenfolge eintragen.
-- Szenario `new_game` startet jetzt in der Werkstatt.
-- Die automatischen Tests pruefen jedes Level der echten Reihenfolge
-  (laedt, hat Klonstation, Ausgang, Professor und Kamera); fuer Ablauf-
-  Tests setzen sie eine eigene Reihenfolge mit den Beispiel-Leveln.
-
-**Beispiel-Level (Platzhalter, nicht mehr in der Reihenfolge; bleiben fuer
-Tests und als Anschauung, ueber F1 erreichbar):** `level_example_1` (Bloecke zum Springen,
-seit 16a mit Fahrstuhl und drei Wandhinweisen "A D Move", "E Interact",
-"SPACE Jump")
-und `level_example_2` (toedlicher Laser bis zur Decke) zeigen Vorlage und
-Levelfolge. Sie werden durch die echten Level des Nutzers ersetzt.
+  `tileset_wall.png`): Metallpaneele aus 3 x 3 Teilen (Ecken mit Nieten,
+  Kanten, Mitte), dazu Lueftungsgitter, Warnstreifen und Kabelkanal; ohne
+  Kollision. Ebene `BackWall` in der Level-Vorlage (z_index -20). Varianten
+  Labor (violett) und Elektro (blau mit Kupferspulen).
+- **Wandhinweis:** Einstellung `plate` (Standard an): helles Schild hinter
+  Tasten und Wort; z_index -7 (vor der Deko).
+- **Testszenen:** Die automatischen Tests nutzen eigene, eingefrorene
+  Szenen in `scenes/test/fixtures/` (`fixture_objects` = alter Stand des
+  Testlevels, `fixture_level_a/b` = kleine Level aus der Vorlage). Sie sind
+  nicht im F1-Menue und gehoeren nicht zu den Leveln des Spiels. Jedes Level
+  der echten Reihenfolge wird nur darauf geprueft, dass es laedt und
+  Klonstation, Ausgang, Professor und Kamera hat.
 
 **Erstes Level: Tutorial in der Werkstatt (festgelegt am 10.11.2026)**
 
@@ -1848,8 +1815,8 @@ zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
      Tastenkappen ohne Text, wie es weitergeht. Danach startet das erste
      Level der Reihenfolge. Die echten Comic-Bilder koennen die PNGs
      ersetzen (gleiche Groesse und Bilderzahl, siehe `intro_panels.json`).
-2. **Werkstatt** (Start), dann **Selbstschussanlage**, dann
-   **Teslakammer** (siehe 2.9).
+2. **Werkstatt** (Level 1, Start), dann Level 2, 3 ... bis zum letzten
+   Level (siehe 2.9; Bereiche seit 13.11.2026 gestrichen).
 3. **Ende und Abspann:** Nach dem letzten Level nimmt der Professor oben die
    Pizza entgegen und faehrt mit dem Fahrstuhl zurueck ins Labor. Die
    Fahrstuhlfahrt nach unten ist der Abspann (Credits laufen waehrend der
@@ -1918,7 +1885,7 @@ Fest eingeplant (Reihenfolge und Schritte folgen in 4.4):
   allen Upgrades; im Release-Build deaktiviert (siehe 1.9).
 
 Vertical Slice (Ziel: 17.11.2026): Titelbildschirm, Speichern, Werkstatt
-und die ersten Level der Selbstschussanlage durchspielbar, mit allen
+und die ersten Level durchspielbar, mit allen
 Grundsystemen (Bewegung, Zeitblase, Bedienfeld, Tod/Klonstation,
 Projektile, Schalter, Upgrades). Grafik darf noch Platzhalter sein.
 
@@ -2029,11 +1996,11 @@ gekuerzt, nicht der Puffer.
   Sprechblase (geroestete Keycard), Wandhinweis (Taste(n) und Wort per
   Text-ID). Die Sprechblase nutzt das System aus Schritt 18; bis dahin eine
   einfache Fassung.
-- [ ] 17. Werkstatt (Tutorial) und erste Level der Selbstschussanlage
+- [ ] 17. Werkstatt (Tutorial) und erste Level
   bauen (Platzhalter-Grafik). **Die Level baut der Nutzer**, die KI liefert
   die Bausteine und hilft. Danach: kompletter Testdurchlauf = Vertical
   Slice. (KI-Teil erledigt am 13.11.2026: Werkstatt als Wimmelbild,
-  Deko-Requisiten, Rueckwand, Platzhalter-Level `level_sentry_02`. Offen:
+  Deko-Requisiten, Rueckwand, Platzhalter-Level (heute `level_03`). Offen:
   Pflichtraetsel und echte Level durch den Nutzer.)
 
 **Meilenstein 3: Inhalt und Grafik (Ziel 24.11.)**
@@ -2041,7 +2008,7 @@ gekuerzt, nicht der Puffer.
 - [x] 18. Sprechblasen-System fuer die Sprueche des Professors (Texte
   englisch in Datendatei) inkl. Respawn-Kommentar.
 - [x] 19. Grafik: Farbpalette festlegen, Professor-Sprite mit Animationen,
-  Tileset und Objekte der Selbstschussanlage. (13.11.2026: Palette steht seit
+  Tileset und Objekte. (13.11.2026: Palette steht seit
   Schritt 1, Professor-Sprite vom Nutzer; Gelaende-Tiles, Rueckwand, Werfer
   und Projektil neu gezeichnet, siehe 2.9 "Grafik Schritt 19".)
 - [x] 19a. Tileset Rohre mit Autotiling, Vorder- und Hintergrund, Dampf
@@ -2051,11 +2018,14 @@ gekuerzt, nicht der Puffer.
 - [x] 19b. Zeitblase als Shader: Wobble und chromatische Aberration im
   Bereich der Blase, Tempo je Zeitstufe, Staerke einstellbar (eingeschoben am
   10.11.2026, 2.3).
-- [ ] 20. Restliche Level der Selbstschussanlage. (Platzhalter
-  `level_sentry_02` und `level_sentry_03` von der KI, 13.11.2026; die echten
+- [ ] 20. Restliche Level (frueher "der Selbstschussanlage"; Platzhalter
+  `level_03` und `level_04` von der KI, 13.11.2026; die echten
   Level baut der Nutzer.)
-- [x] 21. Teslakammer: Grafik, ggf. Magnet, Level. (13.11.2026: Tesla-Rueckwand,
-  Elektromagnet, Platzhalter `level_tesla_01`; echte Level baut der Nutzer.)
+- [x] 21. Elektromagnet, blaue Rueckwand, Platzhalter `level_05` (frueher
+  "Teslakammer"; seit 13.11.2026 keine Bereiche mehr, echte Level baut der
+  Nutzer).
+- [x] 21a. Lineare Levelstruktur `level_01` ... und Sandbox statt Bereichen
+  und Testlevel (13.11.2026, Wunsch des Nutzers).
 - [x] 22. Intro-Sequenz: Comic zum Durchklicken ohne Text, vier Szenen,
   Panels mit kleinen Animationsschleifen (3.5).
 - [x] 23. Ende und Abspann: Keycard funktioniert doch, Fahrstuhlfahrt nach
@@ -2084,28 +2054,22 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 13.11.2026, Version v0.50**
+**Stand vom 13.11.2026, Version v0.51**
 
-- **Phase:** Meilenstein 3, Inhalt und Grafik (Ziel 24.11.); Schritte 17 bis
-  23 von der KI umgesetzt (13.11.2026), Test durch den Nutzer gesammelt.
-- **Zuletzt erledigt:** 17 Werkstatt als Wimmelbild und Platzhalter-Level,
-  18 Sprechblasen-System, 19 Grafik, 19b Blasen-Shader, 20/21 Platzhalter
-  Selbstschussanlage und Teslakammer mit Elektromagnet, 22 Intro, 23 Ende.
-- **Naechster Schritt:** Nutzer testet 17 bis 23 und baut die echten Level
-  (Pflichtraetsel der Werkstatt, `level_sentry_01` und weitere); danach
-  Schritt 24 (Sound und Musik).
-- **Spielbar:** Titel -> Intro-Comic -> Werkstatt -> Selbstschussanlage 1
-  (Nutzer) -> 2 -> 3 -> Teslakammer 1 -> Ende mit Abspann. Speichern am
-  Levelanfang, Sprueche und Respawn-Kommentar, Blasen-Shader, Upgrades ueber
-  Schrotthaufen (Radius in Selbstschussanlage 3, Form in Teslakammer 1).
-  Testlevel ueber F1 oder F6, Baukasten im Editor.
-- **Noch zu testen (vom Nutzer):** Rohre, Wand- und Bodenelemente, Dampf,
-  Plattform-Strecke im Editor; Werkstatt-Wimmelbild und Deko-Bausteine;
-  Sprueche und Respawn; neue Grafik; Blasen-Shader; Platzhalter-Level
-  (Raketen-Fahrt, Magnetlift); Intro; Ende und Abspann.
+- **Phase:** Meilenstein 3, Inhalt und Grafik (Ziel 24.11.).
+- **Zuletzt erledigt:** Lineare Levelstruktur (`level_01` ... `level_05`),
+  Sandbox statt Testlevel, Testszenen nach `scenes/test/fixtures/`.
+- **Naechster Schritt:** Rueckmeldungen des Nutzers vom 13.11.2026:
+  Aseprite-Quellen fuer Intro und Ende, Rohre im Editor, Magnet
+  (Anziehen/Abstossen, Drehung, Breite), Shader und Blasenrand, mehr
+  Requisiten, Hintergrund-Themen, Sandbox mit allen Bausteinen.
+- **Spielbar:** Titel -> Intro -> Level 1 (Werkstatt) -> Level 2 (Nutzer) ->
+  Level 3 -> 4 -> 5 -> Ende mit Abspann. Sandbox ueber F1 oder F6.
+- **Noch zu testen (vom Nutzer):** siehe Rueckmeldungen; Rest der Schritte
+  17 bis 23 ist getestet.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** echte Level (2.9), Sound und Musik (1.2),
-  echte Comic-Bilder fuer Intro und Ende (Platzhalter vorhanden).
+  echte Comic-Bilder fuer Intro und Ende.
 
 ### 5.2 Versionsprotokoll
 

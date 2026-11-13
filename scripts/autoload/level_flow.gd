@@ -4,7 +4,7 @@ extends Node
 ## mit kurzem Abblenden (Rastermuster, dann ganz dunkel; nur Palettenfarben,
 ## keine Transparenz).
 ##
-## Liegt das aktuelle Level nicht in der Reihenfolge (z. B. das Testlevel),
+## Liegt das aktuelle Level nicht in der Reihenfolge (z. B. die Sandbox),
 ## fuehrt der Ausgang zum ersten Level der Reihenfolge.
 
 ## Wird gesendet, nachdem ein neues Level geladen wurde.
@@ -42,7 +42,7 @@ func get_levels() -> Array[String]:
 	return _order.levels if _order else ([] as Array[String])
 
 
-## Kennung eines Levels: Dateiname ohne Endung (z. B. "level_example_1").
+## Kennung eines Levels: Dateiname ohne Endung (z. B. "level_01").
 func get_level_id(path: String) -> String:
 	return path.get_file().get_basename()
 

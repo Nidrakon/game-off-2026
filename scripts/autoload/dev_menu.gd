@@ -265,7 +265,8 @@ func _fill_level_list() -> void:
 		files.sort()
 		for file in files:
 			# Im Export heissen Szenen ".tscn.remap"; das Menue laeuft dort aber nicht.
-			if not file.ends_with(".tscn"):
+			# Nur Szenen; die Level-Vorlage ist kein spielbares Level.
+			if not file.ends_with(".tscn") or file == "level_base.tscn":
 				continue
 			var path: String = folder.path_join(file)
 			var level_button := _make_button(file.get_basename())

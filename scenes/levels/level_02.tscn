@@ -1,0 +1,39 @@
+[gd_scene format=4 uid="uid://7gkp40d8laq1"]
+
+[ext_resource type="PackedScene" path="res://scenes/levels/level_base.tscn" id="1_base"]
+[ext_resource type="PackedScene" path="res://scenes/objects/flying_platform.tscn" id="2_05mfn"]
+[ext_resource type="PackedScene" path="res://scenes/deco/tool_wall.tscn" id="3_iw1er"]
+[ext_resource type="PackedScene" path="res://scenes/objects/magnet.tscn" id="4_i0xb0"]
+
+[node name="Level02" unique_id=1425743471 instance=ExtResource("1_base")]
+
+[node name="Background" parent="." index="0" unique_id=671661288]
+visible = false
+
+[node name="Color" parent="Background" index="0" unique_id=801528924]
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TimeShifterPanel" parent="." index="7" unique_id=1704663957]
+visible = false
+
+[node name="FlyingPlatform" parent="." index="8" unique_id=1443580174 instance=ExtResource("2_05mfn")]
+position = Vector2(192, 432)
+
+[node name="PipesBack" parent="." index="9"]
+tile_map_data = PackedByteArray("AAAeABUAAAAGAAIAAAAdABUAAAAGAAIAAAAcABUAAAAGAAIAAAAbABUAAAAGAAIAAAAaABUAAAAGAAIAAAAZABUAAAAGAAIAAAAaABcAAAACAAIAAAAbABcAAAACAAIAAAAcABcAAAACAAIAAAAdABcAAAACAAIAAAAeABcAAAACAAIAAAAZABcAAAACAAAAAAAYABUAAAAGAAAAAAAfABcAAAAAAAIAAAAfABUAAAAEAAIAAAA=")
+
+[node name="PipesFront" parent="." index="10"]
+tile_map_data = PackedByteArray("AAAcABgAAAADAAEAAAAcABcAAAABAAEAAAAcABYAAAABAAEAAAAcABUAAAABAAEAAAAcABQAAAABAAEAAAAcABkAAAADAAAAAAAdABgAAAAAAAIAAAAdABkAAAAAAAIAAAAcABMAAAADAAMAAAAdABMAAAABAAIAAAAbABMAAAADAAAAAAAbABIAAAACAAEAAAAcABIAAAADAAMAAAAdABIAAAAAAAMAAAAcABEAAAABAAEAAAAcABAAAAABAAEAAAAcAA8AAAABAAEAAAAcAA4AAAABAAEAAAAcAA0AAAABAAEAAAAcAAwAAAABAAEAAAAcAAsAAAABAAEAAAAcAAoAAAABAAEAAAAcAAkAAAABAAEAAAAcAAgAAAABAAEAAAAcAAcAAAABAAEAAAAcAAYAAAABAAEAAAAcAAUAAAABAAEAAAAcAAQAAAABAAEAAAAcAAMAAAABAAEAAAAcAAIAAAABAAEAAAAcAAEAAAABAAEAAAAcAAAAAAABAAEAAAA=")
+
+[node name="ToolWall" parent="." index="12" unique_id=504718294 instance=ExtResource("3_iw1er")]
+z_index = -8
+position = Vector2(536, 368)
+
+[node name="Magnet" parent="." index="13" unique_id=603535900 instance=ExtResource("4_i0xb0")]
+position = Vector2(856, 440)
+rotation = 1.5707964
+collision_mask = 0
+reach = 453.79
+field_width = 61.065
+lift_speed = 240.61

@@ -1,0 +1,11 @@
+{
+	"name": "Level 4, rocket ride (placeholder)",
+	"order": 40,
+	"based_on": "new_game",
+	"scene": "res://scenes/levels/level_04.tscn",
+	"marker": "",
+	"save": {
+		"upgrades": [],
+		"flags": []
+	}
+}

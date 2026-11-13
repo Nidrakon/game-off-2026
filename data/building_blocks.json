@@ -123,7 +123,7 @@
 			32,
 			24
 		],
-		"description": "Haengt an der Decke (Ursprung oben Mitte) und zieht den Professor im Takt nach oben; dicht darunter schwebt er. 'On Time', 'Off Time', 'Start Offset', 'Warning Time', 'Always On', 'Active', Feld: 'Reach', 'Field Width', 'Lift Speed'. Signal-Empfaenger, Takt laeuft mit der Zeitblase."
+		"description": "Haengt z. B. an der Decke (Ursprung oben Mitte) und zieht den Professor im Takt nach oben; dicht darunter schwebt er. 'On Time', 'Off Time', 'Start Offset', 'Warning Time', 'Always On', 'Active', Feld: 'Reach', 'Field Width', 'Lift Speed'. Signal-Empfaenger, Takt laeuft mit der Zeitblase."
 	},
 	{
 		"category": "gefahren",

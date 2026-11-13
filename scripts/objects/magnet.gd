@@ -1,6 +1,6 @@
 @tool
 extends StaticBody2D
-## Elektromagnet (Doku 2.4, Teslakammer, Schritt 21): haengt an der Decke und
+## Elektromagnet (Doku 2.4, Schritt 21): haengt an der Decke und
 ## geht im Takt an und aus. Solange er an ist, zieht er den Professor nach
 ## oben (Metallteile im Exoskelett), wenn dieser unter ihm im Feld steht;
 ## dicht unter dem Magneten schwebt er. So erreicht man hohe Vorspruenge.

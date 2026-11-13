@@ -10,8 +10,8 @@ extends RefCounted
 const PANEL := 4
 
 
-## Varianten der Wand: Labor (dunkelviolett) und Teslakammer (blau, Spulen).
-enum Variant { LAB, TESLA }
+## Varianten der Wand: Labor (dunkelviolett) und Elektro (blau, Spulen).
+enum Variant { LAB, ELECTRO }
 
 
 ## Fuellt "wall" ueberall dort, wo "ground" innerhalb seiner bemalten Flaeche

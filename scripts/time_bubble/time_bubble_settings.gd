@@ -28,9 +28,27 @@ extends Resource
 @export var color_slow: Color = Color("4d9be6")
 @export var color_normal: Color = Color("c7dcd0")
 @export var color_fast: Color = Color("fb6b1d")
+## Farbige Flaeche zeichnen (seit dem Shader in Schritt 19b aus).
+@export var draw_fill := false
 ## Deckkraft der Flaeche (0 = unsichtbar, 1 = voll deckend).
 @export_range(0.0, 1.0, 0.01) var fill_alpha: float = 0.12
 ## Deckkraft des Randes.
 @export_range(0.0, 1.0, 0.01) var outline_alpha: float = 0.7
 ## Deckkraft des Randes auf Stufe "normal" (Blase faktisch aus, nur angedeutet).
 @export_range(0.0, 1.0, 0.01) var outline_alpha_normal: float = 0.25
+
+@export_group("Shader (Linse)")
+## Verzerrung und Farbverschiebung innerhalb der Blase an/aus.
+@export var lens_enabled := true
+## Auslenkung des Wobble (Pixel) auf langsam bzw. schnell.
+@export_range(0.0, 8.0, 0.1) var wobble_strength: float = 1.5
+## Groesse der Wellen (groesser = kleinere, dichtere Wellen).
+@export_range(0.01, 0.5, 0.005) var wobble_scale: float = 0.08
+## Farbverschiebung (Pixel) auf langsam bzw. schnell.
+@export_range(0.0, 6.0, 0.1) var aberration: float = 1.0
+## Anteil der Staerke auf Stufe "normal" (0 = unsichtbar, kaum sichtbar = 0.2).
+@export_range(0.0, 1.0, 0.05) var lens_strength_normal: float = 0.2
+## Tempo der Welle je Stufe (Bogenmass pro Sekunde): traege, ruhig, hektisch.
+@export var wobble_speed_slow: float = 1.2
+@export var wobble_speed_normal: float = 2.0
+@export var wobble_speed_fast: float = 9.0

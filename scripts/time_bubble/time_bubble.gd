@@ -62,6 +62,12 @@ var stretch := Vector2.ZERO:
 		queue_redraw()
 		shape_changed.emit()
 
+## Shader fuer die Linse (Doku 2.3, Schritt 19b).
+const LENS_SHADER := preload("res://scripts/time_bubble/time_bubble_lens.gdshader")
+
+var _lens: Polygon2D
+var _lens_phase := 0.0
+
 # Umriss relativ zum Professor, wird nur bei Formaenderung neu berechnet.
 var _polygon := PackedVector2Array()
 var _polygon_dirty := true
@@ -70,6 +76,47 @@ var _polygon_dirty := true
 func _ready() -> void:
 	add_to_group(GROUP)
 	radius = settings.radius
+	if settings.lens_enabled:
+		_lens = Polygon2D.new()
+		_lens.name = "Lens"
+		var material := ShaderMaterial.new()
+		material.shader = LENS_SHADER
+		_lens.material = material
+		# Der Rand (_draw) liegt ueber der Linse.
+		_lens.show_behind_parent = true
+		add_child(_lens)
+		shape_changed.connect(_update_lens_shape)
+		_update_lens_shape()
+
+
+func _process(delta: float) -> void:
+	if _lens == null:
+		return
+	var speed := settings.wobble_speed_normal
+	var strength := settings.lens_strength_normal
+	match stage:
+		Stage.SLOW:
+			speed = settings.wobble_speed_slow
+			strength = 1.0
+		Stage.FAST:
+			speed = settings.wobble_speed_fast
+			strength = 1.0
+	_lens_phase = fmod(_lens_phase + delta * speed, TAU * 100.0)
+	var material := _lens.material as ShaderMaterial
+	material.set_shader_parameter("phase", _lens_phase)
+	material.set_shader_parameter("wobble_strength", settings.wobble_strength * strength)
+	material.set_shader_parameter("aberration", settings.aberration * strength)
+	material.set_shader_parameter("wobble_scale", settings.wobble_scale)
+
+
+## Die Linse (Shader-Flaeche) der Blase, falls eingeschaltet.
+func get_lens() -> Polygon2D:
+	return _lens
+
+
+func _update_lens_shape() -> void:
+	if _lens:
+		_lens.polygon = get_local_polygon()
 
 
 ## Tempo-Faktor fuer Objekte in der Blase (1 = normal).
@@ -151,8 +198,8 @@ func _draw() -> void:
 	var outline_alpha := settings.outline_alpha
 	if stage == Stage.NORMAL:
 		outline_alpha = settings.outline_alpha_normal
-	else:
-		# Flaeche nur, wenn die Blase wirklich wirkt.
+	elif settings.draw_fill:
+		# Flaeche nur, wenn die Blase wirklich wirkt (seit dem Shader aus).
 		draw_colored_polygon(points, Color(color, settings.fill_alpha))
 	points.append(points[0])
 	draw_polyline(points, Color(color, outline_alpha), 1.0)

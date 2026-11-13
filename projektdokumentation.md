@@ -920,6 +920,20 @@ Shader, der das Bild innerhalb ihres Bereichs leicht verzerrt.
   schnell = hektisch, auf "normal" kaum sichtbar.
 - Ersetzt den bisherigen farbigen Kreis (siehe Umsetzung unten). Die Farben
   langsam / normal / schnell bleiben fuer Bedienfeld und Symbol.
+- **Umgesetzt (Schritt 19b, 13.11.2026):** Shader
+  `scripts/time_bubble/time_bubble_lens.gdshader` auf einer Flaeche
+  (`Lens`, Polygon2D) in der Form der Blase (folgt Radius und Eiform). Er
+  liest das Bild dahinter (Bildschirm-Textur), verschiebt es pixelgenau in
+  Wellen (Wobble) und verschiebt rot und blau gegeneinander (chromatische
+  Aberration). Der Professor wird danach gezeichnet und bleibt unverzerrt.
+  Die farbige Flaeche entfaellt (`draw_fill`, Standard aus); der duenne
+  Rand in der Farbe der Stufe bleibt, damit die Form auch auf "normal"
+  erkennbar ist.
+- **Stellschrauben** (`data/time_bubble_settings.tres`, Gruppe "Shader
+  (Linse)"): `lens_enabled`, `wobble_strength` (1,5 px), `wobble_scale`
+  (0,08), `aberration` (1 px), `lens_strength_normal` (0,2 = auf "normal"
+  kaum sichtbar), Tempo je Stufe `wobble_speed_slow` 1,2 /
+  `wobble_speed_normal` 2 / `wobble_speed_fast` 9 (Bogenmass pro Sekunde).
 
 **Werte** (Datendatei `data/time_bubble_settings.tres`, im Inspector
 aenderbar; Skript `scripts/time_bubble/time_bubble_settings.gd`):
@@ -1985,7 +1999,7 @@ gekuerzt, nicht der Puffer.
   optional animiert (eingeschoben am 10.11.2026, 2.9). (Umgesetzt am
   13.11.2026 als Platzhalter-Grafik mit Dampfaustritt-Baustein; echte
   Grafik mit Schritt 19.)
-- [ ] 19b. Zeitblase als Shader: Wobble und chromatische Aberration im
+- [x] 19b. Zeitblase als Shader: Wobble und chromatische Aberration im
   Bereich der Blase, Tempo je Zeitstufe, Staerke einstellbar (eingeschoben am
   10.11.2026, 2.3).
 - [ ] 20. Restliche Level der Selbstschussanlage.
@@ -2018,7 +2032,7 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 13.11.2026, Version v0.45**
+**Stand vom 13.11.2026, Version v0.46**
 
 - **Phase:** Meilenstein 2, Spielelemente und Vertical Slice (Ziel 17.11.).
 - **Zuletzt erledigt:** Baukasten mit Rohren (19a), Dampfaustritt, Wand- und Bodenelementen; Streckenanzeige der Plattform im Editor.

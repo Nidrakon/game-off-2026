@@ -51,6 +51,10 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.46 - 2026-11-13: Schritt 19b: Zeitblase als Shader**
+
+- Linse in der Form der Blase: Wobble und chromatische Aberration, Tempo je Zeitstufe, Staerken einstellbar; farbige Flaeche entfaellt, Rand bleibt.
+
 **v0.45 - 2026-11-13: Schritt 19: Grafik der Selbstschussanlage**
 
 - Gelaende-Tiles, Werfer (Geschuetzturm) und Projektil (Rakete) neu gezeichnet.

@@ -25,9 +25,11 @@ var _coyote_timer := 0.0
 # Restzeit, in der ein zu frueh gedrueckter Sprung noch ausgefuehrt wird.
 var _jump_buffer_timer := 0.0
 
-# Hebt ein Elektromagnet ihn in diesem Physik-Schritt an? (Zielgeschwindigkeit
-# nach oben und Beschleunigung, gesetzt von magnet.gd)
+# Zieht bzw. stoesst ein Elektromagnet ihn in diesem Physik-Schritt?
+# (Richtung, Zielgeschwindigkeit in diese Richtung, Beschleunigung; gesetzt
+# von magnet.gd vor dem Physik-Schritt des Professors)
 var _magnet_active := false
+var _magnet_dir := Vector2.ZERO
 var _magnet_target := 0.0
 var _magnet_accel := 0.0
 
@@ -101,6 +103,7 @@ func _physics_process(delta: float) -> void:
 	_apply_gravity(delta)
 	_apply_horizontal_movement(delta)
 	_handle_jump()
+	_apply_magnet(delta)
 	move_and_slide()
 	# Animation passend zur Bewegung waehlen (Kind-Node Animator).
 	_animator.update(delta)
@@ -120,18 +123,29 @@ func _update_timers(delta: float) -> void:
 
 
 ## Vom Elektromagneten jeden Physik-Schritt aufgerufen, solange der
-## Professor in seinem Feld steht: statt der Schwerkraft geht es mit
-## "target_speed" nach oben (0 = schweben).
-func apply_magnet_lift(target_speed: float, accel: float) -> void:
+## Professor in seinem Feld steht: Die Geschwindigkeit in Richtung "direction"
+## (Einheitsvektor) geht auf "target_speed" (0 = schweben). Zeigt die Kraft
+## nach oben, wirkt die Schwerkraft so lange nicht.
+func apply_magnet_force(direction: Vector2, target_speed: float, accel: float) -> void:
 	_magnet_active = true
+	_magnet_dir = direction
 	_magnet_target = target_speed
 	_magnet_accel = accel
 
 
+## Wirkung des Magneten nach Schwerkraft und Laufen (siehe apply_magnet_force).
+func _apply_magnet(delta: float) -> void:
+	if not _magnet_active:
+		return
+	_magnet_active = false
+	var along := velocity.dot(_magnet_dir)
+	var wanted := move_toward(along, _magnet_target, _magnet_accel * delta)
+	velocity += _magnet_dir * (wanted - along)
+
+
 func _apply_gravity(delta: float) -> void:
-	if _magnet_active:
-		_magnet_active = false
-		velocity.y = move_toward(velocity.y, -_magnet_target, _magnet_accel * delta)
+	# Ein Magnet, der nach oben zieht bzw. stoesst, hebt die Schwerkraft auf.
+	if _magnet_active and _magnet_dir.y < -0.3:
 		return
 	if is_on_floor():
 		return
@@ -155,6 +169,11 @@ func _apply_horizontal_movement(delta: float) -> void:
 		rate = settings.ground_acceleration
 	else:
 		rate = settings.ground_deceleration
+	# Zieht ein Magnet seitlich, bremst ohne Eingabe nichts dagegen: Der
+	# Magnet bestimmt dann die Bewegung zur Seite (mit Eingabe kann man
+	# dagegen anlaufen).
+	if direction == 0.0 and _magnet_active and absf(_magnet_dir.x) > 0.3:
+		rate = 0.0
 	velocity.x = move_toward(velocity.x, target_speed, rate * delta)
 
 	# Figur in Laufrichtung drehen (der Sprite schaut nach rechts).

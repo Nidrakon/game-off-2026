@@ -1303,7 +1303,18 @@ Offene Punkte:
   240 px/s, `lift_accel`, `hover_gap`. Signal-Empfaenger; der Takt laeuft
   mit der Zeitblase, wenn sie den Magneten beruehrt. Im Editor zeigt ein
   gestrichelter Rahmen das Feld. Der Professor hat dafuer
-  `apply_magnet_lift()` (ersetzt im selben Schritt die Schwerkraft).
+  `apply_magnet_force()`.
+- **Erweitert (14.11.2026, Wunsch des Nutzers):** `mode` Anziehen (zur
+  Polplatte hin, dicht davor schweben) oder Abstossen (weg); die Feldlinien
+  fliessen entsprechend zum Magneten hin bzw. von ihm weg. Das Feld zeigt
+  immer von der Polplatte weg und dreht sich mit dem Magneten (Rotation):
+  an der Decke nach unten, an einer Wand zur Seite, auf dem Boden nach oben.
+  `field_width` verbreitert Magnet (Enden bleiben, die Spule wird
+  gestreckt), Kollision und Feld. Im Editor zeigen Pfeile die Richtung.
+  Der Professor hat `apply_magnet_force(richtung, tempo, beschleunigung)`:
+  Die Geschwindigkeit in Feldrichtung geht auf das Tempo; zeigt die Kraft
+  nach oben, wirkt keine Schwerkraft; zieht sie seitlich, bremst der Boden
+  ohne Eingabe nicht dagegen.
 
 **Umfang:** Die Elemente reichen fuer einen Jam. Lieber kombinieren als
 neue erfinden.
@@ -2066,7 +2077,7 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 14.11.2026, Version v0.53**
+**Stand vom 14.11.2026, Version v0.54**
 
 - **Phase:** Meilenstein 3, Inhalt und Grafik (Ziel 24.11.).
 - **Zuletzt erledigt:** Lineare Levelstruktur (`level_01` ... `level_05`),

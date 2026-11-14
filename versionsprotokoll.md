@@ -51,6 +51,10 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.58 - 2026-11-14: Sandbox mit allen Bausteinen**
+
+- Zweiter Raum in der Sandbox: Magnete (Decke, Boden-Trampolin, Wand), Boden-/Wand-/Block-Bausteine, Stege, Rohre vorn und hinten mit Dampf, Fahrstuhl, Ausgang, Deko; eigene Tiles des Nutzers bleiben erhalten. Test prueft, dass jeder Baustein vorkommt.
+
 **v0.57 - 2026-11-14: Hintergrund-Themen mit Silhouetten**
 
 - Sechs Themen (Werkstatt, Fabrik, Chemie, Elektro, Magnet, Quanten) je Level an der Wurzel waehlbar: Wandfarbe und 54 dezente Silhouetten, zufaellig mit Startwert und Dichte verteilt, im Editor sichtbar.

@@ -1489,7 +1489,14 @@ Fortschritt bleibt erhalten.
   nach oben. `level_01` ist die Werkstatt mit dem Tutorial. Aufbau,
   Themen und Mechaniken der Level legt der Nutzer selbst fest.
 - **Sandbox:** ein grosses Testlevel zum Ausprobieren und Debuggen
-  (`scenes/test/sandbox.tscn`), nicht Teil der Levelfolge.
+  (`scenes/test/sandbox.tscn`), nicht Teil der Levelfolge. Seit 14.11.2026
+  mit zweitem Raum rechts (durch eine Oeffnung in der alten rechten Wand,
+  Kamera bis x = 2240): Decken-Magnet (Anziehen) mit hohem Steg,
+  Boden-Magnet als Trampolin (Abstossen), Wand-Magnet, Boden-, Wand- und
+  Block-Baustein, Stege, begehbare Rohrleitung (vorn) und Rohrnetz (hinten)
+  mit Dampf, Fahrstuhl mit E-Hinweis, Ausgang, Deko. Damit steht jeder
+  Baustein des Baukastens mindestens einmal in der Sandbox (ein Test prueft
+  das). Was der Nutzer selbst in der Sandbox gemalt hat, bleibt erhalten.
 - **Umfang:** ca. 8 bis 12 Level realistisch.
 - **Masse (festgelegt am 07.11.2026, passend zur Figur):** Durchgaenge
   mindestens 4 Tiles (64 px) hoch, damit der Professor (50 px) durchpasst;
@@ -2125,19 +2132,22 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 14.11.2026, Version v0.57**
+**Stand vom 14.11.2026, Version v0.58**
 
 - **Phase:** Meilenstein 3, Inhalt und Grafik (Ziel 24.11.).
-- **Zuletzt erledigt:** Lineare Levelstruktur (`level_01` ... `level_05`),
-  Sandbox statt Testlevel, Testszenen nach `scenes/test/fixtures/`.
-- **Naechster Schritt:** Rueckmeldungen des Nutzers vom 13.11.2026:
-  Aseprite-Quellen fuer Intro und Ende, Rohre im Editor, Magnet
-  (Anziehen/Abstossen, Drehung, Breite), Shader und Blasenrand, mehr
-  Requisiten, Hintergrund-Themen, Sandbox mit allen Bausteinen.
+- **Zuletzt erledigt (Rueckmeldungen vom 13.11.2026):** lineare Level
+  `level_01` ... und Sandbox; Intro und Ende als Aseprite-Dateien mit Ebenen
+  und Frames (Sync); Rohre verbinden sich beim Malen; Magnet mit Anziehen/
+  Abstossen, Drehung und Breite; Shader auffaelliger mit Seifenblasen-Rand;
+  17 neue Requisiten; Hintergrund-Themen mit Silhouetten; Sandbox mit allen
+  Bausteinen.
+- **Naechster Schritt:** Nutzer testet; danach eigene Level und Schritt 24
+  (Sound und Musik).
 - **Spielbar:** Titel -> Intro -> Level 1 (Werkstatt) -> Level 2 (Nutzer) ->
   Level 3 -> 4 -> 5 -> Ende mit Abspann. Sandbox ueber F1 oder F6.
-- **Noch zu testen (vom Nutzer):** siehe Rueckmeldungen; Rest der Schritte
-  17 bis 23 ist getestet.
+- **Noch zu testen (vom Nutzer):** Aseprite-Panels bearbeiten und
+  speichern, Rohre malen, Magnet (Modi, Drehung, Breite), Shader und
+  Blasenrand, neue Requisiten, Hintergrund-Themen im Inspector, Sandbox.
 - **Bekannte Probleme:** keine.
 - **Groesste offene Punkte:** echte Level (2.9), Sound und Musik (1.2),
   echte Comic-Bilder fuer Intro und Ende.

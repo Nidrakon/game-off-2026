@@ -1505,8 +1505,11 @@ Editor rechts erscheint der Reiter "Baukasten" neben dem Inspector:
 - **Malen** (seit 13.11.2026): drei Knoepfe "Boden & Waende malen",
   "Rohre vorn malen", "Rohre hinten malen". Sie waehlen im offenen Level
   die Ebene `Ground`, `PipesFront` bzw. `PipesBack` aus; unten oeffnet sich
-  der TileMap-Editor. Fuer Rohre dort den Reiter "Terrains" und das Terrain
-  "Rohr vorn (Kollision)" bzw. "Rohr hinten (Deko)" waehlen, dann malen.
+  der TileMap-Editor. Rohre verbinden sich seit 14.11.2026 automatisch, egal
+  mit welchem Rohr-Tile und in welchem Modus gemalt wird (Skript
+  `scripts/levels/pipe_layer.gd` auf `PipesFront`/`PipesBack`: jede Zelle
+  bekommt aus ihren Nachbarn die passende Form, die Ebene legt die Variante
+  fest; auch beim Loeschen passen sich die Nachbarn an).
 - Gruppen seit 13.11.2026 zusaetzlich "Waende & Boeden" (Boden, Wand, Block,
   Steg) und "Rohre & Dampf" (Dampfaustritt). Doppelklick rastet jetzt auf
   16 px (ein Tile) ein.
@@ -2063,7 +2066,7 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 14.11.2026, Version v0.52**
+**Stand vom 14.11.2026, Version v0.53**
 
 - **Phase:** Meilenstein 3, Inhalt und Grafik (Ziel 24.11.).
 - **Zuletzt erledigt:** Lineare Levelstruktur (`level_01` ... `level_05`),

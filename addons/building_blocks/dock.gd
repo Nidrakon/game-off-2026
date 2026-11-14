@@ -33,8 +33,8 @@ const SNAP := 16.0
 ## Mal-Ebenen: Knopftext, Node im Level, Hinweis, Vorschaubild (Ausschnitt).
 const PAINT_LAYERS := [
 	["Boden & Waende malen", "Ground", "Unten im TileMap-Editor ein Tile waehlen und malen (Boden-Oberseite, Fuellung, Block).", "res://graphics/tilesets/tileset_placeholder.png", Rect2(0, 0, 16, 16)],
-	["Rohre vorn malen", "PipesFront", "Unten Reiter 'Terrains' > 'Rohr vorn (Kollision)' waehlen und malen; die Rohre verbinden sich selbst.", "res://graphics/tilesets/tileset_pipes.png", Rect2(48, 48, 16, 16)],
-	["Rohre hinten malen", "PipesBack", "Unten Reiter 'Terrains' > 'Rohr hinten (Deko)' waehlen und malen; keine Kollision, liegt hinter allem.", "res://graphics/tilesets/tileset_pipes.png", Rect2(112, 48, 16, 16)],
+	["Rohre vorn malen", "PipesFront", "Unten ein beliebiges Rohr-Tile waehlen und malen; die Rohre verbinden sich selbst (Ecken, T-Stuecke, Enden). Vorn mit Kollision.", "res://graphics/tilesets/tileset_pipes.png", Rect2(48, 48, 16, 16)],
+	["Rohre hinten malen", "PipesBack", "Unten ein beliebiges Rohr-Tile waehlen und malen; die Rohre verbinden sich selbst. Hinten: dunkel, keine Kollision, liegt hinter allem.", "res://graphics/tilesets/tileset_pipes.png", Rect2(112, 48, 16, 16)],
 ]
 const COLOR_TITLE := Color("f9c22b")
 const COLOR_HINT := Color("9babb2")

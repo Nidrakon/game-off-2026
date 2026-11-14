@@ -51,6 +51,10 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.53 - 2026-11-14: Rohre verbinden sich beim Malen**
+
+- Rohr-Ebenen mit eigenem Skript: beliebiges Rohr-Tile malen, Form und Variante werden automatisch gesetzt (auch beim Loeschen).
+
 **v0.52 - 2026-11-14: Aseprite-Quellen fuer Intro und Ende**
 
 - Elf Panels als .aseprite mit Ebenen (Hintergrund, Figuren, Effekte) und Frames in `graphics/source/comic/`, im Aseprite-Sync als Eintraege nur mit Sheet; Intro und Ende lesen die Bilderzahl aus dem Sheet.

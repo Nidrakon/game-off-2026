@@ -6,8 +6,6 @@ extends Node
 ##   (Kamerawackeln), Staubwoelkchen.
 ## - Staub beim Absprung und beim scharfen Richtungswechsel.
 ## - Tod und Einsammeln: kurzer Hitstop und Wackeln.
-## - Zoom-Impuls der Kamera beim Umschalten der Zeitstufe; Blick in
-##   Laufrichtung (Kamera).
 ## Werte in data/game_feel.tres. Gruppe "game_feel" (z. B. fuer on_pickup()).
 
 @export var settings: GameFeelSettings = preload("res://data/game_feel.tres")
@@ -24,10 +22,6 @@ func _ready() -> void:
 	_professor.jumped.connect(_on_jumped)
 	_professor.landed.connect(_on_landed)
 	_professor.died.connect(_on_died)
-	var bubble := _professor.get_node_or_null("TimeBubble")
-	if bubble:
-		bubble.stage_changed.connect(_on_stage_changed)
-	_configure_camera.call_deferred()
 
 
 func _process(delta: float) -> void:
@@ -40,7 +34,7 @@ func _physics_process(_delta: float) -> void:
 	# Scharfer Richtungswechsel am Boden: Staub
 	var vx := _professor.velocity.x
 	if _professor.is_on_floor() and absf(_last_vx) > 150.0 and signf(vx) != signf(_last_vx) and vx != 0.0:
-		_dust(settings.turn_dust, 70.0)
+		_dust(settings.turn_dust, 85.0)
 	_last_vx = vx
 
 
@@ -68,7 +62,7 @@ func hitstop(duration: float) -> void:
 
 func _on_jumped() -> void:
 	_sprite.scale = settings.jump_stretch
-	_dust(settings.jump_dust, 45.0)
+	_dust(settings.jump_dust, 60.0)
 
 
 func _on_landed(fall_speed: float) -> void:
@@ -76,7 +70,7 @@ func _on_landed(fall_speed: float) -> void:
 		return
 	var strength := clampf((fall_speed - settings.land_squash_min_speed) / maxf(_professor.settings.max_fall_speed - settings.land_squash_min_speed, 1.0), 0.0, 1.0)
 	_sprite.scale = Vector2.ONE.lerp(settings.land_squash, clampf(strength * 1.6, 0.25, 1.0))
-	_dust(roundi(lerpf(2.0, float(settings.land_dust), strength)), lerpf(40.0, 110.0, strength))
+	_dust(roundi(lerpf(5.0, float(settings.land_dust), strength)), lerpf(55.0, 130.0, strength))
 	if fall_speed >= settings.hard_landing_speed:
 		_shake(settings.land_shake * strength)
 		if _professor.has_method("slow_down"):
@@ -86,12 +80,6 @@ func _on_landed(fall_speed: float) -> void:
 func _on_died() -> void:
 	_shake(settings.death_shake)
 	hitstop(settings.death_hitstop)
-
-
-func _on_stage_changed(_stage: int) -> void:
-	var camera := get_viewport().get_camera_2d()
-	if camera and camera.has_method("punch_zoom"):
-		camera.punch_zoom(settings.stage_zoom_punch)
 
 
 func _dust(count: int, speed: float) -> void:
@@ -105,9 +93,3 @@ func _shake(strength: float) -> void:
 	if camera and camera.has_method("shake") and strength > 0.0:
 		camera.shake(strength, settings.shake_time)
 
-
-func _configure_camera() -> void:
-	var camera := get_viewport().get_camera_2d()
-	if camera and "look_ahead" in camera:
-		camera.look_ahead = settings.look_ahead
-		camera.look_ahead_speed = settings.look_ahead_speed

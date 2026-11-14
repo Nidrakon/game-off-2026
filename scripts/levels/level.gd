@@ -40,6 +40,8 @@ extends Node2D
 var _background_queued := false
 
 ## Umgebungsgeraeusch je Hintergrund-Thema (data/sfx.json).
+## Gruppe aller laufenden Level (z. B. fuer das Spielmenue).
+const GROUP := "level"
 const AMBIENT_IDS := {
 	BackgroundTheme.Kind.WORKSHOP: "ambient_workshop", BackgroundTheme.Kind.FACTORY: "ambient_factory",
 	BackgroundTheme.Kind.CHEMICAL: "ambient_chemical", BackgroundTheme.Kind.ELECTRO: "ambient_electro",
@@ -51,6 +53,7 @@ func _ready() -> void:
 	apply_background()
 	if Engine.is_editor_hint():
 		return
+	add_to_group(GROUP)
 	if auto_camera_limits:
 		_fit_camera_to_ground()
 	SaveGame.on_level_started(scene_file_path)

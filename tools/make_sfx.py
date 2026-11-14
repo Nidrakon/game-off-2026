@@ -5,18 +5,24 @@ Saegezahn, Rauschen, Huellkurven, einfache Filter. Schleifen (Endung _loop
 bzw. ambient_*) sind nahtlos: Frequenzen passen ganzzahlig in die Laenge,
 Ereignisse liegen innerhalb der Schleife.
 
-Aufruf (im Projektordner): python tools/make_sfx.py
+Aufruf (im Projektordner): python tools/make_sfx.py [name ...]
 Ausgabe: audio/sfx/*.wav  (vorhandene Dateien werden ueberschrieben)
+Mit Namen (z. B. "step_1 ui_click") werden nur diese Dateien geschrieben.
 """
 import math
 import os
 import random
 import struct
+import sys
 import wave
 
 RATE = 22050
 OUT = os.path.join(os.path.dirname(__file__), '..', 'audio', 'sfx')
 rng = random.Random(4711)
+# Eigener Zufall fuer nachtraeglich geaenderte Sounds, damit die Folge von
+# "rng" (und damit alle anderen Sounds) gleich bleibt.
+rng2 = random.Random(815)
+ONLY = set(sys.argv[1:])
 
 
 def n(sec):
@@ -70,6 +76,44 @@ def osc(kind, f0, f1, sec, phase=0.0):
 
 def noise(sec):
     return [rng.uniform(-1, 1) for _ in range(n(sec))]
+
+
+def noise2(sec):
+    return [rng2.uniform(-1, 1) for _ in range(n(sec))]
+
+
+def ring(partials, sec):
+    """Angeschlagenes Metall: Teiltoene (Frequenz, Lautstaerke, Abklingzeit)
+    mit exponentiellem Ausklang."""
+    length = n(sec)
+    out = [0.0] * length
+    for f, amp, tau in partials:
+        ph = rng2.uniform(0, 1)
+        for i in range(length):
+            t = i / RATE
+            out[i] += amp * math.exp(-t / tau) * math.sin(2 * math.pi * (f * t + ph))
+    return out
+
+
+def pipe_step(f0, vol=1.0):
+    """Schritt auf hohlem Metallrohr: "klonk" (unharmonische Teiltoene eines
+    Rohrs 1 : 2.76 : 5.40, dumpfer Hohlkoerper, kurzer Anschlag)."""
+    sec = 0.32
+    metal = ring([(f0, 1.0, 0.09), (f0 * 2.76, 0.55, 0.045), (f0 * 5.40, 0.25, 0.02), (f0 * 1.007, 0.5, 0.08)], sec)
+    hollow = ring([(f0 * 0.5, 0.9, 0.05), (f0 * 0.75, 0.3, 0.035)], sec)
+    hit = mul(bandpass(noise2(0.02), 600, 4000), env(n(0.02), 0.0005, 0.012))
+    return gain(mix(metal, hollow, gain(hit, 0.7)), vol)
+
+
+def key_click():
+    """Mechanische Tastatur: tiefer "thock" beim Aufsetzen plus kurzes
+    Klacken, gleich danach leiser der Ruecksprung."""
+    thock = ring([(210, 1.0, 0.018), (480, 0.5, 0.01), (1150, 0.35, 0.006)], 0.07)
+    clack = gain(mul(bandpass(noise2(0.03), 900, 3500), env(n(0.03), 0.0005, 0.01)), 0.8)
+    back = gain(mul(bandpass(noise2(0.02), 1500, 5000), env(n(0.02), 0.0005, 0.006)), 0.3)
+    sig = mix(thock, clack, silence(0.08))
+    place(sig, back, 0.03)
+    return sig
 
 
 def lowpass(sig, cutoff):
@@ -154,6 +198,8 @@ def fade_edges(sig, sec=0.004):
 
 
 def save(name, sig, peak=0.85, loop=False):
+    if ONLY and name not in ONLY:
+        return
     sig = normalize(sig, peak)
     if not loop:
         sig = fade_edges(sig)
@@ -181,8 +227,10 @@ def loop_noise(sec, cutoff_lo, cutoff_hi):
 def build():
     os.makedirs(OUT, exist_ok=True)
     # --- Spielfigur ---------------------------------------------------------------------
-    for i, (cut, f0) in enumerate([(900, 170), (700, 150), (1100, 190)]):
-        save('step_%d' % (i + 1), concat(thud(0.07, f0, 60, 1.0, cut), silence(0.02)), peak=0.5)
+    # Schritte: hohles Metallrohr (seit v0.61); noise(0.07) haelt die Folge von rng stabil
+    for i, f0 in enumerate([392, 370, 415]):
+        noise(0.07)
+        save('step_%d' % (i + 1), pipe_step(f0), peak=0.5)
     save('jump', mix(tone('sq', 260, 620, 0.12, d=0.12, vol=0.35), gain(mul(bandpass(noise(0.16), 800, 3000), env(n(0.16), 0.01, 0.15)), 0.4)), peak=0.6)
     save('land', concat(thud(0.14, 150, 45, 1.0, 500), silence(0.02)), peak=0.7)
     save('land_hard', mix(thud(0.3, 120, 30, 1.0, 600), gain(mul(lowpass(noise(0.35), 250), env(n(0.35), 0.002, 0.33)), 0.9)), peak=0.85)
@@ -254,7 +302,8 @@ def build():
     for i, f in enumerate([520, 610, 700]):
         save('speech_blip_%d' % (i + 1), concat(lowpass(tone('sq', f, f * 0.95, 0.04, d=0.04, vol=0.5), 2500), silence(0.01)), peak=0.25)
     save('ui_hover', concat(tone('sin', 1200, 1200, 0.025, d=0.025), silence(0.01)), peak=0.2)
-    save('ui_click', mix(gain(mul(highpass(noise(0.02), 2000), env(n(0.02), 0.0005, 0.019)), 0.6), tone('sin', 880, 1320, 0.08, d=0.08, vol=0.5)), peak=0.4)
+    noise(0.02)  # Folge von rng stabil halten (frueherer Klick)
+    save('ui_click', key_click(), peak=0.5)
     save('page_flip', gain(mul(bandpass(noise(0.22), 1500, 6000), env(n(0.22), 0.03, 0.18)), 1.0), peak=0.35)
 
     # --- Umgebung (8 s, nahtlos) --------------------------------------------------------

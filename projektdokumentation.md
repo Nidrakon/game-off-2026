@@ -482,8 +482,9 @@ selben Massstab entstehen.
   (raeumlich), `Sound.loop(id, parent, time_source)` (Dauerton; Tonhoehe
   folgt der Zeitblase), `Sound.play_ambient(id)` (Ueberblendung).
   Lautstaerken nur in `data/sfx.json` aendern.
-- Lautstaerke: [z. B. Voreinstellung niedrig (15 %), weil die meisten Spiele
-  zu laut starten; Stufen].
+- Lautstaerke: im Spielmenue (Esc, 2.5) einstellbar, Voreinstellung gesamt
+  50 %, Effekte/Umgebung/Musik 100 %; `Sfx.set_volume(bus, 0..1)`.
+- Menue-Klick `ui_click`: mechanische Tastatur (tiefer "thock" plus Klacken).
 - **Songs mit fester ID:** Jeder Song hat eine Nummer und einen Namen.
   "Song 1", "Lied 1" oder "Theme 1" meint immer denselben Song. IDs werden
   nie neu vergeben.
@@ -493,7 +494,8 @@ selben Massstab entstehen.
   | 1 | [Name] | `music_[...]` | [z. B. Titel, Hauptmenue] | [Tonart, Tempo, Stimmung] |
 
 - Soundeffekte und wo sie klingen (IDs aus `data/sfx.json`):
-  - Professor: `step` (3 Varianten, alle 30 px am Boden), `jump`, `land`,
+  - Professor: `step` (3 Varianten, hohles Metallrohr, beim Aufsetzen des
+    Fusses in der Laufanimation), `jump`, `land`,
     `land_hard` (ab 700 px/s Fallgeschwindigkeit), `death`; Klonstation
     `spawn`; Ausgang `exit_door`; Levelwechsel `transition`.
   - Time Shifter: `panel_open`/`panel_close`, `stage_slow`/`stage_fast`/
@@ -816,7 +818,7 @@ Status: vorlaeufig festgehalten, kann sich noch aendern.
 | Bedienfeld des Time Shifters ("Kupplung") | `time_shifter_panel` | Shift gedrueckt halten | [ ] | [ ] |
 | Regler im Bedienfeld bedienen | (Maus-Eingabe auf die Regler) | Maus | [ ] | [ ] |
 | Zeitstufe per Mausrad (Wunsch des Nutzers, 09.11.2026) | (Mausrad bei offenem Bedienfeld) | Shift + Rad hoch = schneller, Shift + Rad runter = langsamer | [ ] | [ ] |
-| [Pause] | `pause` | [offen, z. B. Esc] | [ ] | [ ] |
+| Spielmenue (seit v0.61) | `pause` | Esc (physische Taste) | [ ] | [ ] |
 
 - **Shift als "Kupplung":** Solange Shift gehalten wird, erscheint das
   Bedienfeld gross in der Bildschirmmitte, und das Spiel im Hintergrund ist
@@ -848,8 +850,12 @@ Baustein "Feel" am Professor (`scripts/player/professor_feel.gd`), Werte in
   Richtungswechsel (`DustPuff`, nur Palettenfarben).
 - Tod und Einsammeln: kurzer Hitstop (Spiel friert Sekundenbruchteile
   ein) und Wackeln.
-- Kamera schaut etwas in Laufrichtung voraus (40 px) und macht beim
-  Umschalten der Zeitstufe einen kleinen Zoom-Impuls.
+- Kein Vorausblick und kein Zoom der Kamera (am 14.11.2026 auf Wunsch des
+  Nutzers wieder entfernt, sah nicht gut aus).
+- Landung seit v0.61 nur halb so stark (Stauchung und Wackeln), mehr Staub.
+- Schritt-Sound genau beim Aufsetzen des Fusses: Bilder 3 und 7 im Tag Run
+  (Aseprite-Bild 8 und 12), einstellbar in `data/professor_animation.tres`
+  (`run_step_frames`). Klang: hohles Metallrohr ("klonk").
 
 Werte der Bewegung (Datendatei `data/professor_movement.tres`, im Inspector
 aenderbar; Skript `scripts/player/movement_settings.gd`):
@@ -992,8 +998,10 @@ Shader, der das Bild innerhalb ihres Bereichs leicht verzerrt.
   - Schnell (hektisch): zitternde Bildzeilen, Unschaerfe nach aussen,
     starke Rot-Blau-Trennung, warmer Schimmer.
   - Rand (Seifenblase): Das Bild wird zur Randlinie hin gezogen, darauf ein
-    duenner, schillernder Regenbogen-Film; auf "normal" nur schwach. Der
-    farbige Kreis entfaellt (`draw_outline`, Standard aus).
+    duenner, schillernder Regenbogen-Film. Der farbige Kreis entfaellt
+    (`draw_outline`, Standard aus).
+  - **Auf "normal" ist die Blase ganz unsichtbar** (kein Shader, kein Rand;
+    Wunsch des Nutzers, 14.11.2026). Sichtbar nur bei langsam und schnell.
   - Einstellungen (Gruppe "Shader (Linse)", Untergruppen Langsam, Schnell,
     Rand): `slow_wobble` 4, `slow_bulge` 10, `slow_aberration` 2,
     `slow_speed` 1,5; `fast_jitter` 3, `fast_blur` 10, `fast_aberration` 4,
@@ -1423,8 +1431,18 @@ Offene Punkte:
   danach startet das Spiel direkt in der Werkstatt (umgesetzt in Schritt 22;
   Esc ueberspringt).
 - **Hauptmenue / Levelauswahl:** [offen]
-- **Pause:** [offen]
-- **Einstellungen:** [offen]
+- **Spielmenue (Pause, seit v0.61):** Esc im Level oeffnet ein Menue, das
+  Spiel pausiert. Continue oder Esc schliesst es. Settings: Lautstaerke
+  (Volume = gesamt, Effects, Ambience, Music; Schieberegler in 5-%-Schritten,
+  Voreinstellung gesamt 50 %, Rest 100 %), gespeichert in
+  `user://settings.cfg` (nicht im Spielstand). Quit fragt nach (Fortschritt
+  seit der letzten Klonstation geht verloren), Ja = zurueck zum
+  Titelbildschirm. Oeffnet nicht im Titel, Intro, Ende, waehrend eines
+  Levelwechsels oder bei offenem Bedienfeld/Entwicklermenue; Shift oeffnet
+  bei offenem Menue kein Bedienfeld. Umsetzung: Autoload `PauseMenu`
+  (`scripts/autoload/pause_menu.gd`), Look aus `scripts/ui/menu_style.gd`
+  (auch Titel), Texte in `dialogues/menu.json`.
+- **Einstellungen:** nur im Spielmenue (Lautstaerke).
 - **Credits / Abspann:** waehrend der Fahrstuhlfahrt nach dem letzten Level
   (siehe 3.5; umgesetzt in Schritt 23).
 
@@ -2200,25 +2218,23 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 14.11.2026, Version v0.60**
+**Stand vom 14.11.2026, Version v0.61**
 
 - **Phase:** Meilenstein 4, Ton und Feinschliff.
-- **Zuletzt erledigt (Wunschliste vom 14.11.2026):** Parallax-Hintergrund
-  mit Oeffnungen in der Wand; Soundeffekte fuer alles (Professor, Time
-  Shifter, alle Bausteine, Menues, Comic) und Ambient je Hintergrund-Thema;
-  Spielgefuehl (Squash/Stretch, Gewicht, Bodenbeben, Staub, Hitstop,
-  Kamera-Vorausblick); Comic-Bilder wie handgezeichnet.
+- **Zuletzt erledigt (Rueckmeldungen vom 14.11.2026):** Spielmenue mit Esc
+  (Continue, Settings mit Lautstaerke, Quit mit Nachfrage); Schritte klingen
+  nach hohlem Metallrohr und sitzen auf dem Aufsetzen des Fusses;
+  Menue-Klick wie mechanische Tastatur; Landung halb so stark, mehr Staub;
+  Blase auf Normaltempo unsichtbar; Kamera-Vorausblick und Zoom entfernt.
 - **Naechster Schritt:** Nutzer testet; danach eigene Level, Musik (Nutzer)
   und Schwierigkeitskurve.
 - **Spielbar:** Titel -> Intro -> Level 1 (Werkstatt) -> Level 2 (Nutzer) ->
   Level 3 -> 4 -> 5 -> Ende mit Abspann. Sandbox ueber F1 oder F6.
-- **Noch zu testen (vom Nutzer):** Lautstaerken und Klang aller Sounds,
-  Ambient je Thema, Spielgefuehl (Werte in `data/game_feel.tres`),
-  Parallax in grossen Levels, neue Comic-Bilder; aeltere Punkte:
-  Aseprite-Panels, Rohre malen, Magnet, Shader, Requisiten, Themen, Sandbox.
+- **Noch zu testen (vom Nutzer):** Spielmenue und Lautstaerke, neuer
+  Schritt- und Klick-Sound, Landung und Staub, Blase nur bei langsam/schnell;
+  aus v0.60: uebrige Sounds und Ambient, Parallax, neue Comic-Bilder.
 - **Bekannte Probleme:** keine.
-- **Groesste offene Punkte:** echte Level (2.9), Musik, Lautstaerke-
-  Einstellung im Spiel.
+- **Groesste offene Punkte:** echte Level (2.9), Musik.
 
 ### 5.2 Versionsprotokoll
 

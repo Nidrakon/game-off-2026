@@ -10,7 +10,9 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	var want_open := Input.is_action_pressed("time_shifter_panel")
+	# Nicht, solange das Spielmenue (Esc) offen ist.
+	var pause_menu := get_node_or_null("/root/PauseMenu")
+	var want_open: bool = Input.is_action_pressed("time_shifter_panel") and not (pause_menu and pause_menu.is_open)
 	if want_open != visible:
 		_set_open(want_open)
 

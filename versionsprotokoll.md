@@ -51,6 +51,14 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.61 - 2026-11-14: Spielmenue, Metall-Schritte, ruhigere Landung**
+
+- Spielmenue mit Esc: Continue (oder Esc), Settings mit Lautstaerke (gesamt, Effekte, Umgebung, Musik; gespeichert in `user://settings.cfg`), Quit mit Nachfrage zum ungespeicherten Fortschritt, dann Titelbildschirm.
+- Schritte klingen nach hohlem Metallrohr und kommen genau beim Aufsetzen des Fusses (Run-Bild 8 und 12 in Aseprite); Menue-Klick klingt wie eine mechanische Tastatur.
+- Landung halb so stark (Stauchung, Wackeln), mehr Staub bei Sprung, Landung und Richtungswechsel.
+- Zeitblase auf Normaltempo ganz unsichtbar (vorher schwacher Rand und Shader); Kamera-Vorausblick und Zoom-Impuls entfernt (Entscheidung des Nutzers).
+- Geprueft: alle automatischen Tests (neu: Spielmenue), Exporte Web und Windows.
+
 **v0.60 - 2026-11-14: Soundeffekte, Spielgefuehl, handgezeichnete Comics**
 
 - Soundeffekte fuer Schritte, Sprung, Landung, Tod, Klonstation, Ausgang, Time-Shifter-Bedienfeld, Zeitstufen, alle Bausteine, Schrott, Upgrade, Sprechblasen, Menue und Comic; Dauertoene laufen mit der Zeitblase. Ambient je Hintergrund-Thema. Erzeugt mit `tools/make_sfx.py`, Tabelle `data/sfx.json`, Busse SFX/Ambient/Music. Noch keine Musik (macht der Nutzer).

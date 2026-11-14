@@ -11,6 +11,8 @@ signal jumped
 ## Wird gesendet, wenn er aufsetzt; "fall_speed" = Fallgeschwindigkeit davor
 ## (Pixel pro Sekunde, fuer Landungs-Sound, Staub und Erschuetterung).
 signal landed(fall_speed: float)
+## Wird gesendet, wenn in der Laufanimation ein Fuss aufsetzt (Schritt-Sound).
+signal stepped
 
 ## Bewegungswerte (data/professor_movement.tres).
 @export var settings: MovementSettings
@@ -19,12 +21,9 @@ signal landed(fall_speed: float)
 const FLICKER_STEP := 0.05
 ## Dauer des Flackerns beim Sterben (Sekunden), danach ist er verschwunden.
 const DEATH_FLICKER_TIME := 0.5
-## Schritt-Sound alle so viele Pixel Laufweg am Boden.
-const STEP_DISTANCE := 30.0
 ## Ab dieser Fallgeschwindigkeit klingt die Landung hart (Pixel pro Sekunde).
 const HARD_LANDING_SPEED := 700.0
 
-var _step_left := STEP_DISTANCE
 # Laufgeschwindigkeit als Anteil (nach harter Landung kurz weniger, siehe
 # slow_down) und wie schnell sie zurueck auf 1 geht (Anteil pro Sekunde).
 var _speed_factor := 1.0
@@ -60,6 +59,7 @@ var _flicker_step_left := 0.0
 
 func _ready() -> void:
 	add_to_group("player")
+	_sprite.frame_changed.connect(_on_sprite_frame_changed)
 
 
 ## Toedlich getroffen: Bewegung stoppt, das Bild flackert und verschwindet.
@@ -126,20 +126,16 @@ func _physics_process(delta: float) -> void:
 	if not was_on_floor and is_on_floor() and fall_speed > 60.0:
 		Sound.play("land_hard" if fall_speed >= HARD_LANDING_SPEED else "land", linear_to_db(clampf(fall_speed / 500.0, 0.3, 1.0)))
 		landed.emit(fall_speed)
-	_update_steps(delta)
 	# Animation passend zur Bewegung waehlen (Kind-Node Animator).
 	_animator.update(delta)
 
 
-## Schritt-Sounds nach Laufweg am Boden.
-func _update_steps(delta: float) -> void:
-	if not is_on_floor() or absf(velocity.x) < 40.0:
-		_step_left = STEP_DISTANCE * 0.5
-		return
-	_step_left -= absf(velocity.x) * delta
-	if _step_left <= 0.0:
-		_step_left += STEP_DISTANCE
+## Schritt-Sound genau, wenn in der Laufanimation ein Fuss aufsetzt
+## (Bilder in data/professor_animation.tres, run_step_frames).
+func _on_sprite_frame_changed() -> void:
+	if _sprite.animation == &"run" and is_on_floor() and not is_dead and _sprite.frame in _animator.settings.run_step_frames:
 		Sound.play("step")
+		stepped.emit()
 
 
 func _update_timers(delta: float) -> void:

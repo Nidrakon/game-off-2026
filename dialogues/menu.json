@@ -5,5 +5,16 @@
 	"menu_quit": "Quit",
 	"menu_confirm_new_game": "Start a new game?\nYour saved progress will be lost.",
 	"menu_yes": "Yes",
-	"menu_no": "No"
+	"menu_no": "No",
+	"pause_title": "PAUSED",
+	"pause_continue": "Continue",
+	"pause_settings": "Settings",
+	"pause_quit": "Quit",
+	"pause_confirm_quit": "Quit to the title screen?\nProgress since the last clone station will be lost.",
+	"settings_title": "SETTINGS",
+	"settings_master": "Volume",
+	"settings_sfx": "Effects",
+	"settings_ambient": "Ambience",
+	"settings_music": "Music",
+	"settings_back": "Back"
 }

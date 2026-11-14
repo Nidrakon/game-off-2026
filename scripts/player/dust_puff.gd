@@ -4,7 +4,7 @@ extends Node2D
 ## auseinander, steigen leicht auf und schrumpfen weg. Ohne Transparenz, nur
 ## Palettenfarben. Entfernt sich danach selbst.
 
-const LIFE := 0.45
+const LIFE := 0.6
 const COLORS := [Color("c7dcd0"), Color("9babb2"), Color("7f708a")]
 
 var _parts: Array[Dictionary] = []
@@ -20,7 +20,7 @@ static func spawn(parent: Node, position: Vector2, count: int, speed := 60.0, up
 	for i in count:
 		var side := -1.0 if i % 2 == 0 else 1.0
 		var dir := Vector2(side * randf_range(0.5, 1.0), -randf_range(0.0, upward)).normalized()
-		puff._parts.append({"pos": Vector2(side * randf_range(0.0, 4.0), 0.0), "vel": dir * speed * randf_range(0.6, 1.2), "size": randf_range(2.0, 4.0), "color": COLORS[randi() % COLORS.size()]})
+		puff._parts.append({"pos": Vector2(side * randf_range(0.0, 4.0), 0.0), "vel": dir * speed * randf_range(0.6, 1.2), "size": randf_range(3.0, 6.0), "color": COLORS[randi() % COLORS.size()]})
 	parent.add_child(puff)
 	return puff
 

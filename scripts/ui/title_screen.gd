@@ -6,25 +6,12 @@ extends Control
 ##   ueberschrieben).
 ## - Quit fehlt im Browser (ein Browser-Spiel kann sich nicht beenden).
 ## Bedienbar mit Maus und Tastatur (Pfeiltasten, Enter). Texte aus
-## dialogues/menu.json, nur Palettenfarben.
+## dialogues/menu.json, Look aus MenuStyle (nur Palettenfarben).
 
 const TEXT_FILE := "res://dialogues/menu.json"
 ## So lange nach dem Erscheinen reagieren die Knoepfe nicht (Sekunden), damit
 ## eine noch gedrueckte Taste vom vorigen Bildschirm nichts ausloest.
 const INPUT_DELAY := 0.3
-
-# Farben aus der Palette.
-const COLOR_BG := Color("2e222f")
-const COLOR_TITLE := Color("f9c22b")
-const COLOR_BUTTON := Color("3e3546")
-const COLOR_HOVER := Color("484a77")
-const COLOR_PRESSED := Color("4d65b4")
-const COLOR_FOCUS := Color("f9c22b")
-const COLOR_TEXT := Color("c7dcd0")
-const COLOR_DISABLED := Color("313638")
-const COLOR_DISABLED_TEXT := Color("625565")
-const COLOR_PANEL := Color("2e222f")
-const COLOR_PANEL_BORDER := Color("7f708a")
 
 var _texts := {}
 
@@ -42,9 +29,9 @@ func _ready() -> void:
 	get_tree().paused = false
 	Sound.stop_ambient()
 	_texts = _load_texts()
-	theme = _make_theme()
+	theme = MenuStyle.make_theme()
 	_title.text = _text("menu_title")
-	_title.add_theme_color_override("font_color", COLOR_TITLE)
+	_title.add_theme_color_override("font_color", MenuStyle.COLOR_TITLE)
 	_title.add_theme_font_size_override("font_size", 48)
 	_new_game.text = _text("menu_new_game")
 	_continue.text = _text("menu_continue")
@@ -52,7 +39,7 @@ func _ready() -> void:
 	_confirm_text.text = _text("menu_confirm_new_game")
 	_yes.text = _text("menu_yes")
 	_no.text = _text("menu_no")
-	_confirm.add_theme_stylebox_override("panel", _box(COLOR_PANEL, COLOR_PANEL_BORDER, 2, 16))
+	_confirm.add_theme_stylebox_override("panel", MenuStyle.box(MenuStyle.COLOR_PANEL, MenuStyle.COLOR_PANEL_BORDER, 2, 16))
 
 	_continue.disabled = not SaveGame.has_save()
 	_quit.visible = not OS.has_feature("web")
@@ -124,31 +111,3 @@ func _text(id: String) -> String:
 func _load_texts() -> Dictionary:
 	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(TEXT_FILE))
 	return data if data is Dictionary else {}
-
-
-func _make_theme() -> Theme:
-	var t := Theme.new()
-	t.set_stylebox("normal", "Button", _box(COLOR_BUTTON, COLOR_BUTTON, 1, 8))
-	t.set_stylebox("hover", "Button", _box(COLOR_HOVER, COLOR_HOVER, 1, 8))
-	t.set_stylebox("pressed", "Button", _box(COLOR_PRESSED, COLOR_PRESSED, 1, 8))
-	t.set_stylebox("hover_pressed", "Button", _box(COLOR_PRESSED, COLOR_PRESSED, 1, 8))
-	t.set_stylebox("disabled", "Button", _box(COLOR_DISABLED, COLOR_DISABLED, 1, 8))
-	t.set_stylebox("focus", "Button", _box(Color(0, 0, 0, 0), COLOR_FOCUS, 2, 8))
-	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color"]:
-		t.set_color(state, "Button", COLOR_TEXT)
-	t.set_color("font_disabled_color", "Button", COLOR_DISABLED_TEXT)
-	t.set_font_size("font_size", "Button", 20)
-	t.set_color("font_color", "Label", COLOR_TEXT)
-	t.set_font_size("font_size", "Label", 18)
-	return t
-
-
-func _box(fill: Color, border: Color, border_width: int, padding: int) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = fill
-	style.draw_center = fill.a > 0.0
-	style.border_color = border
-	style.set_border_width_all(border_width)
-	style.set_content_margin_all(padding)
-	style.anti_aliasing = false
-	return style

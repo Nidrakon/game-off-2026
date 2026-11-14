@@ -19,6 +19,13 @@ const MAX_DISTANCE := 900.0
 const ATTENUATION := 1.6
 ## Ueberblendung der Umgebung (Sekunden).
 const AMBIENT_FADE := 1.2
+## Lautstaerke-Einstellungen (Spielmenue, Doku 2.5): eigene Datei, nicht im
+## Spielstand. Tests schreiben in eine eigene Datei.
+const SETTINGS_PATH := "user://settings.cfg"
+const TEST_SETTINGS_PATH := "user://settings_test.cfg"
+## Busse, die im Spielmenue einstellbar sind, und ihre Voreinstellung (0 bis 1).
+## Gesamtlautstaerke startet bewusst leise.
+const VOLUME_DEFAULTS := {"Master": 0.5, "SFX": 1.0, "Ambient": 1.0, "Music": 1.0}
 
 var _table := {}
 var _streams := {}
@@ -50,6 +57,48 @@ func _ready() -> void:
 	_ambient = AudioStreamPlayer.new()
 	_ambient.bus = &"Ambient"
 	add_child(_ambient)
+	load_volumes()
+
+
+## Lautstaerke eines Busses (0 bis 1, linear).
+func get_volume(bus: String) -> float:
+	var index := AudioServer.get_bus_index(bus)
+	if index < 0 or AudioServer.is_bus_mute(index):
+		return 0.0
+	return clampf(db_to_linear(AudioServer.get_bus_volume_db(index)), 0.0, 1.0)
+
+
+## Lautstaerke setzen (0 bis 1); "store" = gleich in die Einstellungen schreiben.
+func set_volume(bus: String, value: float, store := true) -> void:
+	var index := AudioServer.get_bus_index(bus)
+	if index < 0:
+		return
+	value = clampf(value, 0.0, 1.0)
+	AudioServer.set_bus_mute(index, value <= 0.001)
+	AudioServer.set_bus_volume_db(index, linear_to_db(maxf(value, 0.001)))
+	if store:
+		save_volumes()
+
+
+## Einstellungen laden (fehlt die Datei: Voreinstellungen).
+func load_volumes() -> void:
+	var config := ConfigFile.new()
+	config.load(_settings_path())
+	for bus in VOLUME_DEFAULTS:
+		set_volume(bus, float(config.get_value("volume", bus, VOLUME_DEFAULTS[bus])), false)
+
+
+func save_volumes() -> void:
+	var config := ConfigFile.new()
+	config.load(_settings_path())
+	for bus in VOLUME_DEFAULTS:
+		config.set_value("volume", bus, snappedf(get_volume(bus), 0.01))
+	config.save(_settings_path())
+
+
+func _settings_path() -> String:
+	var save_game := get_node_or_null("/root/SaveGame")
+	return TEST_SETTINGS_PATH if save_game and save_game.test_mode else SETTINGS_PATH
 
 
 ## Gibt es den Sound?

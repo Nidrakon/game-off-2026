@@ -13,6 +13,10 @@ extends Resource
 @export_group("Laufen")
 ## Ab dieser Geschwindigkeit am Boden laeuft die Laufanimation.
 @export var run_min_speed: float = 10.0
+## Bilder im Tag Run (Nummer ab 0), bei denen ein Fuss aufsetzt: Dort klingt
+## der Schritt-Sound. In Aseprite ist Run Bild 5 bis 12, aufgesetzt wird
+## bei Bild 8 und 12 (= Nummer 3 und 7).
+@export var run_step_frames: Array[int] = [3, 7]
 
 @export_group("Sprung: Zeiten")
 ## So lange steht nach dem Absprung das Absprung-Bild.

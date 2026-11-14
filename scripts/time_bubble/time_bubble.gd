@@ -106,6 +106,8 @@ func _process(delta: float) -> void:
 			speed = settings.fast_speed
 			strength = 1.0
 			rim = settings.rim_strength_active
+	# Auf Normaltempo ist die Blase unsichtbar (Wunsch des Nutzers, 14.11.2026).
+	_lens.visible = stage != Stage.NORMAL
 	_lens_phase = fmod(_lens_phase + delta * speed, TAU * 100.0)
 	var material := _lens.material as ShaderMaterial
 	material.set_shader_parameter("stage", int(stage == Stage.SLOW) + 2 * int(stage == Stage.FAST))
@@ -229,6 +231,8 @@ func _draw() -> void:
 	# Seit 14.11.2026 zeigt der Shader die Form; Rand und Flaeche nur, wenn
 	# in den Einstellungen eingeschaltet (oder ohne Shader).
 	if _lens != null and not settings.draw_outline and not settings.draw_fill:
+		return
+	if stage == Stage.NORMAL:
 		return
 	var points := get_local_polygon().duplicate()
 	var color := get_stage_color()

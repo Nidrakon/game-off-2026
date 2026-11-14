@@ -935,6 +935,22 @@ Shader, der das Bild innerhalb ihres Bereichs leicht verzerrt.
   (0,08), `aberration` (1 px), `lens_strength_normal` (0,2 = auf "normal"
   kaum sichtbar), Tempo je Stufe `wobble_speed_slow` 1,2 /
   `wobble_speed_normal` 2 / `wobble_speed_fast` 9 (Bogenmass pro Sekunde).
+- **Ueberarbeitet (14.11.2026, Wunsch des Nutzers):** auffaelliger und je
+  Stufe ein eigener Effekt. Der Shader kennt die genaue Form (Radius,
+  Spitze, Richtung) und damit den Abstand zum Rand.
+  - Langsam (zaehfluessig): Woelbung zur Mitte, grosse traege Ringwellen,
+    Farbverschiebung, kuehler Schimmer.
+  - Schnell (hektisch): zitternde Bildzeilen, Unschaerfe nach aussen,
+    starke Rot-Blau-Trennung, warmer Schimmer.
+  - Rand (Seifenblase): Das Bild wird zur Randlinie hin gezogen, darauf ein
+    duenner, schillernder Regenbogen-Film; auf "normal" nur schwach. Der
+    farbige Kreis entfaellt (`draw_outline`, Standard aus).
+  - Einstellungen (Gruppe "Shader (Linse)", Untergruppen Langsam, Schnell,
+    Rand): `slow_wobble` 4, `slow_bulge` 10, `slow_aberration` 2,
+    `slow_speed` 1,5; `fast_jitter` 3, `fast_blur` 10, `fast_aberration` 4,
+    `fast_speed` 14; `rim_pull` 6, `rim_width` 0,16, `rim_film` 0,55,
+    `rim_strength_normal` 0,35, `rim_strength_active` 1, `normal_speed` 1.
+    Die alten Werte (`wobble_strength` usw.) sind entfallen.
 
 **Werte** (Datendatei `data/time_bubble_settings.tres`, im Inspector
 aenderbar; Skript `scripts/time_bubble/time_bubble_settings.gd`):
@@ -2077,7 +2093,7 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 14.11.2026, Version v0.54**
+**Stand vom 14.11.2026, Version v0.55**
 
 - **Phase:** Meilenstein 3, Inhalt und Grafik (Ziel 24.11.).
 - **Zuletzt erledigt:** Lineare Levelstruktur (`level_01` ... `level_05`),

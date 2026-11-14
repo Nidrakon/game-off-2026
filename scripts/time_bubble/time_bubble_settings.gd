@@ -40,15 +40,32 @@ extends Resource
 @export_group("Shader (Linse)")
 ## Verzerrung und Farbverschiebung innerhalb der Blase an/aus.
 @export var lens_enabled := true
-## Auslenkung des Wobble (Pixel) auf langsam bzw. schnell.
-@export_range(0.0, 8.0, 0.1) var wobble_strength: float = 1.5
-## Groesse der Wellen (groesser = kleinere, dichtere Wellen).
-@export_range(0.01, 0.5, 0.005) var wobble_scale: float = 0.08
-## Farbverschiebung (Pixel) auf langsam bzw. schnell.
-@export_range(0.0, 6.0, 0.1) var aberration: float = 1.0
-## Anteil der Staerke auf Stufe "normal" (0 = unsichtbar, kaum sichtbar = 0.2).
-@export_range(0.0, 1.0, 0.05) var lens_strength_normal: float = 0.2
-## Tempo der Welle je Stufe (Bogenmass pro Sekunde): traege, ruhig, hektisch.
-@export var wobble_speed_slow: float = 1.2
-@export var wobble_speed_normal: float = 2.0
-@export var wobble_speed_fast: float = 9.0
+## Farbigen Rand zeichnen (seit 14.11.2026 aus: der Shader zeigt die Form).
+@export var draw_outline := false
+@export_subgroup("Langsam (zaehfluessig)")
+## Ringwellen (Pixel), Woelbung zur Mitte (Pixel), Farbverschiebung (Pixel).
+@export_range(0.0, 20.0, 0.1) var slow_wobble: float = 4.0
+@export_range(0.0, 30.0, 0.1) var slow_bulge: float = 10.0
+@export_range(0.0, 10.0, 0.1) var slow_aberration: float = 2.0
+## Tempo der Wellen (Bogenmass pro Sekunde).
+@export var slow_speed: float = 1.5
+@export_subgroup("Schnell (hektisch)")
+## Zittern der Bildzeilen (Pixel), Unschaerfe nach aussen (Pixel),
+## Farbverschiebung (Pixel).
+@export_range(0.0, 20.0, 0.1) var fast_jitter: float = 3.0
+@export_range(0.0, 30.0, 0.1) var fast_blur: float = 10.0
+@export_range(0.0, 10.0, 0.1) var fast_aberration: float = 4.0
+## Tempo (Bogenmass pro Sekunde; bestimmt auch, wie oft die Zeilen springen).
+@export var fast_speed: float = 14.0
+@export_subgroup("Rand (Seifenblase)")
+## Wie stark das Bild am Rand zur Randlinie gezogen wird (Pixel).
+@export_range(0.0, 20.0, 0.1) var rim_pull: float = 6.0
+## Breite des Randbereichs (Anteil des Radius).
+@export_range(0.02, 0.5, 0.01) var rim_width: float = 0.16
+## Deckkraft des schillernden Films.
+@export_range(0.0, 1.0, 0.01) var rim_film: float = 0.55
+## Staerke des Rands auf "normal" bzw. langsam/schnell (0 bis 1).
+@export_range(0.0, 1.0, 0.05) var rim_strength_normal: float = 0.35
+@export_range(0.0, 1.0, 0.05) var rim_strength_active: float = 1.0
+## Tempo des Schillerns auf "normal".
+@export var normal_speed: float = 1.0

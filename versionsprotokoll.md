@@ -51,6 +51,10 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.55 - 2026-11-14: Blasen-Shader auffaelliger, Seifenblasen-Rand**
+
+- Langsam: Woelbung, traege Ringwellen, kuehler Schimmer; schnell: Zeilenzittern, Unschaerfe nach aussen, starke Farbtrennung; Rand: Zug zur Randlinie und schillernder Film; farbiger Kreis entfaellt.
+
 **v0.54 - 2026-11-14: Elektromagnet: Anziehen/Abstossen, Drehung, Breite**
 
 - Modus Anziehen oder Abstossen (Feldlinien fliessen passend), Feldrichtung folgt der Drehung, `field_width` verbreitert Sprite, Kollision und Feld; Kraft beim Professor in beliebiger Richtung (`apply_magnet_force`).

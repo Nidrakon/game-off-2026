@@ -92,21 +92,36 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if _lens == null:
 		return
-	var speed := settings.wobble_speed_normal
-	var strength := settings.lens_strength_normal
+	var speed := settings.normal_speed
+	var strength := 0.0
+	var rim := settings.rim_strength_normal
 	match stage:
 		Stage.SLOW:
-			speed = settings.wobble_speed_slow
+			speed = settings.slow_speed
 			strength = 1.0
+			rim = settings.rim_strength_active
 		Stage.FAST:
-			speed = settings.wobble_speed_fast
+			speed = settings.fast_speed
 			strength = 1.0
+			rim = settings.rim_strength_active
 	_lens_phase = fmod(_lens_phase + delta * speed, TAU * 100.0)
 	var material := _lens.material as ShaderMaterial
+	material.set_shader_parameter("stage", int(stage == Stage.SLOW) + 2 * int(stage == Stage.FAST))
 	material.set_shader_parameter("phase", _lens_phase)
-	material.set_shader_parameter("wobble_strength", settings.wobble_strength * strength)
-	material.set_shader_parameter("aberration", settings.aberration * strength)
-	material.set_shader_parameter("wobble_scale", settings.wobble_scale)
+	material.set_shader_parameter("strength", strength)
+	material.set_shader_parameter("radius", radius)
+	material.set_shader_parameter("front_length", get_front_length())
+	material.set_shader_parameter("direction", get_stretch_direction())
+	material.set_shader_parameter("slow_wobble", settings.slow_wobble)
+	material.set_shader_parameter("slow_bulge", settings.slow_bulge)
+	material.set_shader_parameter("slow_aberration", settings.slow_aberration)
+	material.set_shader_parameter("fast_jitter", settings.fast_jitter)
+	material.set_shader_parameter("fast_blur", settings.fast_blur)
+	material.set_shader_parameter("fast_aberration", settings.fast_aberration)
+	material.set_shader_parameter("rim_pull", settings.rim_pull)
+	material.set_shader_parameter("rim_width", settings.rim_width)
+	material.set_shader_parameter("rim_film", settings.rim_film)
+	material.set_shader_parameter("rim_strength", rim)
 
 
 ## Die Linse (Shader-Flaeche) der Blase, falls eingeschaltet.
@@ -193,6 +208,10 @@ func overlaps_rect(global_rect: Rect2) -> bool:
 
 
 func _draw() -> void:
+	# Seit 14.11.2026 zeigt der Shader die Form; Rand und Flaeche nur, wenn
+	# in den Einstellungen eingeschaltet (oder ohne Shader).
+	if _lens != null and not settings.draw_outline and not settings.draw_fill:
+		return
 	var points := get_local_polygon().duplicate()
 	var color := get_stage_color()
 	var outline_alpha := settings.outline_alpha

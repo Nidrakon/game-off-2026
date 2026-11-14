@@ -51,6 +51,13 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.60 - 2026-11-14: Soundeffekte, Spielgefuehl, handgezeichnete Comics**
+
+- Soundeffekte fuer Schritte, Sprung, Landung, Tod, Klonstation, Ausgang, Time-Shifter-Bedienfeld, Zeitstufen, alle Bausteine, Schrott, Upgrade, Sprechblasen, Menue und Comic; Dauertoene laufen mit der Zeitblase. Ambient je Hintergrund-Thema. Erzeugt mit `tools/make_sfx.py`, Tabelle `data/sfx.json`, Busse SFX/Ambient/Music. Noch keine Musik (macht der Nutzer).
+- Spielgefuehl (Schritt 25): Strecken beim Absprung, Stauchen beim Landen, harte Landung bremst und laesst den Boden beben, Staub, Hitstop bei Tod und Einsammeln, Kamera schaut voraus, Zoom-Impuls beim Stufenwechsel. Werte in `data/game_feel.tres`.
+- Intro- und End-Comic wie handgezeichnet: Pinselrahmen, Schraffur, Papierkorn, Tusche-Kontur.
+- Geprueft: alle automatischen Tests (neu: Sounds, Spielgefuehl), Exporte Web und Windows.
+
 **v0.59 - 2026-11-14: Parallax-Hintergrund**
 
 - Tiefe Ebene mit Kabeln und Maschinen (blinkende LEDs), Rueckwand mit Oeffnungen (fehlende Paneele), Parallax: tiefe Ebene 0,55, Wand und Silhouetten 0,8, hintere Rohre 0,9; Rueckwaende mit Rand neu gefuellt.

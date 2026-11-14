@@ -34,6 +34,7 @@ var stage: Stage = Stage.NORMAL:
 			return
 		stage = value
 		queue_redraw()
+		_update_stage_sound(true)
 		stage_changed.emit(stage)
 
 ## Aktueller Radius (Pixel), begrenzt auf radius_min bis radius_max.
@@ -67,6 +68,7 @@ const LENS_SHADER := preload("res://scripts/time_bubble/time_bubble_lens.gdshade
 
 var _lens: Polygon2D
 var _lens_phase := 0.0
+var _stage_hum: AudioStreamPlayer2D
 
 # Umriss relativ zum Professor, wird nur bei Formaenderung neu berechnet.
 var _polygon := PackedVector2Array()
@@ -122,6 +124,22 @@ func _process(delta: float) -> void:
 	material.set_shader_parameter("rim_width", settings.rim_width)
 	material.set_shader_parameter("rim_film", settings.rim_film)
 	material.set_shader_parameter("rim_strength", rim)
+
+
+## Sound beim Umschalten und Dauerton der aktiven Blase (langsam: tiefes
+## Brummen, schnell: Surren, normal: nichts).
+func _update_stage_sound(with_switch_sound: bool) -> void:
+	if not is_inside_tree():
+		return
+	if with_switch_sound:
+		Sound.play(["stage_slow", "stage_normal", "stage_fast"][stage])
+	if _stage_hum != null:
+		_stage_hum.queue_free()
+		_stage_hum = null
+	if stage == Stage.SLOW:
+		_stage_hum = Sound.loop("bubble_slow_loop", self)
+	elif stage == Stage.FAST:
+		_stage_hum = Sound.loop("bubble_fast_loop", self)
 
 
 ## Die Linse (Shader-Flaeche) der Blase, falls eingeschaltet.

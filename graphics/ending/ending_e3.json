@@ -33,8 +33,6 @@
   "image": "ending_e3.png",
   "format": "RGBA8888",
   "size": { "w": 660, "h": 180 },
-  "scale": "1",
-  "frameTags": [
-  ]
+  "scale": "1"
  }
 }

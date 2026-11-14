@@ -21,6 +21,7 @@ boot_splash/show_image=false
 Upgrades="*res://scripts/autoload/upgrades.gd"
 LevelFlow="*res://scripts/autoload/level_flow.gd"
 SaveGame="*res://scripts/autoload/save_game.gd"
+Sfx="*res://scripts/autoload/sfx.gd"
 DevMenu="*res://scripts/autoload/dev_menu.gd"
 
 [display]

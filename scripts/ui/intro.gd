@@ -39,6 +39,7 @@ var _hint: Control
 
 func _ready() -> void:
 	get_tree().paused = false
+	Sound.stop_ambient()
 	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(META_FILE))
 	_meta = data if data is Dictionary else {}
 	var bg := ColorRect.new()
@@ -63,6 +64,8 @@ func get_step() -> int:
 func next_step() -> void:
 	_step += 1
 	_wait = INPUT_DELAY
+	if _step > 0:
+		Sound.play("page_flip")
 	if _step >= STEPS.size():
 		finish()
 		return

@@ -39,6 +39,13 @@ extends Node2D
 
 var _background_queued := false
 
+## Umgebungsgeraeusch je Hintergrund-Thema (data/sfx.json).
+const AMBIENT_IDS := {
+	BackgroundTheme.Kind.WORKSHOP: "ambient_workshop", BackgroundTheme.Kind.FACTORY: "ambient_factory",
+	BackgroundTheme.Kind.CHEMICAL: "ambient_chemical", BackgroundTheme.Kind.ELECTRO: "ambient_electro",
+	BackgroundTheme.Kind.MAGNET: "ambient_magnet", BackgroundTheme.Kind.QUANTUM: "ambient_quantum",
+}
+
 
 func _ready() -> void:
 	apply_background()
@@ -47,6 +54,7 @@ func _ready() -> void:
 	if auto_camera_limits:
 		_fit_camera_to_ground()
 	SaveGame.on_level_started(scene_file_path)
+	Sound.play_ambient(AMBIENT_IDS[background_theme])
 
 
 ## Thema anwenden: Rueckwand einfaerben, Silhouetten neu verteilen.

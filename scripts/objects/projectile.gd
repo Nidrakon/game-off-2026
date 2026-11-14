@@ -30,6 +30,7 @@ var _collision := KinematicCollision2D.new()
 
 func _ready() -> void:
 	_sprite.flip_h = direction < 0.0
+	Sound.loop("projectile_loop", self, _time)
 
 
 ## Steht der Professor gerade oben drauf oder ist er eben erst herunter?
@@ -48,6 +49,7 @@ func _physics_process(delta: float) -> void:
 		var hit_object := _collision.get_collider()
 		if hit_object != null and hit_object.has_method("on_projectile_hit"):
 			hit_object.on_projectile_hit()
+		Sound.play_at("projectile_hit", global_position)
 		queue_free()
 		return
 	position += motion

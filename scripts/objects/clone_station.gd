@@ -29,6 +29,7 @@ func _spawn_professor() -> void:
 		return
 	professor.global_position = global_position
 	professor.play_spawn(spawn_time)
+	Sound.play_at("spawn", global_position)
 	professor.died.connect(_on_professor_died)
 	_beam_left = spawn_time
 	# Kamera sofort auf den Professor setzen statt hinzugleiten.

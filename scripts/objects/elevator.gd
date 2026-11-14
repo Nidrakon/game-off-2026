@@ -48,6 +48,7 @@ func _process(delta: float) -> void:
 
 
 func _on_interact(professor: Node2D) -> void:
+	Sound.play_at("elevator_denied", global_position + Vector2(32, -40))
 	SpeechBubble.say(professor, text_id)
 
 

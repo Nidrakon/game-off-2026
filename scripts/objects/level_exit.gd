@@ -51,6 +51,7 @@ func _on_body_entered(body: Node2D) -> void:
 	_used = true
 	queue_redraw()
 	body.leave_level()
+	Sound.play("exit_door")
 	entered_exit.emit()
 	if target_level != "":
 		LevelFlow.go_to(target_level)

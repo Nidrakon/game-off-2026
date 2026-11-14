@@ -37,7 +37,17 @@ static func say_text(speaker: Node2D, text: String, height := 64.0) -> SpeechBub
 	var bubble := SpeechBubble.new()
 	bubble._build(text, height)
 	speaker.add_child(bubble)
+	bubble._chatter(clampi(text.length() / 12, 2, 6))
 	return bubble
+
+
+## Kurzes Plappern beim Erscheinen (einige Silben).
+func _chatter(syllables: int) -> void:
+	for i in syllables:
+		if not is_inside_tree():
+			return
+		Sound.play("speech_blip")
+		await get_tree().create_timer(0.07, false).timeout
 
 
 ## Hat die Figur gerade eine Sprechblase?

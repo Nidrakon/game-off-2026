@@ -75,6 +75,7 @@ var _state := State.OFF
 var _beam_stop := Vector2.ZERO
 var _flicker_left := 0.0
 var _flicker_bright := false
+var _hum: AudioStreamPlayer2D
 
 @onready var _time: TimeAffected = $TimeAffected
 
@@ -193,8 +194,27 @@ func _set_state(new_state: State) -> void:
 	var was_on := _state == State.ON
 	_state = new_state
 	queue_redraw()
+	_update_sound()
 	if was_on != (_state == State.ON):
 		switched.emit(_state == State.ON)
+
+
+## Sounds je Zustand: Warnung piept, Zuenden zischt, "an" brummt.
+func _update_sound() -> void:
+	if Engine.is_editor_hint() or not is_inside_tree():
+		return
+	var middle := global_position + beam_end * 0.5
+	match _state:
+		State.WARNING:
+			Sound.play_at("laser_warn", middle)
+		State.ON:
+			Sound.play_at("laser_on", middle)
+	if _state == State.ON and _hum == null:
+		_hum = Sound.loop("laser_loop", self, _time)
+		_hum.position = beam_end * 0.5
+	elif _state != State.ON and _hum != null:
+		_hum.queue_free()
+		_hum = null
 
 
 ## Sucht das erste Projektil im Strahl, das ihn aufhaelt, und kuerzt den

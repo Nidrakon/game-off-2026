@@ -43,5 +43,7 @@ func _notification(what: int) -> void:
 
 
 func _set_open(open: bool) -> void:
+	if open != visible:
+		Sound.play("panel_open" if open else "panel_close")
 	visible = open
 	get_tree().paused = open

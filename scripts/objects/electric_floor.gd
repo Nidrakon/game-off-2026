@@ -30,6 +30,9 @@ func _ready() -> void:
 	add_child(_shape)
 	_update_shape()
 	super._ready()
+	if not Engine.is_editor_hint():
+		var crackle := Sound.loop("electric_loop", self)
+		crackle.position = Vector2(width_tiles * TILE * 0.5, 8)
 
 
 func _process(delta: float) -> void:

@@ -69,6 +69,8 @@ func _physics_process(delta: float) -> void:
 	_phase += delta * _time.time_scale / period
 	_previous_angle = _angle
 	_angle = _angle_at(_phase)
+	if mode == Mode.SWING and signf(_angle) != signf(_previous_angle) and _previous_angle != 0.0:
+		Sound.play_at("pendulum_swoosh", global_position + _offset_at(_angle), 0.0, clampf(_time.time_scale, 0.4, 2.0))
 	# Die toedliche Kugel steht immer genau an der Stelle aus der Physik.
 	_weight.position = _offset_at(_angle)
 

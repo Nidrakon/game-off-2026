@@ -6,6 +6,11 @@ extends CharacterBody2D
 
 ## Wird gesendet, wenn der Professor stirbt (die Klonstation startet dann neu).
 signal died
+## Wird gesendet, wenn ein Sprung beginnt.
+signal jumped
+## Wird gesendet, wenn er aufsetzt; "fall_speed" = Fallgeschwindigkeit davor
+## (Pixel pro Sekunde, fuer Landungs-Sound, Staub und Erschuetterung).
+signal landed(fall_speed: float)
 
 ## Bewegungswerte (data/professor_movement.tres).
 @export var settings: MovementSettings
@@ -14,6 +19,16 @@ signal died
 const FLICKER_STEP := 0.05
 ## Dauer des Flackerns beim Sterben (Sekunden), danach ist er verschwunden.
 const DEATH_FLICKER_TIME := 0.5
+## Schritt-Sound alle so viele Pixel Laufweg am Boden.
+const STEP_DISTANCE := 30.0
+## Ab dieser Fallgeschwindigkeit klingt die Landung hart (Pixel pro Sekunde).
+const HARD_LANDING_SPEED := 700.0
+
+var _step_left := STEP_DISTANCE
+# Laufgeschwindigkeit als Anteil (nach harter Landung kurz weniger, siehe
+# slow_down) und wie schnell sie zurueck auf 1 geht (Anteil pro Sekunde).
+var _speed_factor := 1.0
+var _speed_recover := 0.0
 
 ## true, sobald der Professor tot ist; dann reagiert er auf nichts mehr.
 var is_dead := false
@@ -53,6 +68,7 @@ func die() -> void:
 		return
 	is_dead = true
 	velocity = Vector2.ZERO
+	Sound.play("death")
 	_start_flicker(DEATH_FLICKER_TIME)
 	var save := get_node_or_null("/root/SaveGame")
 	if save:
@@ -104,9 +120,26 @@ func _physics_process(delta: float) -> void:
 	_apply_horizontal_movement(delta)
 	_handle_jump()
 	_apply_magnet(delta)
+	var was_on_floor := is_on_floor()
+	var fall_speed := velocity.y
 	move_and_slide()
+	if not was_on_floor and is_on_floor() and fall_speed > 60.0:
+		Sound.play("land_hard" if fall_speed >= HARD_LANDING_SPEED else "land", linear_to_db(clampf(fall_speed / 500.0, 0.3, 1.0)))
+		landed.emit(fall_speed)
+	_update_steps(delta)
 	# Animation passend zur Bewegung waehlen (Kind-Node Animator).
 	_animator.update(delta)
+
+
+## Schritt-Sounds nach Laufweg am Boden.
+func _update_steps(delta: float) -> void:
+	if not is_on_floor() or absf(velocity.x) < 40.0:
+		_step_left = STEP_DISTANCE * 0.5
+		return
+	_step_left -= absf(velocity.x) * delta
+	if _step_left <= 0.0:
+		_step_left += STEP_DISTANCE
+		Sound.play("step")
 
 
 func _update_timers(delta: float) -> void:
@@ -160,7 +193,8 @@ func _apply_horizontal_movement(delta: float) -> void:
 	var direction := 0.0
 	if _controls_enabled():
 		direction = Input.get_axis("move_left", "move_right")
-	var target_speed := direction * settings.run_speed
+	_speed_factor = move_toward(_speed_factor, 1.0, _speed_recover * delta)
+	var target_speed := direction * settings.run_speed * _speed_factor
 
 	var rate: float
 	if not is_on_floor():
@@ -181,6 +215,14 @@ func _apply_horizontal_movement(delta: float) -> void:
 		_sprite.flip_h = direction < 0.0
 
 
+## Bremst ihn kurz (Spielgefuehl, z. B. harte Landung): Laufgeschwindigkeit
+## sofort auf "factor", in "recover_time" Sekunden wieder voll.
+func slow_down(factor: float, recover_time: float) -> void:
+	_speed_factor = clampf(factor, 0.0, 1.0)
+	velocity.x *= _speed_factor
+	_speed_recover = (1.0 - _speed_factor) / maxf(recover_time, 0.01)
+
+
 func _handle_jump() -> void:
 	# Sprung, wenn er gedrueckt (oder kurz vorher gepuffert) wurde und der
 	# Professor am Boden steht oder die Kante gerade erst verlassen hat.
@@ -188,6 +230,8 @@ func _handle_jump() -> void:
 		velocity.y = -settings.get_jump_velocity()
 		_jump_buffer_timer = 0.0
 		_coyote_timer = 0.0
+		Sound.play("jump")
+		jumped.emit()
 		# Gepufferter Sprung, Taste aber schon wieder losgelassen: kleiner Sprung.
 		if not (_controls_enabled() and Input.is_action_pressed("jump")):
 			velocity.y *= settings.jump_release_multiplier

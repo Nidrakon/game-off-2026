@@ -31,6 +31,7 @@ const COLOR_EDGE := Color("c7dcd0")
 const COLOR_FADE := Color("9babb2")
 
 var _time := 0.0
+var _was_puffing := false
 
 @onready var _time_affected: TimeAffected = $TimeAffected
 
@@ -44,6 +45,10 @@ func _process(delta: float) -> void:
 		return
 	_time += delta * _time_affected.time_scale
 	queue_redraw()
+	var puffing := is_puffing()
+	if puffing and not _was_puffing:
+		Sound.play_at("steam_hiss", global_position, 0.0, clampf(_time_affected.time_scale, 0.4, 2.0))
+	_was_puffing = puffing
 
 
 ## Stoesst gerade Dampf aus?

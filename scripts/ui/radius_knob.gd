@@ -58,7 +58,11 @@ func _point_to(local_position: Vector2) -> void:
 		# Luecke unten: zum naeheren Anschlag.
 		angle = ANGLE_MAX if angle - ANGLE_MAX < ANGLE_MIN + 360.0 - angle else ANGLE_MIN
 	var fraction := inverse_lerp(ANGLE_MIN, ANGLE_MAX, angle)
+	var before := bubble.radius
 	bubble.radius = lerpf(bubble.settings.radius_min, bubble.settings.radius_max, fraction)
+	# Tick je 4 px Radius (wie eine Rastung)
+	if floori(before / 4.0) != floori(bubble.radius / 4.0):
+		Sound.play("knob_tick")
 
 
 ## Ist der Regler schon eingebaut (Upgrade "Radius")?

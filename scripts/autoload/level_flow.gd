@@ -88,6 +88,7 @@ func go_to(path: String) -> void:
 	if _busy:
 		return
 	_busy = true
+	Sound.play("transition")
 	await _fade(true)
 	get_tree().change_scene_to_file(path)
 	# Warten, bis die neue Szene steht (Klonstation setzt den Professor).

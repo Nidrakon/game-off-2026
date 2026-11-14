@@ -40,6 +40,7 @@ var _texts := {}
 
 func _ready() -> void:
 	get_tree().paused = false
+	Sound.stop_ambient()
 	_texts = _load_texts()
 	theme = _make_theme()
 	_title.text = _text("menu_title")
@@ -57,6 +58,10 @@ func _ready() -> void:
 	_quit.visible = not OS.has_feature("web")
 	_confirm.visible = false
 
+	for button in [_new_game, _continue, _quit, _yes, _no]:
+		button.mouse_entered.connect((func() -> void: Sound.play("ui_hover")))
+		button.focus_entered.connect((func() -> void: Sound.play("ui_hover")))
+		button.pressed.connect((func() -> void: Sound.play("ui_click")))
 	_new_game.pressed.connect(_on_new_game)
 	_continue.pressed.connect(_on_continue)
 	_quit.pressed.connect(_on_quit)

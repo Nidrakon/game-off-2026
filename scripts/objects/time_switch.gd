@@ -45,6 +45,7 @@ const COLOR_WARNING := Color("e83b3b")
 const COLOR_HAND := Color("2e222f")
 
 var _time_left := 0.0
+var _ticking: AudioStreamPlayer2D
 
 @onready var _time: TimeAffected = $TimeAffected
 @onready var _dial: Node2D = $Dial
@@ -109,12 +110,18 @@ func _start() -> void:
 	# z. B. "umschalten" die Tuer gleich wieder schliessen.
 	if was_running:
 		return
+	if _ticking == null and is_inside_tree() and not Engine.is_editor_hint():
+		_ticking = Sound.loop("timer_loop", self, _time)
 	started.emit()
 	SignalSender.send(targets, start_action, self)
 
 
 func _finish() -> void:
 	_time_left = 0.0
+	if _ticking != null:
+		_ticking.queue_free()
+		_ticking = null
+		Sound.play_at("timer_ring", global_position)
 	_dial.queue_redraw()
 	finished.emit()
 	SignalSender.send(targets, end_action, self)

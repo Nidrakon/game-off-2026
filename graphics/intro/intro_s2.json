@@ -33,8 +33,6 @@
   "image": "intro_s2.png",
   "format": "RGBA8888",
   "size": { "w": 1350, "h": 180 },
-  "scale": "1",
-  "frameTags": [
-  ]
+  "scale": "1"
  }
 }

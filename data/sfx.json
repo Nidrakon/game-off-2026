@@ -1,0 +1,447 @@
+{
+	"step": {
+		"files": [
+			"step_1",
+			"step_2",
+			"step_3"
+		],
+		"volume_db": -12,
+		"pitch_var": 0.08,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"jump": {
+		"files": [
+			"jump"
+		],
+		"volume_db": -7,
+		"pitch_var": 0.05,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"land": {
+		"files": [
+			"land"
+		],
+		"volume_db": -6,
+		"pitch_var": 0.06,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"land_hard": {
+		"files": [
+			"land_hard"
+		],
+		"volume_db": -2,
+		"pitch_var": 0.04,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"death": {
+		"files": [
+			"death"
+		],
+		"volume_db": -2,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"spawn": {
+		"files": [
+			"spawn"
+		],
+		"volume_db": -5,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"exit_door": {
+		"files": [
+			"exit_door"
+		],
+		"volume_db": -4,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"transition": {
+		"files": [
+			"transition"
+		],
+		"volume_db": -8,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"panel_open": {
+		"files": [
+			"panel_open"
+		],
+		"volume_db": -6,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"panel_close": {
+		"files": [
+			"panel_close"
+		],
+		"volume_db": -7,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"stage_slow": {
+		"files": [
+			"stage_slow"
+		],
+		"volume_db": -4,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"stage_fast": {
+		"files": [
+			"stage_fast"
+		],
+		"volume_db": -4,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"stage_normal": {
+		"files": [
+			"stage_normal"
+		],
+		"volume_db": -6,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"knob_tick": {
+		"files": [
+			"knob_tick"
+		],
+		"volume_db": -14,
+		"pitch_var": 0.05,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"cursor_tick": {
+		"files": [
+			"cursor_tick"
+		],
+		"volume_db": -16,
+		"pitch_var": 0.05,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"bubble_slow_loop": {
+		"files": [
+			"bubble_slow_loop"
+		],
+		"volume_db": -14,
+		"pitch_var": 0.0,
+		"loop": true,
+		"bus": "SFX"
+	},
+	"bubble_fast_loop": {
+		"files": [
+			"bubble_fast_loop"
+		],
+		"volume_db": -16,
+		"pitch_var": 0.0,
+		"loop": true,
+		"bus": "SFX"
+	},
+	"platform_loop": {
+		"files": [
+			"platform_loop"
+		],
+		"volume_db": -20,
+		"pitch_var": 0.0,
+		"loop": true,
+		"bus": "SFX"
+	},
+	"barrier_beep": {
+		"files": [
+			"barrier_beep"
+		],
+		"volume_db": -6,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"laser_warn": {
+		"files": [
+			"laser_warn"
+		],
+		"volume_db": -10,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"laser_on": {
+		"files": [
+			"laser_on"
+		],
+		"volume_db": -5,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"laser_loop": {
+		"files": [
+			"laser_loop"
+		],
+		"volume_db": -18,
+		"pitch_var": 0.0,
+		"loop": true,
+		"bus": "SFX"
+	},
+	"electric_loop": {
+		"files": [
+			"electric_loop"
+		],
+		"volume_db": -16,
+		"pitch_var": 0.0,
+		"loop": true,
+		"bus": "SFX"
+	},
+	"launcher_fire": {
+		"files": [
+			"launcher_fire"
+		],
+		"volume_db": -4,
+		"pitch_var": 0.05,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"projectile_loop": {
+		"files": [
+			"projectile_loop"
+		],
+		"volume_db": -18,
+		"pitch_var": 0.0,
+		"loop": true,
+		"bus": "SFX"
+	},
+	"projectile_hit": {
+		"files": [
+			"projectile_hit"
+		],
+		"volume_db": -3,
+		"pitch_var": 0.05,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"impact_switch": {
+		"files": [
+			"impact_switch"
+		],
+		"volume_db": -4,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"door_open": {
+		"files": [
+			"door_open"
+		],
+		"volume_db": -6,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"door_close": {
+		"files": [
+			"door_close"
+		],
+		"volume_db": -6,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"timer_loop": {
+		"files": [
+			"timer_loop"
+		],
+		"volume_db": -12,
+		"pitch_var": 0.0,
+		"loop": true,
+		"bus": "SFX"
+	},
+	"timer_ring": {
+		"files": [
+			"timer_ring"
+		],
+		"volume_db": -6,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"pendulum_swoosh": {
+		"files": [
+			"pendulum_swoosh"
+		],
+		"volume_db": -12,
+		"pitch_var": 0.08,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"magnet_loop": {
+		"files": [
+			"magnet_loop"
+		],
+		"volume_db": -14,
+		"pitch_var": 0.0,
+		"loop": true,
+		"bus": "SFX"
+	},
+	"steam_hiss": {
+		"files": [
+			"steam_hiss"
+		],
+		"volume_db": -14,
+		"pitch_var": 0.1,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"elevator_denied": {
+		"files": [
+			"elevator_denied"
+		],
+		"volume_db": -6,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"elevator_ding": {
+		"files": [
+			"elevator_ding"
+		],
+		"volume_db": -4,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"scrap_pickup": {
+		"files": [
+			"scrap_pickup"
+		],
+		"volume_db": -2,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"upgrade": {
+		"files": [
+			"upgrade"
+		],
+		"volume_db": -3,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"coin": {
+		"files": [
+			"coin"
+		],
+		"volume_db": -5,
+		"pitch_var": 0.03,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"speech_blip": {
+		"files": [
+			"speech_blip_1",
+			"speech_blip_2",
+			"speech_blip_3"
+		],
+		"volume_db": -12,
+		"pitch_var": 0.1,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"ui_hover": {
+		"files": [
+			"ui_hover"
+		],
+		"volume_db": -12,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"ui_click": {
+		"files": [
+			"ui_click"
+		],
+		"volume_db": -8,
+		"pitch_var": 0.0,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"page_flip": {
+		"files": [
+			"page_flip"
+		],
+		"volume_db": -6,
+		"pitch_var": 0.08,
+		"loop": false,
+		"bus": "SFX"
+	},
+	"ambient_workshop": {
+		"files": [
+			"ambient_workshop"
+		],
+		"volume_db": -12,
+		"pitch_var": 0.0,
+		"loop": true,
+		"bus": "Ambient"
+	},
+	"ambient_factory": {
+		"files": [
+			"ambient_factory"
+		],
+		"volume_db": -12,
+		"pitch_var": 0.0,
+		"loop": true,
+		"bus": "Ambient"
+	},
+	"ambient_chemical": {
+		"files": [
+			"ambient_chemical"
+		],
+		"volume_db": -12,
+		"pitch_var": 0.0,
+		"loop": true,
+		"bus": "Ambient"
+	},
+	"ambient_electro": {
+		"files": [
+			"ambient_electro"
+		],
+		"volume_db": -12,
+		"pitch_var": 0.0,
+		"loop": true,
+		"bus": "Ambient"
+	},
+	"ambient_magnet": {
+		"files": [
+			"ambient_magnet"
+		],
+		"volume_db": -12,
+		"pitch_var": 0.0,
+		"loop": true,
+		"bus": "Ambient"
+	},
+	"ambient_quantum": {
+		"files": [
+			"ambient_quantum"
+		],
+		"volume_db": -12,
+		"pitch_var": 0.0,
+		"loop": true,
+		"bus": "Ambient"
+	}
+}

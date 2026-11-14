@@ -118,6 +118,9 @@ func _set_stretch(value: Vector2) -> void:
 		value.x = 0.0
 	if absf(value.y) < snap:
 		value.y = 0.0
+	# Tick je Zehntel Weg (wie eine Rastung)
+	if Vector2i((bubble.stretch * 10.0).round()) != Vector2i((value * 10.0).round()):
+		Sound.play("cursor_tick")
 	bubble.stretch = value
 
 

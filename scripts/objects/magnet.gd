@@ -72,6 +72,7 @@ var _flicker := 0.0
 var _on := false
 var _time: TimeAffected
 var _shape: CollisionShape2D
+var _hum: AudioStreamPlayer2D
 
 
 func _ready() -> void:
@@ -154,6 +155,12 @@ func _physics_process(delta: float) -> void:
 	if now != _on:
 		_on = now
 		switched.emit(_on)
+	if _on and _hum == null:
+		_hum = Sound.loop("magnet_loop", self, _time)
+		_hum.position = Vector2(0, FRAME.y + 40)
+	elif not _on and _hum != null:
+		_hum.queue_free()
+		_hum = null
 	_flicker += delta
 	queue_redraw()
 	if not _on:

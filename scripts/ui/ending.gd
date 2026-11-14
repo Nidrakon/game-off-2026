@@ -39,6 +39,7 @@ var _end_box: VBoxContainer
 
 func _ready() -> void:
 	get_tree().paused = false
+	Sound.stop_ambient()
 	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(META_FILE))
 	_meta = data if data is Dictionary else {}
 	var bg := ColorRect.new()
@@ -70,7 +71,10 @@ func next_step() -> void:
 	for name in names:
 		if not _panels.has(name):
 			_panels[name] = _make_panel(name)
+	if _step > 0:
+		Sound.play("page_flip")
 	if names.has("e3"):
+		Sound.play("elevator_ding")
 		_start_credits()
 
 

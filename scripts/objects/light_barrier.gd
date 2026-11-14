@@ -72,6 +72,7 @@ func _on_body_entered(_body: Node2D) -> void:
 	_flash_left = FLASH_TIME
 	queue_redraw()
 	triggered.emit()
+	Sound.play_at("barrier_beep", global_position + beam_end * 0.5)
 	SignalSender.send(targets, action, self)
 
 

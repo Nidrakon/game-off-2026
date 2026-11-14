@@ -468,8 +468,20 @@ selben Massstab entstehen.
 
 **Audio (verbindlich)**
 
-- Stil: [z. B. 8 Bit / 16 Bit / orchestral; Stimmung].
-- Soundeffekte entstehen mit [Werkzeug], Musik mit [Werkzeug].
+- Stil: Retro-Synthesizer (8/16 Bit), werkstattig-mechanisch, eher leise
+  und weich; Hintergrund-Ambient je Hintergrund-Thema.
+- Soundeffekte entstehen mit `tools/make_sfx.py` (reines Python, ohne
+  Zusatzpakete; erzeugt alle WAVs in `audio/sfx/` neu: `python
+  tools/make_sfx.py`). Musik macht der Nutzer selbst (noch keine Songs).
+- Technik: Autoload `Sfx` (`scripts/autoload/sfx.gd`) mit Tabelle
+  `data/sfx.json` (ID -> Dateien, Lautstaerke, Tonhoehen-Streuung,
+  Schleife, Bus). Busse `SFX`, `Ambient`, `Music`
+  (`default_bus_layout.tres`). Aufruf im Code immer ueber die statische Klasse `Sound`
+  (`scripts/autoload/sound.gd`; Autoload-Namen kennen Klassen mit
+  class_name im Testmodus nicht): `Sound.play(id)`, `Sound.play_at(id, pos)`
+  (raeumlich), `Sound.loop(id, parent, time_source)` (Dauerton; Tonhoehe
+  folgt der Zeitblase), `Sound.play_ambient(id)` (Ueberblendung).
+  Lautstaerken nur in `data/sfx.json` aendern.
 - Lautstaerke: [z. B. Voreinstellung niedrig (15 %), weil die meisten Spiele
   zu laut starten; Stufen].
 - **Songs mit fester ID:** Jeder Song hat eine Nummer und einen Namen.
@@ -480,7 +492,27 @@ selben Massstab entstehen.
   | --- | --- | --- | --- | --- |
   | 1 | [Name] | `music_[...]` | [z. B. Titel, Hauptmenue] | [Tonart, Tempo, Stimmung] |
 
-- Soundeffekte und wo sie klingen: [Liste].
+- Soundeffekte und wo sie klingen (IDs aus `data/sfx.json`):
+  - Professor: `step` (3 Varianten, alle 30 px am Boden), `jump`, `land`,
+    `land_hard` (ab 700 px/s Fallgeschwindigkeit), `death`; Klonstation
+    `spawn`; Ausgang `exit_door`; Levelwechsel `transition`.
+  - Time Shifter: `panel_open`/`panel_close`, `stage_slow`/`stage_fast`/
+    `stage_normal`, Dauerton `bubble_slow_loop`/`bubble_fast_loop`,
+    Radius-Drehknopf `knob_tick`, Cursor `cursor_tick`.
+  - Bausteine: Plattform `platform_loop`, Lichtschranke `barrier_beep`,
+    Laser `laser_warn`/`laser_on`/`laser_loop`, Elektroboden
+    `electric_loop`, Werfer `launcher_fire`, Geschoss `projectile_loop`/
+    `projectile_hit`, Aufprallschalter `impact_switch`, Tuer `door_open`/
+    `door_close`, Zeitschalter `timer_loop`/`timer_ring`, Pendel
+    `pendulum_swoosh`, Magnet `magnet_loop`, Dampf `steam_hiss`, Fahrstuhl
+    `elevator_denied`/`elevator_ding`, Schrott `scrap_pickup`, Upgrade
+    `upgrade`; `coin` liegt bereit (noch keine Muenzen im Spiel).
+  - Texte und Menues: Sprechblase `speech_blip` (3 Varianten),
+    `ui_hover`, `ui_click`, Comic `page_flip`.
+  - Ambient je Hintergrund-Thema: `ambient_workshop`, `ambient_factory`,
+    `ambient_chemical`, `ambient_electro`, `ambient_magnet`,
+    `ambient_quantum` (Titel, Intro, Ende ohne Ambient).
+  - Dauertoene laufen mit der Zeitblase (Tonhoehe = Zeitfaktor).
 
 **Dateiformate:** Grafiken `.png`, Musik `.ogg` (klein, gut als Schleife),
 Soundeffekte `.wav` (kurz, ohne Verzoegerung), Schriften `.ttf`/`.otf`.
@@ -801,6 +833,23 @@ Status: vorlaeufig festgehalten, kann sich noch aendern.
 
 Tasten werden als physische Tasten belegt (gleiche Position auf deutscher
 und englischer Tastatur).
+
+**Spielgefuehl (Schritt 25, seit v0.60)**
+
+Baustein "Feel" am Professor (`scripts/player/professor_feel.gd`), Werte in
+`data/game_feel.tres` (im Inspector aenderbar):
+
+- Squash und Stretch: Beim Absprung streckt sich die Figur, beim Landen
+  wird sie je nach Fallgeschwindigkeit gestaucht und federt zurueck.
+- Gewicht: Harte Landung (ab 700 px/s Fallgeschwindigkeit) bremst kurz ab
+  (`professor.slow_down`), der Boden bebt (Kamerawackeln je nach
+  Fallhoehe), dazu mehr Staub und ein dumpferer Landungs-Sound.
+- Staubwoelkchen beim Absprung, beim Landen und beim scharfen
+  Richtungswechsel (`DustPuff`, nur Palettenfarben).
+- Tod und Einsammeln: kurzer Hitstop (Spiel friert Sekundenbruchteile
+  ein) und Wackeln.
+- Kamera schaut etwas in Laufrichtung voraus (40 px) und macht beim
+  Umschalten der Zeitstufe einen kleinen Zoom-Impuls.
 
 Werte der Bewegung (Datendatei `data/professor_movement.tres`, im Inspector
 aenderbar; Skript `scripts/player/movement_settings.gd`):
@@ -1867,6 +1916,11 @@ zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
      Frames, z. B. Schweissfunken, wackelndes Telefon), kein richtiges
      Video.
    - Danach startet direkt das Spiel in der Werkstatt.
+   - **Zeichenstil (seit v0.60):** wie handgezeichnet: unruhige
+     Pinselrahmen, Schraffur in den Schatten, Papierkorn und eine
+     Tusche-Kontur um die Figuren; nur Palettenfarben. Die Panels liegen
+     als Aseprite-Dateien in `graphics/source/comic/` und koennen dort
+     weiter von Hand bemalt werden (Sync, siehe 1.8).
    - **Szenen:**
      1. *Pizza-Bestellung* (geteilt, Trennwand in der Mitte): Links
         telefoniert der Erfinder, Sprechblase mit Pizza-Emoji. Rechts nimmt
@@ -2124,9 +2178,10 @@ gekuerzt, nicht der Puffer.
 
 **Meilenstein 4: Ton, Feinschliff, Abgabe (Ziel 28.11., Puffer bis 01.12.)**
 
-- [ ] 24. Soundeffekte und Musik (Werkzeuge noch offen, siehe 1.7).
-- [ ] 25. Feinschliff: Spielgefuehl, Effekte, Schwierigkeitskurve, Lektorat
-  der Texte.
+- [x] 24. Soundeffekte (1.7, `tools/make_sfx.py`, Autoload `Sfx`).
+  Musik macht der Nutzer selbst (offen).
+- [ ] 25. Feinschliff: Spielgefuehl (erledigt, 2.2), Effekte, Parallax
+  (erledigt), Schwierigkeitskurve, Lektorat der Texte.
 - [ ] 26. Release: Exporte fuer Browser und Windows, Checklisten 6.1 bis 6.4,
   itch.io-Seite, Abgabe auf der Jam-Seite.
 
@@ -2145,25 +2200,25 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 14.11.2026, Version v0.59**
+**Stand vom 14.11.2026, Version v0.60**
 
-- **Phase:** Meilenstein 3, Inhalt und Grafik (Ziel 24.11.).
-- **Zuletzt erledigt (Rueckmeldungen vom 13.11.2026):** lineare Level
-  `level_01` ... und Sandbox; Intro und Ende als Aseprite-Dateien mit Ebenen
-  und Frames (Sync); Rohre verbinden sich beim Malen; Magnet mit Anziehen/
-  Abstossen, Drehung und Breite; Shader auffaelliger mit Seifenblasen-Rand;
-  17 neue Requisiten; Hintergrund-Themen mit Silhouetten; Sandbox mit allen
-  Bausteinen.
-- **Naechster Schritt:** Nutzer testet; danach eigene Level und Schritt 24
-  (Sound und Musik).
+- **Phase:** Meilenstein 4, Ton und Feinschliff.
+- **Zuletzt erledigt (Wunschliste vom 14.11.2026):** Parallax-Hintergrund
+  mit Oeffnungen in der Wand; Soundeffekte fuer alles (Professor, Time
+  Shifter, alle Bausteine, Menues, Comic) und Ambient je Hintergrund-Thema;
+  Spielgefuehl (Squash/Stretch, Gewicht, Bodenbeben, Staub, Hitstop,
+  Kamera-Vorausblick); Comic-Bilder wie handgezeichnet.
+- **Naechster Schritt:** Nutzer testet; danach eigene Level, Musik (Nutzer)
+  und Schwierigkeitskurve.
 - **Spielbar:** Titel -> Intro -> Level 1 (Werkstatt) -> Level 2 (Nutzer) ->
   Level 3 -> 4 -> 5 -> Ende mit Abspann. Sandbox ueber F1 oder F6.
-- **Noch zu testen (vom Nutzer):** Aseprite-Panels bearbeiten und
-  speichern, Rohre malen, Magnet (Modi, Drehung, Breite), Shader und
-  Blasenrand, neue Requisiten, Hintergrund-Themen im Inspector, Sandbox.
+- **Noch zu testen (vom Nutzer):** Lautstaerken und Klang aller Sounds,
+  Ambient je Thema, Spielgefuehl (Werte in `data/game_feel.tres`),
+  Parallax in grossen Levels, neue Comic-Bilder; aeltere Punkte:
+  Aseprite-Panels, Rohre malen, Magnet, Shader, Requisiten, Themen, Sandbox.
 - **Bekannte Probleme:** keine.
-- **Groesste offene Punkte:** echte Level (2.9), Sound und Musik (1.2),
-  echte Comic-Bilder fuer Intro und Ende.
+- **Groesste offene Punkte:** echte Level (2.9), Musik, Lautstaerke-
+  Einstellung im Spiel.
 
 ### 5.2 Versionsprotokoll
 

@@ -23,6 +23,7 @@ var _spark_left := 0.0
 
 ## Wird vom Projektil beim Aufprall aufgerufen.
 func on_projectile_hit() -> void:
+	Sound.play_at("impact_switch", global_position)
 	_spark_left = SPARK_TIME
 	SignalSender.send(targets, action, self)
 

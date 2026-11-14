@@ -113,6 +113,7 @@ func _draw_bar() -> void:
 
 
 func _fire() -> void:
+	Sound.play_at("launcher_fire", global_position)
 	var sign_x := -1.0 if direction == Direction.LEFT else 1.0
 	var projectile := PROJECTILE_SCENE.instantiate()
 	projectile.direction = sign_x

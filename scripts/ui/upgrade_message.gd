@@ -30,6 +30,7 @@ static func show_for(upgrade: TimeShifterUpgrades.Upgrade, tree: SceneTree) -> U
 		old.queue_free()
 	var message := UpgradeMessage.new()
 	message._build(upgrade)
+	Sound.play("upgrade")
 	tree.current_scene.add_child(message)
 	return message
 

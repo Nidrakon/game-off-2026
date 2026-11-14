@@ -36,17 +36,24 @@ func _ready() -> void:
 
 ## Signal-Empfaenger: Tuer oeffnet.
 func activate() -> void:
+	if _target != 1.0:
+		Sound.play_at("door_open", global_position)
 	_target = 1.0
 
 
 ## Signal-Empfaenger: Tuer schliesst.
 func deactivate() -> void:
+	if _target != 0.0:
+		Sound.play_at("door_close", global_position)
 	_target = 0.0
 
 
 ## Signal-Empfaenger: offen <-> geschlossen.
 func toggle() -> void:
-	_target = 1.0 - _target
+	if _target == 1.0:
+		deactivate()
+	else:
+		activate()
 
 
 func _physics_process(delta: float) -> void:

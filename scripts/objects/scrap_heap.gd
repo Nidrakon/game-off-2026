@@ -72,6 +72,8 @@ func _on_body_entered(body: Node2D) -> void:
 	for i in BURST_SPARKS:
 		_burst_dirs.append(Vector2.from_angle(randf_range(PI * 1.1, PI * 1.9)) * randf_range(20.0, 44.0))
 	Upgrades.unlock(upgrade)
+	Sound.play("scrap_pickup")
+	get_tree().call_group("game_feel", "on_pickup")
 	UpgradeMessage.show_for(upgrade, get_tree())
 	collected.emit(upgrade)
 	queue_redraw()

@@ -24,8 +24,6 @@
   "image": "intro_s1_left.png",
   "format": "RGBA8888",
   "size": { "w": 440, "h": 180 },
-  "scale": "1",
-  "frameTags": [
-  ]
+  "scale": "1"
  }
 }

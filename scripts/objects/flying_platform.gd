@@ -52,6 +52,8 @@ func _ready() -> void:
 		return
 	_start_position = position
 	_phase = start_offset
+	var hum := Sound.loop("platform_loop", self, _time)
+	hum.position = Vector2(32, 8)
 	position = _position_at(_phase)
 
 

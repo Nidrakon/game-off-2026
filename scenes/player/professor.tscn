@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/professor.gd" id="1_script"]
 [ext_resource type="Resource" path="res://data/professor_movement.tres" id="2_settings"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/player/professor_animator.gd" id="6_animator"]
 [ext_resource type="Resource" path="res://data/professor_animation.tres" id="7_anim_settings"]
 [ext_resource type="Script" path="res://scripts/player/professor_quips.gd" id="8_quips"]
+[ext_resource type="Script" path="res://scripts/player/professor_feel.gd" id="9_feel"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(18, 50)
@@ -41,3 +42,6 @@ settings = ExtResource("7_anim_settings")
 
 [node name="Quips" type="Node" parent="."]
 script = ExtResource("8_quips")
+
+[node name="Feel" type="Node" parent="."]
+script = ExtResource("9_feel")

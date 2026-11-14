@@ -1648,6 +1648,30 @@ laedt und blendet wieder auf (je Stufe 0,12 s, nur Palettenfarben).
   Kanten, Mitte), dazu Lueftungsgitter, Warnstreifen und Kabelkanal; ohne
   Kollision. Ebene `BackWall` in der Level-Vorlage (z_index -20). Varianten
   Labor (violett) und Elektro (blau mit Kupferspulen).
+- **Hintergrund-Themen (14.11.2026, Wunsch des Nutzers):** je Level an der
+  Wurzel waehlbar (Level-Wurzel anklicken, im Inspector Gruppe
+  "Hintergrund"): `background_theme` Werkstatt, Fabrik, Chemieanlage,
+  Elektrolabor, Magnetzentrum, Quantenlabor; `background_seed`
+  (Startwert, anderer Wert = andere Anordnung), `background_density`
+  (0,45), `tint_back_wall` (Rueckwand passend einfaerben, Muster bleibt).
+  Im Editor sofort sichtbar (`scripts/levels/level.gd` ist ein Werkzeug).
+  - Jedes Thema hat eine Wandfarbe (`tileset_wall.png` mit 6 Varianten zu
+    je 4 Spalten: violett, blau, olivbraun, gruen, rot, lila) und 9
+    Silhouetten (zusammen 54, `graphics/sprites/background/bg_silhouettes.png`,
+    Quelle `graphics/source/bg_silhouettes.aseprite`): z. B. Zahnraeder,
+    Werkzeug, Roboterkopf; Schlote, Foerderband, Kranhaken, Presse, Silo;
+    Kolben, Destille, Molekuel, Blasen; Teslaspule, Strommast, Blitz,
+    Platine; Hufeisenmagnet, Feldlinien, Kompass, Spule; Atom,
+    Teilchenring, Quantencomputer, Wellenfunktion, Katzenkiste.
+  - Die Silhouetten sind weiss gezeichnet und werden mit zwei dunklen,
+    dezenten Palettenfarben des Themas eingefaerbt (wie eine Schattierung).
+    Node `BackgroundScatter` in der Vorlage (z_index -15: vor der Rueckwand,
+    hinter Deko und Objekten) verteilt sie zufaellig im Raster 128 x 112 px
+    ueber die bemalte Flaeche, einzelne doppelt gross, teils gespiegelt.
+  - Themen der Level: 1 Werkstatt, 3 und 4 Fabrik, 5 Elektrolabor; Level 2
+    hat den Standard (Werkstatt).
+  - Der Baukasten-Knopf "Rueckwand fuellen" nimmt die Farbe des Themas;
+    "Rueckwand Elektro" ist entfallen.
 - **Wandhinweis:** Einstellung `plate` (Standard an): helles Schild hinter
   Tasten und Wort; z_index -7 (vor der Deko).
 - **Testszenen:** Die automatischen Tests nutzen eigene, eingefrorene
@@ -2101,7 +2125,7 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 14.11.2026, Version v0.56**
+**Stand vom 14.11.2026, Version v0.57**
 
 - **Phase:** Meilenstein 3, Inhalt und Grafik (Ziel 24.11.).
 - **Zuletzt erledigt:** Lineare Levelstruktur (`level_01` ... `level_05`),

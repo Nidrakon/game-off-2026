@@ -51,6 +51,11 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.57 - 2026-11-14: Hintergrund-Themen mit Silhouetten**
+
+- Sechs Themen (Werkstatt, Fabrik, Chemie, Elektro, Magnet, Quanten) je Level an der Wurzel waehlbar: Wandfarbe und 54 dezente Silhouetten, zufaellig mit Startwert und Dichte verteilt, im Editor sichtbar.
+- Wand-Tileset mit 6 Farbvarianten; Rueckwand fuellen nimmt die Themenfarbe.
+
 **v0.56 - 2026-11-14: 17 neue Deko-Requisiten**
 
 - Requisiten-Atlas auf 35 Typen erweitert (teils animiert), Baukasten-Eintraege, 18 weitere Requisiten in Level 1.

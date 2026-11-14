@@ -10,8 +10,10 @@ extends RefCounted
 const PANEL := 4
 
 
-## Varianten der Wand: Labor (dunkelviolett) und Elektro (blau, Spulen).
-enum Variant { LAB, ELECTRO }
+## Varianten der Wand (je 4 Spalten in tileset_wall.png): Labor (violett),
+## Elektro (blau, Spulen), Fabrik (olivbraun), Chemie (gruen), Magnet (rot),
+## Quanten (lila). Gewaehlt ueber das Hintergrund-Thema des Levels.
+enum Variant { LAB, ELECTRO, FACTORY, CHEMICAL, MAGNET, QUANTUM }
 
 
 ## Fuellt "wall" ueberall dort, wo "ground" innerhalb seiner bemalten Flaeche
@@ -28,6 +30,15 @@ static func fill(wall: TileMapLayer, ground: TileMapLayer, variant := Variant.LA
 			wall.set_cell(cell, 0, _tile_for(cell, ground) + Vector2i(4 * variant, 0))
 			count += 1
 	return count
+
+
+## Faerbt eine vorhandene Rueckwand um, ohne ihr Muster zu aendern.
+static func recolor(wall: TileMapLayer, variant: int) -> void:
+	for cell in wall.get_used_cells():
+		var coords := wall.get_cell_atlas_coords(cell)
+		var want := Vector2i(coords.x % 4 + 4 * variant, coords.y)
+		if want != coords:
+			wall.set_cell(cell, 0, want)
 
 
 static func _tile_for(cell: Vector2i, ground: TileMapLayer) -> Vector2i:

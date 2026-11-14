@@ -51,6 +51,10 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.56 - 2026-11-14: 17 neue Deko-Requisiten**
+
+- Requisiten-Atlas auf 35 Typen erweitert (teils animiert), Baukasten-Eintraege, 18 weitere Requisiten in Level 1.
+
 **v0.55 - 2026-11-14: Blasen-Shader auffaelliger, Seifenblasen-Rand**
 
 - Langsam: Woelbung, traege Ringwellen, kuehler Schimmer; schnell: Zeilenzittern, Unschaerfe nach aussen, starke Farbtrennung; Rand: Zug zur Randlinie und schillernder Film; farbiger Kreis entfaellt.

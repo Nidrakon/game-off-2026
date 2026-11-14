@@ -16,5 +16,22 @@
 	"prototype": {"x": 352, "y": 74, "w": 32, "h": 40, "frames": 1},
 	"pizza_boxes": {"x": 386, "y": 74, "w": 32, "h": 20, "frames": 1},
 	"barrel": {"x": 420, "y": 74, "w": 20, "h": 28, "frames": 1},
-	"big_gear": {"x": 442, "y": 74, "w": 48, "h": 48, "frames": 1}
+	"big_gear": {"x": 442, "y": 74, "w": 48, "h": 48, "frames": 1},
+	"rocket": {"x": 0, "y": 132, "w": 24, "h": 56, "frames": 1},
+	"microscope": {"x": 26, "y": 132, "w": 24, "h": 36, "frames": 1},
+	"dish": {"x": 52, "y": 132, "w": 36, "h": 40, "frames": 1},
+	"coffee": {"x": 90, "y": 132, "w": 28, "h": 40, "frames": 2},
+	"blueprint": {"x": 148, "y": 132, "w": 56, "h": 40, "frames": 1},
+	"toolbox": {"x": 206, "y": 132, "w": 32, "h": 20, "frames": 1},
+	"gas_tanks": {"x": 240, "y": 132, "w": 28, "h": 48, "frames": 1},
+	"brain_jar": {"x": 270, "y": 132, "w": 24, "h": 36, "frames": 2},
+	"wall_clock": {"x": 320, "y": 132, "w": 24, "h": 48, "frames": 2},
+	"bookshelf": {"x": 370, "y": 132, "w": 40, "h": 52, "frames": 1},
+	"ladder": {"x": 412, "y": 132, "w": 20, "h": 64, "frames": 1},
+	"laser_cannon": {"x": 434, "y": 132, "w": 40, "h": 44, "frames": 1},
+	"hanging_cables": {"x": 476, "y": 132, "w": 32, "h": 64, "frames": 1},
+	"drone": {"x": 0, "y": 198, "w": 36, "h": 24, "frames": 2},
+	"teleporter": {"x": 74, "y": 198, "w": 48, "h": 32, "frames": 2},
+	"cactus": {"x": 172, "y": 198, "w": 16, "h": 28, "frames": 1},
+	"trash_can": {"x": 190, "y": 198, "w": 20, "h": 24, "frames": 1}
 }

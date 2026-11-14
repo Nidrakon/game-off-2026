@@ -187,237 +187,458 @@
 		"path": "res://scenes/objects/time_switch.tscn"
 	},
 	{
-		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
-		"icon": "res://graphics/sprites/deco/deco_workshop.png",
-		"icon_region": [
-			0.0,
-			0.0,
-			80.0,
-			40.0
-		],
 		"name": "Werkbank",
-		"path": "res://scenes/deco/workbench.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"path": "res://scenes/deco/workbench.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			82.0,
-			0.0,
-			64.0,
-			48.0
+			0,
+			0,
+			80,
+			40
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
 		"name": "Werkzeugwand",
-		"path": "res://scenes/deco/tool_wall.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"path": "res://scenes/deco/tool_wall.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			148.0,
-			0.0,
-			48.0,
-			56.0
+			82,
+			0,
+			64,
+			48
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
 		"name": "Regal",
-		"path": "res://scenes/deco/shelf.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset').",
+		"path": "res://scenes/deco/shelf.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			198.0,
-			0.0,
-			48.0,
-			72.0
+			148,
+			0,
+			48,
+			56
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
 		"name": "Generator",
-		"path": "res://scenes/deco/generator.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset').",
+		"path": "res://scenes/deco/generator.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			296.0,
-			0.0,
-			32.0,
-			64.0
+			198,
+			0,
+			48,
+			72
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset')."
+	},
+	{
 		"name": "Teslaspule",
-		"path": "res://scenes/deco/tesla_coil.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset').",
+		"path": "res://scenes/deco/tesla_coil.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			362.0,
-			0.0,
-			56.0,
-			48.0
+			296,
+			0,
+			32,
+			64
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset')."
+	},
+	{
 		"name": "Computer",
-		"path": "res://scenes/deco/console.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"path": "res://scenes/deco/console.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			0.0,
-			74.0,
-			40.0,
-			56.0
+			362,
+			0,
+			56,
+			48
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset')."
+	},
+	{
 		"name": "Roboterarm",
-		"path": "res://scenes/deco/robot_arm.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"path": "res://scenes/deco/robot_arm.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			42.0,
-			74.0,
-			28.0,
-			44.0
+			0,
+			74,
+			40,
+			56
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
 		"name": "Jetpack",
-		"path": "res://scenes/deco/jetpack.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset').",
+		"path": "res://scenes/deco/jetpack.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			72.0,
-			74.0,
-			20.0,
-			52.0
+			42,
+			74,
+			28,
+			44
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
 		"name": "Glasroehre",
-		"path": "res://scenes/deco/tube.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"path": "res://scenes/deco/tube.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			114.0,
-			74.0,
-			64.0,
-			40.0
+			72,
+			74,
+			20,
+			52
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset')."
+	},
+	{
 		"name": "Tafel",
-		"path": "res://scenes/deco/chalkboard.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"path": "res://scenes/deco/chalkboard.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			180.0,
-			74.0,
-			16.0,
-			40.0
+			114,
+			74,
+			64,
+			40
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
 		"name": "Haengelampe",
-		"path": "res://scenes/deco/lamp.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"path": "res://scenes/deco/lamp.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			198.0,
-			74.0,
-			28.0,
-			28.0
+			180,
+			74,
+			16,
+			40
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
 		"name": "Kiste",
-		"path": "res://scenes/deco/crate.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset').",
+		"path": "res://scenes/deco/crate.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			228.0,
-			74.0,
-			36.0,
-			32.0
+			198,
+			74,
+			28,
+			28
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
 		"name": "Manometer",
-		"path": "res://scenes/deco/gauges.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"path": "res://scenes/deco/gauges.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			302.0,
-			74.0,
-			48.0,
-			10.0
+			228,
+			74,
+			36,
+			32
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset')."
+	},
+	{
 		"name": "Kabelsalat",
-		"path": "res://scenes/deco/cables.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"path": "res://scenes/deco/cables.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			352.0,
-			74.0,
-			32.0,
-			40.0
+			302,
+			74,
+			48,
+			10
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
 		"name": "Prototyp",
-		"path": "res://scenes/deco/prototype.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"path": "res://scenes/deco/prototype.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			386.0,
-			74.0,
-			32.0,
-			20.0
+			352,
+			74,
+			32,
+			40
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
 		"name": "Pizzakartons",
-		"path": "res://scenes/deco/pizza_boxes.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"path": "res://scenes/deco/pizza_boxes.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			420.0,
-			74.0,
-			20.0,
-			28.0
+			386,
+			74,
+			32,
+			20
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
 		"name": "Fass",
-		"path": "res://scenes/deco/barrel.tscn"
-	},
-	{
 		"category": "deko",
-		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt.",
+		"path": "res://scenes/deco/barrel.tscn",
 		"icon": "res://graphics/sprites/deco/deco_workshop.png",
 		"icon_region": [
-			442.0,
-			74.0,
-			48.0,
-			48.0
+			420,
+			74,
+			20,
+			28
 		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
 		"name": "Riesenzahnrad",
-		"path": "res://scenes/deco/big_gear.tscn"
+		"category": "deko",
+		"path": "res://scenes/deco/big_gear.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			442,
+			74,
+			48,
+			48
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Mini-Rakete",
+		"category": "deko",
+		"path": "res://scenes/deco/rocket.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			0,
+			132,
+			24,
+			56
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Mikroskop",
+		"category": "deko",
+		"path": "res://scenes/deco/microscope.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			26,
+			132,
+			24,
+			36
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Satellitenschuessel",
+		"category": "deko",
+		"path": "res://scenes/deco/dish.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			52,
+			132,
+			36,
+			40
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Kaffeemaschine",
+		"category": "deko",
+		"path": "res://scenes/deco/coffee.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			90,
+			132,
+			28,
+			40
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset')."
+	},
+	{
+		"name": "Bauplan-Tafel",
+		"category": "deko",
+		"path": "res://scenes/deco/blueprint.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			148,
+			132,
+			56,
+			40
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Werkzeugkasten",
+		"category": "deko",
+		"path": "res://scenes/deco/toolbox.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			206,
+			132,
+			32,
+			20
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Gasflaschen",
+		"category": "deko",
+		"path": "res://scenes/deco/gas_tanks.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			240,
+			132,
+			28,
+			48
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Gehirn im Glas",
+		"category": "deko",
+		"path": "res://scenes/deco/brain_jar.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			270,
+			132,
+			24,
+			36
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset')."
+	},
+	{
+		"name": "Wanduhr",
+		"category": "deko",
+		"path": "res://scenes/deco/wall_clock.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			320,
+			132,
+			24,
+			48
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset')."
+	},
+	{
+		"name": "Buecherregal",
+		"category": "deko",
+		"path": "res://scenes/deco/bookshelf.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			370,
+			132,
+			40,
+			52
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Leiter",
+		"category": "deko",
+		"path": "res://scenes/deco/ladder.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			412,
+			132,
+			20,
+			64
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Laserkanone",
+		"category": "deko",
+		"path": "res://scenes/deco/laser_cannon.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			434,
+			132,
+			40,
+			44
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Kabelbuendel",
+		"category": "deko",
+		"path": "res://scenes/deco/hanging_cables.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			476,
+			132,
+			32,
+			64
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Drohne",
+		"category": "deko",
+		"path": "res://scenes/deco/drone.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			0,
+			198,
+			36,
+			24
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset')."
+	},
+	{
+		"name": "Teleporter",
+		"category": "deko",
+		"path": "res://scenes/deco/teleporter.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			74,
+			198,
+			48,
+			32
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt, animiert ('Frame Time', 'Start Offset')."
+	},
+	{
+		"name": "Kaktus",
+		"category": "deko",
+		"path": "res://scenes/deco/cactus.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			172,
+			198,
+			16,
+			28
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Papierkorb",
+		"category": "deko",
+		"path": "res://scenes/deco/trash_can.tscn",
+		"icon": "res://graphics/sprites/deco/deco_workshop.png",
+		"icon_region": [
+			190,
+			198,
+			20,
+			24
+		],
+		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
 	}
 ]

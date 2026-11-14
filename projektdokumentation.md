@@ -1615,7 +1615,11 @@ laedt und blendet wieder auf (je Stufe 0,12 s, nur Palettenfarben).
   Rohrleitungen mit Dampf, Werkbank, Werkzeugwaende, Regale, Tafeln,
   Zahnraeder, Generatoren, Teslaspulen, Computer, Roboterarme, Jetpacks,
   Glasroehren, Manometer, Kisten, Faesser, Kabel, Pizzakartons, Prototyp,
-  Lampen (ca. 70 Requisiten); Hinweise auf hellen Schildern.
+  Lampen (ca. 70 Requisiten); Hinweise auf hellen Schildern. Seit
+  14.11.2026 zusaetzlich 18 weitere (Kaffeemaschine, Mikroskop,
+  Papierkorb, Werkzeugkasten, Kaktus, Mini-Rakete, Leiter, Teleporter,
+  Gehirn im Glas, Wanduhr, Buecherregal, Bauplan, Satellitenschuessel,
+  Laserkanone, Kabelbuendel, Drohnen, Gasflaschen).
 - `level_02`: baut der Nutzer (frueher `level_sentry_01`).
 - `level_03` (Platzhalter): Starkstrom-Luecke (5 Tiles, ueberspringen) und
   ein Werfer am rechten Rand, der Projektile ueber den Boden schickt.
@@ -1628,7 +1632,11 @@ laedt und blendet wieder auf (je Stufe 0,12 s, nur Palettenfarben).
 - Die Platzhalter ersetzt der Nutzer durch seine Level; neue Level legt der
   Baukasten als `level_NN` an.
 - **Deko-Requisiten** (`scenes/objects/deco_prop.tscn`, Skript
-  `scripts/objects/deco_prop.gd`): Requisiten aus dem Atlas
+  `scripts/objects/deco_prop.gd`): 35 Requisiten (seit 14.11.2026; neu:
+  Mini-Rakete, Mikroskop, Satellitenschuessel, Kaffeemaschine und Gehirn im
+  Glas, Wanduhr, Drohne, Teleporter animiert; Bauplan-Tafel,
+  Werkzeugkasten, Gasflaschen, Buecherregal, Leiter, Laserkanone,
+  Kabelbuendel, Kaktus, Papierkorb) aus dem Atlas
   `graphics/sprites/deco/deco_workshop.png` (Quelle `graphics/source/deco_workshop.aseprite`,
   Ausschnitte in `deco_workshop.json`). Im Inspector `prop` (Auswahlliste),
   `flip`, bei animierten `frame_time` und `start_offset`; die Animation
@@ -2093,7 +2101,7 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 14.11.2026, Version v0.55**
+**Stand vom 14.11.2026, Version v0.56**
 
 - **Phase:** Meilenstein 3, Inhalt und Grafik (Ziel 24.11.).
 - **Zuletzt erledigt:** Lineare Levelstruktur (`level_01` ... `level_05`),

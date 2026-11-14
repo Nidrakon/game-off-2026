@@ -343,3 +343,80 @@ position = Vector2(760, 240)
 direction = 1
 start_offset = 0.5
 
+[node name="DecoCoffee" parent="." instance=ExtResource("4_deco")]
+position = Vector2(116, 456)
+prop = "coffee"
+start_offset = 0.00
+
+[node name="DecoMicroscope" parent="." instance=ExtResource("4_deco")]
+position = Vector2(146, 456)
+prop = "microscope"
+
+[node name="DecoTrash" parent="." instance=ExtResource("4_deco")]
+position = Vector2(188, 496)
+prop = "trash_can"
+
+[node name="DecoToolbox" parent="." instance=ExtResource("4_deco")]
+position = Vector2(282, 496)
+prop = "toolbox"
+
+[node name="DecoCactus" parent="." instance=ExtResource("4_deco")]
+position = Vector2(282, 476)
+prop = "cactus"
+
+[node name="DecoRocket" parent="." instance=ExtResource("4_deco")]
+position = Vector2(470, 440)
+prop = "rocket"
+
+[node name="DecoLadder" parent="." instance=ExtResource("4_deco")]
+position = Vector2(452, 496)
+prop = "ladder"
+
+[node name="DecoTeleporter" parent="." instance=ExtResource("4_deco")]
+position = Vector2(600, 496)
+prop = "teleporter"
+start_offset = 0.91
+
+[node name="DecoBrainJar" parent="." instance=ExtResource("4_deco")]
+position = Vector2(700, 448)
+prop = "brain_jar"
+start_offset = 0.04
+
+[node name="DecoClock" parent="." instance=ExtResource("4_deco")]
+position = Vector2(100, 330)
+prop = "wall_clock"
+start_offset = 0.17
+
+[node name="DecoBookshelf" parent="." instance=ExtResource("4_deco")]
+position = Vector2(560, 196)
+prop = "bookshelf"
+
+[node name="DecoBlueprint" parent="." instance=ExtResource("4_deco")]
+position = Vector2(380, 160)
+prop = "blueprint"
+
+[node name="DecoDish" parent="." instance=ExtResource("4_deco")]
+position = Vector2(620, 160)
+prop = "dish"
+
+[node name="DecoLaserCannon" parent="." instance=ExtResource("4_deco")]
+position = Vector2(812, 360)
+prop = "laser_cannon"
+
+[node name="DecoCablesHang" parent="." instance=ExtResource("4_deco")]
+position = Vector2(400, 80)
+prop = "hanging_cables"
+
+[node name="DecoDrone" parent="." instance=ExtResource("4_deco")]
+position = Vector2(470, 320)
+prop = "drone"
+start_offset = 0.95
+
+[node name="DecoDrone2" parent="." instance=ExtResource("4_deco")]
+position = Vector2(240, 170)
+prop = "drone"
+start_offset = 0.08
+
+[node name="DecoGasTanks" parent="." instance=ExtResource("4_deco")]
+position = Vector2(680, 300)
+prop = "gas_tanks"

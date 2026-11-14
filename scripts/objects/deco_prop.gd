@@ -11,7 +11,7 @@ const TEXTURE := preload("res://graphics/sprites/deco/deco_workshop.png")
 const META_FILE := "res://graphics/sprites/deco/deco_workshop.json"
 
 ## Welches Requisit.
-@export_enum("workbench", "tool_wall", "shelf", "generator", "tesla_coil", "console", "robot_arm", "jetpack", "tube", "chalkboard", "lamp", "crate", "gauges", "cables", "prototype", "pizza_boxes", "barrel", "big_gear") var prop := "workbench":
+@export_enum("workbench", "tool_wall", "shelf", "generator", "tesla_coil", "console", "robot_arm", "jetpack", "tube", "chalkboard", "lamp", "crate", "gauges", "cables", "prototype", "pizza_boxes", "barrel", "big_gear", "rocket", "microscope", "dish", "coffee", "blueprint", "toolbox", "gas_tanks", "brain_jar", "wall_clock", "bookshelf", "ladder", "laser_cannon", "hanging_cables", "drone", "teleporter", "cactus", "trash_can") var prop := "workbench":
 	set(value):
 		prop = value
 		_update_bounds()

@@ -1679,6 +1679,19 @@ laedt und blendet wieder auf (je Stufe 0,12 s, nur Palettenfarben).
     hat den Standard (Werkstatt).
   - Der Baukasten-Knopf "Rueckwand fuellen" nimmt die Farbe des Themas;
     "Rueckwand Elektro" ist entfallen.
+- **Parallax (14.11.2026, Wunsch des Nutzers):** mehrere Hintergrund-Ebenen
+  laufen langsamer als der Vordergrund (Node `ParallaxDriver` in der Vorlage,
+  Faktoren im Inspector): tiefe Ebene `DeepBackground` 0,55 (Kabelstraenge,
+  Gitter, Leitungen, Verteilerkaesten mit blinkenden LEDs; Muster aus der
+  Position, Kacheln `graphics/tilesets/deep_background.png`, z_index -30),
+  Rueckwand und Silhouetten 0,8, hintere Rohre 0,9. Ausgerichtet auf die
+  Mitte der bemalten Flaeche: dort liegt alles genau wie im Editor gemalt.
+  Sichtbar nur in Leveln, die groesser als ein Bildschirm sind.
+- **Oeffnungen in der Rueckwand:** `BackWall.fill` laesst ganze Paneele
+  (4 x 4 Tiles) weg (ca. 14 %, immer gleich verteilt), dahinter sieht man die
+  tiefe Ebene. Gefuellt wird 16 Tiles ueber die bemalte Flaeche hinaus (auch
+  hinter dem Boden), damit beim Verschieben keine Luecken entstehen. Alle
+  Level und die Vorlage sind neu gefuellt.
 - **Wandhinweis:** Einstellung `plate` (Standard an): helles Schild hinter
   Tasten und Wort; z_index -7 (vor der Deko).
 - **Testszenen:** Die automatischen Tests nutzen eigene, eingefrorene
@@ -2132,7 +2145,7 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 14.11.2026, Version v0.58**
+**Stand vom 14.11.2026, Version v0.59**
 
 - **Phase:** Meilenstein 3, Inhalt und Grafik (Ziel 24.11.).
 - **Zuletzt erledigt (Rueckmeldungen vom 13.11.2026):** lineare Level

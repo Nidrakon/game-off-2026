@@ -51,6 +51,10 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.59 - 2026-11-14: Parallax-Hintergrund**
+
+- Tiefe Ebene mit Kabeln und Maschinen (blinkende LEDs), Rueckwand mit Oeffnungen (fehlende Paneele), Parallax: tiefe Ebene 0,55, Wand und Silhouetten 0,8, hintere Rohre 0,9; Rueckwaende mit Rand neu gefuellt.
+
 **v0.58 - 2026-11-14: Sandbox mit allen Bausteinen**
 
 - Zweiter Raum in der Sandbox: Magnete (Decke, Boden-Trampolin, Wand), Boden-/Wand-/Block-Bausteine, Stege, Rohre vorn und hinten mit Dampf, Fahrstuhl, Ausgang, Deko; eigene Tiles des Nutzers bleiben erhalten. Test prueft, dass jeder Baustein vorkommt.

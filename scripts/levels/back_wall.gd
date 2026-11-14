@@ -8,6 +8,11 @@ extends RefCounted
 
 ## Groesse einer Platte in Tiles.
 const PANEL := 4
+## So viele Tiles wird ueber die bemalte Flaeche hinaus gefuellt, damit beim
+## Parallax-Verschieben keine Luecken entstehen (auch hinter dem Boden).
+const MARGIN := 16
+## Anteil fehlender Paneele (Oeffnungen, Prozent).
+const HOLE_PERCENT := 14
 
 
 ## Varianten der Wand (je 4 Spalten in tileset_wall.png): Labor (violett),
@@ -20,16 +25,25 @@ enum Variant { LAB, ELECTRO, FACTORY, CHEMICAL, MAGNET, QUANTUM }
 ## frei ist (also im Inneren des Raums). Vorhandene Wand-Tiles werden ersetzt.
 static func fill(wall: TileMapLayer, ground: TileMapLayer, variant := Variant.LAB) -> int:
 	wall.clear()
-	var used := ground.get_used_rect()
+	var used := ground.get_used_rect().grow(MARGIN)
 	var count := 0
 	for y in range(used.position.y, used.end.y):
 		for x in range(used.position.x, used.end.x):
 			var cell := Vector2i(x, y)
-			if ground.get_cell_source_id(cell) != -1:
+			var tile := _tile_for(cell, ground)
+			# Fehlende Paneele = Oeffnungen (dahinter die tiefe Ebene)
+			if tile.x < 3 and is_hole(cell):
 				continue
-			wall.set_cell(cell, 0, _tile_for(cell, ground) + Vector2i(4 * variant, 0))
+			wall.set_cell(cell, 0, tile + Vector2i(4 * variant, 0))
 			count += 1
 	return count
+
+
+## Fehlt das Paneel an dieser Zelle (Oeffnung in der Wand)? Ganze Paneele
+## (4 x 4) fallen weg, ausgewaehlt nach ihrer Lage (immer gleich).
+static func is_hole(cell: Vector2i) -> bool:
+	var panel := Vector2i(floori((cell.x - 1) / float(PANEL)), floori((cell.y - 1) / float(PANEL)))
+	return posmod(panel.x * 92821 + panel.y * 68917, 100) < HOLE_PERCENT
 
 
 ## Faerbt eine vorhandene Rueckwand um, ohne ihr Muster zu aendern.

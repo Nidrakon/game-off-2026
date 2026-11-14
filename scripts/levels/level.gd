@@ -9,6 +9,8 @@ extends Node2D
 ## - Hintergrund-Thema je Level (Gruppe "Hintergrund" im Inspector): faerbt
 ##   die Rueckwand passend ein und verteilt dezente Silhouetten (Node
 ##   "BackgroundScatter"). Im Editor sofort sichtbar (@tool).
+## - Parallax (Node "ParallaxDriver"): tiefe Ebene, Rueckwand mit
+##   Silhouetten und hintere Rohre laufen langsamer als der Vordergrund.
 
 ## Kameragrenzen automatisch aus den Tiles von "Ground" setzen.
 @export var auto_camera_limits := true
@@ -56,6 +58,15 @@ func apply_background() -> void:
 	var wall := get_node_or_null("BackWall") as TileMapLayer
 	if tint_back_wall and wall != null:
 		BackWall.recolor(wall, BackgroundTheme.wall_variant(background_theme))
+	var rect := _ground_rect(ground)
+	var driver := get_node_or_null("ParallaxDriver") as ParallaxDriver
+	if driver != null:
+		driver.anchor = rect.get_center()
+	var deep := get_node_or_null("DeepBackground") as DeepBackground
+	if deep != null and rect.size != Vector2.ZERO:
+		# Rand passend zur groessten Verschiebung der tiefen Ebene
+		var factor := driver.deep_factor if driver else 0.55
+		deep.area = rect.grow(maxf(rect.size.x, rect.size.y) * 0.5 * (1.0 - factor) + 64.0)
 	var scatter := get_node_or_null("BackgroundScatter") as BackgroundScatter
 	if scatter != null:
 		scatter.theme = background_theme

@@ -41,6 +41,9 @@ func _process(delta: float) -> void:
 
 
 func _reload(entry: Dictionary) -> void:
+	# Nur Sheet ohne SpriteFrames (z. B. Comic-Panels): nichts zu ersetzen.
+	if entry.frames == "":
+		return
 	# Direkt von der Festplatte lesen: Der importierte Stand im Spiel ist alt.
 	var image := Image.load_from_file(ProjectSettings.globalize_path(entry.sheet))
 	if image == null or image.is_empty():

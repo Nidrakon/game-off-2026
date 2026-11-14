@@ -81,6 +81,10 @@ func _sync(entry: Dictionary) -> void:
 	if texture == null:
 		push_error("Aseprite-Sync: Sheet %s konnte nicht geladen werden." % entry.sheet)
 		return
+	# Eintraege ohne "frames" (z. B. Comic-Panels) brauchen nur das Sheet.
+	if entry.frames == "":
+		print("Aseprite-Sync: %s aktualisiert (nur Sheet)." % entry.name)
+		return
 	# Vorhandene SpriteFrames direkt aendern: Offene Szenen zeigen das sofort.
 	var frames: SpriteFrames
 	if ResourceLoader.exists(entry.frames):

@@ -93,6 +93,9 @@ func _make_panel(name: String) -> TextureRect:
 	var atlas := AtlasTexture.new()
 	atlas.atlas = load("res://graphics/ending/ending_%s.png" % name)
 	atlas.region = Rect2(0, 0, info.w, info.h)
+	# Bilderzahl aus der Breite des Sheets: In Aseprite duerfen Frames
+	# hinzukommen oder wegfallen (Groesse eines Bildes bleibt gleich).
+	var frame_count := maxi(1, int(atlas.atlas.get_width() / float(info.w)))
 	var rect := TextureRect.new()
 	rect.texture = atlas
 	rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -100,7 +103,7 @@ func _make_panel(name: String) -> TextureRect:
 	rect.size = Vector2(info.w, info.h) * SCALE
 	rect.position = SLOT_RIGHT if name.ends_with("right") else SLOT_LEFT
 	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	rect.set_meta("frames", int(info.frames))
+	rect.set_meta("frames", frame_count)
 	rect.set_meta("w", float(info.w))
 	rect.pivot_offset = rect.size * 0.5
 	rect.scale = Vector2(0.94, 0.94)

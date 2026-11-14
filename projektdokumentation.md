@@ -1813,8 +1813,17 @@ zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
      Leertaste, Enter, Sprung oder Mausklick (0,25 s Eingabesperre je
      Schritt), Esc ueberspringt das ganze Intro. Unten rechts zeigen
      Tastenkappen ohne Text, wie es weitergeht. Danach startet das erste
-     Level der Reihenfolge. Die echten Comic-Bilder koennen die PNGs
-     ersetzen (gleiche Groesse und Bilderzahl, siehe `intro_panels.json`).
+     Level der Reihenfolge.
+   - **Aseprite-Quellen (14.11.2026, Wunsch des Nutzers):** Jedes Panel von
+     Intro und Ende liegt als eigene Datei in `graphics/source/comic/`
+     (`intro_s1_left.aseprite` ... `ending_e3.aseprite`) mit drei Ebenen
+     "Hintergrund", "Figuren", "Effekte" und den Animationsbildern als
+     Frames (je 0,28 s). Alle elf Dateien stehen im Aseprite-Sync
+     (`data/aseprite_sync.cfg`, Eintraege ohne `frames` = nur Sheet): Beim
+     Speichern in Aseprite wird das Sheet nach `graphics/intro/` bzw.
+     `graphics/ending/` exportiert. Die Panelgroesse bleibt fest (geteilt
+     220 x 180, breit 450 x 180); Frames duerfen hinzukommen oder wegfallen,
+     das Spiel liest die Bilderzahl aus der Breite des Sheets.
 2. **Werkstatt** (Level 1, Start), dann Level 2, 3 ... bis zum letzten
    Level (siehe 2.9; Bereiche seit 13.11.2026 gestrichen).
 3. **Ende und Abspann:** Nach dem letzten Level nimmt der Professor oben die
@@ -2054,7 +2063,7 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 13.11.2026, Version v0.51**
+**Stand vom 14.11.2026, Version v0.52**
 
 - **Phase:** Meilenstein 3, Inhalt und Grafik (Ziel 24.11.).
 - **Zuletzt erledigt:** Lineare Levelstruktur (`level_01` ... `level_05`),

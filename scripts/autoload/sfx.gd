@@ -12,6 +12,14 @@ extends Node
 ## Busse: SFX, Ambient, Music (default_bus_layout.tres).
 
 const TABLE_FILE := "res://data/sfx.json"
+## Songs mit fester ID (Doku 1.7): ID -> Name, Datei (audio/music/), Lautstaerke.
+const MUSIC_FILE := "res://data/music.json"
+## Ueberblendzeit zwischen Songs (Sekunden).
+const MUSIC_FADE := 1.5
+## Gedaempfte Musik (Spielmenue, Bedienfeld): Grenzfrequenz und Blendzeit.
+const MUFFLED_CUTOFF := 700.0
+const OPEN_CUTOFF := 20000.0
+const MUFFLE_TIME := 0.25
 ## Gleichzeitige Sounds ohne Ort.
 const POOL_SIZE := 12
 ## Reichweite verorteter Sounds (Pixel) und wie schnell sie leiser werden.
@@ -33,6 +41,13 @@ var _pool: Array[AudioStreamPlayer] = []
 var _next := 0
 var _ambient: AudioStreamPlayer
 var _ambient_id := ""
+var _music_table := {}
+var _music: Array[AudioStreamPlayer] = []
+var _music_active := 0
+var _music_id := 0
+var _lowpass: AudioEffectLowPassFilter
+var _muffle_tween: Tween
+var _music_tween: Tween
 
 
 ## Dauerton an einem Objekt; Tonhoehe folgt dem Zeittempo.
@@ -57,6 +72,14 @@ func _ready() -> void:
 	_ambient = AudioStreamPlayer.new()
 	_ambient.bus = &"Ambient"
 	add_child(_ambient)
+	var music_data: Variant = JSON.parse_string(FileAccess.get_file_as_string(MUSIC_FILE))
+	_music_table = music_data if music_data is Dictionary else {}
+	for i in 2:
+		var player := AudioStreamPlayer.new()
+		player.bus = &"Music"
+		add_child(player)
+		_music.append(player)
+	_setup_lowpass()
 	load_volumes()
 
 
@@ -190,6 +213,88 @@ func stop_ambient() -> void:
 ## Kennung der laufenden Umgebung (fuer Tests).
 func get_ambient_id() -> String:
 	return _ambient_id
+
+
+## Song mit fester ID spielen (Schleife, Ueberblendung). Gleicher Song laeuft
+## einfach weiter; 0 = Musik aus.
+func play_music(id: int) -> void:
+	if id == _music_id and _music[_music_active].playing:
+		return
+	if id <= 0 or not _music_table.has(str(id)):
+		stop_music()
+		return
+	var entry: Dictionary = _music_table[str(id)]
+	var stream := load("res://audio/music/%s.ogg" % entry.get("file", "")) as AudioStreamOggVorbis
+	if stream == null:
+		stop_music()
+		return
+	stream.loop = true
+	_music_id = id
+	var old := _music[_music_active]
+	_music_active = 1 - _music_active
+	var player := _music[_music_active]
+	player.stream = stream
+	player.volume_db = -40.0
+	player.play()
+	# Laufende Ueberblendung abbrechen (sonst stoppt sie evtl. den neuen Song)
+	if _music_tween:
+		_music_tween.kill()
+	_music_tween = create_tween().set_parallel()
+	_music_tween.tween_property(player, "volume_db", float(entry.get("volume_db", 0.0)), MUSIC_FADE)
+	if old.playing:
+		_music_tween.tween_property(old, "volume_db", -40.0, MUSIC_FADE)
+		_music_tween.chain().tween_callback(old.stop)
+
+
+## Musik ausblenden.
+func stop_music() -> void:
+	_music_id = 0
+	if _music_tween:
+		_music_tween.kill()
+	_music_tween = create_tween().set_parallel()
+	for player in _music:
+		if player.playing:
+			_music_tween.tween_property(player, "volume_db", -40.0, MUSIC_FADE * 0.5)
+	_music_tween.chain().tween_callback(func() -> void:
+		for player in _music:
+			player.stop())
+
+
+## ID des laufenden Songs (0 = keiner).
+func get_music_id() -> int:
+	return _music_id
+
+
+## Name eines Songs aus der Tabelle (z. B. fuer Abspann/Tests).
+func get_music_name(id: int) -> String:
+	return str(_music_table.get(str(id), {}).get("name", ""))
+
+
+## Musik gedaempft (wie hinter einer Tuer), z. B. bei offenem Spielmenue.
+func set_music_muffled(on: bool) -> void:
+	if _lowpass == null:
+		return
+	if _muffle_tween:
+		_muffle_tween.kill()
+	_muffle_tween = create_tween()
+	_muffle_tween.tween_property(_lowpass, "cutoff_hz", MUFFLED_CUTOFF if on else OPEN_CUTOFF, MUFFLE_TIME)
+
+
+func is_music_muffled() -> bool:
+	return _lowpass != null and _lowpass.cutoff_hz < OPEN_CUTOFF * 0.5
+
+
+func _setup_lowpass() -> void:
+	var bus := AudioServer.get_bus_index("Music")
+	if bus < 0:
+		return
+	for i in AudioServer.get_bus_effect_count(bus):
+		if AudioServer.get_bus_effect(bus, i) is AudioEffectLowPassFilter:
+			_lowpass = AudioServer.get_bus_effect(bus, i)
+			return
+	_lowpass = AudioEffectLowPassFilter.new()
+	_lowpass.cutoff_hz = OPEN_CUTOFF
+	AudioServer.add_bus_effect(bus, _lowpass)
 
 
 func _pitch_variation(entry: Dictionary) -> float:

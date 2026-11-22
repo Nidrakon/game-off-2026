@@ -39,6 +39,24 @@ static func stop_ambient() -> void:
 		sfx.stop_ambient()
 
 
+static func play_music(id: int) -> void:
+	var sfx := _sfx()
+	if sfx:
+		sfx.play_music(id)
+
+
+static func stop_music() -> void:
+	var sfx := _sfx()
+	if sfx:
+		sfx.stop_music()
+
+
+static func set_music_muffled(on: bool) -> void:
+	var sfx := _sfx()
+	if sfx:
+		sfx.set_music_muffled(on)
+
+
 static func _sfx() -> Node:
 	var tree := Engine.get_main_loop() as SceneTree
 	return tree.root.get_node_or_null("Sfx") if tree else null

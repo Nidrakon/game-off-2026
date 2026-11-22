@@ -40,6 +40,7 @@ var _hint: Control
 func _ready() -> void:
 	get_tree().paused = false
 	Sound.stop_ambient()
+	Sound.play_music(2)
 	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(META_FILE))
 	_meta = data if data is Dictionary else {}
 	var bg := ColorRect.new()

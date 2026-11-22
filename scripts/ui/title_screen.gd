@@ -28,6 +28,7 @@ var _texts := {}
 func _ready() -> void:
 	get_tree().paused = false
 	Sound.stop_ambient()
+	Sound.play_music(1)
 	_texts = _load_texts()
 	theme = MenuStyle.make_theme()
 	_title.text = _text("menu_title")

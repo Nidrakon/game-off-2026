@@ -51,6 +51,14 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.62 - 2026-11-22: Musik**
+
+- Sechs Songs mit fester ID: 1 Time Shifter (Titel), 2 Pizza on the Line (Intro), 3 Tinkering (Werkstatt), 4 Clockwork Lab (Fabrik/Chemie), 5 Quantum Climb (Elektro/Magnet/Quanten), 6 Going Down (Ende, Fahrstuhl-Bossa). Nahtlose OGG-Schleifen, erzeugt mit `tools/make_music.py` (laeuft in Blender).
+- Level waehlen ihren Song im Inspector ("music", Auto = nach Hintergrund-Thema); gleicher Song laeuft beim Levelwechsel weiter, sonst Ueberblendung.
+- Musik klingt gedaempft, solange Spielmenue oder Time-Shifter-Bedienfeld offen sind. Credits nennen Musik und Sound.
+- Automatische Tests liegen jetzt im Repo (`tests/`, Runner `tools/run_tests.sh`, vom Export ausgeschlossen); die alten Tests im temporaeren KI-Ordner waren verloren gegangen, dabei wurde der echte Spielstand geloescht. Der Runner sichert Spielstand und Einstellungen und stellt sie bei Aenderung wieder her.
+- Geprueft: Tests Musik, Spielmenue, Sounds, Spielgefuehl; Exporte Web und Windows; Pegel und Schleifenuebergaenge gemessen.
+
 **v0.61 - 2026-11-14: Spielmenue, Metall-Schritte, ruhigere Landung**
 
 - Spielmenue mit Esc: Continue (oder Esc), Settings mit Lautstaerke (gesamt, Effekte, Umgebung, Musik; gespeichert in `user://settings.cfg`), Quit mit Nachfrage zum ungespeicherten Fortschritt, dann Titelbildschirm.

@@ -1,0 +1,8 @@
+{
+	"1": {"name": "Time Shifter", "file": "music_01_time_shifter", "volume_db": -4.0},
+	"2": {"name": "Pizza on the Line", "file": "music_02_pizza_on_the_line", "volume_db": -4.0},
+	"3": {"name": "Tinkering", "file": "music_03_tinkering", "volume_db": -6.0},
+	"4": {"name": "Clockwork Lab", "file": "music_04_clockwork_lab", "volume_db": -6.0},
+	"5": {"name": "Quantum Climb", "file": "music_05_quantum_climb", "volume_db": -6.0},
+	"6": {"name": "Going Down (with Pizza)", "file": "music_06_going_down", "volume_db": -4.0}
+}

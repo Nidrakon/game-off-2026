@@ -49,3 +49,4 @@ func _set_open(open: bool) -> void:
 		Sound.play("panel_open" if open else "panel_close")
 	visible = open
 	get_tree().paused = open
+	Sound.set_music_muffled(open)

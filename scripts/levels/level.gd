@@ -15,6 +15,10 @@ extends Node2D
 ## Kameragrenzen automatisch aus den Tiles von "Ground" setzen.
 @export var auto_camera_limits := true
 
+## Musik (Song-ID, Doku 1.7); Auto = passend zum Hintergrund-Thema
+## (Werkstatt 3, Fabrik/Chemie 4, Elektro/Magnet/Quanten 5).
+@export_enum("Auto:0", "1 Time Shifter:1", "2 Pizza on the Line:2", "3 Tinkering:3", "4 Clockwork Lab:4", "5 Quantum Climb:5", "6 Going Down:6") var music := 0
+
 @export_group("Hintergrund")
 ## Thema: Farbe der Rueckwand und Art der Silhouetten.
 @export var background_theme := BackgroundTheme.Kind.WORKSHOP:
@@ -42,6 +46,10 @@ var _background_queued := false
 ## Umgebungsgeraeusch je Hintergrund-Thema (data/sfx.json).
 ## Gruppe aller laufenden Level (z. B. fuer das Spielmenue).
 const GROUP := "level"
+const AUTO_MUSIC := {
+	BackgroundTheme.Kind.WORKSHOP: 3, BackgroundTheme.Kind.FACTORY: 4, BackgroundTheme.Kind.CHEMICAL: 4,
+	BackgroundTheme.Kind.ELECTRO: 5, BackgroundTheme.Kind.MAGNET: 5, BackgroundTheme.Kind.QUANTUM: 5,
+}
 const AMBIENT_IDS := {
 	BackgroundTheme.Kind.WORKSHOP: "ambient_workshop", BackgroundTheme.Kind.FACTORY: "ambient_factory",
 	BackgroundTheme.Kind.CHEMICAL: "ambient_chemical", BackgroundTheme.Kind.ELECTRO: "ambient_electro",
@@ -58,6 +66,12 @@ func _ready() -> void:
 		_fit_camera_to_ground()
 	SaveGame.on_level_started(scene_file_path)
 	Sound.play_ambient(AMBIENT_IDS[background_theme])
+	Sound.play_music(get_music_id())
+
+
+## Song-ID dieses Levels (Auto aufgeloest).
+func get_music_id() -> int:
+	return music if music > 0 else AUTO_MUSIC[background_theme]
 
 
 ## Thema anwenden: Rueckwand einfaerben, Silhouetten neu verteilen.

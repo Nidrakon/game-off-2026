@@ -65,6 +65,7 @@ func open() -> void:
 	visible = true
 	get_tree().paused = true
 	Sound.play("panel_open")
+	Sound.set_music_muffled(true)
 	_show_page(_main)
 	_continue.grab_focus()
 
@@ -76,6 +77,7 @@ func close() -> void:
 	visible = false
 	get_tree().paused = false
 	Sound.play("panel_close")
+	Sound.set_music_muffled(false)
 
 
 ## Seite anzeigen (fuer Tests auch von aussen).

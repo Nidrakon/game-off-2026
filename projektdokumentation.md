@@ -472,7 +472,21 @@ selben Massstab entstehen.
   und weich; Hintergrund-Ambient je Hintergrund-Thema.
 - Soundeffekte entstehen mit `tools/make_sfx.py` (reines Python, ohne
   Zusatzpakete; erzeugt alle WAVs in `audio/sfx/` neu: `python
-  tools/make_sfx.py`). Musik macht der Nutzer selbst (noch keine Songs).
+  tools/make_sfx.py`).
+- Musik entsteht mit `tools/make_music.py` (seit v0.62): laeuft im Python
+  von Blender (numpy und OGG-Vorbis-Encoder sind dort dabei): `blender -b
+  --factory-startup --python tools/make_music.py -- [IDs]`. Kleiner
+  Sequenzer mit Akkorden und Melodien als Text, Instrumente aus Obertoenen
+  und FM, Schlagzeug aus Rauschen, Hall per Faltung; alle Songs sind
+  nahtlose Schleifen (`audio/music/*.ogg`, 44,1 kHz Stereo, 112 kbit/s).
+  Eigene Songs des Nutzers: Datei nach `audio/music/` und Eintrag in
+  `data/music.json` aendern (ID bleibt).
+- Musik-Technik: `data/music.json` (ID -> Name, Datei, Lautstaerke);
+  `Sound.play_music(id)` mit Ueberblendung (gleicher Song laeuft weiter),
+  `Sound.stop_music()`. Titel = Song 1, Intro = 2, Level = Auswahl
+  "music" im Inspector des Levels (Auto = nach Hintergrund-Thema), Ende =
+  6. Bei offenem Spielmenue oder Time-Shifter-Bedienfeld klingt die Musik
+  gedaempft (Tiefpass auf dem Bus `Music`).
 - Technik: Autoload `Sfx` (`scripts/autoload/sfx.gd`) mit Tabelle
   `data/sfx.json` (ID -> Dateien, Lautstaerke, Tonhoehen-Streuung,
   Schleife, Bus). Busse `SFX`, `Ambient`, `Music`
@@ -491,7 +505,12 @@ selben Massstab entstehen.
 
   | ID | Name | Datei | Wo | Charakter |
   | --- | --- | --- | --- | --- |
-  | 1 | [Name] | `music_[...]` | [z. B. Titel, Hauptmenue] | [Tonart, Tempo, Stimmung] |
+  | 1 | Time Shifter | `music_01_time_shifter.ogg` | Titelbildschirm | c-Moll, 100 BPM, tickendes Arpeggio, geheimnisvoll-heldenhaft, 77 s |
+  | 2 | Pizza on the Line | `music_02_pizza_on_the_line.ogg` | Intro-Comic | F-Dur, 112 BPM, huepfend, verspielt, 34 s |
+  | 3 | Tinkering | `music_03_tinkering.ogg` | Level mit Thema Werkstatt | G-Mixolydisch, 92 BPM, gemuetlich, Marimba, Metall-Klonk als Backbeat, 84 s |
+  | 4 | Clockwork Lab | `music_04_clockwork_lab.ogg` | Themen Fabrik, Chemie | d-Dorisch, 104 BPM, Uhrwerk-Tick-Tack, treibend, 74 s |
+  | 5 | Quantum Climb | `music_05_quantum_climb.ogg` | Themen Elektro, Magnet, Quanten | a-Moll, 120 BPM, Synthwave, pumpend, 64 s |
+  | 6 | Going Down (with Pizza) | `music_06_going_down.ogg` | Ende und Abspann (Fahrstuhl) | B-Dur, Bossa nova, 120 BPM, Fahrstuhlmusik, 64 s |
 
 - Soundeffekte und wo sie klingen (IDs aus `data/sfx.json`):
   - Professor: `step` (3 Varianten, hohles Metallrohr, beim Aufsetzen des
@@ -541,6 +560,22 @@ Repo, siehe 1.12).
 | Skript | Aufgabe | Aufruf |
 | --- | --- | --- |
 | `check_palette.gd` | Prueft alle PNGs in `graphics/` auf Farben ausserhalb von Resurrect 64 (Rueckgabe 0 = OK) | `godot --headless --path . --script tools/check_palette.gd` (Konsolenfassung von Godot) |
+| `run_tests.sh` | Fuehrt alle automatischen Tests aus `tests/` headless aus (optional danach Exporte); sichert echten Spielstand und Einstellungen und schreibt sie zurueck, falls ein Test sie aendert | `GODOT=<Godot-Konsole> bash tools/run_tests.sh [export] [test_name ...]` |
+| `make_sfx.py` | Erzeugt alle Soundeffekte (`audio/sfx/`) | `python tools/make_sfx.py [name ...]` |
+| `make_music.py` | Erzeugt alle Songs (`audio/music/`), laeuft in Blender | `blender -b --factory-startup --python tools/make_music.py -- [IDs]` |
+
+**Automatische Tests (seit v0.62 im Repo, Ordner `tests/`)**
+
+- Jeder Test ist ein Skript `tests/test_*.gd` (`extends SceneTree`), gibt
+  je Pruefung `PASS`/`FAIL` und am Ende `Fehler: N` aus. Tests setzen immer
+  `SaveGame.test_mode = true` und benutzen nur Test-Dateien
+  (`savegame_test.json`, `settings_test.cfg`), nie den echten Spielstand.
+- Der Ordner ist vom Export ausgeschlossen (`exclude_filter` in
+  `export_presets.cfg`).
+- Hintergrund: Bis v0.61 lagen die Tests nur im temporaeren Ordner der KI
+  und gingen am 22.11.2026 verloren; dabei loeschte eine veraltete
+  Testfassung den echten Spielstand. Deshalb liegen sie jetzt im Repo, und
+  der Runner schuetzt Spielstand und Einstellungen.
 
 **Aseprite-Sync (09.11.2026, Wunsch des Nutzers)**
 
@@ -2196,8 +2231,8 @@ gekuerzt, nicht der Puffer.
 
 **Meilenstein 4: Ton, Feinschliff, Abgabe (Ziel 28.11., Puffer bis 01.12.)**
 
-- [x] 24. Soundeffekte (1.7, `tools/make_sfx.py`, Autoload `Sfx`).
-  Musik macht der Nutzer selbst (offen).
+- [x] 24. Soundeffekte (1.7, `tools/make_sfx.py`, Autoload `Sfx`) und
+  Musik (sechs Songs, `tools/make_music.py`, v0.62).
 - [ ] 25. Feinschliff: Spielgefuehl (erledigt, 2.2), Effekte, Parallax
   (erledigt), Schwierigkeitskurve, Lektorat der Texte.
 - [ ] 26. Release: Exporte fuer Browser und Windows, Checklisten 6.1 bis 6.4,
@@ -2218,23 +2253,22 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 14.11.2026, Version v0.61**
+**Stand vom 22.11.2026, Version v0.62**
 
 - **Phase:** Meilenstein 4, Ton und Feinschliff.
-- **Zuletzt erledigt (Rueckmeldungen vom 14.11.2026):** Spielmenue mit Esc
-  (Continue, Settings mit Lautstaerke, Quit mit Nachfrage); Schritte klingen
-  nach hohlem Metallrohr und sitzen auf dem Aufsetzen des Fusses;
-  Menue-Klick wie mechanische Tastatur; Landung halb so stark, mehr Staub;
-  Blase auf Normaltempo unsichtbar; Kamera-Vorausblick und Zoom entfernt.
-- **Naechster Schritt:** Nutzer testet; danach eigene Level, Musik (Nutzer)
-  und Schwierigkeitskurve.
+- **Zuletzt erledigt:** Musik: sechs Songs mit fester ID (1.7) fuer Titel,
+  Intro, drei Level-Stimmungen und das Ende, erzeugt mit
+  `tools/make_music.py`; Auswahl je Level im Inspector, gedaempft bei
+  offenem Menue/Bedienfeld. Davor (v0.61): Spielmenue mit Lautstaerke.
+- **Naechster Schritt:** Nutzer hoert und testet; danach eigene Level und
+  Schwierigkeitskurve.
 - **Spielbar:** Titel -> Intro -> Level 1 (Werkstatt) -> Level 2 (Nutzer) ->
   Level 3 -> 4 -> 5 -> Ende mit Abspann. Sandbox ueber F1 oder F6.
-- **Noch zu testen (vom Nutzer):** Spielmenue und Lautstaerke, neuer
-  Schritt- und Klick-Sound, Landung und Staub, Blase nur bei langsam/schnell;
-  aus v0.60: uebrige Sounds und Ambient, Parallax, neue Comic-Bilder.
+- **Noch zu testen (vom Nutzer):** die sechs Songs (Klang, Lautstaerke
+  gegenueber Sounds/Ambient, Schleifenuebergang), Musik je Level;
+  aus v0.61: Spielmenue, Schritt- und Klick-Sound, Landung, Blase.
 - **Bekannte Probleme:** keine.
-- **Groesste offene Punkte:** echte Level (2.9), Musik.
+- **Groesste offene Punkte:** echte Level (2.9), Schwierigkeitskurve.
 
 ### 5.2 Versionsprotokoll
 

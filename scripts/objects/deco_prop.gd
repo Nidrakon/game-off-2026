@@ -20,6 +20,7 @@ const META_FILE := "res://graphics/sprites/deco/deco_workshop.json"
 @export var flip := false:
 	set(value):
 		flip = value
+		_update_bounds()
 		queue_redraw()
 @export_group("Animation")
 ## Dauer eines Bildes bei animierten Requisiten (Sekunden, bei normalem Tempo).
@@ -31,6 +32,16 @@ static var _meta := {}
 
 var _time := 0.0
 var _frame := 0
+@export_group("Time Shifter")
+## Vom Time Shifter beeinflusst? Aus = laeuft immer im normalen Tempo, auch
+## in der Zeitblase.
+@export var time_shifter := true:
+	set(value):
+		time_shifter = value
+		if is_node_ready():
+			if _time_affected:
+				_time_affected.active = value
+
 var _time_affected: TimeAffected
 
 
@@ -40,6 +51,7 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		_time_affected = TimeAffected.new()
 		add_child(_time_affected)
+		_time_affected.active = time_shifter
 	_update_bounds()
 
 
@@ -55,6 +67,8 @@ func _update_bounds() -> void:
 	if _time_affected:
 		var info := get_info()
 		_time_affected.bounds = Rect2(-info.w * 0.5, -info.h, info.w, info.h)
+		# Pixelgenau: sichtbare Pixel des ersten Bilds im Atlas.
+		_time_affected.set_pixel_source(TEXTURE, Rect2(info.x, info.y, info.w, info.h), Vector2(-floorf(info.w * 0.5), -info.h), flip)
 
 
 func _process(delta: float) -> void:

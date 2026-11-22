@@ -1,5 +1,6 @@
 extends AnimatableBody2D
-## Projektil (Doku 2.4): fliegt waagrecht, bis es auf ein Hindernis trifft,
+## Projektil (Doku 2.4): fliegt geradeaus (waagrecht oder, vom gedrehten
+## Werfer, in dessen Richtung, z. B. senkrecht), bis es auf ein Hindernis trifft,
 ## und verschwindet dann. Oben kann der Professor stehen und mitfliegen, die
 ## Seiten sind toedlich (Kind-Node SideHazard). In der Zeitblase fliegt es
 ## langsamer oder schneller. Wird vom Werfer (projectile_launcher.gd) erzeugt.
@@ -8,6 +9,10 @@ extends AnimatableBody2D
 ## Nach dem Verlassen der Oberseite ist die Seite so lange noch ungefaehrlich
 ## (Sekunden). Sonst stirbt man schon beim Herunterlaufen an der Kante.
 const RIDE_GRACE_TIME := 0.15
+## Gefahrenzone einer nicht waagrecht fliegenden Rakete (z. B. von der Decke):
+## rundum toedlich und an jeder Seite so viel groesser als der Koerper (Pixel).
+## Dann passt die Figur nicht mehr zwischen zwei dicht fallende Raketen.
+const VERTICAL_HAZARD_MARGIN := 2.0
 
 ## Flugrichtung: 1 = nach rechts, -1 = nach links.
 var direction := 1.0
@@ -18,6 +23,9 @@ var max_distance := 4000.0
 ## Haelt den Strahl eines toedlichen Lasers auf (hinter dem Projektil ist er
 ## unterbrochen). Wird vom Werfer gesetzt.
 var blocks_laser := false
+## Vom Time Shifter beeinflusst? Wird vom Werfer gesetzt
+## (projectile_time_shifter).
+var time_shifter := true
 
 var _flown := 0.0
 var _ride_grace_left := 0.0
@@ -29,19 +37,30 @@ var _collision := KinematicCollision2D.new()
 
 
 func _ready() -> void:
+	_time.active = time_shifter
 	_sprite.flip_h = direction < 0.0
+	if not is_horizontal():
+		var body := ($Collision as CollisionShape2D).shape as RectangleShape2D
+		var hazard := RectangleShape2D.new()
+		hazard.size = body.size + Vector2.ONE * VERTICAL_HAZARD_MARGIN * 2.0
+		($SideHazard/Collision as CollisionShape2D).shape = hazard
 	Sound.loop("projectile_loop", self, _time)
+
+
+## Fliegt die Rakete waagrecht (nur dann kann man oben drauf mitfahren)?
+func is_horizontal() -> bool:
+	return absf(sin(rotation)) < 0.5
 
 
 ## Steht der Professor gerade oben drauf oder ist er eben erst herunter?
 func is_ridden_recently() -> bool:
-	return _ride_grace_left > 0.0
+	return _ride_grace_left > 0.0 and is_horizontal()
 
 
 func _physics_process(delta: float) -> void:
 	_update_ride_grace(delta)
 	# Die Zeit des Projektils laeuft mit dem Tempo aus der Zeitblase.
-	var motion := Vector2(direction * speed * _time.time_scale * delta, 0.0)
+	var motion := Vector2(direction * speed * _time.time_scale * delta, 0.0).rotated(rotation)
 	# Vorab pruefen, ob der naechste Schritt ein Hindernis trifft (Ebene 1).
 	if test_move(global_transform, motion, _collision):
 		# Das getroffene Objekt erfaehrt davon, falls es darauf reagiert
@@ -53,7 +72,7 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 		return
 	position += motion
-	_flown += absf(motion.x)
+	_flown += motion.length()
 	if _flown > max_distance:
 		queue_free()
 

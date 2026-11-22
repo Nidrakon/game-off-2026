@@ -77,10 +77,21 @@ var _flicker_left := 0.0
 var _flicker_bright := false
 var _hum: AudioStreamPlayer2D
 
+@export_group("Time Shifter")
+## Vom Time Shifter beeinflusst? Aus = laeuft immer im normalen Tempo, auch
+## in der Zeitblase.
+@export var time_shifter := true:
+	set(value):
+		time_shifter = value
+		if is_node_ready() and _time:
+			_time.active = value
+
 @onready var _time: TimeAffected = $TimeAffected
 
 
 func _ready() -> void:
+	if _time:
+		_time.active = time_shifter
 	# Die Form wird im Code erzeugt, damit jeder Laser seine eigene hat.
 	_shape = CollisionShape2D.new()
 	_shape.shape = SegmentShape2D.new()
@@ -251,7 +262,11 @@ func _update_shape() -> void:
 	var time := get_node_or_null("TimeAffected") as TimeAffected
 	if time != null:
 		var area := Rect2(Vector2.ZERO, Vector2.ZERO).expand(beam_end)
-		time.bounds = area.grow(4.0)
+		time.bounds = area.grow(2.5)
+		# Pixelgenau: Streifen so breit wie der gezeichnete Strahl (5 px).
+		var side := beam_end.normalized().orthogonal() * 2.5 if beam_end != Vector2.ZERO else Vector2.ZERO
+		if not Engine.is_editor_hint():
+			time.custom_polygon = PackedVector2Array([side, beam_end + side, beam_end - side, -side])
 
 
 func _draw() -> void:

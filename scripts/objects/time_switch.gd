@@ -47,11 +47,22 @@ const COLOR_HAND := Color("2e222f")
 var _time_left := 0.0
 var _ticking: AudioStreamPlayer2D
 
+@export_group("Time Shifter")
+## Vom Time Shifter beeinflusst? Aus = laeuft immer im normalen Tempo, auch
+## in der Zeitblase.
+@export var time_shifter := true:
+	set(value):
+		time_shifter = value
+		if is_node_ready() and _time:
+			_time.active = value
+
 @onready var _time: TimeAffected = $TimeAffected
 @onready var _dial: Node2D = $Dial
 
 
 func _ready() -> void:
+	if _time:
+		_time.active = time_shifter
 	_dial.draw.connect(_draw_dial)
 	if not Engine.is_editor_hint() and autostart:
 		_start()

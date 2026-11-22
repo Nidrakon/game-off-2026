@@ -33,10 +33,21 @@ const COLOR_FADE := Color("9babb2")
 var _time := 0.0
 var _was_puffing := false
 
+@export_group("Time Shifter")
+## Vom Time Shifter beeinflusst? Aus = laeuft immer im normalen Tempo, auch
+## in der Zeitblase.
+@export var time_shifter := true:
+	set(value):
+		time_shifter = value
+		if is_node_ready() and _time_affected:
+			_time_affected.active = value
+
 @onready var _time_affected: TimeAffected = $TimeAffected
 
 
 func _ready() -> void:
+	if _time_affected:
+		_time_affected.active = time_shifter
 	_time = start_offset
 
 

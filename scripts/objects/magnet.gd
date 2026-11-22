@@ -70,6 +70,15 @@ const COLOR_FIELD_DARK := Color("4d9be6")
 var _cycle := 0.0
 var _flicker := 0.0
 var _on := false
+@export_group("Time Shifter")
+## Vom Time Shifter beeinflusst? Aus = laeuft immer im normalen Tempo, auch
+## in der Zeitblase.
+@export var time_shifter := true:
+	set(value):
+		time_shifter = value
+		if is_node_ready() and _time:
+			_time.active = value
+
 var _time: TimeAffected
 var _shape: CollisionShape2D
 var _hum: AudioStreamPlayer2D
@@ -89,6 +98,8 @@ func _ready() -> void:
 	_time = TimeAffected.new()
 	_time.bounds = Rect2(-_width() * 0.5, 0, _width(), FRAME.y)
 	add_child(_time)
+	if _time:
+		_time.active = time_shifter
 	_cycle = fposmod(start_offset, on_time + off_time)
 	_on = _compute_on()
 

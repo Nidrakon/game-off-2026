@@ -22,10 +22,21 @@ var _closed_position: Vector2
 var _progress := 0.0
 var _target := 0.0
 
+@export_group("Time Shifter")
+## Vom Time Shifter beeinflusst? Aus = laeuft immer im normalen Tempo, auch
+## in der Zeitblase.
+@export var time_shifter := true:
+	set(value):
+		time_shifter = value
+		if is_node_ready() and _time:
+			_time.active = value
+
 @onready var _time: TimeAffected = $TimeAffected
 
 
 func _ready() -> void:
+	if _time:
+		_time.active = time_shifter
 	_closed_position = position
 	if start_open:
 		_progress = 1.0

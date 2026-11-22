@@ -6,6 +6,8 @@ extends StaticBody2D
 ## Signal-Empfaenger (Doku 2.4): activate(), deactivate(), toggle().
 ## Der Node liegt in der Mitte des Werfers. Die Werte gehoeren zum Level und
 ## werden je Werfer im Inspector gesetzt.
+## Drehbar (seit v0.63): Ein gedrehter Werfer schiesst in seine Richtung, z. B.
+## um 90 Grad gedreht von der Decke senkrecht nach unten.
 
 enum Direction { RIGHT, LEFT }
 
@@ -46,12 +48,26 @@ var _charge_time := 0.0
 # Zuletzt gezeichnete Fuellhoehe in Pixeln (nur neu zeichnen, wenn sie sich aendert).
 var _bar_pixels := -1
 
+@export_group("Time Shifter")
+## Vom Time Shifter beeinflusst? Aus = laeuft immer im normalen Tempo, auch
+## in der Zeitblase.
+@export var time_shifter := true:
+	set(value):
+		time_shifter = value
+		if is_node_ready() and _time:
+			_time.active = value
+## Werden die Raketen dieses Werfers vom Time Shifter beeinflusst? (getrennt
+## vom Werfer: z. B. Werfer-Takt fest, Raketen bremsbar)
+@export var projectile_time_shifter := true
+
 @onready var _time: TimeAffected = $TimeAffected
 @onready var _sprite: Sprite2D = $Sprite
 @onready var _bar: Node2D = $ChargeBar
 
 
 func _ready() -> void:
+	if _time:
+		_time.active = time_shifter
 	_sprite.flip_h = direction == Direction.LEFT
 	_time_left = first_shot_delay
 	_charge_time = first_shot_delay
@@ -98,6 +114,15 @@ func _update_bar() -> void:
 		_bar.queue_redraw()
 
 
+## Wohin die Projektile kommen: neben den Werfer, sonst (liegt er z. B. unter
+## einem einfachen Node ohne Position) in den naechsten Node2D darueber.
+func _projectile_parent() -> Node2D:
+	var node := get_parent()
+	while node != null and not (node is Node2D):
+		node = node.get_parent()
+	return node if node else get_tree().current_scene as Node2D
+
+
 func _draw_bar() -> void:
 	var pixels := int(get_charge() * BAR_RECT.size.y)
 	if pixels <= 0:
@@ -117,14 +142,17 @@ func _fire() -> void:
 	var sign_x := -1.0 if direction == Direction.LEFT else 1.0
 	var projectile := PROJECTILE_SCENE.instantiate()
 	projectile.direction = sign_x
+	projectile.rotation = global_rotation
+	projectile.time_shifter = projectile_time_shifter
 	projectile.speed = projectile_speed
 	projectile.max_distance = max_distance
 	projectile.blocks_laser = projectiles_block_laser
 	# Position VOR dem Einhaengen setzen: Ein AnimatableBody2D, das schon im
 	# Level haengt, uebernimmt eine neue Position erst im naechsten
 	# Physik-Schritt. Dazwischen stuende es fuer ein Bild bei (0, 0).
-	var parent := get_parent() as Node2D
-	projectile.position = parent.to_local(global_position + Vector2(sign_x * MUZZLE_DISTANCE, 0.0))
+	var parent := _projectile_parent()
+	var muzzle := Vector2(sign_x * MUZZLE_DISTANCE, 0.0).rotated(global_rotation)
+	projectile.position = parent.to_local(global_position + muzzle)
 	# Neben den Werfer in den Level haengen: Der Werfer bleibt davon unberuehrt.
 	parent.add_child(projectile)
 	projectile.add_collision_exception_with(self)

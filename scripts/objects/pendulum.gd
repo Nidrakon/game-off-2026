@@ -55,10 +55,21 @@ var _angle := 0.0
 
 @onready var _weight: Area2D = $Weight
 @onready var _sprite: Sprite2D = $Sprite
+@export_group("Time Shifter")
+## Vom Time Shifter beeinflusst? Aus = laeuft immer im normalen Tempo, auch
+## in der Zeitblase.
+@export var time_shifter := true:
+	set(value):
+		time_shifter = value
+		if is_node_ready() and _time:
+			_time.active = value
+
 @onready var _time: TimeAffected = $TimeAffected
 
 
 func _ready() -> void:
+	if _time:
+		_time.active = time_shifter
 	_reset_motion()
 
 

@@ -227,6 +227,25 @@ func overlaps_rect(global_rect: Rect2) -> bool:
 	return not Geometry2D.intersect_polygons(get_local_polygon(), rect_poly).is_empty()
 
 
+## Beruehrt das Polygon (in Weltkoordinaten, z. B. Pixel-Umriss eines Objekts)
+## die Blase? Genau: erst wenn sich Umriss und Blase ueberschneiden (oder eins
+## ganz im anderen liegt).
+func overlaps_polygon(global_poly: PackedVector2Array) -> bool:
+	if global_poly.size() < 3:
+		return false
+	var center := global_position
+	var box := Rect2(global_poly[0], Vector2.ZERO)
+	for p in global_poly:
+		box = box.expand(p)
+	if center.clamp(box.position, box.end).distance_to(center) > get_front_length():
+		return false
+	var local := PackedVector2Array()
+	local.resize(global_poly.size())
+	for i in global_poly.size():
+		local[i] = global_poly[i] - center
+	return not Geometry2D.intersect_polygons(get_local_polygon(), local).is_empty()
+
+
 func _draw() -> void:
 	# Seit 14.11.2026 zeigt der Shader die Form; Rand und Flaeche nur, wenn
 	# in den Einstellungen eingeschaltet (oder ohne Shader).

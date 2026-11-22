@@ -1116,6 +1116,18 @@ Formregler erlauben, gezielt nur einzelne Objekte zu erfassen.
   Blase beruehrt (Rechteck gegen Kreis bzw. seit Schritt 13 Ei, rein
   rechnerisch, ohne Physik-Ebene), und stellt `time_scale` bereit. Das
   Objekt rechnet mit `delta * time_scale`.
+- **Pixelgenau (seit v0.63, Wunsch des Nutzers):** Die Blase wirkt erst, wenn
+  sie die sichtbaren Pixel eines Objekts beruehrt. `TimeAffected` holt den
+  Umriss aus den nicht transparenten Pixeln des Sprites (Geschwister-Node
+  "Sprite", aktuelles Bild, mitgedreht und gespiegelt; Requisiten aus dem
+  Atlas), der Laser nutzt einen 5 px breiten Streifen entlang des Strahls,
+  Magnet und Dampf ihr gezeichnetes Rechteck (mitgedreht). Die Blase prueft
+  Polygon gegen Polygon (`TimeBubble.overlaps_polygon`).
+- **Schalter je Baustein (seit v0.63, Wunsch des Nutzers):** Jeder
+  Zeit-Baustein hat im Inspector die Gruppe "Time Shifter" mit
+  `time_shifter` (aus = laeuft immer im normalen Tempo). Beim
+  Projektil-Werfer getrennt: `time_shifter` (Takt des Werfers) und
+  `projectile_time_shifter` (seine Raketen). Technisch: `TimeAffected.active`.
 - Markierung: Beeinflusste Objekte bekommen einen 1-px-Rahmen in der Farbe
   der Stufe (Palettenfarbe, nicht halbtransparent). **Nur zum Testen**
   (festgelegt am 09.11.2026): Standard aus, einschaltbar im F1-Menue
@@ -1189,6 +1201,13 @@ Offene Punkte:
   eines AnimatableBody2D **vor** `add_child()` setzen. Im Baum uebernimmt er
   eine neue Position erst im naechsten Physik-Schritt; vorher stand das
   Projektil fuer ein Bild bei (0, 0) (links oben im Level).
+- **Drehbar (seit v0.63):** Ein gedrehter Werfer schiesst in seine Richtung
+  (z. B. 90 Grad gedreht: von der Decke senkrecht nach unten); die Rakete
+  fliegt mitgedreht. Nicht waagrecht fliegende Raketen sind **rundum
+  toedlich** (Gefahrenzone 2 px groesser als der Koerper, kein Mitfahren),
+  damit man nicht zwischen zwei dicht fallenden Raketen ueberlebt. Werfer
+  unter einem einfachen Node (ohne Position) haengen ihre Raketen in den
+  naechsten Node2D darueber.
 - **Projektil-Werfer:** `scenes/objects/projectile_launcher.tscn` (32 x 48,
   fest, Ebene 1). Im Inspector je Werfer: `direction` (rechts/links),
   `fire_interval` (Standard 4 s), `first_shot_delay` (Standard 1 s, zum
@@ -1813,10 +1832,18 @@ Ein gefuehrtes Tutorial mit langsam steigender Schwierigkeit:
    E erscheint die Sprechblase zur geroesteten Keycard.
 3. **Springen:** Vor der ersten Sprungstelle steht an der Wand Leertaste mit
    "Jump".
-4. **Time Shifter:** Hinweis Shift halten fuer das Bedienfeld, dann Mausrad
-   bzw. Maus zum Einstellen der Zeit.
-5. **Erstes Pflichtraetsel:** ein einfaches Raetsel, das nur mit dem Time
-   Shifter loesbar ist. Der Nutzer entwirft es selbst.
+4. **Time Shifter:** seit v0.63 nicht mehr in der Werkstatt, sondern in
+   Level 2 (siehe unten), wo man ihn zum ersten Mal braucht.
+5. **Erstes Pflichtraetsel = Level 2 (Raketenregen, vom Nutzer, seit
+   v0.63 direkt nach der Werkstatt; frueher `level_06`, mit dem alten
+   `level_02` getauscht):** 16 Werfer an der Decke (alle 48 px, um 90 Grad
+   gedreht) schiessen gleichzeitig nach unten, Takt 4,2 s. Hinweise Shift
+   (Bedienfeld) und Mausrad (Zeit) ueber der Klonstation. Loesung:
+   losrennen, sobald eine Welle aufschlaegt, gleich auf langsam schalten;
+   die Blase bremst die naechste Welle vor der Figur gerade lange genug.
+   Ohne Blase unmoeglich (Fenster zu kurz). Der Takt von 4,2 s ist per
+   Simulation gewaehlt (bei 4,0 s mit Blase nur extrem knapp, ab etwa 4,5 s
+   ohne Blase schaffbar); Test `tests/test_level02.gd`.
 
 **Baustein Wandhinweis (umgesetzt in Schritt 16a):** Objekt, das der
 Nutzer per Drag-and-drop ins Level zieht (`scenes/objects/wall_hint.tscn`,
@@ -2253,21 +2280,23 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 22.11.2026, Version v0.62**
+**Stand vom 22.11.2026, Version v0.63**
 
-- **Phase:** Meilenstein 4, Ton und Feinschliff.
-- **Zuletzt erledigt:** Musik: sechs Songs mit fester ID (1.7) fuer Titel,
-  Intro, drei Level-Stimmungen und das Ende, erzeugt mit
-  `tools/make_music.py`; Auswahl je Level im Inspector, gedaempft bei
-  offenem Menue/Bedienfeld. Davor (v0.61): Spielmenue mit Lautstaerke.
-- **Naechster Schritt:** Nutzer hoert und testet; danach eigene Level und
-  Schwierigkeitskurve.
-- **Spielbar:** Titel -> Intro -> Level 1 (Werkstatt) -> Level 2 (Nutzer) ->
-  Level 3 -> 4 -> 5 -> Ende mit Abspann. Sandbox ueber F1 oder F6.
-- **Noch zu testen (vom Nutzer):** die sechs Songs (Klang, Lautstaerke
-  gegenueber Sounds/Ambient, Schleifenuebergang), Musik je Level;
-  aus v0.61: Spielmenue, Schritt- und Klick-Sound, Landung, Blase.
-- **Bekannte Probleme:** keine.
+- **Phase:** Meilenstein 4, Ton und Feinschliff; eigene Level des Nutzers.
+- **Zuletzt erledigt:** Level 2 = Raketenregen des Nutzers direkt nach der
+  Werkstatt, mit Shift-Erklaerung; Werfer drehbar, senkrechte Raketen
+  rundum toedlich; Zeitblase wirkt pixelgenau; Schalter `time_shifter` je
+  Baustein (Werfer und Raketen getrennt). Davor (v0.62): Musik.
+- **Naechster Schritt:** Nutzer testet; weitere eigene Level (6 bis 8),
+  Schwierigkeitskurve; ggf. verlorene automatische Tests neu schreiben.
+- **Spielbar:** Titel -> Intro -> Level 1 (Werkstatt) -> Level 2
+  (Raketenregen) -> 3 -> 4 -> 5 -> 6 (Plattform/Magnet, vorher Level 2) ->
+  7 -> 8 -> Ende. Sandbox ueber F1 oder F6.
+- **Noch zu testen (vom Nutzer):** Level 2 (Schwierigkeit, Takt 4,2 s,
+  Lage der Hinweise), pixelgenaue Blase bei allen Bausteinen, Schalter
+  `time_shifter`; aus v0.62: Musik.
+- **Bekannte Probleme:** Die Hinweisschilder in Level 2 ragen etwas in die
+  erste Raketenspalte (links ist nur gut 90 px Platz).
 - **Groesste offene Punkte:** echte Level (2.9), Schwierigkeitskurve.
 
 ### 5.2 Versionsprotokoll

@@ -51,6 +51,14 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.63 - 2026-11-22: Raketenregen als Level 2, pixelgenaue Zeitblase, Zeit-Schalter**
+
+- Level des Nutzers (frueher `level_06`, Raketenregen) ist jetzt Level 2 direkt nach der Werkstatt (Tausch mit dem alten `level_02`, das jetzt `level_06` ist). Die Shift- und Mausrad-Hinweise sind aus der Werkstatt hierher gewandert. Werfer-Takt 4,2 s (vorher 4 s): ohne Zeitblase unmoeglich, mit langsamer Zeit schaffbar (per Simulation geprueft).
+- Werfer sind drehbar und schiessen in ihre Richtung (von der Decke nach unten); vorher stuerzte Level 6 beim ersten Schuss ab (Werfer unter einem einfachen Node) und Raketen flogen trotz Drehung seitlich. Senkrechte Raketen sind rundum toedlich und etwas groesser als ihr Koerper: kein Ueberleben mehr zwischen zwei Raketen.
+- Zeitblase wirkt pixelgenau: erst wenn sie die sichtbaren Pixel eines Objekts beruehrt (vorher ein ungedrehtes Rechteck).
+- Jeder Zeit-Baustein hat im Inspector den Schalter `time_shifter` (Gruppe "Time Shifter"); beim Werfer getrennt fuer Werfer und Raketen (`projectile_time_shifter`).
+- Geprueft: neue Tests `test_level02` und `test_time_affect`, alle Tests, Exporte Web und Windows.
+
 **v0.62 - 2026-11-22: Musik**
 
 - Sechs Songs mit fester ID: 1 Time Shifter (Titel), 2 Pizza on the Line (Intro), 3 Tinkering (Werkstatt), 4 Clockwork Lab (Fabrik/Chemie), 5 Quantum Climb (Elektro/Magnet/Quanten), 6 Going Down (Ende, Fahrstuhl-Bossa). Nahtlose OGG-Schleifen, erzeugt mit `tools/make_music.py` (laeuft in Blender).

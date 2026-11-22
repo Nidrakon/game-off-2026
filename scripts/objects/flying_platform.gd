@@ -44,10 +44,21 @@ var _phase := 0.0
 # Restzeit der Pause am Ende der Strecke.
 var _wait_left := 0.0
 
+@export_group("Time Shifter")
+## Vom Time Shifter beeinflusst? Aus = laeuft immer im normalen Tempo, auch
+## in der Zeitblase.
+@export var time_shifter := true:
+	set(value):
+		time_shifter = value
+		if is_node_ready() and _time:
+			_time.active = value
+
 @onready var _time: TimeAffected = $TimeAffected
 
 
 func _ready() -> void:
+	if _time:
+		_time.active = time_shifter
 	if Engine.is_editor_hint():
 		return
 	_start_position = position

@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="LevelOrder" format=3]
+[gd_resource type="Resource" script_class="LevelOrder" format=3 uid="uid://1iwrxewarg31"]
 
-[ext_resource type="Script" path="res://scripts/levels/level_order.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://pk5rhr1evhdt" path="res://scripts/levels/level_order.gd" id="1_script"]
 
 [resource]
 script = ExtResource("1_script")
-levels = Array[String](["res://scenes/levels/level_01.tscn", "res://scenes/levels/level_02.tscn", "res://scenes/levels/level_03.tscn", "res://scenes/levels/level_04.tscn", "res://scenes/levels/level_05.tscn"])
+levels = Array[String](["res://scenes/levels/level_01.tscn", "res://scenes/levels/level_02.tscn", "res://scenes/levels/level_03.tscn", "res://scenes/levels/level_04.tscn", "res://scenes/levels/level_05.tscn", "res://scenes/levels/level_06.tscn", "res://scenes/levels/level_07.tscn", "res://scenes/levels/level_08.tscn"])

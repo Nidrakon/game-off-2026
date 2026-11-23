@@ -30,7 +30,7 @@ rng = np.random.default_rng(2026)
 # --- Grundbausteine ------------------------------------------------------------------------
 
 NOTE_PC = {'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11}
-CHORD_TYPES = {'maj7': [0, 4, 7, 11], 'm7': [0, 3, 7, 10], 'm6': [0, 3, 7, 9], 'm': [0, 3, 7], '7': [0, 4, 7, 10], '': [0, 4, 7]}
+CHORD_TYPES = {'maj9': [0, 4, 7, 11, 14], 'm9': [0, 3, 7, 10, 14], '9': [0, 4, 7, 10, 14], 'maj7': [0, 4, 7, 11], 'm7': [0, 3, 7, 10], 'm6': [0, 3, 7, 9], 'm': [0, 3, 7], '7': [0, 4, 7, 10], '': [0, 4, 7]}
 
 
 def midi_of(name):
@@ -192,6 +192,33 @@ def inst_flute(f, dur, vel):
     return (s + breath) * e * vel
 
 
+def inst_lofi_keys(f, dur, vel):
+    """Lo-Fi-E-Piano: weicher als das Rhodes, leicht leiernd (Band)."""
+    e = env_adsr(dur, 0.006, 1.4, 0.25, 0.35)
+    n = len(e)
+    t = np.arange(n) / SR
+    ph = phase(f, n, (0.7, 0.0025, 0.01))
+    index = 0.9 * np.exp(-t / 0.18) + 0.2
+    s = np.sin(ph + index * np.sin(ph)) + 0.08 * np.sin(2 * ph) * np.exp(-t / 0.6)
+    return s * e * vel
+
+
+def inst_lofi_bass(f, dur, vel):
+    """Runder, dunkler Bass (fast nur Grundton)."""
+    e = env_adsr(dur, 0.008, 0.4, 0.7, 0.08)
+    n = len(e)
+    ks = harmonics_below(f, 1200, 5)
+    return partials(phase(f, n), n, ks, [1.0 / k ** 2.2 for k in ks]) * e * vel
+
+
+def inst_lofi_pluck(f, dur, vel):
+    """Gedaempfte Gitarre: kurz, dunkel."""
+    e = env_adsr(dur, 0.002, 0.25, 0.0, 0.06)
+    ks = harmonics_below(f, 4000, 10)
+    decays = [0.3 / (1 + 0.8 * (k - 1)) for k in ks]
+    return partials(phase(f, len(e)), len(e), ks, [1.0 / k for k in ks], decays) * e * vel
+
+
 # Schlagzeug (f wird ignoriert)
 def drum_kick(f, dur, vel):
     n = int(0.35 * SR)
@@ -243,6 +270,26 @@ def drum_tock(f, dur, vel):
     return (np.sin(2 * np.pi * 1350 * t) + 0.5 * np.sin(2 * np.pi * 2250 * t)) * np.exp(-t / 0.01) * vel
 
 
+def drum_lofi_kick(f, dur, vel):
+    """Weiche, runde Kick (Boom-Bap, leise)."""
+    n = int(0.4 * SR)
+    t = np.arange(n) / SR
+    fr = 50 + 45 * np.exp(-t / 0.04)
+    return np.sin(2 * np.pi * np.cumsum(fr) / SR) * np.exp(-t / 0.16) * vel
+
+
+def drum_lofi_snare(f, dur, vel):
+    """Dumpfe Snare mit langem Rauschen (wie vom Sampler)."""
+    n = int(0.35 * SR)
+    t = np.arange(n) / SR
+    body = np.sin(2 * np.pi * 180 * t) * np.exp(-t / 0.05) * 0.4
+    sn = hp(noise(n)) * np.exp(-t / 0.13) * 0.5
+    spec = np.fft.rfft(sn)
+    freqs = np.fft.rfftfreq(n, 1 / SR)
+    sn = np.fft.irfft(spec / (1 + (freqs / 3500.0) ** 2), n)
+    return (body + sn * 3.0) * vel
+
+
 def drum_clank(f, dur, vel):
     """Werkstatt: kurzer Schlag auf Metall."""
     n = int(0.4 * SR)
@@ -255,13 +302,15 @@ def drum_clank(f, dur, vel):
 
 # Pegelausgleich je Instrument (nach Messung der Spurpegel; Bass klingt sonst
 # zu dick, kurze Klicks gehen unter).
-TRIM = {'bass': 0.55, 'tick': 2.5, 'tock': 2.5, 'hat': 2.0, 'rim': 2.2, 'snare': 1.5, 'clank': 1.6}
+TRIM = {'bass': 0.55, 'lofi_bass': 0.5, 'lofi_snare': 2.2, 'tick': 2.5, 'tock': 2.5, 'hat': 2.0, 'rim': 2.2, 'snare': 1.5, 'clank': 1.6}
 
 INSTRUMENTS = {
     'lead': inst_lead, 'chip': inst_chip, 'pluck': inst_pluck, 'marimba': inst_marimba, 'vibes': inst_vibes,
     'rhodes': inst_rhodes, 'bass': inst_bass, 'pad': inst_pad, 'flute': inst_flute,
     'kick': drum_kick, 'snare': drum_snare, 'hat': drum_hat, 'shaker': drum_shaker, 'rim': drum_rim,
     'tick': drum_tick, 'tock': drum_tock, 'clank': drum_clank,
+    'lofi_keys': inst_lofi_keys, 'lofi_bass': inst_lofi_bass, 'lofi_pluck': inst_lofi_pluck,
+    'lofi_kick': drum_lofi_kick, 'lofi_snare': drum_lofi_snare,
 }
 
 
@@ -277,6 +326,14 @@ class Score:
         self.length = int(round(bars * 4 * self.beat * SR))
         self.swing = swing
         self.tracks = {}
+        # Lo-Fi (seit v0.64): Schlaege leicht ungenau (Schlaege), Hoehen
+        # gedaempft (Hz), Band-Leiern (Tonhoehe, Anteil), Vinyl-Knistern,
+        # Zielpegel des Masters (dB).
+        self.humanize = 0.0
+        self.lowpass = 0.0
+        self.wow = 0.0
+        self.crackle = 0.0
+        self.target_db = -19.0
 
     def track(self, name, inst, gain=1.0, pan=0.0, send=0.2, duck=0.0):
         self.tracks[name] = {'inst': inst, 'gain': gain, 'pan': pan, 'send': send, 'duck': duck, 'events': []}
@@ -284,6 +341,9 @@ class Score:
     def note(self, name, beat, midi, beats, vel=0.8):
         if abs(beat % 1.0 - 0.5) < 1e-6:
             beat += self.swing
+        if self.humanize:
+            beat += float(rng.normal(0.0, self.humanize))
+            vel *= 1.0 + float(rng.uniform(-0.15, 0.15))
         self.tracks[name]['events'].append((beat * self.beat, hz(midi) if midi else 0.0, beats * self.beat, vel))
 
     def melody(self, name, text, bar, transpose=0, vel=0.8):
@@ -366,7 +426,13 @@ class Score:
             mix += st
             send += st * tr['send']
         mix += reverb(send, L)
-        return master(mix)
+        if self.lowpass:
+            mix = lowpass_loop(mix, self.lowpass)
+        if self.wow:
+            mix = tape_wow(mix, self.wow, self.bars * 4 * self.beat)
+        if self.crackle:
+            mix += vinyl(L) * self.crackle
+        return master(mix, self.target_db)
 
 
 def reverb(x, L, rt=1.8):
@@ -386,6 +452,46 @@ def reverb(x, L, rt=1.8):
         full[:n_ir] = ir
         out[:, ch] = np.fft.irfft(np.fft.rfft(x[:, ch]) * np.fft.rfft(full), L)
     return out * 0.6
+
+
+def lowpass_loop(x, cutoff):
+    """Sanfter Tiefpass (ringfoermig per FFT, also schleifentauglich)."""
+    out = np.zeros_like(x)
+    freqs = np.fft.rfftfreq(len(x), 1 / SR)
+    gain = 1 / np.sqrt(1 + (freqs / cutoff) ** 4)
+    for ch in range(x.shape[1]):
+        out[:, ch] = np.fft.irfft(np.fft.rfft(x[:, ch]) * gain, len(x))
+    return out
+
+
+def tape_wow(x, depth, loop_seconds):
+    """Band-Leiern: langsam schwankende Tonhoehe. Ganze Schwingungen je
+    Schleife, damit der Uebergang nahtlos bleibt."""
+    L = len(x)
+    cycles = max(1, round(loop_seconds * 0.45))
+    w = 2 * np.pi * cycles / L
+    amp = depth / w  # Tonhoehen-Abweichung "depth" -> Verzoegerung in Samples
+    idx = np.arange(L) - amp * np.sin(w * np.arange(L))
+    out = np.zeros_like(x)
+    pos = np.arange(L)
+    for ch in range(x.shape[1]):
+        ext = np.concatenate([x[-64:, ch], x[:, ch], x[:64, ch]])
+        out[:, ch] = np.interp(idx + 64, np.arange(L + 128), ext)
+    return out
+
+
+def vinyl(L):
+    """Plattenknistern: leises Rauschen plus einzelne Knackser (Stereo)."""
+    out = np.zeros((L, 2))
+    for ch in range(2):
+        hiss = hp(noise(L)) * 0.012
+        clicks = np.zeros(L)
+        pos = rng.integers(0, L, int(L / SR * 9))
+        clicks[pos] = rng.uniform(-1, 1, len(pos)) * rng.uniform(0.2, 1.0, len(pos))
+        k = np.exp(-np.arange(int(0.002 * SR)) / (0.0004 * SR))
+        clicks = np.convolve(clicks, k)[:L] * 0.25
+        out[:, ch] = lowpass_loop((hiss + clicks)[:, None], 6000)[:, 0]
+    return out
 
 
 def master(mix, target_rms_db=-19.0):
@@ -595,6 +701,81 @@ def song_elevator():
     return s
 
 
+def song_coffee():
+    """Song 7 "Coffee Break Circuits": Lo-Fi, C-Dur, 80 BPM, entspannt
+    tuefteln (E-Piano, Boom-Bap, Vinyl)."""
+    s = Score(80, 32, swing=0.09)
+    s.humanize = 0.012
+    s.lowpass = 5200
+    s.wow = 0.003
+    s.crackle = 1.0
+    s.target_db = -21.0
+    A = ['Fmaj9', 'Em7', 'Dm9', 'Cmaj9'] * 2
+    B = ['Am9', 'Dm9', 'G9', 'Cmaj9', 'Fmaj9', 'Em7', 'Dm9', 'G9']
+    ch = A + A + B + A
+    s.track('keys', 'lofi_keys', 0.36, -0.2, 0.35)
+    s.track('bass', 'lofi_bass', 0.9, 0.0, 0.05)
+    s.track('kick', 'lofi_kick', 0.8, 0.0, 0.05)
+    s.track('snare', 'lofi_snare', 0.5, 0.05, 0.3)
+    s.track('hat', 'hat', 0.28, 0.25, 0.1)
+    s.track('vibes', 'vibes', 0.65, 0.2, 0.45)
+    s.track('flute', 'flute', 0.5, 0.1, 0.5)
+    s.block('keys', ch, bars(1, 32), [[0, 1.5], [0, 2.5]], 1.3, 3, 0.5)
+    s.bass('bass', ch, bars(1, 32), [(0, 'r', 1.4), (1.5, 'r', 0.4), (2.5, '5', 0.9), (3.5, 'o', 0.4)])
+    s.drums('kick', 'x......x..x.....', bars(1, 32))
+    s.drums('snare', '....x.......x...', bars(5, 32))
+    s.drums('hat', 'x.o.x.o.x.o.x.oo', bars(1, 32))
+    a = ['A5:1.5 G5:0.5 E5:1 r:1', 'G5:1 E5:0.5 D5:0.5 B4:2', 'C5:1.5 D5:0.5 F5:1 E5:1', 'E5:3 r:1',
+         'A5:1 C6:1 B5:0.5 A5:0.5 G5:1', 'E5:2 G5:1 D5:1', 'F5:1.5 E5:0.5 D5:1 C5:1', 'B4:2 r:2']
+    b = ['E5:1 G5:1 B5:1 A5:1', 'F5:2 A5:1 C6:1', 'B5:1.5 A5:0.5 G5:1 F5:1', 'E5:2 r:1 G5:1',
+         'A5:1 G5:0.5 F5:0.5 E5:1 C5:1', 'D5:1 E5:1 G5:2', 'F5:1 E5:1 D5:1 C5:1', 'D5:2 B4:1 G4:1']
+    for i in range(8):
+        s.melody('vibes', a[i], 9 + i, vel=0.7)
+        s.melody('flute', b[i], 17 + i, vel=0.7)
+        s.melody('vibes', a[i], 25 + i, transpose=-12, vel=0.6)
+    return s
+
+
+def song_late_night():
+    """Song 8 "Late Night Lab": Lo-Fi, Es-Dur, 72 BPM, nachts im Labor
+    (gedaempfte Gitarre, E-Piano, Rimshot, Vinyl)."""
+    s = Score(72, 32, swing=0.1)
+    s.humanize = 0.014
+    s.lowpass = 4600
+    s.wow = 0.0035
+    s.crackle = 1.2
+    s.target_db = -21.0
+    A = ['Abmaj9', 'Gm7', 'Fm9', 'Bb9'] * 2
+    B = ['Cm9', 'Fm9', 'Bb9', 'Ebmaj9', 'Abmaj9', 'Gm7', 'Fm9', 'Bb9']
+    ch = A + A + B + A
+    s.track('keys', 'lofi_keys', 0.42, 0.2, 0.4)
+    s.track('guitar', 'lofi_pluck', 0.4, -0.3, 0.3)
+    s.track('bass', 'lofi_bass', 0.9, 0.0, 0.05)
+    s.track('kick', 'lofi_kick', 0.75, 0.0, 0.05)
+    s.track('rim', 'rim', 0.6, -0.15, 0.2)
+    s.track('snare', 'lofi_snare', 0.45, 0.05, 0.35)
+    s.track('hat', 'hat', 0.24, 0.3, 0.1)
+    s.track('flute', 'flute', 0.4, 0.1, 0.5)
+    s.track('vibes', 'vibes', 0.65, -0.1, 0.45)
+    s.block('keys', ch, bars(1, 32), [0], 3.6, 3, 0.4)
+    s.arp('guitar', ch, bars(5, 32), [0, 2, 1, 3, 4, 3, 1, 2], step=0.5, octave=3, vel=0.6, length=0.8)
+    s.bass('bass', ch, bars(1, 32), [(0, 'r', 1.8), (2.5, '5', 0.8), (3.5, 'r', 0.4)])
+    s.drums('kick', 'x.........x.....', bars(1, 32))
+    s.drums('rim', '....x.......x...', bars(1, 8))
+    s.drums('rim', '....x.......x...', bars(25, 32))
+    s.drums('snare', '....x.......x...', bars(9, 24))
+    s.drums('hat', 'x.x.x.x.x.x.x.x.', bars(5, 32))
+    a = ['C5:1.5 Bb4:0.5 G4:2', 'Bb4:1 D5:1 F5:2', 'Eb5:1 C5:1 Ab4:1 G4:1', 'F4:3 r:1',
+         'C5:1 Eb5:1 G5:1.5 F5:0.5', 'D5:2 Bb4:2', 'Ab4:1 C5:1 Eb5:1 D5:1', 'D5:2 r:2']
+    b = ['G5:2 Eb5:1 D5:1', 'C5:2 Ab4:2', 'D5:1 F5:1 Ab5:1 G5:1', 'G5:3 r:1',
+         'Eb5:1 G5:1 C6:1 Bb5:1', 'Bb5:2 F5:2', 'Ab5:1 G5:1 F5:1 Eb5:1', 'D5:2 F5:2']
+    for i in range(8):
+        s.melody('flute', a[i], 9 + i, vel=0.7)
+        s.melody('vibes', b[i], 17 + i, vel=0.7)
+        s.melody('flute', a[i], 25 + i, vel=0.55)
+    return s
+
+
 SONGS = [
     (1, 'time_shifter', song_title),
     (2, 'pizza_on_the_line', song_intro),
@@ -602,6 +783,8 @@ SONGS = [
     (4, 'clockwork_lab', song_clockwork),
     (5, 'quantum_climb', song_quantum),
     (6, 'going_down', song_elevator),
+    (7, 'coffee_break_circuits', song_coffee),
+    (8, 'late_night_lab', song_late_night),
 ]
 
 

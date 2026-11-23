@@ -51,6 +51,12 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.64 - 2026-11-23: Zwei Lo-Fi-Songs**
+
+- Song 7 "Coffee Break Circuits" (C-Dur, 80 BPM) und Song 8 "Late Night Lab" (Es-Dur, 72 BPM): entspannter Lo-Fi mit E-Piano-Akkorden (Septimen, Nonen), weichem Boom-Bap, gedaempften Hoehen, Band-Leiern und Vinyl-Knistern; nahtlose Schleifen.
+- Im Inspector des Levels waehlbar ("music" 7 bzw. 8); Auto-Musik fuer die Themen Chemie (7) und Magnet (8), vorher 4 und 5.
+- Geprueft: Pegel und Schleifenuebergaenge gemessen, alle Tests, Exporte Web und Windows.
+
 **v0.63 - 2026-11-22: Raketenregen als Level 2, pixelgenaue Zeitblase, Zeit-Schalter**
 
 - Level des Nutzers (frueher `level_06`, Raketenregen) ist jetzt Level 2 direkt nach der Werkstatt (Tausch mit dem alten `level_02`, das jetzt `level_06` ist). Die Shift- und Mausrad-Hinweise sind aus der Werkstatt hierher gewandert. Werfer-Takt 4,2 s (vorher 4 s): ohne Zeitblase unmoeglich, mit langsamer Zeit schaffbar (per Simulation geprueft).

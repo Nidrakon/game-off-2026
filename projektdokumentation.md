@@ -484,8 +484,14 @@ selben Massstab entstehen.
 - Musik-Technik: `data/music.json` (ID -> Name, Datei, Lautstaerke);
   `Sound.play_music(id)` mit Ueberblendung (gleicher Song laeuft weiter),
   `Sound.stop_music()`. Titel = Song 1, Intro = 2, Level = Auswahl
-  "music" im Inspector des Levels (Auto = nach Hintergrund-Thema), Ende =
-  6. Bei offenem Spielmenue oder Time-Shifter-Bedienfeld klingt die Musik
+  "music" im Inspector des Levels (Auto = nach Hintergrund-Thema: Werkstatt
+  3, Fabrik 4, Chemie 7, Elektro 5, Magnet 8, Quanten 5), Ende = 6.
+- Lo-Fi (seit v0.64): Der Generator kennt je Song `humanize` (Schlaege
+  leicht ungenau), `lowpass` (Hoehen gedaempft), `wow` (Band-Leiern, ganze
+  Schwingungen je Schleife), `crackle` (Vinyl-Knistern) und `target_db`.
+  Der Generator ist im Klang reproduzierbar; OGG-Dateien unterscheiden sich
+  beim Neuschreiben trotzdem in den Bytes (zufaellige Stream-Kennung). Nur
+  geaenderte Songs committen. Bei offenem Spielmenue oder Time-Shifter-Bedienfeld klingt die Musik
   gedaempft (Tiefpass auf dem Bus `Music`).
 - Technik: Autoload `Sfx` (`scripts/autoload/sfx.gd`) mit Tabelle
   `data/sfx.json` (ID -> Dateien, Lautstaerke, Tonhoehen-Streuung,
@@ -511,6 +517,8 @@ selben Massstab entstehen.
   | 4 | Clockwork Lab | `music_04_clockwork_lab.ogg` | Themen Fabrik, Chemie | d-Dorisch, 104 BPM, Uhrwerk-Tick-Tack, treibend, 74 s |
   | 5 | Quantum Climb | `music_05_quantum_climb.ogg` | Themen Elektro, Magnet, Quanten | a-Moll, 120 BPM, Synthwave, pumpend, 64 s |
   | 6 | Going Down (with Pizza) | `music_06_going_down.ogg` | Ende und Abspann (Fahrstuhl) | B-Dur, Bossa nova, 120 BPM, Fahrstuhlmusik, 64 s |
+  | 7 | Coffee Break Circuits | `music_07_coffee_break_circuits.ogg` | Thema Chemie (Auto) bzw. frei waehlbar | Lo-Fi, C-Dur, 80 BPM, E-Piano mit Septimen/Nonen, Boom-Bap, Vinyl, entspannt tuefteln, 96 s |
+  | 8 | Late Night Lab | `music_08_late_night_lab.ogg` | Thema Magnet (Auto) bzw. frei waehlbar | Lo-Fi, Es-Dur, 72 BPM, gedaempfte Gitarre, E-Piano, Rimshot, Vinyl, nachts im Labor, 107 s |
 
 - Soundeffekte und wo sie klingen (IDs aus `data/sfx.json`):
   - Professor: `step` (3 Varianten, hohles Metallrohr, beim Aufsetzen des
@@ -2280,10 +2288,11 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 22.11.2026, Version v0.63**
+**Stand vom 23.11.2026, Version v0.64**
 
 - **Phase:** Meilenstein 4, Ton und Feinschliff; eigene Level des Nutzers.
-- **Zuletzt erledigt:** Level 2 = Raketenregen des Nutzers direkt nach der
+- **Zuletzt erledigt:** zwei Lo-Fi-Songs (7 Coffee Break Circuits, 8 Late
+  Night Lab), im Level waehlbar. Davor (v0.63): Level 2 = Raketenregen des Nutzers direkt nach der
   Werkstatt, mit Shift-Erklaerung; Werfer drehbar, senkrechte Raketen
   rundum toedlich; Zeitblase wirkt pixelgenau; Schalter `time_shifter` je
   Baustein (Werfer und Raketen getrennt). Davor (v0.62): Musik.
@@ -2294,7 +2303,7 @@ gekuerzt, nicht der Puffer.
   7 -> 8 -> Ende. Sandbox ueber F1 oder F6.
 - **Noch zu testen (vom Nutzer):** Level 2 (Schwierigkeit, Takt 4,2 s,
   Lage der Hinweise), pixelgenaue Blase bei allen Bausteinen, Schalter
-  `time_shifter`; aus v0.62: Musik.
+  `time_shifter`; Lo-Fi-Songs 7 und 8; aus v0.62: Musik.
 - **Bekannte Probleme:** Die Hinweisschilder in Level 2 ragen etwas in die
   erste Raketenspalte (links ist nur gut 90 px Platz).
 - **Groesste offene Punkte:** echte Level (2.9), Schwierigkeitskurve.

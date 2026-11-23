@@ -12,7 +12,7 @@ func _initialize() -> void:
 	root.get_node("SaveGame").test_mode = true
 	var sfx = root.get_node("Sfx")
 	var table: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/music.json"))
-	check("Sechs Songs in der Tabelle", table.size() == 6, str(table.keys()))
+	check("Acht Songs in der Tabelle", table.size() == 8, str(table.keys()))
 	var bad := []
 	for id in table:
 		var s = load("res://audio/music/%s.ogg" % table[id].file)

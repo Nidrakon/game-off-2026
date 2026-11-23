@@ -36,7 +36,8 @@ func run_attempt(start_delay: float, slow_after: float) -> String:
 	var p = level.get_node("Professor")
 	var bubble = p.get_node("TimeBubble")
 	bubble.stage = 1
-	await create_timer(start_delay).timeout
+	# In Physik-Schritten warten (wie die Werfer zaehlen): reproduzierbar
+	for i in roundi(start_delay * 60.0): await physics_frame
 	Input.action_press("move_right")
 	var result := "timeout"
 	var t := 0.0

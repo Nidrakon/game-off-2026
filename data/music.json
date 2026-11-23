@@ -4,5 +4,7 @@
 	"3": {"name": "Tinkering", "file": "music_03_tinkering", "volume_db": -6.0},
 	"4": {"name": "Clockwork Lab", "file": "music_04_clockwork_lab", "volume_db": -6.0},
 	"5": {"name": "Quantum Climb", "file": "music_05_quantum_climb", "volume_db": -6.0},
-	"6": {"name": "Going Down (with Pizza)", "file": "music_06_going_down", "volume_db": -4.0}
+	"6": {"name": "Going Down (with Pizza)", "file": "music_06_going_down", "volume_db": -4.0},
+	"7": {"name": "Coffee Break Circuits", "file": "music_07_coffee_break_circuits", "volume_db": -4.0},
+	"8": {"name": "Late Night Lab", "file": "music_08_late_night_lab", "volume_db": -4.0}
 }

@@ -1917,7 +1917,8 @@ Bodenelemente in den Baukasten):**
   Kombination der vier Anschluesse (Enden mit Kappe, Gerade mit Ring, Ecken,
   T-Stuecke, Kreuzung mit Muffe). Terrain-Set "Seiten passend" mit zwei
   Terrains: "Rohr vorn (Kollision)" in Kupfer (Kollision in Rohrform, 10 px
-  dick, Ebene 1) und "Rohr hinten (Deko)" dunkel, ohne Kollision. Die
+  dick, Ebene 1; seit v0.67 auch an Muffen, Ecken und T-Stuecken nur 10 px,
+  damit man ohne Springen ueber Rohrkanten laeuft, Test `tests/test_pipes.gd`) und "Rohr hinten (Deko)" dunkel, ohne Kollision. Die
   Level-Vorlage hat die Ebenen `PipesBack` (hinter allem, z_index -5,
   Kollision aus) und `PipesFront`. Gemalt wird ueber die Mal-Knoepfe im
   Baukasten. Erzeugt per Skript; neu erzeugen statt von Hand aendern, bis
@@ -2033,15 +2034,17 @@ zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
    - Geteilte Szenen bauen sich Klick fuer Klick auf: Erst erscheint das
      linke Panel, beim naechsten Klick das rechte. Das linke Panel bleibt
      stehen, bis zur naechsten Szene weitergeklickt wird.
-   - Jedes Panel ist leicht animiert (kleine Schleife aus etwa 2 bis 3
-     Frames, z. B. Schweissfunken, wackelndes Telefon), kein richtiges
-     Video.
+   - **Standbilder (seit v0.67, Entscheidung des Nutzers, 26.11.2026):**
+     Die Panels sind nicht mehr animiert, damit der Stil einheitlich bleibt
+     (ersetzt die fruehere Schleife aus 2 bis 3 Frames). Beim Erscheinen
+     ploppen sie kurz auf.
    - Danach startet direkt das Spiel in der Werkstatt.
-   - **Zeichenstil (seit v0.60):** wie handgezeichnet: unruhige
-     Pinselrahmen, Schraffur in den Schatten, Papierkorn und eine
-     Tusche-Kontur um die Figuren; nur Palettenfarben. Die Panels liegen
-     als Aseprite-Dateien in `graphics/source/comic/` und koennen dort
-     weiter von Hand bemalt werden (Sync, siehe 1.8).
+   - **Zeichenstil (seit v0.67):** detaillierte Pixelart, erzeugt vom
+     Nutzer mit Retro Diffusion (ersetzt den handgezeichneten Stil von
+     v0.60). Schmaler Pinselrahmen: aussen 1 px Linie `625565`, darin 2 bis
+     3 px Tusche `2e222f`, abschnittsweise unruhig. Nur Palettenfarben. Die
+     Panels liegen als Aseprite-Dateien in `graphics/source/comic/` und
+     koennen dort weiter von Hand bemalt werden (Sync, siehe 1.8).
    - **Szenen:**
      1. *Pizza-Bestellung* (geteilt, Trennwand in der Mitte): Links
         telefoniert der Erfinder, Sprechblase mit Pizza-Emoji. Rechts nimmt
@@ -2061,9 +2064,9 @@ zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
      warum der Fahrstuhl nicht geht.
    - **Umgesetzt (Schritt 22, 13.11.2026):** `scenes/ui/intro.tscn`
      (Skript `scripts/ui/intro.gd`), erscheint nach New Game. Panels in
-     `graphics/intro/` (Platzhalter-Pixelart in Palettenfarben, halb so gross
-     gezeichnet und doppelt angezeigt; geteilte Panels 220 x 180, breites
-     Panel 450 x 180; 2 bis 3 Bilder je Panel, 0,28 s pro Bild). Ablauf in 7
+     `graphics/intro/` (halb so gross gezeichnet und doppelt angezeigt;
+     geteilte Panels 220 x 180, breites Panel 450 x 180; seit v0.67 ein Bild
+     je Panel, mehrere Bilder liefen mit 0,28 s pro Bild). Ablauf in 7
      Schritten: Szene 1 links, dann rechts; Szene 2 breit; Szene 3 links,
      dann rechts; Szene 4 erst rechts (Bote klingelt), dann links (Professor
      erschrickt), damit die Reihenfolge der Handlung stimmt. Weiter mit
@@ -2073,9 +2076,10 @@ zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
      Level der Reihenfolge.
    - **Aseprite-Quellen (14.11.2026, Wunsch des Nutzers):** Jedes Panel von
      Intro und Ende liegt als eigene Datei in `graphics/source/comic/`
-     (`intro_s1_left.aseprite` ... `ending_e3.aseprite`) mit drei Ebenen
-     "Hintergrund", "Figuren", "Effekte" und den Animationsbildern als
-     Frames (je 0,28 s). Alle elf Dateien stehen im Aseprite-Sync
+     (`intro_s1_left.aseprite` ... `ending_e3.aseprite`), seit v0.67 mit
+     drei Ebenen "Hintergrund" (Bild aus Retro Diffusion), "Effekte"
+     (Sprechblase in s1_left, sonst leer) und "Rahmen" (Pinselrahmen) und
+     einem Frame. Alle elf Dateien stehen im Aseprite-Sync
      (`data/aseprite_sync.cfg`, Eintraege ohne `frames` = nur Sheet): Beim
      Speichern in Aseprite wird das Sheet nach `graphics/intro/` bzw.
      `graphics/ending/` exportiert. Die Panelgroesse bleibt fest (geteilt

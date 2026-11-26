@@ -51,6 +51,18 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.67 - 2026-11-26: Neue Comic-Panels fuer Intro und Ende**
+
+- Alle elf Panels neu, erzeugt vom Nutzer mit Retro Diffusion; als Standbilder (Animationen verworfen, Entscheidung des Nutzers).
+- Fremde Farben fast unsichtbar auf Resurrect 64 gebracht; schmaler Pinselrahmen und Pizza-Sprechblase in Szene 1 als eigene Aseprite-Ebenen.
+- Originale und Referenzbilder in `graphics/source/comic/` (mit `.gdignore`); `check_palette.gd` ueberspringt solche Ordner.
+- Geprueft: Palette OK, alle Tests gruen, Bildaufnahmen von Intro und Ende.
+
+**v0.67 - 2026-11-26: Ueber Rohrkanten laufen**
+
+- Auf Rohren blieb man an Ecken, T-Stuecken, Kreuzungen und Kappen haengen: deren Kollision war 1 px dicker als die der geraden Stuecke. Jetzt ueberall 10 px, man laeuft ohne Springen drueber.
+- Neuer Test `test_pipes` (vorher haengen geblieben, jetzt durch). Alle Tests, Exporte Web und Windows.
+
 **v0.66 - 2026-11-26: Elektromagnet anziehen oder wegdruecken**
 
 - Parameter `mode` (Attract/Repel) mit Erklaerung im Inspector; `lift_speed` und `lift_accel` nur noch positiv, die Richtung kommt allein aus `mode`.

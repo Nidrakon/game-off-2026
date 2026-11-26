@@ -3,5 +3,7 @@
 	"hint_jump": "Jump",
 	"hint_interact": "Interact",
 	"hint_time_shifter": "Hold: Time Shifter",
-	"hint_time_wheel": "Change time"
+	"hint_time_wheel": "Change time",
+	"hint_time_slow": "Slow down time",
+	"hint_time_fast": "Speed up time"
 }

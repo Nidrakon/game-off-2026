@@ -8,6 +8,9 @@ extends Node2D
 @export var spawn_time := 0.5
 ## Wartezeit zwischen Tod und Neustart des Levels (Sekunden).
 @export var restart_delay := 0.7
+## Station sichtbar? Aus (z. B. Werkstatt, wo man nicht sterben kann): keine
+## Station, kein Strahl; der Professor steht einfach an dieser Stelle.
+@export var station_visible := true
 
 ## Farben des Klon-Strahls (Palette).
 const BEAM_COLORS := [Color("8fd3ff"), Color("ffffff"), Color("4d9be6")]
@@ -18,6 +21,7 @@ var _beam_left := 0.0
 
 
 func _ready() -> void:
+	visible = station_visible
 	# Erst nach dem Aufbau des ganzen Levels, damit der Professor sicher da ist.
 	_spawn_professor.call_deferred()
 
@@ -28,10 +32,11 @@ func _spawn_professor() -> void:
 		push_warning("Klonstation: kein Professor (Gruppe 'player') im Level.")
 		return
 	professor.global_position = global_position
-	professor.play_spawn(spawn_time)
-	Sound.play_at("spawn", global_position)
 	professor.died.connect(_on_professor_died)
-	_beam_left = spawn_time
+	if station_visible:
+		professor.play_spawn(spawn_time)
+		Sound.play_at("spawn", global_position)
+		_beam_left = spawn_time
 	# Kamera sofort auf den Professor setzen statt hinzugleiten.
 	var camera := get_viewport().get_camera_2d()
 	if camera and camera.has_method("snap_to_target"):

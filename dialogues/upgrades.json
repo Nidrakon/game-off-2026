@@ -7,5 +7,13 @@
 	"upgrade_shape": {
 		"title": "Shape cursor installed",
 		"hint": "Hold Shift and drag the cursor on the oscilloscope to stretch the time bubble."
+	},
+	"upgrade_time_shifter": {
+		"title": "Time Shifter repaired",
+		"hint": "Hold Shift to open it. Turn the wheel down to slow down time in the bubble."
+	},
+	"upgrade_fast": {
+		"title": "Fast mode installed",
+		"hint": "Hold Shift and turn the wheel up to speed up time in the bubble."
 	}
 }

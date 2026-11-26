@@ -2,6 +2,8 @@ extends Control
 ## Zeitregler im Bedienfeld, gestaltet wie eine Tankanzeige: drei feste
 ## Stufen (links langsam, Mitte normal, rechts schnell). Mit der Maus auf
 ## einen Bereich klicken oder die Nadel ziehen, um die Stufe zu waehlen.
+## Solange "schnell" nicht freigeschaltet ist (Upgrade FAST), fehlt dessen
+## Bogenstueck; ueber dem Symbol sitzt eine kleine verschraubte Platte.
 ## Gezeichnet im Code, nur Farben der Palette (Doku 1.7).
 
 const ICONS := preload("res://graphics/ui/ui_time_stage_icons.png")
@@ -100,6 +102,9 @@ func _draw() -> void:
 	if bubble:
 		selected = bubble.stage
 	for i in 3:
+		if bubble and not bubble.is_stage_unlocked(i):
+			_draw_cover(i)
+			continue
 		var color: Color = STAGE_BRIGHT[i] if i == selected else STAGE_DIM[i]
 		# Bogenstueck je Stufe (je 60 Grad, mit kleiner Luecke dazwischen).
 		var start := deg_to_rad(180.0 + i * 60.0 + 2.0)
@@ -116,3 +121,19 @@ func _draw() -> void:
 	draw_line(PIVOT, tip, COLOR_NEEDLE, 2.0, false)
 	draw_circle(PIVOT, 6.0, COLOR_OUTLINE, true, -1.0, false)
 	draw_circle(PIVOT, 3.0, COLOR_BODY, true, -1.0, false)
+
+
+## Abdeckplatte fuer eine noch gesperrte Stufe: Platte mit zwei Schrauben
+## ueber dem Symbol, das Bogenstueck bleibt leer (nur eine dunkle Rille).
+func _draw_cover(i: int) -> void:
+	var start := deg_to_rad(180.0 + i * 60.0 + 2.0)
+	var end := deg_to_rad(180.0 + (i + 1) * 60.0 - 2.0)
+	draw_arc(PIVOT, ARC_RADIUS, start, end, 24, COLOR_OUTLINE, ARC_WIDTH, false)
+	var dir := Vector2.from_angle(deg_to_rad(STAGE_ANGLES[i]))
+	var center := (PIVOT + dir * ICON_RADIUS).round()
+	var plate := Rect2(center - Vector2(10, 7), Vector2(20, 14))
+	draw_rect(plate, COLOR_OUTLINE)
+	draw_rect(plate.grow(-1), COLOR_SHADOW)
+	draw_rect(Rect2(plate.position + Vector2(1, 1), plate.size - Vector2(3, 3)), COLOR_BODY)
+	for x in [plate.position.x + 3, plate.end.x - 5]:
+		draw_rect(Rect2(x, center.y - 1, 2, 2), COLOR_OUTLINE)

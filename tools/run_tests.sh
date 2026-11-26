@@ -24,7 +24,8 @@ bad=0
 for t in tests/test_*.gd; do
 	n=$(basename "$t" .gd)
 	if [ ${#ONLY[@]} -gt 0 ] && [[ ! " ${ONLY[*]} " =~ " $n " ]]; then continue; fi
-	r=$(timeout 150 "$GODOT" --headless --path . --script "res://tests/$n.gd" < /dev/null 2>&1)
+	# --fixed-fps: gleichmaessige Schritte, laeuft schneller als Echtzeit
+	r=$(timeout 150 "$GODOT" --headless --fixed-fps 60 --path . --script "res://tests/$n.gd" < /dev/null 2>&1)
 	f=$(echo "$r" | grep -c '^FAIL')
 	e=$(echo "$r" | grep -E '^FAIL|SCRIPT ERROR|Parse Error' | head -3)
 	if [ "$f" != "0" ] || [ -n "$e" ] || ! echo "$r" | grep -q '^Fehler: 0'; then

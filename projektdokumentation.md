@@ -956,6 +956,25 @@ Funktion erhaelt. Sie liegen frei platziert, jeweils kurz bevor ein Level die
 neue Funktion braucht (nicht an Bereichsgrenzen gebunden). Zu Beginn fehlen
 der Cursor zur Formung der Sphaere noch.
 
+**Freischalt-Reihenfolge (seit v0.65, Wunsch des Nutzers):**
+
+- Level 1 und 2: Time Shifter ganz gesperrt (Shift oeffnet nichts, keine
+  Zeitanzeige oben links, Blase bleibt normal).
+- Level 3: Schrotthaufen "Time Shifter" (`upgrade_time_shifter`) am Anfang:
+  Bedienfeld und Stufe "langsam". Auf dem Zeitregler sitzt ueber "schnell"
+  noch eine verschraubte Abdeckplatte.
+- Level 4: nur langsam; Radius und Form noch gesperrt.
+- Level 5: Schrotthaufen "schnell" (`upgrade_fast`) am Anfang.
+- Technik: `TimeShifterUpgrades.Upgrade` = RADIUS, SHAPE, FAST,
+  TIME_SHIFTER (nur hinten anhaengen); `TimeBubble.is_stage_unlocked()`
+  sperrt die Stufen, `TimeShifterPanel.is_unlocked()` das Bedienfeld.
+  Jedes Level hat im Inspector `required_upgrades`: Upgrades aus frueheren
+  Leveln, die beim Start still eingebaut werden (Level 4 und 5: Time
+  Shifter, Level 6: Time Shifter und schnell), damit F6 im Editor und alte
+  Spielstaende passen.
+- Zwei Einblendungen kurz hintereinander: die zweite wartet, bis die erste
+  weg ist.
+
 **Upgrades (umgesetzt in Schritt 14, 12.11.2026):**
 
 - Von Anfang an da: Zeitregler (langsam, normal, schnell) und die Anzeige des
@@ -1216,6 +1235,13 @@ Offene Punkte:
   damit man nicht zwischen zwei dicht fallenden Raketen ueberlebt. Werfer
   unter einem einfachen Node (ohne Position) haengen ihre Raketen in den
   naechsten Node2D darueber.
+- **Laser, wieder an nach Signal (seit v0.65):** `reactivate_after`
+  (Sekunden, 0 = aus): Schaltet ein Signal den Laser ab, geht er nach
+  dieser Zeit von selbst wieder an (Warnung inklusive); jedes weitere
+  Abschalten setzt den Countdown zurueck. Level 5: Laser dauerhaft an, die
+  Lichtschranke schaltet ihn fuer 3 s ab.
+- **Wandhinweis "+" (seit v0.65):** Ein Eintrag "+" in `keys` erscheint als
+  Pluszeichen ohne Tastenrahmen (z. B. "SHIFT", "+", "WHEEL DOWN").
 - **Projektil-Werfer:** `scenes/objects/projectile_launcher.tscn` (32 x 48,
   fest, Ebene 1). Im Inspector je Werfer: `direction` (rechts/links),
   `fire_interval` (Standard 4 s), `first_shot_delay` (Standard 1 s, zum
@@ -1838,26 +1864,29 @@ Ein gefuehrtes Tutorial mit langsam steigender Schwierigkeit:
    aufgemalt, darunter "Move".
 2. **Interagieren:** Am Fahrstuhl steht der Hinweis E zum Interagieren. Mit
    E erscheint die Sprechblase zur geroesteten Keycard.
-3. **Springen:** Vor der ersten Sprungstelle steht an der Wand Leertaste mit
-   "Jump".
-4. **Time Shifter:** seit v0.63 nicht mehr in der Werkstatt, sondern in
-   Level 2 (siehe unten), wo man ihn zum ersten Mal braucht.
+3. **Springen:** seit v0.65 in Level 2 (Leertaste mit "Jump" ueber der
+   Klonstation). Die Werkstatt ist seit v0.65 ein kleiner Raum (36 x 17
+   Tiles, halbe Hoehe und 60 % der Breite, Kamera-Zoom 2) ohne Hindernis
+   und ohne sichtbare Klonstation (`station_visible = false`; sterben kann
+   man dort nicht).
+4. **Time Shifter:** Level 3 (Schrotthaufen am Anfang, Hinweis
+   "SHIFT + WHEEL DOWN / Slow down time"); "schnell" in Level 5 (Hinweis
+   "SHIFT + WHEEL UP / Speed up time"). Level 4 hat keinen Hinweis.
 5. **Erstes Pflichtraetsel = Level 2 (Raketenregen, vom Nutzer, seit
    v0.63 direkt nach der Werkstatt; frueher `level_06`, mit dem alten
    `level_02` getauscht):** 16 Werfer an der Decke (alle 48 px, um 90 Grad
-   gedreht) schiessen gleichzeitig nach unten, Takt 4,2 s. Hinweise Shift
-   (Bedienfeld) und Mausrad (Zeit) ueber der Klonstation. Loesung:
-   losrennen, sobald eine Welle aufschlaegt, gleich auf langsam schalten;
-   die Blase bremst die naechste Welle vor der Figur gerade lange genug.
-   Ohne Blase unmoeglich (Fenster zu kurz). Der Takt von 4,2 s ist per
-   Simulation gewaehlt (bei 4,0 s mit Blase nur extrem knapp, ab etwa 4,5 s
-   ohne Blase schaffbar); Test `tests/test_level02.gd`.
+   gedreht) schiessen nach unten. Seit v0.65 (Wunsch des Nutzers): Takt je
+   Werfer zufaellig 2 bis 4 s, erster Schuss 1 bis 2 s; der Time Shifter
+   ist hier noch gesperrt. Ein Scan ueber 300 Startzeitpunkte (0 bis 30 s,
+   einfach durchrennen) fand nur 3 Treffer (8,1 / 10,5 / 20,9 s): sehr
+   knapp. Test `tests/test_level02.gd`.
 
 **Baustein Wandhinweis (umgesetzt in Schritt 16a):** Objekt, das der
 Nutzer per Drag-and-drop ins Level zieht (`scenes/objects/wall_hint.tscn`,
 Node = Mitte oben). Im Inspector: `keys` (Beschriftungen der Tasten, z. B.
 "A", "D" oder "SPACE", "SHIFT"), `text_id` (Wort aus `dialogues/hints.json`:
 `hint_move`, `hint_jump`, `hint_interact`, `hint_time_shifter`,
+`hint_time_slow`, `hint_time_fast`,
 `hint_time_wheel`; leer = kein Wort) und `paint` (Wandfarbe: dunkel, hell,
 gelb, rot, blau, alle aus der Palette). Aufgemalt wirken die Tasten durch
 Umriss und Schrift in Wandfarbe. Liegt hinter allem (z_index -10), keine
@@ -2288,24 +2317,23 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 23.11.2026, Version v0.64**
+**Stand vom 26.11.2026, Version v0.65**
 
-- **Phase:** Meilenstein 4, Ton und Feinschliff; eigene Level des Nutzers.
-- **Zuletzt erledigt:** zwei Lo-Fi-Songs (7 Coffee Break Circuits, 8 Late
-  Night Lab), im Level waehlbar. Davor (v0.63): Level 2 = Raketenregen des Nutzers direkt nach der
-  Werkstatt, mit Shift-Erklaerung; Werfer drehbar, senkrechte Raketen
-  rundum toedlich; Zeitblase wirkt pixelgenau; Schalter `time_shifter` je
-  Baustein (Werfer und Raketen getrennt). Davor (v0.62): Musik.
-- **Naechster Schritt:** Nutzer testet; weitere eigene Level (6 bis 8),
-  Schwierigkeitskurve; ggf. verlorene automatische Tests neu schreiben.
-- **Spielbar:** Titel -> Intro -> Level 1 (Werkstatt) -> Level 2
-  (Raketenregen) -> 3 -> 4 -> 5 -> 6 (Plattform/Magnet, vorher Level 2) ->
-  7 -> 8 -> Ende. Sandbox ueber F1 oder F6.
-- **Noch zu testen (vom Nutzer):** Level 2 (Schwierigkeit, Takt 4,2 s,
-  Lage der Hinweise), pixelgenaue Blase bei allen Bausteinen, Schalter
-  `time_shifter`; Lo-Fi-Songs 7 und 8; aus v0.62: Musik.
-- **Bekannte Probleme:** Die Hinweisschilder in Level 2 ragen etwas in die
-  erste Raketenspalte (links ist nur gut 90 px Platz).
+- **Phase:** Meilenstein 4, Feinschliff; eigene Level des Nutzers.
+- **Zuletzt erledigt:** Level umgebaut: Werkstatt klein, ohne Klonstation,
+  Hindernis und Sprung-Hinweis; Sprung-Hinweis in Level 2; Time Shifter
+  erst ab Level 3 (nur langsam), "schnell" ab Level 5; alte Level 5 und 6
+  geloescht, 7 und 8 sind jetzt 5 und 6; Werfer in Level 2 mit
+  Zufallstakt; Laser in Level 5 per Lichtschranke 3 s aus.
+- **Naechster Schritt:** Nutzer testet; weitere eigene Level,
+  Schwierigkeitskurve.
+- **Spielbar:** Titel -> Intro -> Level 1 (Werkstatt) -> 2 (Raketenregen)
+  -> 3 -> 4 -> 5 (Lichtschranke/Laser) -> 6 -> Ende. Sandbox ueber F1.
+- **Noch zu testen (vom Nutzer):** Level 2 ohne Time Shifter (sehr knapp,
+  siehe 2.9), Werkstatt mit Zoom 2, Freischalten in Level 3 und 5, Laser
+  in Level 5.
+- **Bekannte Probleme:** Level 2 ist ohne Time Shifter nur in wenigen
+  kurzen Zeitfenstern schaffbar.
 - **Groesste offene Punkte:** echte Level (2.9), Schwierigkeitskurve.
 
 ### 5.2 Versionsprotokoll

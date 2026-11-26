@@ -5,7 +5,9 @@
 	"scene": "res://scenes/levels/level_04.tscn",
 	"marker": "",
 	"save": {
-		"upgrades": [],
+		"upgrades": [
+			"upgrade_time_shifter"
+		],
 		"flags": []
 	}
 }

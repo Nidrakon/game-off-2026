@@ -44,6 +44,10 @@ signal switched(is_on: bool)
 @export_range(0.0, 5.0, 0.05) var warning_time := 0.4
 ## Dauerhaft an statt im Takt (nach dem Einschalten per Signal mit Warnung).
 @export var always_on := false
+## Nach dem Ausschalten per Signal (z. B. Lichtschranke) nach so vielen
+## Sekunden von selbst wieder an (inklusive Warnung); jedes weitere
+## Ausschalten setzt den Countdown zurueck. 0 = bleibt aus.
+@export_range(0.0, 30.0, 0.05, "or_greater") var reactivate_after := 0.0
 
 @export_group("Steuerung")
 ## Laeuft beim Levelstart (sonst erst nach activate() bzw. toggle()).
@@ -70,6 +74,8 @@ var _shape: CollisionShape2D
 var _cycle_pos := 0.0
 # Restzeit der Warnung nach dem Einschalten im Modus "dauerhaft an".
 var _warn_left := 0.0
+# Restzeit bis zum Wiedereinschalten (reactivate_after), 0 = keiner laeuft.
+var _reactivate_left := 0.0
 var _state := State.OFF
 # Wo der Strahl endet (relativ, verkuerzt, wenn ein Projektil ihn aufhaelt).
 var _beam_stop := Vector2.ZERO
@@ -134,6 +140,8 @@ func activate() -> void:
 
 ## Signal-Empfaenger: ganz ausschalten.
 func deactivate() -> void:
+	if reactivate_after > 0.0:
+		_reactivate_left = reactivate_after
 	if not active:
 		return
 	active = false
@@ -151,6 +159,13 @@ func toggle() -> void:
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
+	if not active and _reactivate_left > 0.0:
+		# Countdown zum Wiedereinschalten (laeuft mit der Zeitblase); die
+		# Warnung gehoert dazu, toedlich ist der Strahl genau nach Ablauf.
+		_reactivate_left -= delta * _time.time_scale
+		if _reactivate_left <= _warning_length_on_activate():
+			_reactivate_left = 0.0
+			activate()
 	if active:
 		# Der Takt laeuft mit dem Tempo aus der Zeitblase.
 		var step := delta * _time.time_scale
@@ -177,6 +192,11 @@ func _process(delta: float) -> void:
 ## Toedlich nur, solange der Strahl an ist.
 func _is_safe_for(_body: Node2D) -> bool:
 	return not is_on()
+
+
+# So lange warnt der Laser nach activate(), bevor er toedlich ist.
+func _warning_length_on_activate() -> float:
+	return warning_time if always_on else _warning_length()
 
 
 func _cycle_length() -> float:

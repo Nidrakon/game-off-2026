@@ -10,6 +10,8 @@ extends Node2D
 enum Paint { DARK, LIGHT, YELLOW, RED, BLUE }
 
 ## Beschriftungen der Tasten, nebeneinander (z. B. "A", "D" oder "SPACE").
+## Ein Eintrag "+" wird als Pluszeichen ohne Tastenrahmen gemalt (z. B.
+## "SHIFT", "+", "WHEEL" fuer eine Tastenkombination).
 @export var keys: PackedStringArray = PackedStringArray(["A", "D"]):
 	set(value):
 		keys = value
@@ -47,11 +49,17 @@ const PLATE_MARGIN := 5.0
 const COLOR_PLATE := Color("c7dcd0")
 const COLOR_PLATE_EDGE := Color("2e222f")
 const COLOR_PLATE_SHADE := Color("9babb2")
+## Eintrag in "keys", der als Pluszeichen statt als Taste erscheint.
+const PLUS := "+"
 
 
 func _ready() -> void:
 	# Hinter allem im Level, aber vor dem Hintergrund (Wand).
 	z_index = -7
+
+
+func _plus_width() -> float:
+	return ceilf(ThemeDB.fallback_font.get_string_size(PLUS, HORIZONTAL_ALIGNMENT_LEFT, -1, KeyCap.FONT_SIZE).x)
 
 
 ## Das angezeigte Wort.
@@ -65,7 +73,7 @@ func _draw() -> void:
 	var widths: Array[float] = []
 	var total := 0.0
 	for key in keys:
-		var w := KeyCap.get_width(key)
+		var w := _plus_width() if key == PLUS else KeyCap.get_width(key)
 		widths.append(w)
 		total += w
 	total += KEY_GAP * maxf(keys.size() - 1, 0)
@@ -84,6 +92,10 @@ func _draw() -> void:
 		draw_rect(Rect2(r.position.x + 2, r.position.y + 2, 1, 1), COLOR_PLATE_SHADE)
 		draw_rect(Rect2(r.end.x - 3, r.position.y + 2, 1, 1), COLOR_PLATE_SHADE)
 	for i in keys.size():
+		if keys[i] == PLUS:
+			draw_string(font, Vector2(x, 11), PLUS, HORIZONTAL_ALIGNMENT_LEFT, -1, KeyCap.FONT_SIZE, color)
+			x += widths[i] + KEY_GAP
+			continue
 		var rect := Rect2(x, 0, widths[i], KeyCap.HEIGHT)
 		draw_rect(Rect2(rect.position, Vector2(rect.size.x, 1)), color)
 		draw_rect(Rect2(rect.position.x, rect.end.y - 1, rect.size.x, 1), color)

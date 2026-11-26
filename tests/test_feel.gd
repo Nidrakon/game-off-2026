@@ -23,6 +23,8 @@ func _on_stepped() -> void:
 func _initialize() -> void:
 	await process_frame
 	root.get_node("SaveGame").test_mode = true
+	# Zeitstufen brauchen den eingebauten Time Shifter (Upgrade, seit v0.65).
+	root.get_node("Upgrades").unlock_all()
 	change_scene_to_file("res://scenes/test/fixtures/fixture_level_a.tscn")
 	while current_scene == null: await process_frame
 	await frames(60)

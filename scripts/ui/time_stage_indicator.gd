@@ -13,6 +13,9 @@ var _shown_stage := -1
 func _process(_delta: float) -> void:
 	if not is_instance_valid(_bubble):
 		_bubble = get_tree().get_first_node_in_group(TimeBubble.GROUP) as TimeBubble
+	# Erst sichtbar, wenn der Time Shifter eingebaut ist (Upgrade, Level 3).
+	if _bubble:
+		visible = _bubble.is_stage_unlocked(TimeBubble.Stage.SLOW)
 	if _bubble and _bubble.stage != _shown_stage:
 		_shown_stage = _bubble.stage
 		queue_redraw()

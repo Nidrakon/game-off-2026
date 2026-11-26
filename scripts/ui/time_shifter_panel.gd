@@ -12,9 +12,16 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	# Nicht, solange das Spielmenue (Esc) offen ist.
 	var pause_menu := get_node_or_null("/root/PauseMenu")
-	var want_open: bool = Input.is_action_pressed("time_shifter_panel") and not (pause_menu and pause_menu.is_open)
+	var want_open: bool = Input.is_action_pressed("time_shifter_panel") and not (pause_menu and pause_menu.is_open) and is_unlocked()
 	if want_open != visible:
 		_set_open(want_open)
+
+
+## Ist der Time Shifter schon eingebaut (Upgrade TIME_SHIFTER, Level 3)?
+## Vorher oeffnet Shift nichts. Ohne Autoload (Tests) immer.
+func is_unlocked() -> bool:
+	var upgrades := get_node_or_null("/root/Upgrades")
+	return upgrades == null or upgrades.has(TimeShifterUpgrades.Upgrade.TIME_SHIFTER)
 
 
 func _input(event: InputEvent) -> void:

@@ -30,7 +30,7 @@ const OUTLINE_POINTS := 64
 ## Aktuelle Zeitstufe. Zu Beginn "normal" (Blase faktisch aus).
 var stage: Stage = Stage.NORMAL:
 	set(value):
-		if value == stage:
+		if value == stage or not is_stage_unlocked(value):
 			return
 		stage = value
 		queue_redraw()
@@ -78,6 +78,12 @@ var _polygon_dirty := true
 func _ready() -> void:
 	add_to_group(GROUP)
 	radius = settings.radius
+	# Wird "schnell" wieder gesperrt (Entwickler-Menue), zurueck auf normal.
+	var upgrades := _upgrades()
+	if upgrades:
+		upgrades.changed.connect(func() -> void:
+			if not is_stage_unlocked(stage):
+				stage = Stage.NORMAL)
 	if settings.lens_enabled:
 		_lens = Polygon2D.new()
 		_lens.name = "Lens"
@@ -145,6 +151,26 @@ func _update_stage_sound(with_switch_sound: bool) -> void:
 
 
 ## Die Linse (Shader-Flaeche) der Blase, falls eingeschaltet.
+## Ist die Zeitstufe schon verfuegbar (Doku 2.3)? "Normal" immer,
+## "langsam" mit dem Upgrade TIME_SHIFTER, "schnell" zusaetzlich mit FAST.
+## Ohne Autoload (Tests) ist alles frei.
+func is_stage_unlocked(value: Stage) -> bool:
+	if value == Stage.NORMAL:
+		return true
+	var upgrades := _upgrades()
+	if upgrades == null:
+		return true
+	if not upgrades.has(TimeShifterUpgrades.Upgrade.TIME_SHIFTER):
+		return false
+	return value != Stage.FAST or upgrades.has(TimeShifterUpgrades.Upgrade.FAST)
+
+
+func _upgrades() -> TimeShifterUpgrades:
+	if not is_inside_tree():
+		return null
+	return get_node_or_null("/root/Upgrades") as TimeShifterUpgrades
+
+
 func get_lens() -> Polygon2D:
 	return _lens
 

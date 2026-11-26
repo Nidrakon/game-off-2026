@@ -51,6 +51,15 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.65 - 2026-11-26: Level umgebaut, Time Shifter schrittweise freigeschaltet**
+
+- Werkstatt (Level 1) halb so hoch und 60 % so breit (36 x 17 Tiles), Kamera-Zoom 2, ohne Hindernis, Sprung-Hinweis und sichtbare Klonstation (neu: `station_visible`).
+- Level 2: nur der Sprung-Hinweis; Werfer mit zufaelligem Takt (2-4 s) und erstem Schuss (1-2 s); Time Shifter hier noch gesperrt.
+- Neue Upgrades: `upgrade_time_shifter` (Bedienfeld und langsam, Schrotthaufen am Anfang von Level 3, Hinweis SHIFT + WHEEL DOWN) und `upgrade_fast` (Schrotthaufen am Anfang von Level 5, Hinweis SHIFT + WHEEL UP). Gesperrte Stufe auf dem Zeitregler mit Abdeckplatte; Zeitanzeige erst mit Time Shifter. Level-Option `required_upgrades`.
+- Alte Level 5 und 6 geloescht, 7 und 8 heissen jetzt 5 und 6. Level 5: Laser dauerhaft an, Lichtschranke schaltet ihn fuer 3 s ab, Countdown bei jedem Durchgang neu (neu: `reactivate_after`).
+- Wandhinweis kennt "+" zwischen Tasten; Upgrade-Einblendungen warten aufeinander.
+- Tests: neu `test_upgrades`, `test_level05`; Testlauf mit `--fixed-fps 60` (schneller als Echtzeit). Alle Tests, Exporte Web und Windows.
+
 **v0.64 - 2026-11-23: Zwei Lo-Fi-Songs**
 
 - Song 7 "Coffee Break Circuits" (C-Dur, 80 BPM) und Song 8 "Late Night Lab" (Es-Dur, 72 BPM): entspannter Lo-Fi mit E-Piano-Akkorden (Septimen, Nonen), weichem Boom-Bap, gedaempften Hoehen, Band-Leiern und Vinyl-Knistern; nahtlose Schleifen.

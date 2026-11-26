@@ -12,6 +12,11 @@ extends Node2D
 ## - Parallax (Node "ParallaxDriver"): tiefe Ebene, Rueckwand mit
 ##   Silhouetten und hintere Rohre laufen langsamer als der Vordergrund.
 
+## Upgrades, die man zu Beginn dieses Levels sicher hat (aus frueheren
+## Leveln). Werden beim Start still eingebaut, damit das Level auch direkt
+## aus dem Editor (F6) oder aus einem alten Spielstand passt.
+@export var required_upgrades: Array[TimeShifterUpgrades.Upgrade] = []
+
 ## Kameragrenzen automatisch aus den Tiles von "Ground" setzen.
 @export var auto_camera_limits := true
 
@@ -62,6 +67,8 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	add_to_group(GROUP)
+	for upgrade in required_upgrades:
+		Upgrades.unlock(upgrade)
 	if auto_camera_limits:
 		_fit_camera_to_ground()
 	SaveGame.on_level_started(scene_file_path)

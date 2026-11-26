@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://scenes/objects/projectile_launcher.tscn" id="2_launcher"]
 [ext_resource type="PackedScene" path="res://scenes/objects/electric_floor.tscn" id="3_floor"]
 [ext_resource type="PackedScene" path="res://scenes/objects/wall_hint.tscn" id="4_hint"]
+[ext_resource type="PackedScene" path="res://scenes/objects/scrap_heap.tscn" id="5_scrap"]
 
 [node name="Level03" unique_id=1997439110 instance=ExtResource("1_base")]
 background_theme = 1
@@ -28,12 +29,16 @@ fire_interval = 3.5
 first_shot_delay = 2.5
 projectile_speed = 110.0
 
-[node name="PlaceholderHint" parent="." index="15" unique_id=1989298855 instance=ExtResource("4_hint")]
+[node name="HintTimeSlow" parent="." index="15" unique_id=1989298855 instance=ExtResource("4_hint")]
 z_index = -7
-position = Vector2(480, 200)
-keys = PackedStringArray("SHIFT")
-text_id = "hint_time_shifter"
+position = Vector2(128, 384)
+keys = PackedStringArray("SHIFT", "+", "WHEEL DOWN")
+text_id = "hint_time_slow"
 
 [node name="ElectricFloor" parent="." index="16" unique_id=602909938 instance=ExtResource("3_floor")]
 position = Vector2(224, 504)
 width_tiles = 32
+
+[node name="ScrapHeapTimeShifter" parent="." instance=ExtResource("5_scrap")]
+position = Vector2(128, 496)
+upgrade = 3

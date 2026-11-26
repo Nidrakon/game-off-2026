@@ -2,19 +2,24 @@ class_name TimeShifterUpgrades
 extends Node
 ## Upgrades des Time Shifters (Doku 2.3, Freischalten), globales System
 ## (Autoload "Upgrades"). Merkt sich, welche Regler der Professor schon an
-## Schrotthaufen eingebaut hat. Der Zeitregler ist von Anfang an da.
+## Schrotthaufen eingebaut hat. Zu Beginn ist der Time Shifter ganz gesperrt
+## (Level 1 und 2); TIME_SHIFTER bringt Bedienfeld und "langsam" (Level 3),
+## FAST die Stufe "schnell" (Level 5), RADIUS und SHAPE die Formregler.
 ##
 ## Bleibt beim Neustart eines Levels erhalten (Autoload). Gespeichert wird
 ## spaeter mit dem Spielstand (Schritt 16) ueber get_ids() / set_ids().
 
 ## Freischaltbare Funktionen. Die Reihenfolge der Upgrades im Spiel legt das
 ## Leveldesign fest (welcher Schrotthaufen welches Upgrade bringt).
-enum Upgrade { RADIUS, SHAPE }
+## Neue Werte nur hinten anhaengen (Inspector speichert die Zahl).
+enum Upgrade { RADIUS, SHAPE, FAST, TIME_SHIFTER }
 
 ## Feste Kennungen fuer den Spielstand (nie umbenennen, Doku 1.6).
 const IDS := {
 	Upgrade.RADIUS: "upgrade_radius",
 	Upgrade.SHAPE: "upgrade_shape",
+	Upgrade.FAST: "upgrade_fast",
+	Upgrade.TIME_SHIFTER: "upgrade_time_shifter",
 }
 
 ## Wird gesendet, wenn ein Upgrade neu freigeschaltet wurde.

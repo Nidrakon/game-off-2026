@@ -23,16 +23,27 @@ const COLOR_HINT := Color("9babb2")
 var _time_left := DURATION
 
 
-## Zeigt die Einblendung fuer ein Upgrade im aktuellen Level.
+## Zeigt die Einblendung fuer ein Upgrade im aktuellen Level. Steht schon
+## eine da (zwei Haufen kurz hintereinander), wartet die neue, bis die alte
+## weg ist.
 static func show_for(upgrade: TimeShifterUpgrades.Upgrade, tree: SceneTree) -> UpgradeMessage:
-	# Nur eine Einblendung gleichzeitig.
-	for old in tree.get_nodes_in_group("upgrade_message"):
-		old.queue_free()
 	var message := UpgradeMessage.new()
 	message._build(upgrade)
-	Sound.play("upgrade")
+	message.visible = false
 	tree.current_scene.add_child(message)
+	message._try_show()
 	return message
+
+
+## Ist die Einblendung die erste in der Warteschlange, erscheint sie.
+func _try_show() -> void:
+	if visible:
+		return
+	var queue := get_tree().get_nodes_in_group("upgrade_message").filter(
+			func(node: Node) -> bool: return not node.is_queued_for_deletion())
+	if not queue.is_empty() and queue[0] == self:
+		visible = true
+		Sound.play("upgrade")
 
 
 func _build(upgrade: TimeShifterUpgrades.Upgrade) -> void:
@@ -81,6 +92,9 @@ func _load_texts() -> Dictionary:
 
 
 func _process(delta: float) -> void:
+	if not visible:
+		_try_show()
+		return
 	_time_left -= delta
 	if _time_left <= 0.0:
 		queue_free()

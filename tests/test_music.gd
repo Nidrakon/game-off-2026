@@ -38,9 +38,12 @@ func _initialize() -> void:
 	check("Eigene Auswahl im Inspector", level.get_music_id() == 5)
 	# Gleicher Song startet nicht neu
 	var pos_before: float = sfx._music[sfx._music_active].get_playback_position()
-	await frames(20)
+	# Echtzeit warten: mit --fixed-fps laufen Bilder schneller als der Ton.
+	var until := Time.get_ticks_msec() + 300
+	while Time.get_ticks_msec() < until: await process_frame
 	sfx.play_music(sfx.get_music_id())
-	await frames(2)
+	until = Time.get_ticks_msec() + 300
+	while Time.get_ticks_msec() < until: await process_frame
 	check("Gleicher Song laeuft weiter", sfx._music[sfx._music_active].get_playback_position() > pos_before)
 	# Spielmenue daempft
 	var menu = root.get_node("PauseMenu")

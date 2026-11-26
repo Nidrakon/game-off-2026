@@ -133,6 +133,13 @@ func _fit_camera_to_ground() -> void:
 	var rect := _ground_rect(get_node_or_null("Ground") as TileMapLayer)
 	if camera == null or rect.size == Vector2.ZERO:
 		return
+	# Ist der Raum kleiner als der sichtbare Ausschnitt (z. B. die Werkstatt),
+	# die Grenzen um ihn herum erweitern, damit er mittig im Bild steht.
+	var view := get_viewport_rect().size / camera.zoom
+	if rect.size.x < view.x:
+		rect = rect.grow_individual((view.x - rect.size.x) * 0.5, 0, (view.x - rect.size.x) * 0.5, 0)
+	if rect.size.y < view.y:
+		rect = rect.grow_individual(0, (view.y - rect.size.y) * 0.5, 0, (view.y - rect.size.y) * 0.5)
 	camera.limit_left = roundi(rect.position.x)
 	camera.limit_top = roundi(rect.position.y)
 	camera.limit_right = roundi(rect.end.x)

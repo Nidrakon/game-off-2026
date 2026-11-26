@@ -32,6 +32,7 @@ func _initialize() -> void:
 	var p: CharacterBody2D = level.get_node("Professor")
 	var feel = p.get_node("Feel")
 	var cam: Camera2D = level.get_node("Camera")
+	var start_zoom := cam.zoom
 	_feel = feel; _cam = cam; _sprite = p.get_node("Sprite")
 	check("Feel-Baustein in Gruppe", feel.is_in_group("game_feel"))
 	check("Steht in Grundform", feel.get_squash().is_equal_approx(Vector2.ONE), str(feel.get_squash()))
@@ -81,7 +82,7 @@ func _initialize() -> void:
 	bubble.stage = 0
 	await process_frame
 	await process_frame
-	check("Kein Zoom-Impuls", cam.zoom == Vector2.ONE, str(cam.zoom))
+	check("Kein Zoom-Impuls", cam.zoom == start_zoom, str(cam.zoom))
 	check("Blase bei langsam sichtbar", bubble.get_lens().visible)
 	bubble.stage = 1
 	await process_frame

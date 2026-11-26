@@ -51,6 +51,11 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.74 - 2026-11-26: Naeher herangezoomt (Test)**
+
+- Kamera in allen Leveln auf Zoom 1,5 (auch Werkstatt, vorher 2): Die Level scrollen, der Parallax-Effekt kommt zur Geltung.
+- Raeume kleiner als der Ausschnitt stehen mittig; die Werkstatt ist rundum eingemauert.
+
 **v0.73 - 2026-11-26: Level 7 mit drei Uhren**
 
 - Level 7 (Umbau des Nutzers): drei Uhren, drei Werfer, drei Trefferflaechen; jede Uhr gehoert optisch zum Werfer an derselben Stelle (links, Mitte, rechts). Der Gleichzeitig-Schalter wartet auf alle drei. Level 8: Uhren nicht mehr ueber Kreuz verdrahtet.

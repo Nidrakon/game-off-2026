@@ -39,7 +39,12 @@ func _initialize() -> void:
 	# Level 1: klein, keine sichtbare Klonstation, kein Sprung-Hinweis
 	var l1 = await open_level("res://scenes/levels/level_01.tscn")
 	var used: Rect2i = l1.get_node("Ground").get_used_rect()
-	check("Level 1: 36 x 17 Tiles", used.size == Vector2i(36, 17), str(used))
+	# Raum 36 x 17 Tiles (Waende bei x 0 und 35, Decke y 17, Boden y 31),
+	# seit v0.74 rundum eingemauert (Zoom 1,5 zeigt mehr als den Raum).
+	var g: TileMapLayer = l1.get_node("Ground")
+	var room_ok: bool = g.get_cell_source_id(Vector2i(0, 20)) != -1 and g.get_cell_source_id(Vector2i(35, 20)) != -1 and g.get_cell_source_id(Vector2i(1, 20)) == -1 and g.get_cell_source_id(Vector2i(34, 20)) == -1 and g.get_cell_source_id(Vector2i(10, 17)) != -1 and g.get_cell_source_id(Vector2i(10, 18)) == -1 and g.get_cell_source_id(Vector2i(10, 31)) != -1
+	check("Level 1: Raum 36 x 17 Tiles", room_ok, str(used))
+	check("Level 1: Zoom wie alle Level", l1.get_node("Camera").zoom == Vector2(1.5, 1.5), str(l1.get_node("Camera").zoom))
 	check("Level 1: Klonstation unsichtbar", not l1.get_node("CloneStation").visible)
 	check("Level 1: kein Sprung-Hinweis", not ("SPACE" in hints_of(l1)), str(hints_of(l1)))
 	check("Level 1: Ausgang im Raum", l1.get_node("LevelExit").position.x < 36 * 16, str(l1.get_node("LevelExit").position))

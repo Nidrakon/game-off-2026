@@ -1779,6 +1779,15 @@ die Sandbox), fuehrt sein Ausgang zum ersten Level.
 **Ausgang:** Schiebetuer 32 x 64 mit blinkendem gruenen Pfeil nach oben (das
 naechste Level liegt eine Etage hoeher). Laeuft der Professor hinein, geht
 die Tuer auf, er verschwindet (Steuerung gesperrt, Gefahren wirken nicht
+**Zoom und Parallax (seit v0.75, Wunsch des Nutzers):** Der Test mit
+Zoom 1,5 (v0.74) ist verworfen: Die Level haben wieder Zoom 1 und fuellen
+den Bildschirm, die Werkstatt wieder Zoom 2. Damit trotzdem Tiefe entsteht,
+folgt die tiefe Ebene (Kabel und Maschinen hinter den Wanddurchbruechen)
+zusaetzlich der Figur: `ParallaxDriver.player_influence` (0,4) und
+`follow_speed` (4). Rueckwand, Silhouetten und Rohre bleiben an der Wand,
+sonst kaemen ihre Raender hinter den Aussenwaenden hervor. Ist ein Raum
+kleiner als der Ausschnitt, setzt `Level` ihn weiterhin mittig. Test
+`tests/test_parallax.gd`.
 **Zoom (seit v0.74, Test auf Wunsch des Nutzers):** Die Kamera der Vorlage
 zoomt auf 1,5 (Mitte zwischen 1 und dem frueheren Werkstatt-Zoom 2), damit
 die Level scrollen und der Parallax-Effekt sichtbar wird; sichtbar sind

@@ -51,6 +51,11 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.75 - 2026-11-26: Kein Zoom, Parallax folgt der Figur**
+
+- Zoom-Test verworfen: Level wieder mit Zoom 1 (fuellen den Bildschirm), Werkstatt wieder Zoom 2 und ohne Einmauerung.
+- Parallax auch ohne scrollende Kamera: Die tiefe Ebene hinter den Wanddurchbruechen wandert mit der Figur mit. Neuer Test `test_parallax`.
+
 **v0.74 - 2026-11-26: Naeher herangezoomt (Test)**
 
 - Kamera in allen Leveln auf Zoom 1,5 (auch Werkstatt, vorher 2): Die Level scrollen, der Parallax-Effekt kommt zur Geltung.

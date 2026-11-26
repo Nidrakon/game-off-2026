@@ -52,6 +52,7 @@ target = NodePath("../Professor")
 [node name="TimeStageIndicator" parent="." unique_id=1055287202 instance=ExtResource("7_p7rbk")]
 
 [node name="TimeShifterPanel" parent="." unique_id=1704663957 instance=ExtResource("8_l4xu8")]
+visible = false
 
 [node name="PipesBack" type="TileMapLayer" parent="."]
 z_index = -5

@@ -240,3 +240,4 @@ target = NodePath("../Professor")
 [node name="TimeStageIndicator" parent="." unique_id=1041308749 instance=ExtResource("8_indic")]
 
 [node name="TimeShifterPanel" parent="." unique_id=113227163 instance=ExtResource("9_panel")]
+visible = false

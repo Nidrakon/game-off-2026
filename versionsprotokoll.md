@@ -51,6 +51,10 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.72 - 2026-11-26: Bedienfeld im Editor ausgeblendet**
+
+- Das Bedienfeld des Time Shifters ist in der Level-Vorlage (und der Sandbox) ausgeblendet, damit es im Editor nicht die Sicht versperrt; im Spiel oeffnet Shift es wie bisher (neu in `test_upgrades` geprueft).
+
 **v0.71 - 2026-11-26: Uhren-Raetsel in Level 7, Level 8, Deko**
 
 - Level 7: zwei gleich schnelle, versetzte Zeitschaltuhren loesen je einen Raketenwerfer aus; die Tuer oeffnet nur, wenn beide Raketen fast gleichzeitig treffen. Mit dem Time Shifter eine Uhr in Gleichtakt bringen.

@@ -80,6 +80,17 @@ func _initialize() -> void:
 	check("Level 4: Mausrad hoch bleibt auf normal", bubble.stage == 1, str(bubble.stage))
 	panel.visible = false
 	check("Level 4: kein Radius, keine Form", not upgrades.has(0) and not upgrades.has(1))
+	# Bedienfeld: im Editor ausgeblendet (visible = false in der Vorlage),
+	# im Spiel oeffnet Shift es trotzdem.
+	check("Bedienfeld startet ausgeblendet", not panel.visible)
+	Input.action_press("time_shifter_panel")
+	await process_frame
+	await process_frame
+	check("Shift oeffnet das Bedienfeld", panel.visible)
+	Input.action_release("time_shifter_panel")
+	await process_frame
+	await process_frame
+	check("Loslassen schliesst es", not panel.visible and not paused)
 
 	# Level 5: Haufen "schnell" am Anfang, Hinweis Shift + Rad hoch
 	var l5 = await open_level("res://scenes/levels/level_05.tscn")

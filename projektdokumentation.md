@@ -1743,7 +1743,9 @@ Die Vorlage enthaelt: Hintergrund (`Background`), `Ground`, `CloneStation`,
 `LevelExit`, `Professor`, `Camera` (folgt dem Professor), Zeitsymbol
 (`TimeStageIndicator`) und Bedienfeld (`TimeShifterPanel`). Aendert sich die
 Vorlage (z. B. neues UI-Element), haben es sofort alle Level. Geerbte Nodes
-lassen sich im Level verschieben und einstellen, aber nicht loeschen.
+lassen sich im Level verschieben und einstellen, aber nicht loeschen. Seit v0.72
+ist das Bedienfeld in der Vorlage ausgeblendet (`visible = false`), damit es
+im Editor nicht die Sicht versperrt; im Spiel oeffnet Shift es wie bisher.
 
 **Bausteine** (alle in `scenes/objects/`, Node-Ursprung jeweils wie
 angegeben; Details in 2.4):

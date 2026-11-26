@@ -1470,6 +1470,10 @@ Offene Punkte:
   fliessen entsprechend zum Magneten hin bzw. von ihm weg. Das Feld zeigt
   immer von der Polplatte weg und dreht sich mit dem Magneten (Rotation):
   an der Decke nach unten, an einer Wand zur Seite, auf dem Boden nach oben.
+  Seit v0.66: `mode` steht ganz oben im Inspector (Attract = anziehen,
+  Repel = wegdruecken); `lift_speed` und `lift_accel` nur noch positiv
+  (vorher liess sich die Richtung auch ueber negative Werte drehen).
+  Test `tests/test_magnet.gd`.
   `field_width` verbreitert Magnet (Enden bleiben, die Spule wird
   gestreckt), Kollision und Feld. Im Editor zeigen Pfeile die Richtung.
   Der Professor hat `apply_magnet_force(richtung, tempo, beschleunigung)`:

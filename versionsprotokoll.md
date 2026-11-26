@@ -51,6 +51,11 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.66 - 2026-11-26: Elektromagnet anziehen oder wegdruecken**
+
+- Parameter `mode` (Attract/Repel) mit Erklaerung im Inspector; `lift_speed` und `lift_accel` nur noch positiv, die Richtung kommt allein aus `mode`.
+- Neuer Test `test_magnet`: Boden-Magnet stoesst ab bzw. haelt fest. Alle Tests gruen.
+
 **v0.65 - 2026-11-26: Level umgebaut, Time Shifter schrittweise freigeschaltet**
 
 - Werkstatt (Level 1) halb so hoch und 60 % so breit (36 x 17 Tiles), Kamera-Zoom 2, ohne Hindernis, Sprung-Hinweis und sichtbare Klonstation (neu: `station_visible`).

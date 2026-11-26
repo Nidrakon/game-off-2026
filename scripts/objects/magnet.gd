@@ -22,6 +22,9 @@ signal switched(is_on: bool)
 ## Anziehen (zum Magneten hin) oder Abstossen (weg vom Magneten).
 enum Mode { ATTRACT, REPEL }
 
+## Richtung der Kraft: Attract = Professor wird zur Polplatte gezogen,
+## Repel = er wird weggedrueckt (z. B. Boden-Magnet als Trampolin).
+## Ganz oben im Inspector; Geschwindigkeiten bleiben dabei positiv.
 @export var mode := Mode.ATTRACT:
 	set(value):
 		mode = value
@@ -52,8 +55,9 @@ enum Mode { ATTRACT, REPEL }
 		queue_redraw()
 ## Geschwindigkeit im Feld (Pixel pro Sekunde, zum Magneten hin bzw. weg)
 ## und wie schnell sie erreicht wird (Pixel pro Sekunde^2).
-@export var lift_speed := 240.0
-@export var lift_accel := 1400.0
+## Nur positive Werte; die Richtung waehlt "mode".
+@export_range(0.0, 2000.0, 1.0, "or_greater") var lift_speed := 240.0
+@export_range(0.0, 20000.0, 10.0, "or_greater") var lift_accel := 1400.0
 ## Abstand zur Polplatte, ab dem er beim Anziehen schwebt (Pixel).
 @export var hover_gap := 6.0
 

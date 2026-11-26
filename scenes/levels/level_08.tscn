@@ -50,7 +50,7 @@ fire_on_signal = true
 [node name="TimeSwitch" parent="." index="20" unique_id=129765441 node_paths=PackedStringArray("targets") instance=ExtResource("6_ubdts")]
 position = Vector2(472, 480)
 duration = 4.0
-targets = [NodePath("../ProjectileLauncher")]
+targets = [NodePath("../ProjectileLauncher2")]
 start_action = 2
 end_action = 1
 autostart = true
@@ -59,7 +59,7 @@ repeat = true
 [node name="TimeSwitch2" parent="." index="21" unique_id=794324127 node_paths=PackedStringArray("targets") instance=ExtResource("6_ubdts")]
 position = Vector2(328, 480)
 duration = 4.0
-targets = [NodePath("../ProjectileLauncher2")]
+targets = [NodePath("../ProjectileLauncher")]
 start_action = 2
 end_action = 1
 autostart = true

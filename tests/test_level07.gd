@@ -44,39 +44,58 @@ func _initialize() -> void:
 	quit(1 if fails else 0)
 
 
+## Uhren von links nach rechts.
+func clocks_of(level: Node) -> Array:
+	var clocks := level.find_children("TimeSwitch*", "", false, false)
+	clocks.sort_custom(func(a, b): return a.position.x < b.position.x)
+	return clocks
+
+
 func run_puzzle() -> void:
 	var level = await load_level()
-	var clock1 = level.get_node("TimeSwitch")
-	var clock2 = level.get_node("TimeSwitch2")
-	var door = level.get_node("Door")
+	var clocks := clocks_of(level)
 	var gate = level.get_node("SyncGate")
-	check("Time Shifter in Level 7 da", root.get_node("Upgrades").has(3))
-	check("Uhren gleich schnell", is_equal_approx(clock1.duration, clock2.duration))
-	check("Uhren versetzt", phase_gap(clock1, clock2) > 1.0, "%.2f s" % phase_gap(clock1, clock2))
+	check("Time Shifter da", root.get_node("Upgrades").has(3))
+	# Optik: linke Uhr gehoert zum linken Werfer usw.
+	var target_x := clocks.map(func(c): return c.targets[0].position.x)
+	var sorted_x := target_x.duplicate()
+	sorted_x.sort()
+	check("Uhren in derselben Reihenfolge wie ihre Werfer", target_x == sorted_x, str(target_x))
+	check("Gleichzeitig-Schalter hat alle Trefferflaechen", gate.sources.size() == clocks.size(), "%d/%d" % [gate.sources.size(), clocks.size()])
+	var same := clocks.all(func(c): return is_equal_approx(c.duration, clocks[0].duration))
+	check("Uhren gleich schnell", same)
+	var ref = clocks[clocks.size() / 2]
+	var gaps := clocks.map(func(c): return phase_gap(c, ref))
+	check("Uhren versetzt", gaps.filter(func(g): return g > 0.5).size() == clocks.size() - 1, str(gaps))
 	# Ohne Time Shifter: Raketen kommen nie gleichzeitig, Tuer bleibt zu
 	var hits := [0]
-	level.get_node("ImpactSwitch").triggered.connect(func(): hits[0] += 1)
+	clocks[0].targets[0].get_parent().get_node(NodePath(str(gate.sources[0]).trim_prefix("../"))).triggered.connect(func(): hits[0] += 1)
 	await wait(14.0)
 	check("Raketen treffen die Schalter", hits[0] >= 2, str(hits[0]))
 	check("Ohne Time Shifter bleibt die Tuer zu", not gate.is_done())
-	# Mit Time Shifter: neben Uhr 2 stellen (Uhr 1 ausserhalb der Blase),
-	# langsam schalten, bis beide im Gleichtakt sind.
+	# Mit Time Shifter: jede andere Uhr von aussen her verlangsamen, bis sie
+	# mit der mittleren (Bezug) im Gleichtakt ist.
 	level = await load_level()
-	clock1 = level.get_node("TimeSwitch")
-	clock2 = level.get_node("TimeSwitch2")
+	clocks = clocks_of(level)
 	gate = level.get_node("SyncGate")
+	ref = clocks[clocks.size() / 2]
 	var p = level.get_node("Professor")
 	var bubble = p.get_node("TimeBubble")
 	await wait(1.0)
-	p.global_position = Vector2(clock2.global_position.x - 40, 496)
-	await wait(0.3)
-	bubble.stage = 0
-	var t := 0.0
-	while phase_gap(clock1, clock2) > 0.08 and t < 12.0:
-		await physics_frame
-		t += 1.0 / 60.0
-	bubble.stage = 1
-	check("Uhren mit der Zeitblase in Gleichtakt gebracht", phase_gap(clock1, clock2) <= 0.08, "nach %.1f s, Rest %.2f s" % [t, phase_gap(clock1, clock2)])
+	for c in clocks:
+		if c == ref:
+			continue
+		var side := -40.0 if c.position.x < ref.position.x else 40.0
+		p.global_position = Vector2(c.global_position.x + side, 496)
+		await wait(0.2)
+		bubble.stage = 0
+		var t := 0.0
+		while phase_gap(c, ref) > 0.06 and t < 12.0:
+			await physics_frame
+			t += 1.0 / 60.0
+		bubble.stage = 1
+		check("Uhr bei x %d in Gleichtakt gebracht" % c.position.x, phase_gap(c, ref) <= 0.06, "nach %.1f s, Rest %.2f s" % [t, phase_gap(c, ref)])
+	p.global_position = Vector2(100, 496)
 	await wait(9.0)
 	var door_y: float = level.get_node("Door").position.y
 	check("Gleichzeitige Treffer oeffnen die Tuer", gate.is_done() and door_y < 456.0 - 60.0, "Tuer y %.0f" % door_y)

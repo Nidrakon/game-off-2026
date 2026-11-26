@@ -51,6 +51,12 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.73 - 2026-11-26: Level 7 mit drei Uhren**
+
+- Level 7 (Umbau des Nutzers): drei Uhren, drei Werfer, drei Trefferflaechen; jede Uhr gehoert optisch zum Werfer an derselben Stelle (links, Mitte, rechts). Der Gleichzeitig-Schalter wartet auf alle drei. Level 8: Uhren nicht mehr ueber Kreuz verdrahtet.
+- Deko in Level 7 neu verteilt, senkrechte hintere Rohre mit Abstand zu Spielelementen.
+- `test_level07` prueft beliebig viele Uhren und die Zuordnung links/rechts.
+
 **v0.72 - 2026-11-26: Bedienfeld im Editor ausgeblendet**
 
 - Das Bedienfeld des Time Shifters ist in der Level-Vorlage (und der Sandbox) ausgeblendet, damit es im Editor nicht die Sicht versperrt; im Spiel oeffnet Shift es wie bisher (neu in `test_upgrades` geprueft).

@@ -1941,6 +1941,14 @@ Professor im Bereich, schwebt bei `prompt_offset` eine weisse Tastenkappe
 "E" leicht auf und ab; E ruft `_on_interact()` auf und sendet
 `interacted`. Kuenftige Objekte zum Interagieren erben davon. Tastenkappen
 zeichnet `scripts/ui/key_cap.gd` (Breite passt sich der Beschriftung an).
+Seit v0.73 (Umbau des Nutzers) hat Level 7 drei Uhren und drei Werfer:
+die linke Uhr (x 408) gehoert zum linken Werfer (744), die mittlere (472)
+zum mittleren (824), die rechte (536) zum rechten (904); Versatz links
+1,2 s, Mitte 0, rechts 2,4 s. Die mittlere Uhr laesst sich mit dem
+Startradius nicht allein erfassen; man bringt die linke und die rechte
+Uhr von aussen her in ihren Takt. In Level 8 waren die zwei Uhren ueber
+Kreuz verdrahtet (jetzt links zu links). Die senkrechten hinteren Rohre
+halten Abstand zu Spielelementen.
 
 **Umgesetzt (13.11.2026, Wunsch des Nutzers: Rohre sowie Wand- und
 Bodenelemente in den Baukasten):**

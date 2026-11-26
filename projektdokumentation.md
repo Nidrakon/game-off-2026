@@ -1917,7 +1917,7 @@ Bodenelemente in den Baukasten):**
   Kombination der vier Anschluesse (Enden mit Kappe, Gerade mit Ring, Ecken,
   T-Stuecke, Kreuzung mit Muffe). Terrain-Set "Seiten passend" mit zwei
   Terrains: "Rohr vorn (Kollision)" in Kupfer (Kollision in Rohrform, 10 px
-  dick, Ebene 1; seit v0.67 auch an Muffen, Ecken und T-Stuecken nur 10 px,
+  dick, Ebene 1; seit v0.68 auch an Muffen, Ecken und T-Stuecken nur 10 px,
   damit man ohne Springen ueber Rohrkanten laeuft, Test `tests/test_pipes.gd`) und "Rohr hinten (Deko)" dunkel, ohne Kollision. Die
   Level-Vorlage hat die Ebenen `PipesBack` (hinter allem, z_index -5,
   Kollision aus) und `PipesFront`. Gemalt wird ueber die Mal-Knoepfe im

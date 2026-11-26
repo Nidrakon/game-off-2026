@@ -1746,6 +1746,15 @@ Vorlage (z. B. neues UI-Element), haben es sofort alle Level. Geerbte Nodes
 lassen sich im Level verschieben und einstellen, aber nicht loeschen. Seit v0.72
 ist das Bedienfeld in der Vorlage ausgeblendet (`visible = false`), damit es
 im Editor nicht die Sicht versperrt; im Spiel oeffnet Shift es wie bisher.
+**Zoom und Parallax (seit v0.75, Wunsch des Nutzers):** Der Test mit
+Zoom 1,5 (v0.74) ist verworfen: Die Level haben wieder Zoom 1 und fuellen
+den Bildschirm, die Werkstatt wieder Zoom 2. Damit trotzdem Tiefe entsteht,
+folgt die tiefe Ebene (Kabel und Maschinen hinter den Wanddurchbruechen)
+zusaetzlich der Figur: `ParallaxDriver.player_influence` (0,4) und
+`follow_speed` (4). Rueckwand, Silhouetten und Rohre bleiben an der Wand,
+sonst kaemen ihre Raender hinter den Aussenwaenden hervor. Ist ein Raum
+kleiner als der Ausschnitt, setzt `Level` ihn weiterhin mittig. Test
+`tests/test_parallax.gd`.
 
 **Bausteine** (alle in `scenes/objects/`, Node-Ursprung jeweils wie
 angegeben; Details in 2.4):

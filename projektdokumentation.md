@@ -1252,6 +1252,17 @@ Offene Punkte:
   Zeitblase mit. Er ist Signal-Empfaenger (Lichtschranke kann ihn schalten).
 - Ladebalken (09.11.2026, Wunsch des Nutzers): Im Gehaeuse fuellt sich ein
   senkrechter gelber Balken (6 x 22 px) bis zum naechsten Schuss; ist er voll,
+- **Gleichzeitig-Schalter (seit v0.71):** `scenes/objects/sync_gate.tscn`
+  (Skript `scripts/objects/sync_gate.gd`, Kategorie Schalter im Baukasten):
+  sendet `action` an `targets` erst, wenn alle `sources` (Trefferflaechen,
+  Lichtschranken; brauchen das Signal `triggered`) innerhalb von
+  `tolerance` Sekunden (Standard 0,3, echte Zeit) ausgeloest haben;
+  `one_shot`. Kleiner Kasten mit einer Lampe je Ausloeser (gelb = wartet,
+  gruen = geschafft). Trefferflaechen senden dafuer seit v0.71 `triggered`.
+- **Werfer "ein Schuss pro Signal" (seit v0.71):** `fire_on_signal`:
+  activate()/toggle() feuert sofort genau einen Schuss, kein eigener Takt.
+- **Zeitschaltuhr mit Versatz (seit v0.71):** `start_offset` (mit
+  `autostart`): beginnt, als liefe sie schon so lange (Regel 17).
   feuert der Werfer. Er laeuft mit dem Takt, also auch langsamer oder
   schneller in der Zeitblase, und bleibt stehen, solange der Werfer aus ist.
 
@@ -1902,6 +1913,27 @@ Lampe rot blinkt). Steht der Professor davor, erscheint die E-Anzeige; E
 laesst ihn den Text `text_id` sagen (Standard `speech_elevator_keycard`).
 
 **Grundbaustein Interagieren (Schritt 16a):** `scripts/objects/interactable.gd`
+**Level 7 und 8, Uhren-Raetsel (seit v0.71, Idee des Nutzers):** Zwei
+gleich schnelle Zeitschaltuhren (4 s, `repeat`, `autostart`, Uhr 2 um
+1,6 s versetzt) loesen bei jedem Ablauf je einen Deckenwerfer aus
+(`fire_on_signal`). Die Raketen treffen zwei Trefferflaechen; ein
+Gleichzeitig-Schalter oeffnet die Tuer zum Ausgang nur, wenn beide
+hoechstens 0,3 s auseinander treffen. Loesung: neben eine Uhr stellen (die
+andere ausserhalb der Blase) und sie verlangsamen bzw. beschleunigen, bis
+beide im Gleichtakt sind (langsam etwa 2,2 s). Level 8 ist eine Kopie von
+Level 7 mit dem Schrotthaufen "Form" am Anfang. Test
+`tests/test_level07.gd` (beide Level).
+
+**Deko Level 2 bis 8 (seit v0.71):** je Level eigenes Hintergrund-Thema
+(2 Chemie, 3 Fabrik, 4 Quanten, 5 Elektro, 6 Magnet, 7 Werkstatt, 8 Chemie)
+mit eigener Saat; die Musik bleibt wie vorher (im Inspector fest
+eingetragen). Requisiten am Boden, an der Wand und unter der Decke
+(Knoten `DecoAuto*`, ohne Kollision) sowie hintere Rohre ohne Kollision.
+Sie halten Abstand zu Spawn, Ausgang, Gefahren und Bahnen von Laser,
+Pendel, Werfern und Plattformen; kein grosses Zahnrad (wirkt wie ein
+Saegeblatt) und in Level 7/8 keine Wanduhr (Verwechslung mit den
+Zeitschaltuhren). Das Spiel selbst ist unveraendert.
+
 (Klasse `Interactable`, Area2D, erkennt Ebene 2). Steht der lebende
 Professor im Bereich, schwebt bei `prompt_offset` eine weisse Tastenkappe
 "E" leicht auf und ab; E ruft `_on_interact()` auf und sendet

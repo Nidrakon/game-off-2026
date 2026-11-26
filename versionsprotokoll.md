@@ -51,6 +51,14 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.71 - 2026-11-26: Uhren-Raetsel in Level 7, Level 8, Deko**
+
+- Level 7: zwei gleich schnelle, versetzte Zeitschaltuhren loesen je einen Raketenwerfer aus; die Tuer oeffnet nur, wenn beide Raketen fast gleichzeitig treffen. Mit dem Time Shifter eine Uhr in Gleichtakt bringen.
+- Neue Bausteine bzw. Optionen: Gleichzeitig-Schalter, Werfer `fire_on_signal`, Zeitschaltuhr `start_offset`, Trefferflaeche sendet `triggered`.
+- Level 8: Kopie von Level 7, am Anfang der Schrotthaufen "Form".
+- Level 2 bis 8: abwechslungsreiche Hintergruende (eigenes Thema je Level), Requisiten und hintere Rohre; Gameplay unveraendert, Musik wie vorher. Sprung-Hinweis in Level 2 etwas hoeher (verdeckte die Klonstation).
+- Tests: `test_level07` (Level 7 und 8), Level 8 in `test_upgrades`. Alle Tests, Exporte Web und Windows.
+
 **v0.69 - 2026-11-26: Abspann wieder im Fahrstuhl**
 
 - Nach der Pointe faehrt der Professor wieder im Fahrstuhl nach unten (altes Panel als e4), daneben die Credits; mit dem "Ding" startet die Fahrstuhlmusik (Song 6), der Comic davor ist ohne Musik.

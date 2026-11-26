@@ -101,6 +101,12 @@ func _initialize() -> void:
 	check("Level 6: Time Shifter und schnell da", upgrades.has(3) and upgrades.has(2))
 	upgrades.reset()
 
+	# Level 8: Haufen "Form" am Anfang
+	var l8 = await open_level("res://scenes/levels/level_08.tscn")
+	var h8 := heaps_of(l8)
+	check("Level 8: Haufen Form am Anfang", h8.size() == 1 and h8[0].upgrade == 1 and h8[0].position.x < 200, str(h8.size()))
+	upgrades.reset()
+
 	# Zwei Einblendungen kurz hintereinander: die zweite wartet
 	var m1 = UpgradeMessage.show_for(2, self)
 	var m2 = UpgradeMessage.show_for(3, self)

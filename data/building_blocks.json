@@ -187,6 +187,12 @@
 		"path": "res://scenes/objects/time_switch.tscn"
 	},
 	{
+		"category": "schalter",
+		"description": "Gleichzeitig-Schalter: sendet erst, wenn alle 'Sources' (Trefferflaechen, Lichtschranken) innerhalb von 'Tolerance' Sekunden ausgeloest haben. 'Targets', 'Action', 'One Shot'.",
+		"name": "Gleichzeitig-Schalter",
+		"path": "res://scenes/objects/sync_gate.tscn"
+	},
+	{
 		"name": "Werkbank",
 		"category": "deko",
 		"path": "res://scenes/deco/workbench.tscn",

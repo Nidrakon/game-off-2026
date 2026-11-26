@@ -41,6 +41,11 @@ const COLOR_BAR_TOP := Color("fbff86")
 @export var projectiles_block_laser := false
 ## Feuert der Werfer beim Start? Aus = er wartet auf ein Signal.
 @export var active := true
+## Ein Schuss pro Signal statt eigenem Takt: activate() bzw. toggle() feuert
+## sofort genau einmal (z. B. von einer Zeitschaltuhr ausgeloest),
+## deactivate() tut nichts. "fire_interval" und "first_shot_delay" gelten
+## dann nicht.
+@export var fire_on_signal := false
 
 var _time_left := 0.0
 # Gesamtdauer des laufenden Ladevorgangs (erster Schuss bzw. Takt).
@@ -74,23 +79,31 @@ func _ready() -> void:
 	_bar.draw.connect(_draw_bar)
 
 
-## Signal-Empfaenger: Werfer feuert.
+## Signal-Empfaenger: Werfer feuert (bei "fire_on_signal": genau ein Schuss).
 func activate() -> void:
+	if fire_on_signal:
+		_fire()
+		return
 	active = true
 
 
 ## Signal-Empfaenger: Werfer stoppt.
 func deactivate() -> void:
+	if fire_on_signal:
+		return
 	active = false
 
 
-## Signal-Empfaenger: an <-> aus.
+## Signal-Empfaenger: an <-> aus (bei "fire_on_signal": ein Schuss).
 func toggle() -> void:
+	if fire_on_signal:
+		_fire()
+		return
 	active = not active
 
 
 func _physics_process(delta: float) -> void:
-	if not active:
+	if not active or fire_on_signal:
 		return
 	_time_left -= delta * _time.time_scale
 	if _time_left <= 0.0:

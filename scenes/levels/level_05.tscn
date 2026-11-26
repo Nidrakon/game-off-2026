@@ -8,9 +8,17 @@
 [ext_resource type="PackedScene" path="res://scenes/objects/deadly_laser.tscn" id="6_ubdts"]
 [ext_resource type="PackedScene" path="res://scenes/objects/scrap_heap.tscn" id="7_scrap"]
 [ext_resource type="PackedScene" path="res://scenes/objects/wall_hint.tscn" id="8_hint"]
+[ext_resource type="PackedScene" path="res://scenes/objects/deco_prop.tscn" id="90_deco"]
 
 [node name="Level05" unique_id=777095240 instance=ExtResource("1_base")]
+background_theme = 3
+background_seed = 55
+background_density = 0.55
+music = 3
 required_upgrades = Array[int]([3])
+
+[node name="PipesBack" parent="." index="8"]
+tile_map_data = PackedByteArray("AAABAAQAAAAGAAAAAAACAAQAAAAGAAIAAAADAAQAAAAGAAIAAAAEAAQAAAAGAAIAAAAFAAQAAAAGAAIAAAAGAAQAAAAGAAMAAAAHAAQAAAAGAAIAAAAIAAQAAAAGAAIAAAAJAAQAAAAGAAIAAAAKAAQAAAAGAAIAAAALAAQAAAAGAAIAAAAMAAQAAAAGAAIAAAANAAQAAAAGAAIAAAAOAAQAAAAGAAIAAAAPAAQAAAAGAAIAAAAQAAQAAAAGAAIAAAARAAQAAAAGAAIAAAASAAQAAAAGAAMAAAATAAQAAAAGAAIAAAAUAAQAAAAGAAIAAAAVAAQAAAAGAAIAAAAWAAQAAAAGAAIAAAAXAAQAAAAGAAIAAAAYAAQAAAAGAAIAAAAZAAQAAAAGAAIAAAAaAAQAAAAGAAIAAAAbAAQAAAAGAAIAAAAcAAQAAAAGAAIAAAAdAAQAAAAGAAIAAAAeAAQAAAAGAAIAAAAfAAQAAAAGAAIAAAAgAAQAAAAGAAMAAAAhAAQAAAAGAAIAAAAiAAQAAAAGAAIAAAAjAAQAAAAGAAIAAAAkAAQAAAAGAAIAAAAlAAQAAAAGAAIAAAAmAAQAAAAGAAIAAAAnAAQAAAAGAAIAAAAoAAQAAAAGAAMAAAApAAQAAAAGAAIAAAAqAAQAAAAGAAIAAAArAAQAAAAGAAIAAAAsAAQAAAAGAAIAAAAtAAQAAAAGAAIAAAAuAAQAAAAGAAIAAAAvAAQAAAAGAAIAAAAwAAQAAAAGAAIAAAAxAAQAAAAGAAIAAAAyAAQAAAAGAAIAAAAzAAQAAAAGAAIAAAA0AAQAAAAGAAIAAAA1AAQAAAAGAAIAAAA2AAQAAAAGAAMAAAA3AAQAAAAGAAIAAAA4AAQAAAAGAAIAAAA5AAQAAAAGAAIAAAA6AAQAAAAEAAIAAAAGAAUAAAAFAAEAAAASAAUAAAAFAAEAAAAgAAUAAAAFAAEAAAAoAAUAAAAFAAEAAAA2AAUAAAAFAAEAAAAGAAYAAAAFAAEAAAASAAYAAAAFAAEAAAAgAAYAAAAFAAEAAAAoAAYAAAAFAAEAAAA2AAYAAAAFAAEAAAAGAAcAAAAFAAEAAAASAAcAAAAFAAEAAAAgAAcAAAAFAAEAAAAoAAcAAAAFAAEAAAA2AAcAAAAFAAEAAAAGAAgAAAAFAAEAAAASAAgAAAAFAAEAAAAgAAgAAAAFAAEAAAAoAAgAAAAFAAAAAAA2AAgAAAAFAAAAAAAGAAkAAAAFAAEAAAASAAkAAAAFAAEAAAAgAAkAAAAFAAEAAAAGAAoAAAAFAAEAAAASAAoAAAAFAAEAAAAgAAoAAAAFAAEAAAAGAAsAAAAFAAAAAAASAAsAAAAFAAAAAAAgAAsAAAAFAAAAAAA=")
 
 [node name="SolidBlock" parent="." index="14" unique_id=288491256 instance=ExtResource("2_knxqw")]
 position = Vector2(176, 416)
@@ -52,3 +60,90 @@ upgrade = 2
 position = Vector2(152, 344)
 keys = PackedStringArray("SHIFT", "+", "WHEEL UP")
 text_id = "hint_time_fast"
+
+[node name="DecoAuto1" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(373, 496)
+prop = "tube"
+flip = true
+start_offset = 1.1
+
+[node name="DecoAuto2" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(534, 496)
+prop = "console"
+flip = true
+start_offset = 0.6
+
+[node name="DecoAuto3" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(603, 496)
+prop = "prototype"
+
+[node name="DecoAuto4" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(673, 496)
+prop = "generator"
+flip = true
+start_offset = 0.3
+
+[node name="DecoAuto5" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(713, 243)
+prop = "tool_wall"
+flip = true
+
+[node name="DecoAuto6" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(522, 247)
+prop = "blueprint"
+
+[node name="DecoAuto7" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(578, 175)
+prop = "chalkboard"
+
+[node name="DecoAuto8" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(110, 261)
+prop = "gauges"
+start_offset = 1.1
+
+[node name="DecoAuto9" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(253, 266)
+prop = "wall_clock"
+flip = true
+start_offset = 0.3
+
+[node name="DecoAuto10" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(62, 164)
+prop = "gauges"
+start_offset = 0.9
+
+[node name="DecoAuto11" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(250, 154)
+prop = "wall_clock"
+start_offset = 0.3
+
+[node name="DecoAuto12" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(127, 56)
+prop = "lamp"
+
+[node name="DecoAuto13" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(377, 56)
+prop = "lamp"
+
+[node name="DecoAuto14" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(571, 56)
+prop = "lamp"
+
+[node name="DecoAuto15" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(767, 56)
+prop = "lamp"

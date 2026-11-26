@@ -33,6 +33,10 @@ signal finished
 ## Beginnt nach dem Ablauf sofort von vorn (Taktgeber, z. B. fuer zwei Uhren,
 ## die man mit der Zeitblase in Gleichtakt bringt).
 @export var repeat := false
+## Versatz beim Levelstart (Sekunden, nur mit "autostart"): Die Uhr beginnt
+## so, als liefe sie schon so lange. Damit laufen zwei gleich schnelle Uhren
+## versetzt (Doku 1.4, Regel 17).
+@export_range(0.0, 30.0, 0.05, "or_greater") var start_offset := 0.0
 
 ## Mitte des Ziffernblatts relativ zum Node und Radius der Restzeit-Anzeige.
 const DIAL_CENTER := Vector2(-0.5, -2.5)
@@ -66,6 +70,8 @@ func _ready() -> void:
 	_dial.draw.connect(_draw_dial)
 	if not Engine.is_editor_hint() and autostart:
 		_start()
+		if start_offset > 0.0 and duration > 0.0:
+			_time_left = maxf(duration - fposmod(start_offset, duration), 0.001)
 
 
 ## Laeuft der Countdown gerade?

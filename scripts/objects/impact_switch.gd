@@ -6,6 +6,9 @@ extends StaticBody2D
 ## ruft dabei on_projectile_hit() auf.
 ## Der Node liegt in der Mitte der Trefferflaeche.
 
+## Wird bei jedem Treffer gesendet (z. B. fuer einen Gleichzeitig-Schalter).
+signal triggered
+
 ## Dauer des sichtbaren Impulses (Sekunden).
 const SPARK_TIME := 0.3
 ## Wechsel zwischen den zwei Funken-Bildern (Sekunden).
@@ -25,6 +28,7 @@ var _spark_left := 0.0
 func on_projectile_hit() -> void:
 	Sound.play_at("impact_switch", global_position)
 	_spark_left = SPARK_TIME
+	triggered.emit()
 	SignalSender.send(targets, action, self)
 
 

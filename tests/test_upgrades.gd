@@ -34,7 +34,7 @@ func _initialize() -> void:
 	var upgrades = root.get_node("Upgrades")
 	upgrades.reset()
 	var order: Array = root.get_node("LevelFlow").get_levels()
-	check("Sechs Level, alte 7/8 sind jetzt 5/6", order.size() == 6 and order[5].ends_with("level_06.tscn"), str(order))
+	check("Level 5 und 6 in der Reihenfolge (alte 7/8)", order.size() >= 6 and order[4].ends_with("level_05.tscn") and order[5].ends_with("level_06.tscn"), str(order))
 
 	# Level 1: klein, keine sichtbare Klonstation, kein Sprung-Hinweis
 	var l1 = await open_level("res://scenes/levels/level_01.tscn")

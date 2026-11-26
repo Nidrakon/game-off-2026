@@ -11,7 +11,7 @@ func _initialize() -> void:
 	root.get_node("SaveGame").test_mode = true
 	# Eigener Boden-Magnet (180 Grad gedreht) im Modus Abstossen, in einem
 	# leeren Level ohne Gefahren.
-	change_scene_to_file("res://scenes/levels/level_06.tscn")
+	change_scene_to_file("res://scenes/levels/level_base.tscn")
 	await process_frame
 	while current_scene == null or not current_scene.is_in_group("level"): await process_frame
 	for n in current_scene.find_children("*", "StaticBody2D", true, false):

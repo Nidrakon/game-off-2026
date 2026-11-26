@@ -51,6 +51,11 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.69 - 2026-11-26: Abspann wieder im Fahrstuhl**
+
+- Nach der Pointe faehrt der Professor wieder im Fahrstuhl nach unten (altes Panel als e4), daneben die Credits; mit dem "Ding" startet die Fahrstuhlmusik (Song 6), der Comic davor ist ohne Musik.
+- Neuer Test `test_ending`; `test_magnet` und `test_upgrades` haengen nicht mehr an den Inhalten von Level 6 bzw. der Zahl der Level.
+
 **v0.68 - 2026-11-26: Ueber Rohrkanten laufen**
 
 - Auf Rohren blieb man an Ecken, T-Stuecken, Kreuzungen und Kappen haengen: deren Kollision war 1 px dicker als die der geraden Stuecke. Jetzt ueberall 10 px, man laeuft ohne Springen drueber.

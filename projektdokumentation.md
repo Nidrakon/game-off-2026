@@ -2130,6 +2130,15 @@ durch Alterung (unrealistisch bei Plastik).
   - "Notiz an mich: Selbstschussanlagen erkennen keine Gesichter. Nur
     Keycards."
   - "Meine Antigravitationsschuhe waeren jetzt praktisch. Liegen leider oben
+   - **Fahrstuhl wieder da (seit v0.69, Wunsch des Nutzers):** Die neuen
+     Comic-Panels (v0.67) hatten das Fahrstuhl-Panel durch die Nahaufnahme
+     ersetzt. Jetzt: Comic e1, e2 links/rechts, e3 (Nahaufnahme, Pointe),
+     dann e4 = Fahrstuhl nach unten (das alte Panel, 3 Bilder,
+     `graphics/ending/ending_e4.png`, Quelle
+     `graphics/source/comic/ending_e4.aseprite`, im Aseprite-Sync). Die
+     Kabine ruckelt leicht, daneben laufen die Credits. Mit dem "Ding"
+     startet Song 6 (Fahrstuhlmusik); im Comic davor keine Musik. Test
+     `tests/test_ending.gd`.
     neben der Haustuer."
   - "Diese Brille mit Roentgenblick haette mir hier echt geholfen. Wo hab
     ich die nur hingelegt?"

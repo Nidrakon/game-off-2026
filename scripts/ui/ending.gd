@@ -3,8 +3,11 @@ extends Control
 ## 1. Comic ohne Text: Der Professor nimmt oben die Pizza entgegen, haelt die
 ##    Keycard an den Fahrstuhl - gruen, sie war nie kaputt (Pointe).
 ##    Weiter mit Klick/Taste oder automatisch nach AUTO_ADVANCE Sekunden.
-## 2. Fahrstuhlfahrt nach unten: links isst der Professor seine Pizza, rechts
-##    laufen die Credits (dialogues/credits.json). Danach "THE END" und die
+## 2. Fahrstuhlfahrt nach unten (Panel e4, wie vor v0.67): links faehrt der
+##    Professor mit seiner Pizza im Fahrstuhl nach unten (die Kabine ruckelt
+##    leicht), rechts laufen die Credits (dialogues/credits.json). Mit dem
+##    "Ding" startet die Fahrstuhlmusik (Song 6 "Going Down"); im Comic
+##    davor laeuft keine Musik. Danach "THE END" und die
 ##    Zahl der verbrauchten Klone; eine Taste fuehrt zum Titelbildschirm.
 ## Esc springt direkt ans Ende. Bilder in graphics/ending/.
 
@@ -18,7 +21,14 @@ const SCALE := 2.0
 const SLOT_LEFT := Vector2(30, 60)
 const SLOT_RIGHT := Vector2(490, 60)
 const META_FILE := "res://graphics/ending/ending_panels.json"
-const STEPS := [["e1"], ["e2_left"], ["e2_left", "e2_right"], ["e3"]]
+## Comic-Schritte; der letzte (Fahrstuhl) startet die Credits.
+const STEPS := [["e1"], ["e2_left"], ["e2_left", "e2_right"], ["e3"], ["e4"]]
+## Fahrstuhl-Panel waehrend der Credits und Song dazu.
+const ELEVATOR_PANEL := "e4"
+const ELEVATOR_MUSIC := 6
+## Ruckeln der Kabine (Pixel, Sekunden je Ruck).
+const RIDE_SHAKE := 1.0
+const RIDE_SHAKE_TIME := 0.18
 const COLOR_BG := Color("2e222f")
 const COLOR_TEXT := Color("c7dcd0")
 const COLOR_TITLE := Color("f9c22b")
@@ -40,7 +50,7 @@ var _end_box: VBoxContainer
 func _ready() -> void:
 	get_tree().paused = false
 	Sound.stop_ambient()
-	Sound.play_music(6)
+	Sound.stop_music()
 	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(META_FILE))
 	_meta = data if data is Dictionary else {}
 	var bg := ColorRect.new()
@@ -74,8 +84,9 @@ func next_step() -> void:
 			_panels[name] = _make_panel(name)
 	if _step > 0:
 		Sound.play("page_flip")
-	if names.has("e3"):
+	if names.has(ELEVATOR_PANEL):
 		Sound.play("elevator_ding")
+		Sound.play_music(ELEVATOR_MUSIC)
 		_start_credits()
 
 
@@ -171,6 +182,10 @@ func _process(delta: float) -> void:
 		next_step()
 	elif phase == Phase.CREDITS and _credits:
 		_credits.position.y -= CREDITS_SPEED * delta
+		# Kabine ruckelt leicht bei der Fahrt nach unten.
+		if _panels.has(ELEVATOR_PANEL):
+			var bump := RIDE_SHAKE if int(_anim / RIDE_SHAKE_TIME) % 7 == 0 else 0.0
+			_panels[ELEVATOR_PANEL].position = SLOT_LEFT + Vector2(0, bump)
 		if _credits.position.y + _credits.size.y < 120.0:
 			_show_end()
 

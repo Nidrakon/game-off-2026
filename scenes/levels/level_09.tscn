@@ -1,0 +1,13 @@
+[gd_scene format=4]
+
+[ext_resource type="PackedScene" path="res://scenes/levels/level_base.tscn" id="1_base"]
+[ext_resource type="PackedScene" path="res://scenes/objects/scrap_heap.tscn" id="2_scrap"]
+
+[node name="Level09" instance=ExtResource("1_base")]
+background_theme = 2
+background_seed = 99
+background_density = 0.55
+required_upgrades = Array[int]([3, 2, 1])
+
+[node name="ScrapHeapRadius" parent="." instance=ExtResource("2_scrap")]
+position = Vector2(112, 496)

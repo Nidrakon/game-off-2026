@@ -37,11 +37,14 @@ var stage: Stage = Stage.NORMAL:
 		_update_stage_sound(true)
 		stage_changed.emit(stage)
 
-## Aktueller Radius (Pixel), begrenzt auf radius_min bis radius_max.
+## Aktueller Radius (Pixel), begrenzt auf radius_min bis radius_max. Ohne
+## das Upgrade RADIUS (Level 9) bleibt er beim Minimum (seit v0.81).
 var radius := 80.0:
 	set(value):
 		if settings:
 			value = clampf(value, settings.radius_min, settings.radius_max)
+			if not is_radius_unlocked():
+				value = settings.radius_min
 		if is_equal_approx(value, radius):
 			return
 		radius = value
@@ -83,7 +86,9 @@ func _ready() -> void:
 	if upgrades:
 		upgrades.changed.connect(func() -> void:
 			if not is_stage_unlocked(stage):
-				stage = Stage.NORMAL)
+				stage = Stage.NORMAL
+			# Radius wieder gesperrt (Entwickler-Menue): zurueck aufs Minimum.
+			radius = radius)
 	if settings.lens_enabled:
 		_lens = Polygon2D.new()
 		_lens.name = "Lens"
@@ -163,6 +168,13 @@ func is_stage_unlocked(value: Stage) -> bool:
 	if not upgrades.has(TimeShifterUpgrades.Upgrade.TIME_SHIFTER):
 		return false
 	return value != Stage.FAST or upgrades.has(TimeShifterUpgrades.Upgrade.FAST)
+
+
+## Darf der Radius ueber das Minimum hinaus (Upgrade RADIUS, Level 9)?
+## Ohne Autoload (Tests) immer.
+func is_radius_unlocked() -> bool:
+	var upgrades := _upgrades()
+	return upgrades == null or upgrades.has(TimeShifterUpgrades.Upgrade.RADIUS)
 
 
 func _upgrades() -> TimeShifterUpgrades:

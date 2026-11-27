@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" path="res://scenes/objects/deco_prop.tscn" id="90_deco"]
 
 [node name="Level04" unique_id=672725440 instance=ExtResource("1_base")]
-background_theme = 5
+background_theme = 3
 background_seed = 44
 background_density = 0.5
 music = 4
@@ -73,84 +73,50 @@ time_shifter = false
 
 [node name="DecoAuto1" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(130, 496)
-prop = "trash_can"
+position = Vector2(778, 496)
+prop = "generator"
 flip = true
+start_offset = 0.2
 
 [node name="DecoAuto2" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(758, 496)
-prop = "brain_jar"
-flip = true
-start_offset = 0.1
+position = Vector2(845, 295)
+prop = "fuse_panel"
+start_offset = 0.6
 
 [node name="DecoAuto3" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(812, 496)
-prop = "tesla_coil"
-flip = true
-start_offset = 1.4
+position = Vector2(166, 175)
+prop = "gauges"
+start_offset = 0.4
 
 [node name="DecoAuto4" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(568, 383)
-prop = "tool_wall"
+position = Vector2(75, 316)
+prop = "volt_sign"
 
 [node name="DecoAuto5" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(245, 206)
-prop = "gauges"
+position = Vector2(235, 236)
+prop = "volt_sign"
 flip = true
-start_offset = 0.4
 
 [node name="DecoAuto6" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(130, 162)
-prop = "chalkboard"
+position = Vector2(123, 80)
+prop = "hanging_cables"
 
 [node name="DecoAuto7" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(768, 363)
-prop = "blueprint"
+position = Vector2(269, 80)
+prop = "hanging_cables"
 
 [node name="DecoAuto8" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(278, 387)
-prop = "wall_clock"
-start_offset = 1.2
+position = Vector2(496, 56)
+prop = "lamp"
 
 [node name="DecoAuto9" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(61, 254)
-prop = "gauges"
-start_offset = 0.9
-
-[node name="DecoAuto10" parent="." instance=ExtResource("90_deco")]
-z_index = -8
-position = Vector2(494, 197)
-prop = "tool_wall"
-
-[node name="DecoAuto11" parent="." instance=ExtResource("90_deco")]
-z_index = -8
-position = Vector2(83, 80)
+position = Vector2(747, 80)
 prop = "hanging_cables"
-
-[node name="DecoAuto12" parent="." instance=ExtResource("90_deco")]
-z_index = -8
-position = Vector2(300, 56)
-prop = "lamp"
-
-[node name="DecoAuto13" parent="." instance=ExtResource("90_deco")]
-z_index = -8
-position = Vector2(495, 80)
-prop = "hanging_cables"
-
-[node name="DecoAuto14" parent="." instance=ExtResource("90_deco")]
-z_index = -8
-position = Vector2(746, 56)
-prop = "lamp"
-
-[node name="DecoAuto15" parent="." instance=ExtResource("90_deco")]
-z_index = -8
-position = Vector2(886, 56)
-prop = "lamp"

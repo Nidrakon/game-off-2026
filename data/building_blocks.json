@@ -646,5 +646,197 @@
 			24
 		],
 		"description": "Deko ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Foerderband",
+		"category": "deko",
+		"path": "res://scenes/deco/conveyor.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [0, 0, 64, 24],
+		"description": "Deko (Thema Fabrik) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Palette mit Kisten",
+		"category": "deko",
+		"path": "res://scenes/deco/pallet_stack.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [130, 0, 40, 32],
+		"description": "Deko (Thema Fabrik) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Oelfaesser",
+		"category": "deko",
+		"path": "res://scenes/deco/oil_drums.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [172, 0, 40, 32],
+		"description": "Deko (Thema Fabrik) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Warnschild",
+		"category": "deko",
+		"path": "res://scenes/deco/warning_sign.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [214, 0, 28, 26],
+		"description": "Deko (Thema Fabrik) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Tisch mit Kolben",
+		"category": "deko",
+		"path": "res://scenes/deco/flask_table.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [244, 0, 48, 36],
+		"description": "Deko (Thema Chemie) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Chemiefass",
+		"category": "deko",
+		"path": "res://scenes/deco/chem_barrel.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [342, 0, 24, 32],
+		"description": "Deko (Thema Chemie) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Abzug",
+		"category": "deko",
+		"path": "res://scenes/deco/fume_hood.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [368, 0, 48, 64],
+		"description": "Deko (Thema Chemie) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Destille",
+		"category": "deko",
+		"path": "res://scenes/deco/distiller.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [0, 66, 40, 48],
+		"description": "Deko (Thema Chemie) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Gefahrenschild",
+		"category": "deko",
+		"path": "res://scenes/deco/hazard_sign.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [82, 66, 24, 24],
+		"description": "Deko (Thema Chemie) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Transformator",
+		"category": "deko",
+		"path": "res://scenes/deco/transformer.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [108, 66, 40, 48],
+		"description": "Deko (Thema Elektro) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Sicherungskasten",
+		"category": "deko",
+		"path": "res://scenes/deco/fuse_panel.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [190, 66, 36, 40],
+		"description": "Deko (Thema Elektro) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Kabeltrommel",
+		"category": "deko",
+		"path": "res://scenes/deco/cable_spool.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [264, 66, 32, 28],
+		"description": "Deko (Thema Elektro) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Hochspannungsschild",
+		"category": "deko",
+		"path": "res://scenes/deco/volt_sign.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [298, 66, 24, 24],
+		"description": "Deko (Thema Elektro) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Batterien",
+		"category": "deko",
+		"path": "res://scenes/deco/battery_bank.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [324, 66, 40, 40],
+		"description": "Deko (Thema Elektro) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Hufeisenmagnet",
+		"category": "deko",
+		"path": "res://scenes/deco/horseshoe.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [406, 66, 32, 44],
+		"description": "Deko (Thema Magnet) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Spulenturm",
+		"category": "deko",
+		"path": "res://scenes/deco/coil_stack.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [440, 66, 32, 48],
+		"description": "Deko (Thema Magnet) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Metallreste",
+		"category": "deko",
+		"path": "res://scenes/deco/scrap_pile.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [0, 116, 40, 24],
+		"description": "Deko (Thema Magnet) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Kompass",
+		"category": "deko",
+		"path": "res://scenes/deco/compass.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [42, 116, 28, 28],
+		"description": "Deko (Thema Magnet) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Gewichte",
+		"category": "deko",
+		"path": "res://scenes/deco/iron_weights.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [100, 116, 34, 24],
+		"description": "Deko (Thema Magnet) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Quantenrechner",
+		"category": "deko",
+		"path": "res://scenes/deco/quantum_rack.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [136, 116, 40, 64],
+		"description": "Deko (Thema Quanten) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Energiekammer",
+		"category": "deko",
+		"path": "res://scenes/deco/orb_chamber.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [218, 116, 36, 56],
+		"description": "Deko (Thema Quanten) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Hologramm",
+		"category": "deko",
+		"path": "res://scenes/deco/hologram.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [292, 116, 36, 48],
+		"description": "Deko (Thema Quanten) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Kryotank",
+		"category": "deko",
+		"path": "res://scenes/deco/cryo_tank.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [366, 116, 28, 56],
+		"description": "Deko (Thema Quanten) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
+	},
+	{
+		"name": "Wellen-Monitor",
+		"category": "deko",
+		"path": "res://scenes/deco/wave_screen.tscn",
+		"icon": "res://graphics/sprites/deco/deco_themes.png",
+		"icon_region": [0, 182, 48, 32],
+		"description": "Deko (Thema Quanten) ohne Kollision, liegt hinter den Spielobjekten. Ursprung unten Mitte. 'Flip' spiegelt."
 	}
 ]

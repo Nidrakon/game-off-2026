@@ -51,6 +51,13 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.81 - 2026-11-27: Sechs Level-Themen mit eigener Deko, Radius erst ab Level 9**
+
+- Sechs Themen (Werkstatt, Fabrik, Chemie, Elektro, Magnet, Quanten) wechseln reihum von Level zu Level; Rueckwand, Silhouetten, Geraeusch und Requisiten passen jeweils zusammen.
+- 24 neue Deko-Requisiten fuer Fabrik bis Quanten (z. B. Foerderband, Abzug, Transformator, Hufeisenmagnet, Quantenrechner), viele animiert; auch im Baukasten.
+- Blasengroesse bis Level 9 auf das Minimum begrenzt; der Schrotthaufen "Radius" am Anfang von Level 9 schaltet die volle Groesse frei.
+- Schild "SHIFT + WHEEL DOWN" in Level 3 nicht mehr von der Klonstation verdeckt. Alle Tests, Palette und Exporte geprueft.
+
 **v0.80 - 2026-11-27: Kein Ruckeln, Kamera staerker auf dem Professor**
 
 - Hintergrund ruckelte, wenn die Kamera an ihrer Grenze stand (z. B. beim Laufen gegen einen Magneten am Levelrand): Die Ebenen sprangen beim Runden um 1 px. Behoben.

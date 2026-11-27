@@ -14,11 +14,12 @@
 [ext_resource type="PackedScene" path="res://scenes/objects/deco_prop.tscn" id="90_deco"]
 
 [node name="Level08" unique_id=1555916936 instance=ExtResource("1_base")]
-background_theme = 2
+background_theme = 1
 background_seed = 88
 background_density = 0.55
-music = 3
 required_upgrades = Array[int]([3, 2])
+camera_follow_room = 80.0
+music = 3
 
 [node name="PipesBack" parent="." index="8"]
 tile_map_data = PackedByteArray("AAABAAYAAAAGAAAAAAACAAYAAAAGAAIAAAADAAYAAAAGAAIAAAAEAAYAAAAGAAIAAAAFAAYAAAAGAAIAAAAGAAYAAAAGAAIAAAAHAAYAAAAGAAIAAAAIAAYAAAAGAAIAAAAJAAYAAAAGAAIAAAAKAAYAAAAGAAIAAAALAAYAAAAGAAIAAAAMAAYAAAAGAAIAAAANAAYAAAAGAAIAAAAOAAYAAAAGAAIAAAAPAAYAAAAGAAIAAAAQAAYAAAAGAAIAAAARAAYAAAAGAAIAAAASAAYAAAAGAAIAAAATAAYAAAAGAAIAAAAUAAYAAAAGAAIAAAAVAAYAAAAGAAIAAAAWAAYAAAAGAAIAAAAXAAYAAAAGAAIAAAAYAAYAAAAGAAIAAAAZAAYAAAAGAAIAAAAaAAYAAAAGAAIAAAAbAAYAAAAGAAIAAAAcAAYAAAAGAAIAAAAdAAYAAAAGAAIAAAAeAAYAAAAGAAIAAAAfAAYAAAAGAAIAAAAgAAYAAAAGAAIAAAAhAAYAAAAGAAIAAAAiAAYAAAAGAAIAAAAjAAYAAAAGAAIAAAAkAAYAAAAGAAIAAAAlAAYAAAAGAAIAAAAmAAYAAAAGAAIAAAAnAAYAAAAGAAIAAAAoAAYAAAAGAAIAAAApAAYAAAAGAAIAAAAqAAYAAAAGAAIAAAArAAYAAAAGAAIAAAAsAAYAAAAGAAIAAAAtAAYAAAAGAAIAAAAuAAYAAAAGAAIAAAAvAAYAAAAGAAIAAAAwAAYAAAAGAAIAAAAxAAYAAAAGAAIAAAAyAAYAAAAGAAIAAAAzAAYAAAAGAAIAAAA0AAYAAAAGAAIAAAA1AAYAAAAGAAIAAAA2AAYAAAAGAAIAAAA3AAYAAAAGAAIAAAA4AAYAAAAGAAIAAAA5AAYAAAAGAAIAAAA6AAYAAAAEAAIAAAA=")
@@ -53,13 +54,13 @@ rotation = 1.5707964
 fire_on_signal = true
 
 [node name="TimeSwitch" parent="." index="20" unique_id=129765441 node_paths=PackedStringArray("targets") instance=ExtResource("6_ubdts")]
-position = Vector2(624, 256)
+position = Vector2(576, 256)
 duration = 4.0
+targets = [NodePath("../ProjectileLauncher")]
 start_action = 2
 end_action = 1
 autostart = true
 repeat = true
-targets = [NodePath("../ProjectileLauncher")]
 
 [node name="WallBlock" parent="." index="21" unique_id=2054780848 instance=ExtResource("7_6u67p")]
 position = Vector2(768, 16)
@@ -75,111 +76,118 @@ targets = [NodePath("../Door")]
 position = Vector2(112, 496)
 upgrade = 1
 
-[node name="SolidBlock2" parent="." index="39" unique_id=1279616943 instance=ExtResource("3_6u67p")]
+[node name="SolidBlock2" parent="." index="24" unique_id=1279616943 instance=ExtResource("3_6u67p")]
 position = Vector2(432, 400)
 collision_mask = 0
 size_tiles = Vector2i(21, 1)
 
-[node name="WallBlock2" parent="." index="40" unique_id=40253330 instance=ExtResource("7_6u67p")]
+[node name="WallBlock2" parent="." index="25" unique_id=40253330 instance=ExtResource("7_6u67p")]
 position = Vector2(512, 16)
 collision_mask = 0
 size_tiles = Vector2i(1, 24)
 
-[node name="SolidBlock3" parent="." index="41" unique_id=1357211997 instance=ExtResource("3_6u67p")]
+[node name="SolidBlock3" parent="." index="26" unique_id=1357211997 instance=ExtResource("3_6u67p")]
 position = Vector2(432, 272)
 collision_mask = 0
 size_tiles = Vector2i(21, 1)
 
-[node name="SolidBlock4" parent="." index="42" unique_id=671322561 instance=ExtResource("3_6u67p")]
+[node name="SolidBlock4" parent="." index="27" unique_id=671322561 instance=ExtResource("3_6u67p")]
 position = Vector2(432, 288)
 collision_mask = 0
 size_tiles = Vector2i(21, 7)
 
-[node name="Magnet" parent="." index="43" unique_id=84108463 instance=ExtResource("11_llmnb")]
+[node name="Magnet" parent="." index="28" unique_id=84108463 instance=ExtResource("11_llmnb")]
 position = Vector2(336, 496)
 rotation = 3.1415927
 collision_mask = 0
 mode = 1
 reach = 200.0
 
-[node name="FlyingPlatform" parent="." index="44" unique_id=2045360627 instance=ExtResource("12_bxvfk")]
+[node name="FlyingPlatform" parent="." index="29" unique_id=2045360627 instance=ExtResource("12_bxvfk")]
 position = Vector2(48, 280)
-travel = Vector2(200, 0)
+travel = Vector2(250, 0)
 
-[node name="FlyingPlatform2" parent="." index="45" unique_id=107289784 instance=ExtResource("12_bxvfk")]
+[node name="FlyingPlatform2" parent="." index="30" unique_id=107289784 instance=ExtResource("12_bxvfk")]
 position = Vector2(48, 96)
 travel = Vector2(0, 100)
 
-[node name="SolidBlock5" parent="." index="46" unique_id=1235026616 instance=ExtResource("3_6u67p")]
+[node name="SolidBlock5" parent="." index="31" unique_id=1235026616 instance=ExtResource("3_6u67p")]
 position = Vector2(128, 96)
 collision_mask = 0
 size_tiles = Vector2i(20, 1)
 
-[node name="TimeSwitch2" parent="." index="47" unique_id=675625716 node_paths=PackedStringArray("targets") instance=ExtResource("6_ubdts")]
-position = Vector2(688, 256)
+[node name="TimeSwitch2" parent="." index="32" unique_id=675625716 node_paths=PackedStringArray("targets") instance=ExtResource("6_ubdts")]
+position = Vector2(640, 256)
 duration = 4.0
+targets = [NodePath("../ProjectileLauncher2")]
 start_action = 2
 end_action = 1
 autostart = true
 repeat = true
-targets = [NodePath("../ProjectileLauncher2")]
 start_offset = 1.6
 
 [node name="DecoAuto1" parent="." instance=ExtResource("90_deco")]
 z_index = -8
 position = Vector2(177, 496)
-prop = "tube"
-start_offset = 0.5
+prop = "barrel"
 
 [node name="DecoAuto2" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(260, 496)
-prop = "pizza_boxes"
+position = Vector2(232, 496)
+prop = "gas_tanks"
 
 [node name="DecoAuto3" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(502, 496)
-prop = "robot_arm"
-flip = true
+position = Vector2(500, 496)
+prop = "pallet_stack"
 
 [node name="DecoAuto4" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(606, 496)
-prop = "workbench"
+position = Vector2(567, 496)
+prop = "generator"
+flip = true
+start_offset = 1.2
 
 [node name="DecoAuto5" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(149, 391)
-prop = "tool_wall"
-flip = true
+position = Vector2(664, 496)
+prop = "conveyor"
+start_offset = 0.4
 
 [node name="DecoAuto6" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(647, 183)
-prop = "chalkboard"
+position = Vector2(113, 391)
+prop = "warning_sign"
+flip = true
 
 [node name="DecoAuto7" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(647, 183)
+prop = "tool_wall"
+
+[node name="DecoAuto8" parent="." instance=ExtResource("90_deco")]
 z_index = -8
 position = Vector2(241, 188)
 prop = "gauges"
 start_offset = 1.0
 
-[node name="DecoAuto8" parent="." instance=ExtResource("90_deco")]
-z_index = -8
-position = Vector2(283, 396)
-prop = "blueprint"
-
 [node name="DecoAuto9" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(388, 183)
-prop = "blueprint"
+position = Vector2(263, 396)
+prop = "gauges"
+start_offset = 0.6
 
 [node name="DecoAuto10" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(241, 56)
+position = Vector2(219, 56)
 prop = "lamp"
 
 [node name="DecoAuto11" parent="." instance=ExtResource("90_deco")]
 z_index = -8
-position = Vector2(600, 56)
+position = Vector2(438, 56)
 prop = "lamp"
+
+[node name="DecoAuto12" parent="." instance=ExtResource("90_deco")]
+z_index = -8
+position = Vector2(615, 80)
+prop = "hanging_cables"

@@ -1,7 +1,9 @@
 @tool
 extends Node2D
 ## Deko-Requisit (Doku 2.9, Werkstatt): Werkbank, Werkzeugwand, Maschinen,
-## Erfindungen usw. aus dem Atlas graphics/sprites/deco/deco_workshop.png.
+## Erfindungen usw. aus dem Atlas graphics/sprites/deco/deco_workshop.png,
+## seit v0.81 zusaetzlich die Requisiten der Level-Themen aus
+## deco_themes.png (erzeugt mit tools/make_deco_themes.py).
 ## Reine Dekoration ohne Kollision, liegt hinter den Spielobjekten.
 ## Requisiten mit zwei Bildern (Bildschirme, Funken, Blasen) sind animiert;
 ## das Tempo laeuft mit der Zeitblase (Regel 17).
@@ -9,9 +11,13 @@ extends Node2D
 
 const TEXTURE := preload("res://graphics/sprites/deco/deco_workshop.png")
 const META_FILE := "res://graphics/sprites/deco/deco_workshop.json"
+## Zweiter Atlas: Requisiten der Level-Themen (Fabrik, Chemie, Elektro,
+## Magnet, Quanten).
+const THEMES_TEXTURE := preload("res://graphics/sprites/deco/deco_themes.png")
+const THEMES_META_FILE := "res://graphics/sprites/deco/deco_themes.json"
 
 ## Welches Requisit.
-@export_enum("workbench", "tool_wall", "shelf", "generator", "tesla_coil", "console", "robot_arm", "jetpack", "tube", "chalkboard", "lamp", "crate", "gauges", "cables", "prototype", "pizza_boxes", "barrel", "big_gear", "rocket", "microscope", "dish", "coffee", "blueprint", "toolbox", "gas_tanks", "brain_jar", "wall_clock", "bookshelf", "ladder", "laser_cannon", "hanging_cables", "drone", "teleporter", "cactus", "trash_can") var prop := "workbench":
+@export_enum("workbench", "tool_wall", "shelf", "generator", "tesla_coil", "console", "robot_arm", "jetpack", "tube", "chalkboard", "lamp", "crate", "gauges", "cables", "prototype", "pizza_boxes", "barrel", "big_gear", "rocket", "microscope", "dish", "coffee", "blueprint", "toolbox", "gas_tanks", "brain_jar", "wall_clock", "bookshelf", "ladder", "laser_cannon", "hanging_cables", "drone", "teleporter", "cactus", "trash_can", "conveyor", "pallet_stack", "oil_drums", "warning_sign", "flask_table", "chem_barrel", "fume_hood", "distiller", "hazard_sign", "transformer", "fuse_panel", "cable_spool", "volt_sign", "battery_bank", "horseshoe", "coil_stack", "scrap_pile", "compass", "iron_weights", "quantum_rack", "orb_chamber", "hologram", "cryo_tank", "wave_screen") var prop := "workbench":
 	set(value):
 		prop = value
 		_update_bounds()
@@ -58,9 +64,19 @@ func _ready() -> void:
 ## Ausschnitt des Requisits im Atlas (x, y, w, h, frames).
 func get_info() -> Dictionary:
 	if _meta.is_empty():
-		var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(META_FILE))
-		_meta = data if data is Dictionary else {}
+		for entry in [[META_FILE, false], [THEMES_META_FILE, true]]:
+			var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(entry[0]))
+			if data is Dictionary:
+				for key in data:
+					var info: Dictionary = data[key]
+					info["themes"] = entry[1]
+					_meta[key] = info
 	return _meta.get(prop, {"x": 0, "y": 0, "w": 16, "h": 16, "frames": 1})
+
+
+## Atlas, in dem das Requisit liegt.
+func get_texture() -> Texture2D:
+	return THEMES_TEXTURE if get_info().get("themes", false) else TEXTURE
 
 
 func _update_bounds() -> void:
@@ -68,7 +84,7 @@ func _update_bounds() -> void:
 		var info := get_info()
 		_time_affected.bounds = Rect2(-info.w * 0.5, -info.h, info.w, info.h)
 		# Pixelgenau: sichtbare Pixel des ersten Bilds im Atlas.
-		_time_affected.set_pixel_source(TEXTURE, Rect2(info.x, info.y, info.w, info.h), Vector2(-floorf(info.w * 0.5), -info.h), flip)
+		_time_affected.set_pixel_source(get_texture(), Rect2(info.x, info.y, info.w, info.h), Vector2(-floorf(info.w * 0.5), -info.h), flip)
 
 
 func _process(delta: float) -> void:
@@ -93,5 +109,5 @@ func _draw() -> void:
 	if flip:
 		draw_set_transform(Vector2.ZERO, 0.0, Vector2(-1, 1))
 		target.position.x = -target.position.x - w
-	draw_texture_rect_region(TEXTURE, target, source)
+	draw_texture_rect_region(get_texture(), target, source)
 	draw_set_transform(Vector2.ZERO)

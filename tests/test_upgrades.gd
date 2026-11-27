@@ -34,7 +34,7 @@ func _initialize() -> void:
 	var upgrades = root.get_node("Upgrades")
 	upgrades.reset()
 	var order: Array = root.get_node("LevelFlow").get_levels()
-	check("Level 5 und 6 in der Reihenfolge (alte 7/8)", order.size() >= 6 and order[4].ends_with("level_05.tscn") and order[5].ends_with("level_06.tscn"), str(order))
+	check("Level 5 und 6 in der Reihenfolge (alte 7/8)", order.size() >= 9 and order[8].ends_with("level_09.tscn") and order[4].ends_with("level_05.tscn") and order[5].ends_with("level_06.tscn"), str(order))
 
 	# Level 1: klein, keine sichtbare Klonstation, kein Sprung-Hinweis
 	var l1 = await open_level("res://scenes/levels/level_01.tscn")
@@ -120,6 +120,21 @@ func _initialize() -> void:
 	var l8 = await open_level("res://scenes/levels/level_08.tscn")
 	var h8 := heaps_of(l8)
 	check("Level 8: Haufen Form am Anfang", h8.size() == 1 and h8[0].upgrade == 1 and h8[0].position.x < 200, str(h8.size()))
+	upgrades.reset()
+
+	# Radius: vor Level 9 nur das Minimum, danach voller Bereich
+	var l7 = await open_level("res://scenes/levels/level_07.tscn")
+	var b7 = l7.get_node("Professor/TimeBubble")
+	check("Vor Level 9: Blase auf Minimum", is_equal_approx(b7.radius, b7.settings.radius_min), "%.0f" % b7.radius)
+	b7.radius = b7.settings.radius_max
+	check("Vor Level 9: groesser geht nicht", is_equal_approx(b7.radius, b7.settings.radius_min), "%.0f" % b7.radius)
+	var l9 = await open_level("res://scenes/levels/level_09.tscn")
+	var h9 := heaps_of(l9)
+	check("Level 9: Haufen Radius am Anfang", h9.size() == 1 and h9[0].upgrade == 0 and h9[0].position.x < 200, str(h9.size()))
+	var b9 = l9.get_node("Professor/TimeBubble")
+	upgrades.unlock(0)
+	b9.radius = b9.settings.radius_max
+	check("Nach dem Upgrade: volle Groesse", is_equal_approx(b9.radius, b9.settings.radius_max), "%.0f" % b9.radius)
 	upgrades.reset()
 
 	# Zwei Einblendungen kurz hintereinander: die zweite wartet

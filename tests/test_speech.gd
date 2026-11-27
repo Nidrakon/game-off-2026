@@ -63,7 +63,9 @@ func _initialize() -> void:
 	var edge := SpeechBubble.say_text(p, "Without my exoskeleton I'd never have survived that drop.")
 	await wait(0.1)
 	var r: Rect2 = edge._panel.get_global_rect()
-	check("Blase am Rand bleibt im Bild", r.position.x >= 0.0 and r.end.x <= 960.0, str(r))
+	# Sichtbarer Ausschnitt in Weltkoordinaten (Kamera kann herausgezoomt sein).
+	var view: Rect2 = current_scene.get_viewport().get_canvas_transform().affine_inverse() * current_scene.get_viewport().get_visible_rect()
+	check("Blase am Rand bleibt im Bild", view.grow(0.5).encloses(r), "%s in %s" % [r, view])
 	DirAccess.remove_absolute("user://savegame_test.json")
 	print("Fehler: %d" % fails)
 	quit(1 if fails else 0)

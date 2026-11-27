@@ -19,6 +19,12 @@ extends Node2D
 
 ## Kameragrenzen automatisch aus den Tiles von "Ground" setzen.
 @export var auto_camera_limits := true
+## Spielraum der Kamera (Pixel, waagrecht; senkrecht im Bildverhaeltnis):
+## Die Kamera zoomt so weit heraus, dass das ganze Level immer zu sehen ist
+## und sie trotzdem um diesen Betrag dem Professor folgen kann. Den Rand
+## rundherum fuellt massive Wand; so wirkt auch der Parallax-Effekt
+## (seit v0.79). 0 = aus (Zoom der Kamera bleibt, z. B. Werkstatt).
+@export_range(0.0, 200.0, 1.0) var camera_follow_room := 80.0
 
 ## Musik (Song-ID, Doku 1.7); Auto = passend zum Hintergrund-Thema
 ## (Werkstatt 3, Fabrik 4, Chemie 7 Lo-Fi, Elektro/Quanten 5, Magnet 8 Lo-Fi).
@@ -47,6 +53,8 @@ extends Node2D
 		_queue_background()
 
 var _background_queued := false
+# Bemalte Flaeche des Bodens (Zellen) vor dem Auffuellen des Kamera-Rands.
+var _ground_rect_before_fill := Rect2i()
 
 ## Umgebungsgeraeusch je Hintergrund-Thema (data/sfx.json).
 ## Gruppe aller laufenden Level (z. B. fuer das Spielmenue).
@@ -130,8 +138,12 @@ func _ground_rect(ground: TileMapLayer) -> Rect2:
 
 func _fit_camera_to_ground() -> void:
 	var camera := get_node_or_null("Camera") as Camera2D
-	var rect := _ground_rect(get_node_or_null("Ground") as TileMapLayer)
+	var ground := get_node_or_null("Ground") as TileMapLayer
+	var rect := _ground_rect(ground)
 	if camera == null or rect.size == Vector2.ZERO:
+		return
+	if camera_follow_room > 0.0:
+		_fit_with_follow_room(camera, ground, rect)
 		return
 	# Ist der Raum kleiner als der sichtbare Ausschnitt (z. B. die Werkstatt),
 	# die Grenzen um ihn herum erweitern, damit er mittig im Bild steht.
@@ -144,3 +156,72 @@ func _fit_camera_to_ground() -> void:
 	camera.limit_top = roundi(rect.position.y)
 	camera.limit_right = roundi(rect.end.x)
 	camera.limit_bottom = roundi(rect.end.y)
+
+
+## Zoom und Grenzen mit Spielraum: Sichtbar ist immer das ganze Level plus
+## ein Rand; die Kamera folgt dem Professor um die Breite dieses Rands.
+## Die Grenzen liegen so, dass an jeder Kameraposition das ganze Level im
+## Bild ist. Der Rand wird mit massiver Wand gefuellt.
+func _fit_with_follow_room(camera: Camera2D, ground: TileMapLayer, rect: Rect2) -> void:
+	var screen := get_viewport_rect().size
+	var want := rect.size + Vector2(camera_follow_room, camera_follow_room * screen.y / screen.x)
+	var zoom := minf(screen.x / want.x, screen.y / want.y)
+	camera.zoom = Vector2(zoom, zoom)
+	var view := screen / zoom
+	var room := (view - rect.size).max(Vector2.ZERO)
+	var limits := rect.grow_individual(room.x, room.y, room.x, room.y)
+	camera.limit_left = roundi(limits.position.x)
+	camera.limit_top = roundi(limits.position.y)
+	camera.limit_right = roundi(limits.end.x)
+	camera.limit_bottom = roundi(limits.end.y)
+	_fill_outside(ground, limits)
+	_hide_wall_seams(get_node_or_null("BackWall") as TileMapLayer, ground)
+
+
+## Fuellt alles ausserhalb der bemalten Flaeche bis zur Kameragrenze mit
+## dem Tile aus der linken oberen Ecke (massive Wand).
+func _fill_outside(ground: TileMapLayer, area: Rect2) -> void:
+	var used := ground.get_used_rect()
+	_ground_rect_before_fill = used
+	var source := ground.get_cell_source_id(used.position)
+	if source == -1:
+		return
+	var atlas := ground.get_cell_atlas_coords(used.position)
+	var tile := Vector2(ground.tile_set.tile_size)
+	var from := Vector2i((ground.to_local(area.position) / tile).floor()) - Vector2i.ONE
+	var to := Vector2i((ground.to_local(area.end) / tile).ceil()) + Vector2i.ONE
+	for y in range(from.y, to.y + 1):
+		for x in range(from.x, to.x + 1):
+			var cell := Vector2i(x, y)
+			if not used.has_point(cell):
+				ground.set_cell(cell, source, atlas)
+
+
+## Unter den Aussenwaenden hat die Rueckwand eine Spalte mit Warnstreifen.
+## Bewegt sich die Kamera, schiebt der Parallax sie ein paar Pixel ins Bild;
+## deshalb dort das normale Wandmuster einsetzen (4 Spalten bzw. Zeilen
+## weiter innen, das Muster wiederholt sich alle 4 Tiles).
+func _hide_wall_seams(wall: TileMapLayer, ground: TileMapLayer) -> void:
+	if wall == null:
+		return
+	# Bemalte Flaeche vor dem Auffuellen: Aussenwaende = erste/letzte Spalte
+	# und Decke = erste Zeile innerhalb der Kameragrenzen-Flaeche des Levels.
+	var rect := _ground_rect_before_fill
+	if rect.size == Vector2i.ZERO:
+		return
+	var left := rect.position.x
+	var right := rect.end.x - 1
+	var top := rect.position.y
+	for y in range(top, rect.end.y):
+		_copy_wall_cell(wall, Vector2i(left, y), Vector2i(left + 4, y))
+		_copy_wall_cell(wall, Vector2i(right, y), Vector2i(right - 4, y))
+	for x in range(left, right + 1):
+		_copy_wall_cell(wall, Vector2i(x, top), Vector2i(x, top + 4))
+
+
+func _copy_wall_cell(wall: TileMapLayer, to: Vector2i, from: Vector2i) -> void:
+	# Loch im Muster (dort sieht man die tiefe Ebene): Loch fortsetzen.
+	if wall.get_cell_source_id(from) == -1:
+		wall.erase_cell(to)
+		return
+	wall.set_cell(to, wall.get_cell_source_id(from), wall.get_cell_atlas_coords(from), wall.get_cell_alternative_tile(from))

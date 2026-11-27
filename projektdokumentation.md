@@ -1756,14 +1756,20 @@ Vorlage (z. B. neues UI-Element), haben es sofort alle Level. Geerbte Nodes
 lassen sich im Level verschieben und einstellen, aber nicht loeschen. Seit v0.72
 ist das Bedienfeld in der Vorlage ausgeblendet (`visible = false`), damit es
 im Editor nicht die Sicht versperrt; im Spiel oeffnet Shift es wie bisher.
-**Zoom und Parallax (seit v0.78, Wunsch des Nutzers):** Die Kamera der
-Vorlage zoomt leicht auf 1,15: Sichtbar sind etwa 75 % der Levelflaeche
-(835 x 470 px), die Kamera scrollt mit der Figur und die hinteren Ebenen
-laufen langsamer (urspruenglicher Parallax, `ParallaxDriver` nur nach der
-Kamera). Verworfen: Zoom 1,5 (v0.74) und Parallax nach der Figur ohne Zoom
-(v0.75). Die Werkstatt behaelt Zoom 2. Ist ein Raum kleiner als der
-Ausschnitt, setzt `Level` ihn mittig. Zoom aendern: `zoom` am Node
-`Camera` in `level_base.tscn`. Test `tests/test_parallax.gd`.
+**Kamera mit Spielraum (seit v0.79, Idee des Nutzers):** Das ganze Level
+ist immer zu 100 % sichtbar, die Kamera folgt trotzdem dem Professor und
+stellt ihn staerker in die Mitte. Dafuer zoomt sie leicht heraus (etwa
+0,92), sodass um das Level ein Rand von `camera_follow_room` (80 px
+waagrecht, senkrecht im Bildverhaeltnis; Inspector der Level-Wurzel) frei
+bleibt; die Grenzen liegen so, dass an jeder Kameraposition das ganze Level
+im Bild ist. Den Rand fuellt `Level` beim Start mit massiver Wand (Tile
+der linken oberen Ecke). Die hinteren Ebenen laufen dabei langsamer
+(urspruenglicher Parallax nach der Kamera). Die Warnstreifen der Rueckwand
+unter den Aussenwaenden ersetzt `Level` beim Start durch das normale
+Muster, sonst schoebe der Parallax sie ins Bild. Die Werkstatt hat
+`camera_follow_room = 0` und behaelt Zoom 2. Verworfen: Zoom 1,5 (v0.74),
+Parallax nach der Figur (v0.75), Zoom 1,15 (v0.78). Test
+`tests/test_parallax.gd`.
 
 **Bausteine** (alle in `scenes/objects/`, Node-Ursprung jeweils wie
 angegeben; Details in 2.4):
@@ -1942,7 +1948,9 @@ hoechstens 0,3 s auseinander treffen. Loesung: neben eine Uhr stellen (die
 andere ausserhalb der Blase) und sie verlangsamen bzw. beschleunigen, bis
 beide im Gleichtakt sind (langsam etwa 2,2 s). Level 8 ist eine Kopie von
 Level 7 mit dem Schrotthaufen "Form" am Anfang. Test
-`tests/test_level07.gd` (beide Level).
+`tests/test_level07.gd` (beide Level). Level 8 (Umbau des Nutzers, v0.79): die zwei
+Uhren stehen oben auf dem grossen Block; linke Uhr zum linken Werfer,
+rechte zum rechten, rechte Uhr 1,6 s versetzt.
 
 **Deko Level 2 bis 8 (seit v0.71):** je Level eigenes Hintergrund-Thema
 (2 Chemie, 3 Fabrik, 4 Quanten, 5 Elektro, 6 Magnet, 7 Werkstatt, 8 Chemie)

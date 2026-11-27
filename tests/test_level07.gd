@@ -86,7 +86,7 @@ func run_puzzle() -> void:
 		if c == ref:
 			continue
 		var side := -40.0 if c.position.x < ref.position.x else 40.0
-		p.global_position = Vector2(c.global_position.x + side, 496)
+		p.global_position = Vector2(c.global_position.x + side, c.global_position.y + 16)
 		await wait(0.2)
 		bubble.stage = 0
 		var t := 0.0

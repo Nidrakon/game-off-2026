@@ -23,7 +23,11 @@ var anchor := Vector2.ZERO
 
 ## Verschiebung einer Ebene mit Faktor "factor" bei Kameramitte "center".
 func offset_for(factor: float, center: Vector2) -> Vector2:
-	return ((center - anchor) * (1.0 - factor)).round()
+	# Erst auf 1/20 Pixel glaetten: Steht die Kamera an ihrer Grenze, schwankt
+	# ihre Mitte winzig (z. B. 294,4999 / 294,5001); ohne Glaetten sprang das
+	# Runden dann jedes Bild um einen Pixel (Ruckeln, v0.80).
+	var steady := center.snapped(Vector2(0.05, 0.05))
+	return ((steady - anchor) * (1.0 - factor)).round()
 
 
 func _process(_delta: float) -> void:

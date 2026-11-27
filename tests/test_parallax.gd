@@ -24,7 +24,7 @@ func _initialize() -> void:
 		var level = current_scene
 		var cam: Camera2D = level.get_node("Camera")
 		var level_rect := Rect2(0, 0, 960, 544)
-		check(path.get_file() + ": leicht herausgezoomt", cam.zoom.x < 1.0 and cam.zoom.x > 0.85, "%.3f" % cam.zoom.x)
+		check(path.get_file() + ": leicht herausgezoomt", cam.zoom.x < 0.95 and cam.zoom.x > 0.8, "%.3f" % cam.zoom.x)
 		var p = level.get_node("Professor")
 		for i in 30: await physics_frame
 		var results := []
@@ -44,6 +44,17 @@ func _initialize() -> void:
 		check(path.get_file() + ": Parallax (tief langsamer als Wand)", deep[1] - deep[0] > wall[1] - wall[0] and wall[1] - wall[0] > 0.0, "tief %.0f, Wand %.0f" % [deep[1] - deep[0], wall[1] - wall[0]])
 		var g: TileMapLayer = level.get_node("Ground")
 		check(path.get_file() + ": Rand ist massive Wand", g.get_cell_source_id(Vector2i(-2, 10)) != -1 and g.get_cell_source_id(Vector2i(62, 10)) != -1)
+	# Ruhende Kamera an ihrer Grenze: Ebenen duerfen nicht zwischen zwei
+	# Pixeln hin und her springen (Ruckeln am Magneten, v0.80).
+	var drv = current_scene.get_node("ParallaxDriver")
+	var jumps := 0
+	var last := Vector2.INF
+	for k in 200:
+		var c := Vector2(436.5556, 294.5) + Vector2(0.0001, 0.0001) * (1 if k % 2 == 0 else -1)
+		var o: Vector2 = drv.offset_for(0.8, c)
+		if last != Vector2.INF and o != last: jumps += 1
+		last = o
+	check("Kein Pixelspringen bei winzigem Schwanken der Kamera", jumps == 0, str(jumps))
 	DirAccess.remove_absolute("user://savegame_test.json")
 	print("Fehler: %d" % fails)
 	quit(1 if fails else 0)

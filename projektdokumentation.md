@@ -1759,7 +1759,7 @@ im Editor nicht die Sicht versperrt; im Spiel oeffnet Shift es wie bisher.
 **Kamera mit Spielraum (seit v0.79, Idee des Nutzers):** Das ganze Level
 ist immer zu 100 % sichtbar, die Kamera folgt trotzdem dem Professor und
 stellt ihn staerker in die Mitte. Dafuer zoomt sie leicht heraus (etwa
-0,92), sodass um das Level ein Rand von `camera_follow_room` (80 px
+0,88), sodass um das Level ein Rand von `camera_follow_room` (seit v0.80 120 px
 waagrecht, senkrecht im Bildverhaeltnis; Inspector der Level-Wurzel) frei
 bleibt; die Grenzen liegen so, dass an jeder Kameraposition das ganze Level
 im Bild ist. Den Rand fuellt `Level` beim Start mit massiver Wand (Tile
@@ -1769,7 +1769,10 @@ unter den Aussenwaenden ersetzt `Level` beim Start durch das normale
 Muster, sonst schoebe der Parallax sie ins Bild. Die Werkstatt hat
 `camera_follow_room = 0` und behaelt Zoom 2. Verworfen: Zoom 1,5 (v0.74),
 Parallax nach der Figur (v0.75), Zoom 1,15 (v0.78). Test
-`tests/test_parallax.gd`.
+`tests/test_parallax.gd`. Ruckeln behoben (v0.80): Stand die Kamera an
+ihrer Grenze, schwankte ihre Mitte winzig um einen halben Pixel und die
+Ebenen sprangen beim Runden jedes Bild um 1 px; `ParallaxDriver` glaettet
+die Kameramitte jetzt vor dem Runden auf 1/20 Pixel.
 
 **Bausteine** (alle in `scenes/objects/`, Node-Ursprung jeweils wie
 angegeben; Details in 2.4):

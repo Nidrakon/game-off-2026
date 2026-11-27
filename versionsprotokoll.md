@@ -51,6 +51,11 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.80 - 2026-11-27: Kein Ruckeln, Kamera staerker auf dem Professor**
+
+- Hintergrund ruckelte, wenn die Kamera an ihrer Grenze stand (z. B. beim Laufen gegen einen Magneten am Levelrand): Die Ebenen sprangen beim Runden um 1 px. Behoben.
+- Kamera-Spielraum 120 statt 80 px (staerker auf den Professor zentriert), Randwaende entsprechend dicker. Test `test_parallax` erweitert.
+
 **v0.79 - 2026-11-27: Ganzes Level sichtbar, Kamera folgt mit Spielraum**
 
 - Zoom 1,15 zurueckgenommen: Das ganze Level ist wieder immer sichtbar. Die Kamera zoomt leicht heraus und folgt dem Professor in einem schmalen Rand aus massiver Wand; so entsteht der Parallax-Effekt (Option `camera_follow_room`, Werkstatt aus).

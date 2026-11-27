@@ -19,12 +19,13 @@ extends Node2D
 
 ## Kameragrenzen automatisch aus den Tiles von "Ground" setzen.
 @export var auto_camera_limits := true
-## Spielraum der Kamera (Pixel, waagrecht; senkrecht im Bildverhaeltnis):
+## Spielraum der Kamera (Pixel, waagrecht; senkrecht im Bildverhaeltnis;
+## seit v0.80 120 statt 80):
 ## Die Kamera zoomt so weit heraus, dass das ganze Level immer zu sehen ist
 ## und sie trotzdem um diesen Betrag dem Professor folgen kann. Den Rand
 ## rundherum fuellt massive Wand; so wirkt auch der Parallax-Effekt
 ## (seit v0.79). 0 = aus (Zoom der Kamera bleibt, z. B. Werkstatt).
-@export_range(0.0, 200.0, 1.0) var camera_follow_room := 80.0
+@export_range(0.0, 200.0, 1.0) var camera_follow_room := 120.0
 
 ## Musik (Song-ID, Doku 1.7); Auto = passend zum Hintergrund-Thema
 ## (Werkstatt 3, Fabrik 4, Chemie 7 Lo-Fi, Elektro/Quanten 5, Magnet 8 Lo-Fi).

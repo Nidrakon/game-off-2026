@@ -1931,6 +1931,31 @@ Ein gefuehrtes Tutorial mit langsam steigender Schwierigkeit:
    einfach durchrennen) fand nur 3 Treffer (8,1 / 10,5 / 20,9 s): sehr
    knapp. Test `tests/test_level02.gd`.
 
+**Level-Themen (seit v0.81, Wunsch des Nutzers):** Aus den sechs
+Rueckwand-Stilen sind sechs Themen geworden, die von Level zu Level reihum
+wechseln: 1 Werkstatt, 2 Fabrik, 3 Chemie, 4 Elektro, 5 Magnet, 6 Quanten,
+7 wieder Werkstatt, 8 Fabrik, 9 Chemie. Je Thema passen Rueckwand,
+Silhouetten, Umgebungsgeraeusch und Requisiten zusammen:
+
+| Thema | Boden | Wand |
+| --- | --- | --- |
+| Werkstatt | Werkbank, Regal, Werkzeugkiste, Kisten, Pizzakartons, Kaffee, Prototyp, Jetpack, Kaktus, Muelleimer, Buecherregal, Mikroskop | Werkzeugwand, Tafel, Bauplan, Wanduhr |
+| Fabrik | Foerderband, Palette mit Kisten, Oelfaesser, Fass, Kiste, Gasflaschen, Roboterarm, Generator, Werkzeugkiste | Warnschild, Messgeraete, Werkzeugwand |
+| Chemie | Tisch mit Kolben, Chemiefass, Abzug, Destille, Roehre, Hirn im Glas, Mikroskop, Gasflaschen | Gefahrenschild, Tafel, Messgeraete |
+| Elektro | Transformator, Kabeltrommel, Batterien, Teslaspule, Generator, Konsole | Sicherungskasten, Hochspannungsschild, Messgeraete |
+| Magnet | Hufeisenmagnet, Spulenturm, Metallreste, Gewichte, Roboterarm, Konsole, Kiste | Kompass, Messgeraete, Bauplan |
+| Quanten | Quantenrechner, Energiekammer, Hologramm, Kryotank, Teleporter, Konsole | Wellen-Monitor, Bauplan |
+
+Decke: Lampen und haengende Kabel. Die 24 neuen Requisiten (Fabrik bis
+Quanten) liegen im zweiten Atlas `graphics/sprites/deco/deco_themes.png`
+(+ `.json`, Quelle `graphics/source/deco_themes.aseprite`), erzeugt mit
+`tools/make_deco_themes.py` (Pixelart in Palettenfarben, 14 davon animiert);
+`DecoProp` liest beide Atlanten, im Baukasten stehen sie unter Deko. Verteilt
+werden sie mit `tools/decorate_levels.py <Levelnummern>` (Knoten
+`DecoAuto*`, wiederholbar; Level 1 ist von Hand dekoriert und bleibt). Die
+Musik der Level bleibt, wie sie eingetragen ist. Level 9 hat erst Thema und
+Schrotthaufen, Deko folgt, wenn es gebaut ist.
+
 **Baustein Wandhinweis (umgesetzt in Schritt 16a):** Objekt, das der
 Nutzer per Drag-and-drop ins Level zieht (`scenes/objects/wall_hint.tscn`,
 Node = Mitte oben). Im Inspector: `keys` (Beschriftungen der Tasten, z. B.
@@ -2014,48 +2039,6 @@ Bodenelemente in den Baukasten):**
 **Grafik Schritt 19 (13.11.2026):**
 
 - Gelaende-Tiles neu gezeichnet (Datei und Anordnung unveraendert, damit
-**Level-Themen (seit v0.81, Wunsch des Nutzers):** Aus den sechs
-Rueckwand-Stilen sind sechs Themen geworden, die von Level zu Level reihum
-wechseln: 1 Werkstatt, 2 Fabrik, 3 Chemie, 4 Elektro, 5 Magnet, 6 Quanten,
-7 wieder Werkstatt, 8 Fabrik, 9 Chemie. Je Thema passen Rueckwand,
-Silhouetten, Umgebungsgeraeusch und Requisiten zusammen:
-
-| Thema | Boden | Wand |
-| --- | --- | --- |
-| Werkstatt | Werkbank, Regal, Werkzeugkiste, Kisten, Pizzakartons, Kaffee, Prototyp, Jetpack, Kaktus, Muelleimer, Buecherregal, Mikroskop | Werkzeugwand, Tafel, Bauplan, Wanduhr |
-| Fabrik | Foerderband, Palette mit Kisten, Oelfaesser, Fass, Kiste, Gasflaschen, Roboterarm, Generator, Werkzeugkiste | Warnschild, Messgeraete, Werkzeugwand |
-| Chemie | Tisch mit Kolben, Chemiefass, Abzug, Destille, Roehre, Hirn im Glas, Mikroskop, Gasflaschen | Gefahrenschild, Tafel, Messgeraete |
-| Elektro | Transformator, Kabeltrommel, Batterien, Teslaspule, Generator, Konsole | Sicherungskasten, Hochspannungsschild, Messgeraete |
-| Magnet | Hufeisenmagnet, Spulenturm, Metallreste, Gewichte, Roboterarm, Konsole, Kiste | Kompass, Messgeraete, Bauplan |
-| Quanten | Quantenrechner, Energiekammer, Hologramm, Kryotank, Teleporter, Konsole | Wellen-Monitor, Bauplan |
-
-Decke: Lampen und haengende Kabel. Die 24 neuen Requisiten (Fabrik bis
-Quanten) liegen im zweiten Atlas `graphics/sprites/deco/deco_themes.png`
-(+ `.json`, Quelle `graphics/source/deco_themes.aseprite`), erzeugt mit
-`tools/make_deco_themes.py` (Pixelart in Palettenfarben, 14 davon animiert);
-`DecoProp` liest beide Atlanten, im Baukasten stehen sie unter Deko. Verteilt
-werden sie mit `tools/decorate_levels.py <Levelnummern>` (Knoten
-`DecoAuto*`, wiederholbar; Level 1 ist von Hand dekoriert und bleibt). Die
-Musik der Level bleibt, wie sie eingetragen ist. Level 9 hat erst Thema und
-Schrotthaufen, Deko folgt, wenn es gebaut ist.
-
-**Baustein Wandhinweis (umgesetzt in Schritt 16a):** Objekt, das der
-Nutzer per Drag-and-drop ins Level zieht (`scenes/objects/wall_hint.tscn`,
-Node = Mitte oben). Im Inspector: `keys` (Beschriftungen der Tasten, z. B.
-"A", "D" oder "SPACE", "SHIFT"), `text_id` (Wort aus `dialogues/hints.json`:
-`hint_move`, `hint_jump`, `hint_interact`, `hint_time_shifter`,
-`hint_time_slow`, `hint_time_fast`,
-`hint_time_wheel`; leer = kein Wort) und `paint` (Wandfarbe: dunkel, hell,
-gelb, rot, blau, alle aus der Palette). Aufgemalt wirken die Tasten durch
-Umriss und Schrift in Wandfarbe. Liegt hinter allem (z_index -10), keine
-Kollision, im Editor sofort sichtbar.
-
-**Baustein Fahrstuhl (umgesetzt in Schritt 16a):** `scenes/objects/elevator.tscn`
-(Node = Boden, Mitte der Tuer; 64 x 80 mit Keycard-Leser rechts, dessen
-Lampe rot blinkt). Steht der Professor davor, erscheint die E-Anzeige; E
-laesst ihn den Text `text_id` sagen (Standard `speech_elevator_keycard`).
-
-**Grundbaustein Interagieren (Schritt 16a):** `scripts/objects/interactable.gd`
   alle Level und die Wand- und Bodenbausteine sie sofort nutzen):
   Bodenplatte mit heller Metallkante und Nieten, dunkle Fuellplatten,
   Stahlblock mit Fase und Kreuzstrebe. Dateinamen bleiben

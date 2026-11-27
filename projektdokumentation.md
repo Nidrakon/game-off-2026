@@ -2115,6 +2115,15 @@ zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
      warum der Fahrstuhl nicht geht.
    - **Umgesetzt (Schritt 22, 13.11.2026):** `scenes/ui/intro.tscn`
      (Skript `scripts/ui/intro.gd`), erscheint nach New Game. Panels in
+   - **Bilduntertexte (seit v0.76, Wunsch des Nutzers):** Damit man die
+     Handlung besser versteht, steht unter jedem Panel von Intro und Ende
+     ein kurzer Satz im Comic-Kasten (hell, dunkler Rand); Dialogzeilen in
+     Anfuehrungszeichen. Ersetzt "kein Text". Texte in
+     `dialogues/comic.json` (englisch, Kennung = Panel, z. B.
+     `intro_s1_left`, `ending_e3`; leer = kein Kasten, so beim Fahrstuhl
+     `ending_e4`). Klasse `ComicCaption` (`scripts/ui/comic_caption.gd`)
+     haengt den Kasten unter das Panel. Die Tastenhinweise im Intro sitzen
+     dafuer tiefer. Test `tests/test_comic.gd`.
      `graphics/intro/` (halb so gross gezeichnet und doppelt angezeigt;
      geteilte Panels 220 x 180, breites Panel 450 x 180; seit v0.67 ein Bild
      je Panel, mehrere Bilder liefen mit 0,28 s pro Bild). Ablauf in 7

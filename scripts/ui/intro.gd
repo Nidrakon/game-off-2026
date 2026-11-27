@@ -1,6 +1,6 @@
 extends Control
-## Intro-Comic (Doku 3.5, Schritt 22): vier Szenen ohne Text, Panels mit
-## kleinen Animationsschleifen. Geteilte Szenen bauen sich Klick fuer Klick
+## Intro-Comic (Doku 3.5, Schritt 22): vier Szenen; unter jedem Panel ein
+## kurzer Bilduntertext (seit v0.76, ComicCaption, dialogues/comic.json). Geteilte Szenen bauen sich Klick fuer Klick
 ## auf (erst ein Panel, dann das zweite; das erste bleibt stehen).
 ## Weiter: Leertaste, Enter, Sprung oder Mausklick. Esc: ganzes Intro
 ## ueberspringen. Danach startet das Spiel im ersten Level.
@@ -108,6 +108,7 @@ func _make_panel(name: String) -> TextureRect:
 	rect.scale = Vector2(0.94, 0.94)
 	create_tween().tween_property(rect, "scale", Vector2.ONE, 0.12)
 	add_child(rect)
+	ComicCaption.attach(rect, "intro_" + name)
 	move_child(_hint, -1)
 	return rect
 
@@ -138,7 +139,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 ## Hinweis unten rechts (ohne Text): Tastenkappen fuer weiter und ueberspringen.
 func _draw_hint() -> void:
-	var y := 470.0
+	var y := 506.0
 	var x := 930.0
 	for entry in [["ESC", 2], ["SPACE", 1]]:
 		var width := KeyCap.get_width(entry[0])

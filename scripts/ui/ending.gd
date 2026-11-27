@@ -127,6 +127,8 @@ func _make_panel(name: String) -> TextureRect:
 	add_child(rect)
 	return rect
 
+	# Bilduntertext zur Handlung (seit v0.76, dialogues/comic.json).
+	ComicCaption.attach(rect, "ending_" + name)
 
 func _start_credits() -> void:
 	phase = Phase.CREDITS

@@ -51,6 +51,11 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.76 - 2026-11-27: Bilduntertexte in Intro und Ende**
+
+- Unter jedem Comic-Panel steht ein kurzer Satz zur Handlung (Dialoge in Anfuehrungszeichen), damit man die Geschichte besser versteht; Texte in `dialogues/comic.json`.
+- Neuer Test `test_comic` (jedes Panel mit Text, passt aufs Bild). Alle Tests, Exporte Web und Windows.
+
 **v0.75 - 2026-11-26: Kein Zoom, Parallax folgt der Figur**
 
 - Zoom-Test verworfen: Level wieder mit Zoom 1 (fuellen den Bildschirm), Werkstatt wieder Zoom 2 und ohne Einmauerung.

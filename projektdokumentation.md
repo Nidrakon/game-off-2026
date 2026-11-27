@@ -965,6 +965,12 @@ der Cursor zur Formung der Sphaere noch.
   noch eine verschraubte Abdeckplatte.
 - Level 4: nur langsam; Radius und Form noch gesperrt.
 - Level 5: Schrotthaufen "schnell" (`upgrade_fast`) am Anfang.
+- Level 8: Schrotthaufen "Form" am Anfang. Level 9 (seit v0.81, Wunsch
+  des Nutzers): Schrotthaufen "Radius" am Anfang. Vorher bleibt die Blase
+  beim kleinsten Radius (`radius_min`, seit v0.82 40 statt 32 px, damit sie
+  eine Rakete unter dem Professor ueberall erfasst, auch an der Spitze; Test
+  `tests/test_ride_bubble.gd`; `TimeBubble.is_radius_unlocked()`),
+  danach laesst sich mit dem Drehregler die volle Groesse (bis 80 px) nutzen.
 - Technik: `TimeShifterUpgrades.Upgrade` = RADIUS, SHAPE, FAST,
   TIME_SHIFTER (nur hinten anhaengen); `TimeBubble.is_stage_unlocked()`
   sperrt die Stufen, `TimeShifterPanel.is_unlocked()` das Bedienfeld.
@@ -995,16 +1001,6 @@ der Cursor zur Formung der Sphaere noch.
 - **Einblendung** (`scripts/ui/upgrade_message.gd`): Kasten oben in der
   Mitte, Ueberschrift "TIME SHIFTER UPGRADE", Name und Bedienhinweis, 5 s
   lang (Spielzeit), dann weg. Texte in `dialogues/upgrades.json` (englisch,
-- Level 8: Schrotthaufen "Form" am Anfang. Level 9 (seit v0.81, Wunsch
-  des Nutzers): Schrotthaufen "Radius" am Anfang. Vorher bleibt die Blase
-  beim kleinsten Radius (`radius_min`, seit v0.82 40 statt 32 px, damit sie
-  eine Rakete unter dem Professor ueberall erfasst, auch an der Spitze; Test
-  `tests/test_ride_bubble.gd`; `TimeBubble.is_radius_unlocked()`),
-  danach laesst sich mit dem Drehregler die volle Groesse (bis 80 px) nutzen.
-- Level 8: Schrotthaufen "Form" am Anfang. Level 9 (seit v0.81, Wunsch
-  des Nutzers): Schrotthaufen "Radius" am Anfang. Vorher bleibt die Blase
-  beim kleinsten Radius (`radius_min` 32 px; `TimeBubble.is_radius_unlocked()`),
-  danach laesst sich mit dem Drehregler die volle Groesse (bis 80 px) nutzen.
   Kennungen `upgrade_radius`, `upgrade_shape`). Damit die Datei im Export
   landet, steht `dialogues/*.json` im Include-Filter beider Export-Vorlagen.
 - Globales System `Upgrades` (Autoload): `has()`, `unlock()`,

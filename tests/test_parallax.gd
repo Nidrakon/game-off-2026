@@ -1,6 +1,7 @@
 extends SceneTree
-# Automatischer Test: Parallax ohne Zoom. Das Level fuellt den Bildschirm,
-# die Kamera steht still; trotzdem wandert die tiefe Ebene mit der Figur.
+# Automatischer Test: leichter Zoom (sichtbar etwa 75 % der Levelflaeche),
+# die Kamera scrollt mit der Figur, die hinteren Ebenen laufen langsamer
+# (urspruenglicher Parallax-Effekt).
 var fails := 0
 func check(name: String, ok: bool, info := "") -> void:
 	print(("PASS " if ok else "FAIL ") + name + "  (" + info + ")")
@@ -15,21 +16,24 @@ func _initialize() -> void:
 	while current_scene == null or not current_scene.is_in_group("level"): await process_frame
 	var level = current_scene
 	var cam: Camera2D = level.get_node("Camera")
-	check("Kein Zoom", cam.zoom == Vector2.ONE, str(cam.zoom))
+	var view := Vector2(960, 540) / cam.zoom
+	var share := (view.x * view.y) / (960.0 * 544.0)
+	check("Sichtbar etwa 75 % des Levels", share > 0.7 and share < 0.8, "%.0f %%" % (share * 100.0))
 	var p = level.get_node("Professor")
 	for i in 30: await physics_frame
 	p.global_position = Vector2(120, 496)
-	for i in 120: await process_frame
+	cam.snap_to_target() if cam.has_method("snap_to_target") else null
+	for i in 90: await process_frame
+	var cam_left := cam.get_screen_center_position()
 	var deep_left: Vector2 = level.get_node("DeepBackground").position
 	var wall_left: Vector2 = level.get_node("BackWall").position
-	var cam_left := cam.get_screen_center_position()
 	p.global_position = Vector2(840, 496)
 	for i in 120: await process_frame
-	var deep_right: Vector2 = level.get_node("DeepBackground").position
-	var wall_right: Vector2 = level.get_node("BackWall").position
-	check("Kamera steht still", cam_left.distance_to(cam.get_screen_center_position()) < 1.0)
-	check("Tiefe Ebene wandert mit der Figur", deep_right.x - deep_left.x > 40.0, "%.0f -> %.0f" % [deep_left.x, deep_right.x])
-	check("Rueckwand bleibt stehen (keine Raender sichtbar)", wall_left == wall_right, "%s -> %s" % [wall_left, wall_right])
+	var cam_moved := cam.get_screen_center_position().x - cam_left.x
+	var deep_moved: float = level.get_node("DeepBackground").position.x - deep_left.x
+	var wall_moved: float = level.get_node("BackWall").position.x - wall_left.x
+	check("Kamera scrollt mit der Figur", cam_moved > 60.0, "%.0f px" % cam_moved)
+	check("Tiefe Ebene laeuft langsamer als die Rueckwand", deep_moved > wall_moved and wall_moved > 0.0, "tief %.0f, Wand %.0f" % [deep_moved, wall_moved])
 	DirAccess.remove_absolute("user://savegame_test.json")
 	print("Fehler: %d" % fails)
 	quit(1 if fails else 0)

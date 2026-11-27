@@ -51,6 +51,11 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.78 - 2026-11-27: Leichter Zoom statt Parallax nach der Figur**
+
+- Parallax nach der Figur (v0.75) zurueckgenommen, wieder der urspruengliche Parallax nach der Kamera.
+- Leichter Zoom 1,15 in allen Leveln (sichtbar etwa 75 % der Flaeche), damit die Kamera scrollt; die Werkstatt behaelt Zoom 2.
+
 **v0.77 - 2026-11-27: Sprechblasen stoeren nicht mehr**
 
 - Sprueche des Professors kommen nur noch im Stillstand und verschwinden, sobald er laeuft oder springt; der Fahrstuhl-Hinweis bleibt stehen.

@@ -18,6 +18,9 @@ func _initialize() -> void:
 	await frames(10)
 	var level = current_scene
 	var p = level.get_node("Professor")
+	# In die Levelmitte: am Rand ist seit v0.79 massive Wand (Raketen zerschellen).
+	p.global_position = Vector2(480, 496)
+	for i in 5: await physics_frame
 	var bubble = p.get_node("TimeBubble")
 	bubble.stage = 0
 	# Schalter in allen Bausteinen

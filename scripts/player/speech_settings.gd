@@ -12,12 +12,18 @@ extends Resource
 @export_range(0.0, 600.0, 1.0, "or_greater") var first_delay := 20.0
 ## Zufaellige Sprueche ganz abschalten.
 @export var random_enabled := true
+## Sprueche kommen nur, wenn der Professor so lange still auf dem Boden steht
+## (Sekunden), und verschwinden, sobald er laeuft oder springt (seit v0.77).
+@export_range(0.0, 10.0, 0.1) var idle_required := 1.5
 
 @export_group("Respawn")
 ## Wahrscheinlichkeit fuer einen Respawn-Spruch nach dem Tod (0 bis 1).
 @export_range(0.0, 1.0, 0.05) var respawn_chance := 1.0
 ## Wartezeit nach dem Erscheinen in der Klonstation (Sekunden).
 @export_range(0.0, 5.0, 0.05) var respawn_delay := 0.8
+## So lange wartet der Respawn-Spruch hoechstens darauf, dass der Professor
+## still steht; sonst entfaellt er (Sekunden).
+@export_range(0.0, 30.0, 0.5) var respawn_max_wait := 6.0
 
 @export_group("Sprechblase")
 ## Grundzeit und Zusatzzeit pro Zeichen, die eine Blase stehen bleibt.

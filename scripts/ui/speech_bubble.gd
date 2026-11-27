@@ -7,15 +7,24 @@ extends Node2D
 ## Sprueche des Professors steuert scripts/player/professor_quips.gd.
 ## Nur Palettenfarben.
 
-## Groesste Breite des Kastens (Pixel), danach wird umgebrochen.
-const MAX_WIDTH := 220.0
-const FONT_SIZE := 12
+## Groesste Breite des Kastens (Pixel), danach wird umgebrochen. Klein
+## gehalten (seit v0.77), damit die Blase moeglichst wenig vom Level
+## verdeckt; halbtransparent geht nicht (nur Palettenfarben, Doku 1.7).
+const MAX_WIDTH := 140.0
+const FONT_SIZE := 10
+## Beiplaudereien ("dismiss_on_move") verschwinden, sobald die Figur laeuft
+## oder springt, aber fruehestens nach dieser Zeit (Sekunden).
+const DISMISS_GRACE := 0.2
+## Ab dieser Geschwindigkeit (Pixel pro Sekunde) gilt die Figur als bewegt.
+const MOVE_SPEED := 20.0
 # Farben aus der Palette.
 const COLOR_FILL := Color("ffffff")
 const COLOR_EDGE := Color("2e222f")
 
 var _time_left := 0.0
 var _panel: PanelContainer
+var _dismiss_on_move := false
+var _age := 0.0
 
 
 ## Einstellungen (Lesezeit), gemeinsam mit den Spruechen des Professors.
@@ -30,12 +39,15 @@ static func say(speaker: Node2D, text_id: String, height := 64.0) -> SpeechBubbl
 
 
 ## Wie say(), aber mit fertigem Text (z. B. Spruch mit Klon-Nummer).
-static func say_text(speaker: Node2D, text: String, height := 64.0) -> SpeechBubble:
+## "dismiss_on_move": Blase verschwindet, sobald die Figur laeuft oder
+## springt (fuer Sprueche nebenbei, damit sie das Springen nicht stoeren).
+static func say_text(speaker: Node2D, text: String, height := 64.0, dismiss_on_move := false) -> SpeechBubble:
 	for child in speaker.get_children():
 		if child is SpeechBubble:
 			child.queue_free()
 	var bubble := SpeechBubble.new()
 	bubble._build(text, height)
+	bubble._dismiss_on_move = dismiss_on_move
 	speaker.add_child(bubble)
 	bubble._chatter(clampi(text.length() / 12, 2, 6))
 	return bubble
@@ -72,7 +84,7 @@ func _build(text: String, height: float) -> void:
 	style.bg_color = COLOR_FILL
 	style.border_color = COLOR_EDGE
 	style.set_border_width_all(1)
-	style.set_content_margin_all(5)
+	style.set_content_margin_all(3)
 	style.anti_aliasing = false
 	_panel.add_theme_stylebox_override("panel", style)
 	_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -91,16 +103,37 @@ func _build(text: String, height: float) -> void:
 	_place_panel()
 
 
-## Kasten mittig ueber der Spitze ausrichten.
+## Kasten mittig ueber der Spitze ausrichten, aber im sichtbaren Bild
+## halten (steht die Figur am Rand, rutscht der Kasten zur Mitte; die Spitze
+## zeigt weiter auf die Figur).
 func _place_panel() -> void:
-	_panel.position = Vector2(-floorf(_panel.size.x * 0.5), -_panel.size.y - 5.0)
+	var x := -floorf(_panel.size.x * 0.5)
+	if is_inside_tree():
+		var view := get_viewport().get_canvas_transform().affine_inverse() * get_viewport().get_visible_rect()
+		var margin := 4.0
+		var left := view.position.x + margin - global_position.x
+		var right := view.end.x - margin - global_position.x - _panel.size.x
+		x = clampf(x, minf(left, right), maxf(left, right))
+		# Die Spitze muss unter dem Kasten bleiben.
+		x = clampf(x, -_panel.size.x + 8.0, -8.0)
+	_panel.position = Vector2(roundf(x), -_panel.size.y - 5.0)
 	queue_redraw()
 
 
 func _process(delta: float) -> void:
 	_time_left -= delta
-	if _time_left <= 0.0:
+	_age += delta
+	_place_panel()
+	if _time_left <= 0.0 or (_dismiss_on_move and _age >= DISMISS_GRACE and is_speaker_moving(get_parent())):
 		queue_free()
+
+
+## Laeuft, springt oder faellt die Figur gerade?
+static func is_speaker_moving(speaker: Node) -> bool:
+	var body := speaker as CharacterBody2D
+	if body == null:
+		return false
+	return body.velocity.length() > MOVE_SPEED or not body.is_on_floor()
 
 
 func _draw() -> void:

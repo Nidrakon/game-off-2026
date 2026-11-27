@@ -51,6 +51,11 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.77 - 2026-11-27: Sprechblasen stoeren nicht mehr**
+
+- Sprueche des Professors kommen nur noch im Stillstand und verschwinden, sobald er laeuft oder springt; der Fahrstuhl-Hinweis bleibt stehen.
+- Sprechblasen kleiner und am Bildrand immer ganz sichtbar (vorher teils abgeschnitten). Neuer Test `test_speech`.
+
 **v0.76 - 2026-11-27: Bilduntertexte in Intro und Ende**
 
 - Unter jedem Comic-Panel steht ein kurzer Satz zur Handlung (Dialoge in Anfuehrungszeichen), damit man die Geschichte besser versteht; Texte in `dialogues/comic.json`.

@@ -1683,6 +1683,16 @@ Fortschritt bleibt erhalten.
 
 **Level-Builder (umgesetzt in Schritt 15, 12.11.2026)**
 
+  - **Stoeren das Springen nicht (seit v0.77, Wunsch des Nutzers):**
+    Zufaellige und Respawn-Sprueche kommen nur, wenn der Professor still
+    auf dem Boden steht (`idle_required` 1,5 s; Respawn wartet hoechstens
+    `respawn_max_wait` 6 s, sonst entfaellt er), und verschwinden, sobald
+    er laeuft oder springt (`say_text(..., dismiss_on_move = true)`).
+    Wichtige Hinweise wie der Fahrstuhl bleiben stehen. Die Blase ist
+    kleiner (Schrift 10, hoechstens 140 px breit, Rand 3 px) und bleibt am
+    Bildrand im Bild (die Spitze zeigt weiter auf die Figur).
+    Halbtransparent geht nicht (nur Palettenfarben, 1.7). Test
+    `tests/test_speech.gd`.
 **Baukasten-Leiste im Editor (Wunsch des Nutzers, 13.11.2026):** Plugin
 `addons/building_blocks/` (wie im Projekt "Just another Jump n Run"). Im
 Editor rechts erscheint der Reiter "Baukasten" neben dem Inspector:

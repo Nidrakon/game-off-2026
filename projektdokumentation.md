@@ -485,7 +485,20 @@ selben Massstab entstehen.
   `Sound.play_music(id)` mit Ueberblendung (gleicher Song laeuft weiter),
   `Sound.stop_music()`. Titel = Song 1, Intro = 2, Level = Auswahl
   "music" im Inspector des Levels (Auto = nach Hintergrund-Thema: Werkstatt
-  3, Fabrik 4, Chemie 7, Elektro 5, Magnet 8, Quanten 5), Ende = 6.
+  3, Fabrik 4, Chemie 7, Elektro 5, Magnet 8, Quanten 5), End-Comic = 9,
+  Fahrstuhl und Abspann = 6.
+- **Einheitlicher Musik-Stil (festgelegt am 26.11.2026, Wunsch des
+  Nutzers):** Alle Songs haben einen aehnlichen Vibe: Tueftelspiel,
+  Geschicklichkeit, ein Hauch Lo-Fi, entspannt, raetselhaft, geheimnisvoll.
+  Das gilt auch fuer Intro und End-Comic. Einzige Ausnahme ist die
+  Fahrstuhlmusik im Abspann (Song 6), die bleibt, wie sie ist. Umsetzung
+  (seit v0.72): 78 bis 90 BPM, Jazz-Akkorde (Nonen, Septimen), Lo-Fi-Kette
+  ueber `lofi()` im Generator, gleicher Zielpegel (-21 dB, in
+  `data/music.json` alle -4 dB). Jeder Song behaelt sein Erkennungszeichen
+  (Uhr-Ticken, Marimba, Werkstatt-Klonk, Spieluhr). Der Generator nutzt je
+  Song einen eigenen Zufall (Startwert 2026 + ID), ein Song klingt also
+  gleich, egal welche anderen mit erzeugt werden; die Songs 6 bis 8 wurden
+  dafuer nicht neu geschrieben.
 - Lo-Fi (seit v0.64): Der Generator kennt je Song `humanize` (Schlaege
   leicht ungenau), `lowpass` (Hoehen gedaempft), `wow` (Band-Leiern, ganze
   Schwingungen je Schleife), `crackle` (Vinyl-Knistern) und `target_db`.
@@ -511,17 +524,19 @@ selben Massstab entstehen.
 
   | ID | Name | Datei | Wo | Charakter |
   | --- | --- | --- | --- | --- |
-  | 1 | Time Shifter | `music_01_time_shifter.ogg` | Titelbildschirm | c-Moll, 100 BPM, tickendes Arpeggio, geheimnisvoll-heldenhaft, 77 s |
-  | 2 | Pizza on the Line | `music_02_pizza_on_the_line.ogg` | Intro-Comic | F-Dur, 112 BPM, huepfend, verspielt, 34 s |
-  | 3 | Tinkering | `music_03_tinkering.ogg` | Level mit Thema Werkstatt | G-Mixolydisch, 92 BPM, gemuetlich, Marimba, Metall-Klonk als Backbeat, 84 s |
-  | 4 | Clockwork Lab | `music_04_clockwork_lab.ogg` | Themen Fabrik, Chemie | d-Dorisch, 104 BPM, Uhrwerk-Tick-Tack, treibend, 74 s |
-  | 5 | Quantum Climb | `music_05_quantum_climb.ogg` | Themen Elektro, Magnet, Quanten | a-Moll, 120 BPM, Synthwave, pumpend, 64 s |
+  | 1 | Time Shifter | `music_01_time_shifter.ogg` | Titelbildschirm | Lo-Fi, c-Moll, 78 BPM, leise tickende Uhr, Spieluhr-Arpeggio, geheimnisvoll, 98 s |
+  | 2 | Pizza on the Line | `music_02_pizza_on_the_line.ogg` | Intro-Comic | Lo-Fi, F-Dur, 84 BPM, gezupfte Akkorde, Vibraphon/Spieluhr, verspielt mit einem Hauch Geheimnis, 46 s |
+  | 3 | Tinkering | `music_03_tinkering.ogg` | Level mit Thema Werkstatt | Lo-Fi, G-Mixolydisch, 84 BPM, gemuetlich, Marimba, leiser Metall-Klonk als Backbeat, 91 s |
+  | 4 | Clockwork Lab | `music_04_clockwork_lab.ogg` | Thema Fabrik | Lo-Fi, d-Dorisch, 88 BPM, leises Uhrwerk-Tick-Tack, gezupftes Arpeggio, raetselhaft, 87 s |
+  | 5 | Quantum Climb | `music_05_quantum_climb.ogg` | Themen Elektro, Quanten | Lo-Fi, a-Moll, 90 BPM, weich pumpende Flaeche, Spieluhr-Arpeggio, etwas mehr Schwung, 85 s |
   | 6 | Going Down (with Pizza) | `music_06_going_down.ogg` | Ende und Abspann (Fahrstuhl) | B-Dur, Bossa nova, 120 BPM, Fahrstuhlmusik, 64 s |
   | 7 | Coffee Break Circuits | `music_07_coffee_break_circuits.ogg` | Thema Chemie (Auto) bzw. frei waehlbar | Lo-Fi, C-Dur, 80 BPM, E-Piano mit Septimen/Nonen, Boom-Bap, Vinyl, entspannt tuefteln, 96 s |
   | 8 | Late Night Lab | `music_08_late_night_lab.ogg` | Thema Magnet (Auto) bzw. frei waehlbar | Lo-Fi, Es-Dur, 72 BPM, gedaempfte Gitarre, E-Piano, Rimshot, Vinyl, nachts im Labor, 107 s |
+  | 9 | The Keycard | `music_09_keycard.ogg` | End-Comic (bis der Fahrstuhl kommt) | Lo-Fi, g-Moll nach B-Dur, 80 BPM, Spieluhr, geheimnisvoll-warm, 48 s |
 
 - Soundeffekte und wo sie klingen (IDs aus `data/sfx.json`):
-  - Professor: `step` (3 Varianten, hohles Metallrohr, beim Aufsetzen des
+  - Professor: `step` (3 Varianten, hohles Metallrohr, seit v0.72 etwas
+    weniger metallisch: kuerzerer Ausklang, dumpfer; beim Aufsetzen des
     Fusses in der Laufanimation), `jump`, `land`,
     `land_hard` (ab 700 px/s Fallgeschwindigkeit), `death`; Klonstation
     `spawn`; Ausgang `exit_door`; Levelwechsel `transition`.
@@ -538,6 +553,20 @@ selben Massstab entstehen.
     `upgrade`; `coin` liegt bereit (noch keine Muenzen im Spiel).
   - Texte und Menues: Sprechblase `speech_blip` (3 Varianten),
     `ui_hover`, `ui_click`, Comic `page_flip`.
+  - Comic-Bilder (seit v0.79, Wunsch des Nutzers: mehr Immersion): Jedes
+    Bild in Intro und Ende spielt beim Erscheinen einen kurzen Sound (bis
+    3 s) passend zum Bild. Kennung = Praefix + Panelname
+    (`comic_intro_s1_left` ... `comic_intro_s4_right`, `comic_ending_e1` ...
+    `comic_ending_e3`; Praefix `PANEL_SOUND` im Skript). Fehlt eine
+    Kennung, bleibt das Bild still: Fahrstuhl e4 (hat sein `elevator_ding`)
+    und Intro s4 links (Professor erschrickt; Nutzer: kein passender Sound).
+    Inhalt: s1 links Hoerer, Waehlscheibe, Sprechblasen-Plopp; s1 rechts
+    Telefonklingel, Hoerer ab, Stift; s2 Schweissen; s3 links Aufheulen,
+    Zapp, Funken; s3 rechts Lieferwagen mit Hupe; s4 rechts Knopf,
+    Ding-Dong, Grillen; s4 links still; e1
+    Nacht, Grillen, Karton; e2 links Karte ziehen, zwei Piepser; e2 rechts
+    Bestaetigung, Tuer gleitet auf; e3 Lotusfloete abwaerts, "Boing".
+    Erzeugt in `tools/make_sfx.py` (`build_comic`, eigener Zufall).
   - Ambient je Hintergrund-Thema: `ambient_workshop`, `ambient_factory`,
     `ambient_chemical`, `ambient_electro`, `ambient_magnet`,
     `ambient_quantum` (Titel, Intro, Ende ohne Ambient).
@@ -567,7 +596,7 @@ Repo, siehe 1.12).
 
 | Skript | Aufgabe | Aufruf |
 | --- | --- | --- |
-| `check_palette.gd` | Prueft alle PNGs in `graphics/` auf Farben ausserhalb von Resurrect 64 (Rueckgabe 0 = OK) | `godot --headless --path . --script tools/check_palette.gd` (Konsolenfassung von Godot) |
+| `check_palette.gd` | Prueft alle PNGs in `graphics/` auf Farben ausserhalb von Resurrect 64 (Rueckgabe 0 = OK); Ordner mit `.gdignore` (nicht im Spiel) werden uebersprungen | `godot --headless --path . --script tools/check_palette.gd` (Konsolenfassung von Godot) |
 | `run_tests.sh` | Fuehrt alle automatischen Tests aus `tests/` headless aus (optional danach Exporte); sichert echten Spielstand und Einstellungen und schreibt sie zurueck, falls ein Test sie aendert | `GODOT=<Godot-Konsole> bash tools/run_tests.sh [export] [test_name ...]` |
 | `make_sfx.py` | Erzeugt alle Soundeffekte (`audio/sfx/`) | `python tools/make_sfx.py [name ...]` |
 | `make_music.py` | Erzeugt alle Songs (`audio/music/`), laeuft in Blender | `blender -b --factory-startup --python tools/make_music.py -- [IDs]` |
@@ -898,7 +927,8 @@ Baustein "Feel" am Professor (`scripts/player/professor_feel.gd`), Werte in
 - Landung seit v0.61 nur halb so stark (Stauchung und Wackeln), mehr Staub.
 - Schritt-Sound genau beim Aufsetzen des Fusses: Bilder 3 und 7 im Tag Run
   (Aseprite-Bild 8 und 12), einstellbar in `data/professor_animation.tres`
-  (`run_step_frames`). Klang: hohles Metallrohr ("klonk").
+  (`run_step_frames`). Klang: hohles Metallrohr ("klonk"), seit v0.72
+  etwas weniger metallisch (Wunsch des Nutzers).
 
 Werte der Bewegung (Datendatei `data/professor_movement.tres`, im Inspector
 aenderbar; Skript `scripts/player/movement_settings.gd`):
@@ -1186,6 +1216,28 @@ Formregler erlauben, gezielt nur einzelne Objekte zu erfassen.
   Drehregler rechts. Skripte in `scripts/ui/`: `time_gauge.gd`,
   `oscilloscope.gd`, `radius_knob.gd`; gemeinsamer Look in
   `panel_style.gd`. Das Mausrad mit Shift bleibt fuer die Zeitstufe.
+- **Gehaeusebild (seit v0.70, 26.11.2026):** Unter den Reglern liegt das
+  Bild `graphics/ui/ui_time_shifter_housing.png` (gruene Metallplatte mit
+  Kabeln, erzeugt vom Nutzer mit Retro Diffusion; Quelle
+  `graphics/source/ui_time_shifter_housing.aseprite`, im Aseprite-Sync).
+  Seit v0.80 ist es 440 x 184 gross: Die Platte wurde nach oben verlaengert,
+  darauf sitzt ein Messingschild "TIME SHIFTER 3000" ueber die ganze Breite,
+  von der KI in 2-fach vergroesserter 5x7-Pixelschrift gesetzt (Entwurf vom
+  Nutzer so abgenommen). `Controls` ist entsprechend 440 x 184, die Regler
+  sitzen 32 px tiefer.
+  Node `Housing` in `Controls`, um 10 px nach rechts versetzt, damit die
+  Platte mittig sitzt. Die drei Regler haben den Schalter `draw_frame`; ist
+  er aus, zeichnen sie kein eigenes Gehaeuse, sondern nur die beweglichen
+  Teile in die Fenster des Bilds:
+  - Zeitregler im Anzeigefenster (104 x 80). Alle Masse skalieren mit der
+    Fenstergroesse, die Symbole bleiben 16 x 16.
+  - Oszilloskop auf dem Glas (73 x 67). Raster und Glas kommen aus dem
+    Bild, der Massstab richtet sich nach der kuerzeren Seite.
+  - Drehknopf mit `knob_radius` 10 in der runden Fassung.
+  - Die Abdeckplatten fuer gesperrte Regler sind weiter grau und im Code
+    gezeichnet.
+  Liefert der Nutzer ein neues Gehaeusebild mit anderen Fenstern, muessen
+  die Positionen in `time_shifter_panel.tscn` angepasst werden.
 - **Symbol im Spiel** (`scenes/ui/time_stage_indicator.tscn`): kleines Feld
   oben links mit dem Symbol der Stufe in ihrer Farbe.
 - Symbole: `graphics/ui/ui_time_stage_icons.png` (48 x 16, drei weisse
@@ -1241,6 +1293,17 @@ Offene Punkte:
   damit man nicht zwischen zwei dicht fallenden Raketen ueberlebt. Werfer
   unter einem einfachen Node (ohne Position) haengen ihre Raketen in den
   naechsten Node2D darueber.
+- **Gleichzeitig-Schalter (seit v0.71):** `scenes/objects/sync_gate.tscn`
+  (Skript `scripts/objects/sync_gate.gd`, Kategorie Schalter im Baukasten):
+  sendet `action` an `targets` erst, wenn alle `sources` (Trefferflaechen,
+  Lichtschranken; brauchen das Signal `triggered`) innerhalb von
+  `tolerance` Sekunden (Standard 0,3, echte Zeit) ausgeloest haben;
+  `one_shot`. Kleiner Kasten mit einer Lampe je Ausloeser (gelb = wartet,
+  gruen = geschafft). Trefferflaechen senden dafuer seit v0.71 `triggered`.
+- **Werfer "ein Schuss pro Signal" (seit v0.71):** `fire_on_signal`:
+  activate()/toggle() feuert sofort genau einen Schuss, kein eigener Takt.
+- **Zeitschaltuhr mit Versatz (seit v0.71):** `start_offset` (mit
+  `autostart`): beginnt, als liefe sie schon so lange (Regel 17).
 - **Laser, wieder an nach Signal (seit v0.65):** `reactivate_after`
   (Sekunden, 0 = aus): Schaltet ein Signal den Laser ab, geht er nach
   dieser Zeit von selbst wieder an (Warnung inklusive); jedes weitere
@@ -1258,17 +1321,6 @@ Offene Punkte:
   Zeitblase mit. Er ist Signal-Empfaenger (Lichtschranke kann ihn schalten).
 - Ladebalken (09.11.2026, Wunsch des Nutzers): Im Gehaeuse fuellt sich ein
   senkrechter gelber Balken (6 x 22 px) bis zum naechsten Schuss; ist er voll,
-- **Gleichzeitig-Schalter (seit v0.71):** `scenes/objects/sync_gate.tscn`
-  (Skript `scripts/objects/sync_gate.gd`, Kategorie Schalter im Baukasten):
-  sendet `action` an `targets` erst, wenn alle `sources` (Trefferflaechen,
-  Lichtschranken; brauchen das Signal `triggered`) innerhalb von
-  `tolerance` Sekunden (Standard 0,3, echte Zeit) ausgeloest haben;
-  `one_shot`. Kleiner Kasten mit einer Lampe je Ausloeser (gelb = wartet,
-  gruen = geschafft). Trefferflaechen senden dafuer seit v0.71 `triggered`.
-- **Werfer "ein Schuss pro Signal" (seit v0.71):** `fire_on_signal`:
-  activate()/toggle() feuert sofort genau einen Schuss, kein eigener Takt.
-- **Zeitschaltuhr mit Versatz (seit v0.71):** `start_offset` (mit
-  `autostart`): beginnt, als liefe sie schon so lange (Regel 17).
   feuert der Werfer. Er laeuft mit dem Takt, also auch langsamer oder
   schneller in der Zeitblase, und bleibt stehen, solange der Werfer aus ist.
 
@@ -1656,6 +1708,16 @@ Fortschritt bleibt erhalten.
     Respawn-Spruchs, Lesezeit der Blase (Grundzeit + Zeit pro Zeichen).
   - `SpeechBubble.say(figur, text_id)` bzw. `say_text(figur, text)`;
     `GameTexts.get_list()` liest Listen.
+  - **Stoeren das Springen nicht (seit v0.77, Wunsch des Nutzers):**
+    Zufaellige und Respawn-Sprueche kommen nur, wenn der Professor still
+    auf dem Boden steht (`idle_required` 1,5 s; Respawn wartet hoechstens
+    `respawn_max_wait` 6 s, sonst entfaellt er), und verschwinden, sobald
+    er laeuft oder springt (`say_text(..., dismiss_on_move = true)`).
+    Wichtige Hinweise wie der Fahrstuhl bleiben stehen. Die Blase ist
+    kleiner (Schrift 10, hoechstens 140 px breit, Rand 3 px) und bleibt am
+    Bildrand im Bild (die Spitze zeigt weiter auf die Figur).
+    Halbtransparent geht nicht (nur Palettenfarben, 1.7). Test
+    `tests/test_speech.gd`.
 
 ### 2.9 Leveldesign
 
@@ -1689,16 +1751,6 @@ Fortschritt bleibt erhalten.
 
 **Level-Builder (umgesetzt in Schritt 15, 12.11.2026)**
 
-  - **Stoeren das Springen nicht (seit v0.77, Wunsch des Nutzers):**
-    Zufaellige und Respawn-Sprueche kommen nur, wenn der Professor still
-    auf dem Boden steht (`idle_required` 1,5 s; Respawn wartet hoechstens
-    `respawn_max_wait` 6 s, sonst entfaellt er), und verschwinden, sobald
-    er laeuft oder springt (`say_text(..., dismiss_on_move = true)`).
-    Wichtige Hinweise wie der Fahrstuhl bleiben stehen. Die Blase ist
-    kleiner (Schrift 10, hoechstens 140 px breit, Rand 3 px) und bleibt am
-    Bildrand im Bild (die Spitze zeigt weiter auf die Figur).
-    Halbtransparent geht nicht (nur Palettenfarben, 1.7). Test
-    `tests/test_speech.gd`.
 **Baukasten-Leiste im Editor (Wunsch des Nutzers, 13.11.2026):** Plugin
 `addons/building_blocks/` (wie im Projekt "Just another Jump n Run"). Im
 Editor rechts erscheint der Reiter "Baukasten" neben dem Inspector:
@@ -1931,6 +1983,37 @@ Ein gefuehrtes Tutorial mit langsam steigender Schwierigkeit:
    einfach durchrennen) fand nur 3 Treffer (8,1 / 10,5 / 20,9 s): sehr
    knapp. Test `tests/test_level02.gd`.
 
+**Level 7 und 8, Uhren-Raetsel (seit v0.71, Idee des Nutzers):** Zwei
+gleich schnelle Zeitschaltuhren (4 s, `repeat`, `autostart`, Uhr 2 um
+1,6 s versetzt) loesen bei jedem Ablauf je einen Deckenwerfer aus
+(`fire_on_signal`). Die Raketen treffen zwei Trefferflaechen; ein
+Gleichzeitig-Schalter oeffnet die Tuer zum Ausgang nur, wenn beide
+hoechstens 0,3 s auseinander treffen. Loesung: neben eine Uhr stellen (die
+andere ausserhalb der Blase) und sie verlangsamen bzw. beschleunigen, bis
+beide im Gleichtakt sind (langsam etwa 2,2 s). Level 8 ist eine Kopie von
+Level 7 mit dem Schrotthaufen "Form" am Anfang. Test
+`tests/test_level07.gd` (beide Level). Level 8 (Umbau des Nutzers, v0.79): die zwei
+Uhren stehen oben auf dem grossen Block; linke Uhr zum linken Werfer,
+rechte zum rechten, rechte Uhr 1,6 s versetzt.
+Seit v0.73 (Umbau des Nutzers) hat Level 7 drei Uhren und drei Werfer:
+die linke Uhr (x 408) gehoert zum linken Werfer (744), die mittlere (472)
+zum mittleren (824), die rechte (536) zum rechten (904); Versatz links
+1,2 s, Mitte 0, rechts 2,4 s. Die mittlere Uhr laesst sich mit dem
+Startradius nicht allein erfassen; man bringt die linke und die rechte
+Uhr von aussen her in ihren Takt. In Level 8 waren die zwei Uhren ueber
+Kreuz verdrahtet (jetzt links zu links). Die senkrechten hinteren Rohre
+halten Abstand zu Spielelementen.
+
+**Deko Level 2 bis 8 (seit v0.71):** je Level eigenes Hintergrund-Thema
+(2 Chemie, 3 Fabrik, 4 Quanten, 5 Elektro, 6 Magnet, 7 Werkstatt, 8 Chemie)
+mit eigener Saat; die Musik bleibt wie vorher (im Inspector fest
+eingetragen). Requisiten am Boden, an der Wand und unter der Decke
+(Knoten `DecoAuto*`, ohne Kollision) sowie hintere Rohre ohne Kollision.
+Sie halten Abstand zu Spawn, Ausgang, Gefahren und Bahnen von Laser,
+Pendel, Werfern und Plattformen; kein grosses Zahnrad (wirkt wie ein
+Saegeblatt) und in Level 7/8 keine Wanduhr (Verwechslung mit den
+Zeitschaltuhren). Das Spiel selbst ist unveraendert.
+
 **Level-Themen (seit v0.81, Wunsch des Nutzers):** Aus den sechs
 Rueckwand-Stilen sind sechs Themen geworden, die von Level zu Level reihum
 wechseln: 1 Werkstatt, 2 Fabrik, 3 Chemie, 4 Elektro, 5 Magnet, 6 Quanten,
@@ -1973,42 +2056,11 @@ Lampe rot blinkt). Steht der Professor davor, erscheint die E-Anzeige; E
 laesst ihn den Text `text_id` sagen (Standard `speech_elevator_keycard`).
 
 **Grundbaustein Interagieren (Schritt 16a):** `scripts/objects/interactable.gd`
-**Level 7 und 8, Uhren-Raetsel (seit v0.71, Idee des Nutzers):** Zwei
-gleich schnelle Zeitschaltuhren (4 s, `repeat`, `autostart`, Uhr 2 um
-1,6 s versetzt) loesen bei jedem Ablauf je einen Deckenwerfer aus
-(`fire_on_signal`). Die Raketen treffen zwei Trefferflaechen; ein
-Gleichzeitig-Schalter oeffnet die Tuer zum Ausgang nur, wenn beide
-hoechstens 0,3 s auseinander treffen. Loesung: neben eine Uhr stellen (die
-andere ausserhalb der Blase) und sie verlangsamen bzw. beschleunigen, bis
-beide im Gleichtakt sind (langsam etwa 2,2 s). Level 8 ist eine Kopie von
-Level 7 mit dem Schrotthaufen "Form" am Anfang. Test
-`tests/test_level07.gd` (beide Level). Level 8 (Umbau des Nutzers, v0.79): die zwei
-Uhren stehen oben auf dem grossen Block; linke Uhr zum linken Werfer,
-rechte zum rechten, rechte Uhr 1,6 s versetzt.
-
-**Deko Level 2 bis 8 (seit v0.71):** je Level eigenes Hintergrund-Thema
-(2 Chemie, 3 Fabrik, 4 Quanten, 5 Elektro, 6 Magnet, 7 Werkstatt, 8 Chemie)
-mit eigener Saat; die Musik bleibt wie vorher (im Inspector fest
-eingetragen). Requisiten am Boden, an der Wand und unter der Decke
-(Knoten `DecoAuto*`, ohne Kollision) sowie hintere Rohre ohne Kollision.
-Sie halten Abstand zu Spawn, Ausgang, Gefahren und Bahnen von Laser,
-Pendel, Werfern und Plattformen; kein grosses Zahnrad (wirkt wie ein
-Saegeblatt) und in Level 7/8 keine Wanduhr (Verwechslung mit den
-Zeitschaltuhren). Das Spiel selbst ist unveraendert.
-
 (Klasse `Interactable`, Area2D, erkennt Ebene 2). Steht der lebende
 Professor im Bereich, schwebt bei `prompt_offset` eine weisse Tastenkappe
 "E" leicht auf und ab; E ruft `_on_interact()` auf und sendet
 `interacted`. Kuenftige Objekte zum Interagieren erben davon. Tastenkappen
 zeichnet `scripts/ui/key_cap.gd` (Breite passt sich der Beschriftung an).
-Seit v0.73 (Umbau des Nutzers) hat Level 7 drei Uhren und drei Werfer:
-die linke Uhr (x 408) gehoert zum linken Werfer (744), die mittlere (472)
-zum mittleren (824), die rechte (536) zum rechten (904); Versatz links
-1,2 s, Mitte 0, rechts 2,4 s. Die mittlere Uhr laesst sich mit dem
-Startradius nicht allein erfassen; man bringt die linke und die rechte
-Uhr von aussen her in ihren Takt. In Level 8 waren die zwei Uhren ueber
-Kreuz verdrahtet (jetzt links zu links). Die senkrechten hinteren Rohre
-halten Abstand zu Spielelementen.
 
 **Umgesetzt (13.11.2026, Wunsch des Nutzers: Rohre sowie Wand- und
 Bodenelemente in den Baukasten):**
@@ -2133,6 +2185,15 @@ zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
    frueheren Entwurf):
    - **Form:** Comic zum Durchklicken, **kein Text**. Nur Bilder und
      vereinzelte Emoji-Sprechblasen (z. B. Pizza-Symbol).
+   - **Bilduntertexte (seit v0.76, Wunsch des Nutzers):** Damit man die
+     Handlung besser versteht, steht unter jedem Panel von Intro und Ende
+     ein kurzer Satz im Comic-Kasten (hell, dunkler Rand); Dialogzeilen in
+     Anfuehrungszeichen. Ersetzt "kein Text". Texte in
+     `dialogues/comic.json` (englisch, Kennung = Panel, z. B.
+     `intro_s1_left`, `ending_e3`; leer = kein Kasten, so beim Fahrstuhl
+     `ending_e4`). Klasse `ComicCaption` (`scripts/ui/comic_caption.gd`)
+     haengt den Kasten unter das Panel. Die Tastenhinweise im Intro sitzen
+     dafuer tiefer. Test `tests/test_comic.gd`.
    - Geteilte Szenen bauen sich Klick fuer Klick auf: Erst erscheint das
      linke Panel, beim naechsten Klick das rechte. Das linke Panel bleibt
      stehen, bis zur naechsten Szene weitergeklickt wird.
@@ -2166,15 +2227,6 @@ zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
      warum der Fahrstuhl nicht geht.
    - **Umgesetzt (Schritt 22, 13.11.2026):** `scenes/ui/intro.tscn`
      (Skript `scripts/ui/intro.gd`), erscheint nach New Game. Panels in
-   - **Bilduntertexte (seit v0.76, Wunsch des Nutzers):** Damit man die
-     Handlung besser versteht, steht unter jedem Panel von Intro und Ende
-     ein kurzer Satz im Comic-Kasten (hell, dunkler Rand); Dialogzeilen in
-     Anfuehrungszeichen. Ersetzt "kein Text". Texte in
-     `dialogues/comic.json` (englisch, Kennung = Panel, z. B.
-     `intro_s1_left`, `ending_e3`; leer = kein Kasten, so beim Fahrstuhl
-     `ending_e4`). Klasse `ComicCaption` (`scripts/ui/comic_caption.gd`)
-     haengt den Kasten unter das Panel. Die Tastenhinweise im Intro sitzen
-     dafuer tiefer. Test `tests/test_comic.gd`.
      `graphics/intro/` (halb so gross gezeichnet und doppelt angezeigt;
      geteilte Panels 220 x 180, breites Panel 450 x 180; seit v0.67 ein Bild
      je Panel, mehrere Bilder liefen mit 0,28 s pro Bild). Ablauf in 7
@@ -2196,6 +2248,30 @@ zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
      `graphics/ending/` exportiert. Die Panelgroesse bleibt fest (geteilt
      220 x 180, breit 450 x 180); Frames duerfen hinzukommen oder wegfallen,
      das Spiel liest die Bilderzahl aus der Breite des Sheets.
+   - **Comic-Panels mit Retro Diffusion (v0.67, 26.11.2026):** Der Nutzer
+     hat alle elf Panels mit Retro Diffusion erzeugt (RD Core, Style
+     default, Panelgroesse direkt 220 x 180 bzw. 450 x 180, Palette
+     Resurrect 64, Remove Background aus; Prompts auf Englisch, nur Inhalt
+     beschreiben, Figuren-Baustein in jedem Prompt gleich). Die Animationen
+     von Retro Diffusion (Custom Action) wurden verworfen. Bilder, die
+     4-fach vergroessert aus dem Editor kamen, hat die KI verlustfrei
+     verkleinert und fremde Farben auf die naechste Palettenfarbe gesetzt
+     (CIELAB, bei hellen Farben zaehlt die Helligkeit nur halb, damit
+     Farbton und Saettigung erhalten bleiben).
+     - Referenzbilder: `graphics/source/comic/retro_diffusion_refs/`
+       (Professor-Sprite und Werkstatt-Deko vergroessert, Palette als Bild,
+       s2 als Leitbild fuer Figur und Labor, s1_right als Vorlage fuer den
+       Boten; `ref_5_time_shifter_panel.png` = altes Bedienfeld in
+       1-facher Groesse 440 x 152, Vorlage fuer das Gehaeusebild, siehe
+       2.3; `ref_6_nameplate_area.png` = Ausschnitt fuer ein Namensschild
+       (verworfen); `ref_7_time_shifter_tall_layout.png` = Entwurf 440 x 184
+       mit Schild "TIME SHIFTER 3000" ueber die ganze Breite, Vorlage fuer
+       ein neues, hoeheres Gehaeuse).
+     - Originale als Backup: `graphics/source/comic/retro_diffusion_originals/`
+       (`<panel>_original.png`, verworfene Animationen als
+       `_original_anim.gif`).
+     - Beide Ordner haben eine `.gdignore`: Godot importiert sie nicht, und
+       `check_palette.gd` ueberspringt sie.
 2. **Werkstatt** (Level 1, Start), dann Level 2, 3 ... bis zum letzten
    Level (siehe 2.9; Bereiche seit 13.11.2026 gestrichen).
 3. **Ende und Abspann:** Nach dem letzten Level nimmt der Professor oben die
@@ -2220,6 +2296,38 @@ zerstoerte Keycard ist das Hindernis, die Pizza der Antrieb.
      Code-Assistent, zwei Gags). Am Ende "THE END" und "Clones used: N"
      (Klon-Nummer aus dem Spielstand), eine Taste fuehrt zum Titel. Esc
      springt sofort ans Ende. Setzt die Marke `story_finished`.
+   - **Fahrstuhl wieder da (seit v0.69, Wunsch des Nutzers):** Die neuen
+     Comic-Panels (v0.67) hatten das Fahrstuhl-Panel durch die Nahaufnahme
+     ersetzt. Jetzt: Comic e1, e2 links/rechts, e3 (Nahaufnahme, Pointe),
+     dann e4 = Fahrstuhl nach unten (das alte Panel, 3 Bilder,
+     `graphics/ending/ending_e4.png`, Quelle
+     `graphics/source/comic/ending_e4.aseprite`, im Aseprite-Sync). Die
+     Kabine ruckelt leicht, daneben laufen die Credits. Mit dem "Ding"
+     startet Song 6 (Fahrstuhlmusik); im Comic davor laeuft seit v0.72
+     Song 9 "The Keycard" (vorher ohne Musik), Ueberblendung zu Song 6. Test
+     `tests/test_ending.gd`.
+   - **Neues Fahrstuhl-Panel (v0.81, 27.11.2026, Wunsch des Nutzers):** e4
+     stammt jetzt aus einer Animation von Retro Diffusion (16 Bilder, Original
+     als `ending_e4_original_anim.gif` bei den Backups). Die KI hat daraus
+     einen Ablauf von 40 Bildern gebaut: Biss (0,75 s), Pizza wegziehen, dann
+     etwa 5,7 s Kauen in vier leicht verschiedenen Runden (mal schneller, mal
+     langsamer, mit kurzen Pausen), danach der naechste Biss; eine Schleife
+     dauert gut 7 s. Damit nichts flimmert, kommen nur Kopf, Pizza und Haende
+     aus den Animationsbildern, Kabine und Koerper aus einem festen Bild. Die
+     Etagenanzeige zeigt einen klaren roten Pfeil nach unten (von der KI
+     gezeichnet). Rahmen wie bei den anderen Panels.
+   - **Bilddauern aus Aseprite:** `ending.gd` liest die Dauer jedes Bilds
+     aus `ending_<Panel>.json` (Export des Aseprite-Sync). Wer in Aseprite
+     die Dauer eines Frames aendert, aendert sie also auch im Spiel. Fehlt
+     die JSON, gilt `FRAME_TIME` (0,28 s). Die Dateien in
+     `graphics/intro/` und `graphics/ending/` stehen deshalb im
+     Include-Filter beider Export-Vorlagen (vorher fehlten dort auch
+     `intro_panels.json` und `ending_panels.json`).
+   - **Kabine wackelt (v0.81, nachgebessert v0.82: haeufiger, schwaecher):**
+     Nach einer zufaelligen Pause von 0,6 bis 1,8 s wackelt das Panel kurz
+     auf und ab (je 1 Bildschirmpixel = ein halber Bildpixel, vier Schritte
+     zu 0,07 s; Konstanten `RIDE_*` in `ending.gd`). Ersetzt das
+     gleichmaessige Ruckeln von vorher.
 
 Verworfene Alternativen: nur Keycard ohne Pizza-Motivation; Tier als
 Spielfigur (Schildkroete, Hase, Faultier, Laborratte); Keycard zerfaellt
@@ -2241,15 +2349,6 @@ durch Alterung (unrealistisch bei Plastik).
   - "Notiz an mich: Selbstschussanlagen erkennen keine Gesichter. Nur
     Keycards."
   - "Meine Antigravitationsschuhe waeren jetzt praktisch. Liegen leider oben
-   - **Fahrstuhl wieder da (seit v0.69, Wunsch des Nutzers):** Die neuen
-     Comic-Panels (v0.67) hatten das Fahrstuhl-Panel durch die Nahaufnahme
-     ersetzt. Jetzt: Comic e1, e2 links/rechts, e3 (Nahaufnahme, Pointe),
-     dann e4 = Fahrstuhl nach unten (das alte Panel, 3 Bilder,
-     `graphics/ending/ending_e4.png`, Quelle
-     `graphics/source/comic/ending_e4.aseprite`, im Aseprite-Sync). Die
-     Kabine ruckelt leicht, daneben laufen die Credits. Mit dem "Ding"
-     startet Song 6 (Fahrstuhlmusik); im Comic davor keine Musik. Test
-     `tests/test_ending.gd`.
     neben der Haustuer."
   - "Diese Brille mit Roentgenblick haette mir hier echt geholfen. Wo hab
     ich die nur hingelegt?"
@@ -2445,21 +2544,28 @@ gekuerzt, nicht der Puffer.
 > Historie und keine Technikdetails (die stehen in den Kapiteln 1 bis 3,
 > im Versionsprotokoll und in Git).
 
-**Stand vom 26.11.2026, Version v0.65**
+**Stand vom 27.11.2026, Version v0.79**
 
 - **Phase:** Meilenstein 4, Feinschliff; eigene Level des Nutzers.
-- **Zuletzt erledigt:** Level umgebaut: Werkstatt klein, ohne Klonstation,
-  Hindernis und Sprung-Hinweis; Sprung-Hinweis in Level 2; Time Shifter
-  erst ab Level 3 (nur langsam), "schnell" ab Level 5; alte Level 5 und 6
-  geloescht, 7 und 8 sind jetzt 5 und 6; Werfer in Level 2 mit
-  Zufallstakt; Laser in Level 5 per Lichtschranke 3 s aus.
+- **Zuletzt erledigt:** Jedes Comic-Bild in Intro und Ende mit eigenem
+  kurzem Sound (v0.79). Davor: Musik vereinheitlicht (Lo-Fi, Song 2 im
+  Intro, neuer Song 9 im End-Comic), Schritte weniger metallisch (v0.72).
+- **Ausserdem erledigt:** Intro und Ende mit neuen Comic-Panels aus Retro
+  Diffusion (Standbilder, schmaler Pinselrahmen, Pizza-Sprechblase in
+  Szene 1); Bedienfeld des Time Shifters mit Gehaeusebild aus Retro
+  Diffusion.
 - **Naechster Schritt:** Nutzer testet; weitere eigene Level,
   Schwierigkeitskurve.
 - **Spielbar:** Titel -> Intro -> Level 1 (Werkstatt) -> 2 (Raketenregen)
   -> 3 -> 4 -> 5 (Lichtschranke/Laser) -> 6 -> Ende. Sandbox ueber F1.
-- **Noch zu testen (vom Nutzer):** Level 2 ohne Time Shifter (sehr knapp,
+- **Noch zu testen (vom Nutzer):** Comic-Sounds je Bild (Passung,
+  Lautstaerke gegen die Musik); neue Songs 1 bis 5 und 9 (Vibe,
+  Lautstaerke), Uebergang End-Comic -> Fahrstuhl, neue Schritte; Level 2
+  ohne Time Shifter (sehr knapp,
   siehe 2.9), Werkstatt mit Zoom 2, Freischalten in Level 3 und 5, Laser
-  in Level 5.
+  in Level 5; neue Comic-Panels in Intro und Ende (Aussehen, Rahmen,
+  Sprechblase); neues Bedienfeld (Bedienung mit der Maus, Aussehen der
+  grauen Abdeckplatten).
 - **Bekannte Probleme:** Level 2 ist ohne Time Shifter nur in wenigen
   kurzen Zeitfenstern schaffbar.
 - **Groesste offene Punkte:** echte Level (2.9), Schwierigkeitskurve.

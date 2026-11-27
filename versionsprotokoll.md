@@ -51,6 +51,11 @@ Neue Eintraege werden fortlaufend oben ergaenzt, bestehende nie ueberschrieben.
 > - Was technisch im Detail passiert ist, steht in Git; was jetzt gilt, steht
 >   in der Projektdokumentation. Das Protokoll wiederholt beides nicht.
 
+**v0.82 - 2026-11-27: Kleinste Zeitblase etwas groesser**
+
+- Kleinster Radius 40 statt 32 px: Steht der Professor auf einer Rakete, wird sie immer verlangsamt, auch ganz vorn an der Spitze (mit 33 bis 34 px nur in der Mitte). Neuer Test `test_ride_bubble`.
+- Testlauf: Hat sich der echte Spielstand waehrend der Tests nur geaendert (z. B. weil nebenher gespielt wurde), bleibt der neue Stand; der alte liegt als `.vor_tests` daneben. Nur ein geloeschter Spielstand wird wiederhergestellt.
+
 **v0.81 - 2026-11-27: Sechs Level-Themen mit eigener Deko, Radius erst ab Level 9**
 
 - Sechs Themen (Werkstatt, Fabrik, Chemie, Elektro, Magnet, Quanten) wechseln reihum von Level zu Level; Rueckwand, Silhouetten, Geraeusch und Requisiten passen jeweils zusammen.

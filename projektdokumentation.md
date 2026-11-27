@@ -997,6 +997,12 @@ der Cursor zur Formung der Sphaere noch.
   lang (Spielzeit), dann weg. Texte in `dialogues/upgrades.json` (englisch,
 - Level 8: Schrotthaufen "Form" am Anfang. Level 9 (seit v0.81, Wunsch
   des Nutzers): Schrotthaufen "Radius" am Anfang. Vorher bleibt die Blase
+  beim kleinsten Radius (`radius_min`, seit v0.82 40 statt 32 px, damit sie
+  eine Rakete unter dem Professor ueberall erfasst, auch an der Spitze; Test
+  `tests/test_ride_bubble.gd`; `TimeBubble.is_radius_unlocked()`),
+  danach laesst sich mit dem Drehregler die volle Groesse (bis 80 px) nutzen.
+- Level 8: Schrotthaufen "Form" am Anfang. Level 9 (seit v0.81, Wunsch
+  des Nutzers): Schrotthaufen "Radius" am Anfang. Vorher bleibt die Blase
   beim kleinsten Radius (`radius_min` 32 px; `TimeBubble.is_radius_unlocked()`),
   danach laesst sich mit dem Drehregler die volle Groesse (bis 80 px) nutzen.
   Kennungen `upgrade_radius`, `upgrade_shape`). Damit die Datei im Export

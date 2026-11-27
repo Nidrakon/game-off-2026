@@ -15,7 +15,7 @@ extends Resource
 ## Radius der Blase beim Start in Pixeln (1 Tile = 16 px).
 @export var radius: float = 80.0
 ## Kleinster und groesster Radius, der sich mit dem Drehregler einstellen laesst.
-@export var radius_min: float = 32.0
+@export var radius_min: float = 40.0
 @export var radius_max: float = 80.0
 ## Groesste Streckung durch den Cursor: Das Ei wird hoechstens so oft so lang
 ## wie der Durchmesser des Kreises (2 = doppelt so lang).

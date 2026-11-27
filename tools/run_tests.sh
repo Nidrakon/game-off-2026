@@ -3,9 +3,10 @@
 # Aufruf im Projektordner:  GODOT=/pfad/zur/godot_console.exe bash tools/run_tests.sh [export] [name ...]
 #   export  = danach Web- und Windows-Export bauen
 #   name    = nur diese Tests (z. B. test_music)
-# Echter Spielstand und Einstellungen werden vorher gesichert und am Ende
-# automatisch zurueckgeschrieben, falls ein Test sie veraendert oder geloescht
-# hat. Tests sollen nur die Test-Dateien benutzen (savegame_test.json,
+# Echter Spielstand und Einstellungen werden vorher gesichert; fehlen sie am
+# Ende, werden sie wiederhergestellt. Haben sie sich nur geaendert (z. B.
+# weil nebenher gespielt wurde), bleibt der neue Stand und der alte liegt als
+# <datei>.vor_tests daneben. Tests sollen nur die Test-Dateien benutzen (savegame_test.json,
 # settings_test.cfg).
 cd "$(dirname "$0")/.." || exit 1
 if [ -z "$GODOT" ]; then echo "GODOT (Pfad zur Godot-Konsole) setzen"; exit 1; fi
@@ -38,11 +39,15 @@ done
 echo
 for f in savegame.json settings.cfg; do
 	if [ -f "$TMP/$f" ]; then
-		if cmp -s "$U/$f" "$TMP/$f"; then
+		if [ ! -f "$U/$f" ]; then
+			cp "$TMP/$f" "$U/$f" && echo "ACHTUNG $f von einem Test geloescht - wiederhergestellt"
+			bad=1
+		elif cmp -s "$U/$f" "$TMP/$f"; then
 			echo "$f unveraendert"
 		else
-			cp "$TMP/$f" "$U/$f" && echo "ACHTUNG $f von einem Test veraendert - zurueckgeschrieben"
-			bad=1
+			# Kann auch vom Spielen nebenher kommen (Tests nutzen nur die
+			# Testdateien): neuen Stand behalten, alten als Kopie ablegen.
+			cp "$TMP/$f" "$U/$f.vor_tests" && echo "HINWEIS $f hat sich waehrend der Tests geaendert (Spiel nebenher?) - neuer Stand bleibt, alter als $f.vor_tests"
 		fi
 	elif [ -f "$U/$f" ]; then
 		echo "ACHTUNG $f von einem Test angelegt - entfernt"
